@@ -1,0 +1,71 @@
+{
+  "project_info": {
+    "project_number": "817220619220",
+    "firebase_url": "https://inpaket-otp-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "inpaket-otp",
+    "storage_bucket": "inpaket-otp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:817220619220:android:077721235e1c035d72e441",
+        "android_client_info": {
+          "package_name": "com.inpaket.store"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "817220619220-843u42lnk7icamah5v7s8geqja4p1kvf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.inpaket.store",
+            "certificate_hash": "f82be8d049bab965f6073de7b407194003d92c82"
+          }
+        },
+        {
+          "client_id": "817220619220-f1vo6js7lo5ut0uss0n9iu2crvng218b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.inpaket.store",
+            "certificate_hash": "bf3b604e6f3087b61a17c43b92ba6e2ad0664057"
+          }
+        },
+        {
+          "client_id": "817220619220-sl3acktb7lgd4af21brp00gq1fcsjkak.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.inpaket.store",
+            "certificate_hash": "040ec6ab4b39f68f3bdd80267dda47ae34c96f6b"
+          }
+        },
+        {
+          "client_id": "817220619220-m44gsaq623pv7p3k1f17552be32ff5ke.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDflfBZLX4c9M2zeSUrHFhbwH_-53Pjha8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "817220619220-m44gsaq623pv7p3k1f17552be32ff5ke.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "817220619220-rrle7pvhvlc9g3fpr71pdc8u4aba5mmi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.inpaket.inpaket"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>817220619220-clm2kvucmcobuidgrf0vldgmr09qugia.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.817220619220-clm2kvucmcobuidgrf0vldgmr09qugia</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>817220619220-0f0rh0k4oc7dt5k94irqghdsfbp3iiub.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBaUPAq-pxzuuxZEzJLmTpaiI8YALA1jhc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>817220619220</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.inpaket.store</string>
+	<key>PROJECT_ID</key>
+	<string>inpaket-otp</string>
+	<key>STORAGE_BUCKET</key>
+	<string>inpaket-otp.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:817220619220:ios:0f3b23105da47c4972e441</string>
+	<key>DATABASE_URL</key>
+	<string>https://inpaket-otp-default-rtdb.europe-west1.firebasedatabase.app</string>
+</dict>
+</plist>

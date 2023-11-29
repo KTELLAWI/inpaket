@@ -1,0 +1,429 @@
+{
+  "HorizonLayout": [
+    {
+      "layout": "logo",
+      "showLogo": false,
+      "menuIcon": {
+        "fontFamily": "MaterialIcons",
+        "name": "menu_rounded"
+      },
+      "showMenu": false,
+      "showSearch": true,
+      "name": "InPaket",
+      "showNotification": false,
+      "showCart": false
+    },
+    {
+      "labelFontSize": 10,
+      "line": false,
+      "noBackground": false,
+      "type": "icon",
+      "showShortDescription": true,
+      "marginX": 0,
+      "marginLeft": 10,
+      "marginY": 0,
+      "layout": "category",
+      "marginRight": 10,
+      "paddingX": 0,
+      "imageBorderStyle": "solid",
+      "imageSpacing": 0,
+      "spacing": 12,
+      "size": 1,
+      "hideTitle": false,
+      "marginBottom": 10,
+      "radius": 50,
+      "wrap": false,
+      "items": [
+        {
+          "image": "https://i.imgur.com/Dq7028p.png",
+          "showDescription": false,
+          "originalColor": false,
+          "keepDefaultTitle": false,
+          "category": "147",
+          "colors": [
+            "#3E6AB5",
+            "#3E6AB5"
+          ]
+        },
+        {
+          "image": "https://i.imgur.com/nMsAS0J.png",
+          "showDescription": false,
+          "originalColor": false,
+          "keepDefaultTitle": false,
+          "category": "405",
+          "colors": [
+            "#53A2CC",
+            "#53A2CC"
+          ]
+        },
+        {
+          "image": "https://i.imgur.com/0KJjocG.png",
+          "showDescription": false,
+          "originalColor": false,
+          "keepDefaultTitle": false,
+          "category": "513",
+          "colors": [
+            "#53688A",
+            "#53688A"
+          ]
+        },
+        {
+          "image": "https://i.imgur.com/baaBbU3.png",
+          "showDescription": false,
+          "originalColor": false,
+          "keepDefaultTitle": false,
+          "category": "142",
+          "colors": [
+            "#43506A",
+            "#43506A"
+          ]
+        },
+        {
+          "image": "https://i.imgur.com/vb2PAmK.png",
+          "showDescription": false,
+          "originalColor": false,
+          "keepDefaultTitle": false,
+          "category": "143",
+          "colors": [
+            "#12B58C",
+            "#12B58C"
+          ]
+        }
+      ],
+      "marginTop": 10,
+      "paddingY": 0
+    },
+    {
+      "padding": 0,
+      "upHeight": 0,
+      "parallax": false,
+      "isSlider": true,
+      "enableParallax": false,
+      "isHorizontal": false,
+      "marginLeft": 15,
+      "layout": "bannerImage",
+      "fit": "fitWidth",
+      "marginRight": 15,
+      "isBlur": false,
+      "parallaxImageRatio": 1.2,
+      "showNumber": false,
+      "design": "default",
+      "showBackground": false,
+      "marginBottom": 0,
+      "radius": 2,
+      "autoPlay": false,
+      "items": [
+        {
+          "image": "https://inpaket.com/wp-content/uploads/inpk/2023/01/20220410-053506-medium.jpeg",
+          "bannerWithProduct": false,
+          "showSubcategory": false,
+          "category": "29",
+          "defaultShowProduct": false,
+          "products": []
+        },
+        {
+          "image": "https://inpaket.com/wp-content/uploads/inpk/2023/01/20220409-180026-medium.jpg",
+          "bannerWithProduct": false,
+          "showSubcategory": false,
+          "category": "28",
+          "defaultShowProduct": false,
+          "products": []
+        }
+      ],
+      "marginTop": 0,
+      "intervalTime": 3
+    },
+    {
+      "showCartIcon": false,
+      "boxShadow": {
+        "spreadRadius": 10,
+        "colorOpacity": 0.1,
+        "blurRadius": 14,
+        "x": 0,
+        "y": 6
+      },
+      "backgroundBoxFit": "contain",
+      "showStockStatus": false,
+      "imageBoxfit": "cover",
+      "featured": false,
+      "showCountDown": true,
+      "hideStore": false,
+      "columns": 0,
+      "backgroundImage": "https://trello.com/1/cards/6199b77a278ed62ab8bf061d/attachments/6199e995934e467634e67c37/previews/6199e996934e467634e67c46/download/sale.png",
+      "vPadding": 6,
+      "showQuantity": false,
+      "showHeart": true,
+      "hMargin": 9,
+      "showCartButtonWithQuantity": false,
+      "vMargin": 30,
+      "onSale": true,
+      "tag": null,
+      "backgroundColor": "ffffd9e9",
+      "showCartIconColor": false,
+      "hidePrice": false,
+      "hPadding": 8,
+      "rows": 1,
+      "enableBottomAddToCart": false,
+      "enableRating": true,
+      "layout": "saleOff",
+      "imageRatio": 1.2,
+      "borderRadius": 12,
+      "hideTitle": false,
+      "backgroundHeight": 288,
+      "cardDesign": "card",
+      "backgroundRadius": 0,
+      "isSnapping": true,
+      "showCartButton": false,
+      "name": "Flash Sale Today ⚡️",
+      "cartIconRadius": 9,
+      "spaceWidth": 156.53672329215112
+    },
+    {
+      "layout": "staggered",
+      "limit": 20,
+      "name": "New Collections"
+    },
+    {
+      "layout": "recentView",
+      "name": "Recent View"
+    },
+    {
+      "parallax": false,
+      "enableParallax": false,
+      "isHorizontal": false,
+      "marginLeft": 0,
+      "layout": "bannerImage",
+      "fit": "fitWidth",
+      "marginRight": 0,
+      "parallaxImageRatio": 1.2,
+      "design": "static",
+      "marginBottom": 0,
+      "items": [
+        {
+          "padding": 15,
+          "image": "https://trello-attachments.s3.amazonaws.com/5fb8de4a9ffe12204a2a3607/700x263/f5d6007a5563735691c68eb12563d1e5/image.png",
+          "coupon": "blackf",
+          "bannerWithProduct": false,
+          "showSubcategory": false,
+          "radius": 9,
+          "defaultShowProduct": false,
+          "products": []
+        }
+      ],
+      "marginTop": 20,
+      "height": 0.15
+    }
+  ],
+  "Setting": {
+    "TabBarConfig": null,
+    "FontFamily": "Roboto",
+    "FontHeader": "Raleway",
+    "ProductDetail": "simpleType",
+    "ShowChat": true,
+    "MainColor": "ffcb9e5d",
+    "ProductListLayout": "list",
+    "StickyHeader": false
+  },
+  "TabBar": [
+    {
+      "layout": "home",
+      "fontFamily": "CupertinoIcons",
+      "pos": 100,
+      "defaultTab": false,
+      "icon": "house_fill",
+      "key": "y841e9nqds"
+    },
+    {
+      "layout": "category",
+      "parallaxImageRatio": 1.2,
+      "fontFamily": "CupertinoIcons",
+      "pos": 200,
+      "parallax": false,
+      "defaultTab": false,
+      "icon": "bag_fill",
+      "categoryLayout": "multi-level",
+      "key": "y841e9nqds"
+    },
+    {
+      "layout": "cart",
+      "fontFamily": "CupertinoIcons",
+      "pos": 300,
+      "defaultTab": false,
+      "icon": "cart_fill",
+      "key": "y841e9nqds"
+    },
+    {
+      "layout": "search",
+      "visible": false,
+      "pos": 400,
+      "icon": "assets/icons/tabs/icon-search.png",
+      "key": "y841e9nqds"
+    },
+    {
+      "key": "y841e9nqds",
+      "layout": "profile",
+      "icon": "assets/icons/tabs/icon-user.png",
+      "pos": 500,
+      "visible": true,
+      "defaultTab": false,
+      "settings": [
+        "wishlist",
+        "notifications",
+        "language",
+        "currencies",
+        "darkTheme",
+        "order",
+        "point",
+        "rating",
+        "privacy",
+        "about"
+      ],
+      "background": "https://i.imgur.com/pl5JKEF.png",
+      "subGeneralSetting": {
+        "privacy": {
+          "webUrl": "https://inpaket.com/سياسة-الخصوصية/",
+          "webViewMode": false,
+          "requiredLogin": false,
+          "enableForward": false,
+          "enableBackward": true,
+          "enableClose": false,
+          "script": ""
+        },
+        "about": {
+          "webUrl": "https://inpaket.com/about/",
+          "webViewMode": false,
+          "requiredLogin": false,
+          "enableForward": false,
+          "enableBackward": true,
+          "enableClose": false,
+          "script": ""
+        }
+      }
+    }
+  ],
+  "Drawer": {
+    "filter": 0,
+    "logoConfig": {
+      "width": 300,
+      "height": 50,
+      "marginLeft": 5,
+      "marginRight": 0,
+      "marginTop": 60,
+      "marginBottom": 10,
+      "boxFit": "contain",
+      "useMaxWidth": true
+    },
+    "enable": false,
+    "logo": "https://inpaket.com/wp-content/uploads/inpk/2023/01/Logo-sss-Black-medium.png",
+    "safeArea": false,
+    "subDrawerItem": {
+      "web-13hiqqweo9": {
+        "webViewMode": true,
+        "webUrl": "https://yezmart.ph/jobs/",
+        "icon": "briefcase",
+        "title": "Careers",
+        "iconFontFamily": "CupertinoIcons",
+        "requiredLogin": false
+      }
+    },
+    "items": [
+      {
+        "type": "home",
+        "show": true
+      },
+      {
+        "type": "blog",
+        "show": false
+      },
+      {
+        "type": "login",
+        "show": true
+      },
+      {
+        "type": "category",
+        "show": true
+      },
+      {
+        "type": "categories",
+        "show": false
+      },
+      {
+        "type": "cart",
+        "show": false
+      },
+      {
+        "type": "profile",
+        "show": true
+      }
+    ],
+    "key": "0eyx458s5u",
+    "zoomConfig": {
+      "style": "scaleRight",
+      "enableShadow": false,
+      "angle": 0,
+      "slideWidth": 0.65,
+      "slideMargin": 0,
+      "mainScreenScale": 0.3,
+      "borderRadius": 16,
+      "backgroundImage": null
+    }
+  },
+  "AppBar": {
+    "elevation": 0,
+    "pinned": true,
+    "showOnScreens": [],
+    "enable": true,
+    "floating": true,
+    "alwaysShowAppBar": false,
+    "expandedItems": [
+      {
+        "paddingRight": 4,
+        "icon": "person",
+        "type": "text",
+        "title": "Shop",
+        "marginLeft": 6,
+        "marginRight": 4,
+        "fontFamily": "CupertinoIcons",
+        "paddingBottom": 4,
+        "size": 44,
+        "pos": 200,
+        "action": "none",
+        "textOpacity": 1,
+        "iconSize": 24,
+        "fontSize": 28,
+        "marginBottom": 4,
+        "paddingTop": 4,
+        "alignment": "left",
+        "radius": 24,
+        "paddingLeft": 6,
+        "fontWeight": "500",
+        "marginTop": 4,
+        "key": "twyc3gb7tb"
+      },
+      {
+        "paddingRight": 4,
+        "icon": "person",
+        "type": "space",
+        "marginLeft": 4,
+        "marginRight": 4,
+        "fontFamily": "CupertinoIcons",
+        "paddingBottom": 4,
+        "size": 44,
+        "pos": 200,
+        "action": "none",
+        "textOpacity": 0.5,
+        "iconSize": 24,
+        "fontSize": 16,
+        "marginBottom": 4,
+        "paddingTop": 4,
+        "alignment": "center",
+        "radius": 24,
+        "paddingLeft": 4,
+        "fontWeight": "400",
+        "marginTop": 4
+      }
+    ],
+    "items": [],
+    "snap": true
+  }
+}
