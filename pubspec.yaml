@@ -84,10 +84,10 @@ dependencies:
 
   # VIDEO
   youtube_player_iframe:
-    git:
-      url: https://github.com/inspireui/youtube_player_flutter.git
-      path: packages/youtube_player_iframe
-      ref: 14b2055ab38cb7b66297611908ceee1f4f53386f
+    # git:
+    #   url: https://github.com/inspireui/youtube_player_flutter.git
+    #   path: packages/youtube_player_iframe
+    #   ref: 14b2055ab38cb7b66297611908ceee1f4f53386f
 
   # MAP
   google_maps_flutter: 2.2.3
