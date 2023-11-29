@@ -8,6 +8,7 @@ class Page2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<String>? images = data['images'];
+
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {

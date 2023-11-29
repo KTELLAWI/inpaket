@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../common/constants.dart' show RouteList, printLog;
 import '../../menu/index.dart' show MainTabControlDelegate;
+import '../../models/app_model.dart';
+import '../../modules/dynamic_layout/config/tab_bar_config.dart';
 import '../../screens/base_screen.dart';
 import '../../services/index.dart';
 import 'mixin/smart_chat_mixin.dart';
@@ -32,6 +35,12 @@ abstract class CustomOverlayState<T extends StatefulWidget>
   final overlayController = StreamController<bool>.broadcast()..add(false);
 
   bool get hasLabelInBottomBar;
+
+  TabBarConfig? get tabBarConfig =>
+      Provider.of<AppModel>(context, listen: false)
+          .appConfig
+          ?.settings
+          .tabBarConfig;
 
   @override
   void initState() {
@@ -92,12 +101,16 @@ abstract class CustomOverlayState<T extends StatefulWidget>
 
     printLog('[ScreenName] $routeName');
     final uri = Uri.parse(routeName ?? '');
-    Services().advertisement.handleAd(uri.path);
+    // Services().advertisement.handleAd(uri.path);
     handleSmartChat(uri.path);
     overlayController.sink.add(true);
   }
 
   OverlayEntry _buildOverlayEntry() {
+    final overlayMarginBottom = (tabBarConfig?.paddingTop ?? 0) +
+        (tabBarConfig?.paddingBottom ?? 0) +
+        (tabBarConfig?.marginBottom ?? 0);
+
     return OverlayEntry(
       builder: (_) {
         return StreamBuilder<bool>(
@@ -105,7 +118,9 @@ abstract class CustomOverlayState<T extends StatefulWidget>
             builder: (context, snapshot) {
               if (snapshot.data == false) return const SizedBox();
               return Positioned(
-                bottom: bottomBarHeight + MediaQuery.of(_).padding.bottom,
+                bottom: bottomBarHeight +
+                    MediaQuery.of(_).padding.bottom +
+                    overlayMarginBottom,
                 left: 0,
                 right: 0,
                 child: Material(
@@ -114,9 +129,9 @@ abstract class CustomOverlayState<T extends StatefulWidget>
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       buildSmartChatWidget(),
-                      Services().getAudioWidget(),
-                      if (!ServerConfig().isBuilder)
-                        Services().advertisement.getAdWidget(),
+                     // Services().getAudioWidget(),
+                       //if (!ServerConfig().isBuilder)
+                      //   Services().advertisement.getAdWidget(),
                     ],
                   ),
                 ),

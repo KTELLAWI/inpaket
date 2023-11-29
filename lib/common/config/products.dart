@@ -13,12 +13,14 @@ Map get kCartDetail => Configurations.cartDetail;
 
 Map get kProductVariantLanguage => Configurations.productVariantLanguage;
 
-int get kExcludedCategory => Configurations.excludedCategory;
+String? get kExcludedCategory => Configurations.excludedCategory;
 
-SaleoffProductConfig get kSaleOffProduct => SaleoffProductConfig.fromJson(Configurations.saleOffProduct);
+SaleoffProductConfig get kSaleOffProduct =>
+    SaleoffProductConfig.fromJson(Configurations.saleOffProduct);
 
 bool get kNotStrictVisibleVariant => Configurations.notStrictVisibleVariant;
 
-ProductCardConfig get kProductCard => ProductCardConfig.fromJson(Configurations.productCard);
+ProductCardConfig get kProductCard =>
+    ProductCardConfig.fromJson(Configurations.productCard);
 
 BoxFit get kCardFit => ImageTools.boxFit(kProductCard.boxFit);

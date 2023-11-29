@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../../common/config.dart';
 import '../../../models/index.dart' show Product, ProductModel;
+import '../../../services/services.dart';
 import '../product_detail_screen.dart';
 import '../widgets/index.dart';
 import '../widgets/product_common_info.dart';
@@ -130,7 +132,10 @@ class _FullSizeLayoutState extends State<FullSizeLayout>
                 padding:
                     const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
                 decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.background.withOpacity(0.7),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .background
+                        .withOpacity(0.7),
                     borderRadius: BorderRadius.circular(10.0)),
                 child: ChangeNotifierProvider(
                   create: (_) => ProductModel(),
@@ -154,10 +159,25 @@ class _FullSizeLayoutState extends State<FullSizeLayout>
                           ),
                         Expanded(
                           child: SingleChildScrollView(
-                            child: ProductCommonInfo(
-                              product: widget.product,
-                              isLoading: widget.isLoading,
-                              wrapSliver: false,
+                            child: Column(
+                              children: [
+                                if (Services().widget.enableShoppingCart(widget
+                                    .product
+                                    ?.copyWith(isRestricted: false)))
+                                  ProductCommonInfo(
+                                    product: widget.product,
+                                    isLoading: widget.isLoading,
+                                    wrapSliver: false,
+                                  ),
+                                Services()
+                                    .widget
+                                    .renderVendorInfo(widget.product),
+                                ProductDescription(widget.product),
+                                if (kProductDetail.showProductCategories)
+                                  ProductDetailCategories(widget.product),
+                                if (kProductDetail.showProductTags)
+                                  ProductTag(widget.product),
+                              ],
                             ),
                           ),
                         ),

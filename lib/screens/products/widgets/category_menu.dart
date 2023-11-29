@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../../../common/config.dart';
 import '../../../generated/l10n.dart';
@@ -27,34 +28,51 @@ class ProductCategoryMenu extends StatefulWidget {
 class StateProductCategoryMenu extends State<ProductCategoryMenu> {
   bool get categoryImageMenu => kAdvanceConfig.categoryImageMenu;
 
+  final itemScrollController = ItemScrollController();
+
+  var firstJumpDone = false;
+
+  String? parentOfSelectedCategoryId;
+
+  void _animateToCategory(int index) {
+    if (firstJumpDone) return;
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      if (index > 3) {
+        if (itemScrollController.isAttached) {
+          itemScrollController.scrollTo(
+            index: index - 1,
+            duration: const Duration(milliseconds: 250),
+          );
+          firstJumpDone = true;
+        }
+      }
+    });
+  }
+
   Widget renderListCategories(List<Category> categories) {
     var categoryMenu = categoryImageMenu;
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 5),
+      padding: const EdgeInsets.symmetric(horizontal: 8).copyWith(bottom: 4),
       color: Theme.of(context).colorScheme.background,
-      constraints: const BoxConstraints(minHeight: 50),
+      constraints: const BoxConstraints(minHeight: 40),
+      height: widget.imageLayout ? 130 : 50,
       child: Center(
-        child: SingleChildScrollView(
+        child: ScrollablePositionedList.builder(
           scrollDirection: Axis.horizontal,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: List.generate(
-              categories.length,
-              (index) {
-                var category = categories[index];
-                return ItemCategory(
-                  categoryId: category.id,
-                  categoryName: category.name!,
-                  categoryImage: categoryMenu && widget.imageLayout
-                      ? category.image
-                      : null,
-                  newCategoryId: widget.newCategoryId,
-                  onTap: widget.onTap,
-                );
-              },
-            ),
-          ),
+          itemCount: categories.length,
+          itemScrollController: itemScrollController,
+          itemBuilder: (context, index) {
+            var category = categories[index];
+            return ItemCategory(
+              categoryId: category.id,
+              categoryName: category.name!,
+              categoryImage:
+                  categoryMenu && widget.imageLayout ? category.image : null,
+              newCategoryId: widget.newCategoryId,
+              onTap: widget.onTap,
+            );
+          },
         ),
       ),
     );
@@ -67,24 +85,66 @@ class StateProductCategoryMenu extends State<ProductCategoryMenu> {
     }
 
     return Consumer<CategoryModel>(builder: (context, categoryModel, child) {
-      var parentCategoryId = widget.newCategoryId;
-
-      parentCategoryId =
-          getParentCategories(categoryModel.categories, parentCategoryId) ??
-              parentCategoryId;
-      var parentCategory =
-          categoryModel.categoryList[parentCategoryId.toString()]?.copyWith() ??
-              Category(subCategories: [], id: parentCategoryId);
-      parentCategory.name = S.of(context).seeAll;
-      final listSubCategory =
-          getSubCategories(categoryModel.categories, parentCategoryId)!;
       if (categoryModel.isLoading) {
         return Center(child: kLoadingWidget(context));
       }
+
+      final categories = categoryModel.categories ?? <Category>[];
+
+      var selectedCategoryId = widget.newCategoryId;
+
+      final selectedCategory = categoryModel.categoryList[selectedCategoryId];
+
+      if (selectedCategory == null) {
+        return const SizedBox();
+      }
+
+      // if selected category has parent, don't need to check selected category is parent
+      if (parentOfSelectedCategoryId == null) {
+        final subCategoriesOfSelectedId =
+            getSubCategories(categories, selectedCategoryId);
+
+        // if selected category has sub categories, render selected category first
+        // then render sub categories
+        if (subCategoriesOfSelectedId.isNotEmpty) {
+          subCategoriesOfSelectedId.insert(0, selectedCategory);
+          final selectedIndex = subCategoriesOfSelectedId
+              .indexWhere((o) => o.id == selectedCategoryId);
+          _animateToCategory(selectedIndex);
+          return renderListCategories(subCategoriesOfSelectedId);
+        }
+      }
+
+      // if selected category has no sub categories, render all the categories
+      // the same level
+      // just find the parentOfSelectedCategory for first init
+      if (parentOfSelectedCategoryId == null && firstJumpDone == false) {
+        parentOfSelectedCategoryId =
+            getParentCategories(categoryModel.categories, selectedCategoryId);
+      }
+
+      // if selected category has no parent, render all categories (Shopify case)
+      if (parentOfSelectedCategoryId == null) {
+        final selectedIndex =
+            categories.indexWhere((o) => o.id == selectedCategoryId);
+        _animateToCategory(selectedIndex);
+        return renderListCategories(categories);
+      }
+
+      // =============================== //
+      final parentCategoryOfSelectedCategory = categoryModel
+          .categoryList[parentOfSelectedCategoryId.toString()]!
+          .copyWith(name: S.of(context).seeAll);
+
+      final listSubCategory =
+          getSubCategories(categories, parentOfSelectedCategoryId);
       if (listSubCategory.length < 2) {
         return const SizedBox(width: double.infinity);
       }
-      listSubCategory.insert(0, parentCategory);
+      listSubCategory.insert(0, parentCategoryOfSelectedCategory);
+      final selectedIndex =
+          listSubCategory.indexWhere((o) => o.id == selectedCategoryId);
+      _animateToCategory(selectedIndex);
       return renderListCategories(listSubCategory);
     });
   }
@@ -98,7 +158,12 @@ class StateProductCategoryMenu extends State<ProductCategoryMenu> {
     return null;
   }
 
-  List<Category>? getSubCategories(categories, id) {
+  List<Category> getSubCategories(List<Category> categories, String? id) {
     return categories.where((o) => o.parent == id).toList();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

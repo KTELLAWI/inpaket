@@ -21,8 +21,6 @@ class UserUpdateWooScreen extends StatefulWidget {
 }
 
 class _UserUpdateScreenState extends State<UserUpdateWooScreen> {
-  String? avatar;
-
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserModel>(context, listen: false);
@@ -57,7 +55,7 @@ class _UserUpdateScreenState extends State<UserUpdateWooScreen> {
                     duration: const Duration(seconds: 2),
                   ),
                 );
-                user.user = User.fromAuthUser(
+                user.user = User.fromWooJson(
                   result as Map<String, dynamic>,
                   user.user!.cookie,
                 );
@@ -155,7 +153,8 @@ class _UserUpdateScreenState extends State<UserUpdateWooScreen> {
                                 borderRadius: BorderRadius.circular(150),
                                 color: Theme.of(context).primaryColorLight,
                                 border: Border.all(
-                                  color: Theme.of(context).colorScheme.background,
+                                  color:
+                                      Theme.of(context).colorScheme.background,
                                   width: 3,
                                 ),
                               ),
@@ -199,7 +198,8 @@ class _UserUpdateScreenState extends State<UserUpdateWooScreen> {
                                 color:
                                     Theme.of(context).colorScheme.onBackground,
                                 border: Border.all(
-                                  color: Theme.of(context).colorScheme.background,
+                                  color:
+                                      Theme.of(context).colorScheme.background,
                                   width: 2,
                                 ),
                               ),
@@ -210,7 +210,8 @@ class _UserUpdateScreenState extends State<UserUpdateWooScreen> {
                                 onPressed: () => model.selectImage(context),
                                 icon: Icon(
                                   Icons.camera_alt,
-                                  color: Theme.of(context).colorScheme.background,
+                                  color:
+                                      Theme.of(context).colorScheme.background,
                                 ),
                               ),
                             ),

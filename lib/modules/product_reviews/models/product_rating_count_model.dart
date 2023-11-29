@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 
 import '../../../models/entities/rating_count.dart';
+import '../../../models/mixins/safe_notify_listener_mixin.dart';
 import '../../../services/services.dart';
 
-class ProductRatingCountModel extends ChangeNotifier {
+class ProductRatingCountModel extends ChangeNotifier
+    with SafeNotifyListenerMixin {
   ProductRatingCountModel(this._productId) {
     init();
   }

@@ -24,16 +24,23 @@ class BannerSlider extends StatefulWidget {
 }
 
 class _StateBannerSlider extends State<BannerSlider> {
-  int position = 0;
-  PageController? _controller;
+  final ValueNotifier<int> _positionNotifier = ValueNotifier<int>(0);
+
+  int get position => _positionNotifier.value;
+
+  set position(int value) => _positionNotifier.value = value;
+
+  BannerConfig get config => widget.config;
+
+  late final PageController _controller;
   late bool autoPlay;
   Timer? timer;
-  late int intervalTime;
+  late final int intervalTime;
 
   @override
   void initState() {
     autoPlay = widget.config.autoPlay;
-    _controller = PageController();
+    _controller = PageController(viewportFraction: 1.0);
     intervalTime = widget.config.intervalTime ?? 3;
     autoPlayBanner();
 
@@ -46,11 +53,11 @@ class _StateBannerSlider extends State<BannerSlider> {
       if (widget.config.design != 'default' || !autoPlay) {
         timer!.cancel();
       } else if (widget.config.design == 'default' && autoPlay) {
-        if (position >= items.length - 1 && _controller!.hasClients) {
-          _controller!.jumpToPage(0);
+        if (position >= items.length - 1 && _controller.hasClients) {
+          _controller.jumpToPage(0);
         } else {
-          if (_controller!.hasClients) {
-            _controller!.animateToPage(position + 1,
+          if (_controller.hasClients) {
+            _controller.animateToPage(position + 1,
                 duration: const Duration(seconds: 1), curve: Curves.easeInOut);
           }
         }
@@ -64,7 +71,8 @@ class _StateBannerSlider extends State<BannerSlider> {
       timer!.cancel();
     }
 
-    _controller!.dispose();
+    _controller.dispose();
+    _positionNotifier.dispose();
     super.dispose();
   }
 
@@ -72,44 +80,53 @@ class _StateBannerSlider extends State<BannerSlider> {
     List items = widget.config.items;
     var showNumber = widget.config.showNumber;
     var boxFit = widget.config.fit;
+    final isCirclePageIndicator =
+        widget.config.pageIndicatorType?.isCircle == true;
 
     return Padding(
-      padding: const EdgeInsets.only(top: 10, bottom: 5),
+      padding: const EdgeInsets.only(bottom: 5),
       child: Stack(
         children: <Widget>[
           PageView(
             controller: _controller,
             onPageChanged: (index) {
-              setState(() {
-                position = index;
-              });
+              position = index;
             },
             children: <Widget>[
               for (int i = 0; i < items.length; i++)
-                BannerImageItem(
+                BannerItemWidget(
                   config: items[i],
                   width: width,
                   boxFit: boxFit,
                   padding: widget.config.padding,
                   radius: widget.config.radius,
                   onTap: widget.onTap,
+                  isSoundOn: widget.config.isSoundOn ?? false,
+                  enableTimeIndicator:
+                      widget.config.enableTimeIndicator ?? true,
+                  autoPlayVideo: widget.config.autoPlayVideo ?? false,
+                  doubleTapToFullScreen:
+                      widget.config.doubleTapToFullScreen ?? false,
                 ),
             ],
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: SmoothPageIndicator(
-              controller: _controller!, // PageController
-              count: items.length,
-              effect: const SlideEffect(
-                spacing: 8.0,
-                radius: 5.0,
-                dotWidth: 24.0,
-                dotHeight: 2.0,
-                paintStyle: PaintingStyle.fill,
-                strokeWidth: 1.5,
-                dotColor: Colors.black12,
-                activeDotColor: Colors.black87,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 12),
+              child: SmoothPageIndicator(
+                controller: _controller, // PageController
+                count: items.length,
+                effect: SlideEffect(
+                  spacing: 8.0,
+                  radius: 5.0,
+                  dotWidth: isCirclePageIndicator ? 6.0 : 24.0,
+                  dotHeight: isCirclePageIndicator ? 6.0 : 2.0,
+                  paintStyle: PaintingStyle.fill,
+                  strokeWidth: 1.5,
+                  dotColor: Colors.black12,
+                  activeDotColor: Colors.black87,
+                ),
               ),
             ),
           ),
@@ -124,11 +141,15 @@ class _StateBannerSlider extends State<BannerSlider> {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 7, vertical: 2),
-                        child: Text(
-                          '${position + 1}/${items.length}',
-                          style: const TextStyle(
-                              fontSize: 11, color: Colors.white),
-                        ),
+                        child: ValueListenableBuilder<int>(
+                            valueListenable: _positionNotifier,
+                            builder: (context, value, child) {
+                              return Text(
+                                '${position + 1}/${items.length}',
+                                style: const TextStyle(
+                                    fontSize: 11, color: Colors.white),
+                              );
+                            }),
                       ),
                     ),
                   ),
@@ -140,7 +161,7 @@ class _StateBannerSlider extends State<BannerSlider> {
   }
 
   Widget renderBannerItem({required BannerItemConfig config, double? width}) {
-    return BannerImageItem(
+    return BannerItemWidget(
       config: config,
       width: width,
       boxFit: widget.config.fit,
@@ -157,9 +178,7 @@ class _StateBannerSlider extends State<BannerSlider> {
       case 'swiper':
         return Swiper(
           onIndexChanged: (index) {
-            setState(() {
-              position = index;
-            });
+            position = index;
           },
           autoplay: autoPlay,
           itemBuilder: (BuildContext context, int index) {
@@ -173,9 +192,7 @@ class _StateBannerSlider extends State<BannerSlider> {
       case 'tinder':
         return Swiper(
           onIndexChanged: (index) {
-            setState(() {
-              position = index;
-            });
+            position = index;
           },
           autoplay: autoPlay,
           itemBuilder: (BuildContext context, int index) {
@@ -190,9 +207,7 @@ class _StateBannerSlider extends State<BannerSlider> {
       case 'stack':
         return Swiper(
           onIndexChanged: (index) {
-            setState(() {
-              position = index;
-            });
+            position = index;
           },
           autoplay: autoPlay,
           itemBuilder: (BuildContext context, int index) {
@@ -206,9 +221,7 @@ class _StateBannerSlider extends State<BannerSlider> {
       case 'custom':
         return Swiper(
           onIndexChanged: (index) {
-            setState(() {
-              position = index;
-            });
+            position = index;
           },
           autoplay: autoPlay,
           itemBuilder: (BuildContext context, int index) {
@@ -228,6 +241,7 @@ class _StateBannerSlider extends State<BannerSlider> {
             ],
           ),
         );
+      case 'default':
       default:
         return getBannerPageView(width);
     }
@@ -274,7 +288,7 @@ class _StateBannerSlider extends State<BannerSlider> {
               ? HeaderText(config: widget.config.title!)
               : const SizedBox();
         }
-        BannerItemConfig item = items[position];
+
         return FractionallySizedBox(
           widthFactor: 1.0,
           child: Container(
@@ -291,33 +305,40 @@ class _StateBannerSlider extends State<BannerSlider> {
                     height: height,
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 50),
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.vertical(
-                          bottom: Radius.elliptical(100, 6),
-                        ),
-                        child: isBlur
-                            ? ImageFiltered(
-                                imageFilter: ImageFilter.blur(
-                                  sigmaX: 5.0,
-                                  sigmaY: 5.0,
-                                ),
-                                child: Transform.scale(
-                                  scale: 3,
-                                  child: FluxImage(
+                      child: ValueListenableBuilder<int>(
+                        valueListenable: _positionNotifier,
+                        builder: (context, position, child) {
+                          BannerItemConfig item = items[position];
+                          return ClipRRect(
+                            borderRadius: const BorderRadius.vertical(
+                              bottom: Radius.elliptical(100, 6),
+                            ),
+                            child: isBlur
+                                ? ImageFiltered(
+                                    imageFilter: ImageFilter.blur(
+                                      sigmaX: 5.0,
+                                      sigmaY: 5.0,
+                                    ),
+                                    child: Transform.scale(
+                                      scale: 3,
+                                      child: FluxImage(
+                                        imageUrl: item.background ?? item.image,
+                                        fit: BoxFit.fill,
+                                        width: screenSize.width + upHeight,
+                                      ),
+                                    ),
+                                  )
+                                : FluxImage(
                                     imageUrl: item.background ?? item.image,
                                     fit: BoxFit.fill,
-                                    width: screenSize.width + upHeight,
+                                    width: constraint.maxWidth,
+                                    height:
+                                        screenSize.height * bannerPercentWidth +
+                                            bannerExtraHeight +
+                                            upHeight,
                                   ),
-                                ),
-                              )
-                            : FluxImage(
-                                imageUrl: item.background ?? item.image,
-                                fit: BoxFit.fill,
-                                width: constraint.maxWidth,
-                                height: screenSize.height * bannerPercentWidth +
-                                    bannerExtraHeight +
-                                    upHeight,
-                              ),
+                          );
+                        },
                       ),
                     ),
                   ),

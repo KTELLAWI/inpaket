@@ -146,6 +146,33 @@ class ImageTools {
     return f;
   }
 
+  static Future<String?> getImagePath(dynamic image) async {
+    if (image is AssetEntity && isAndroid) {
+      var file = await image.file;
+      return file?.path;
+    }
+
+    if (image is AssetEntity || image is file.File) {
+      final byteData = await image.originBytes;
+
+      if (byteData != null) {
+        final tmpFile = await writeToFile(byteData);
+        return tmpFile.path;
+      }
+    }
+
+    if (image is XFile) {
+      return image.path;
+    }
+
+    if (image is String) {
+      if (image.contains('http')) {
+        return image;
+      }
+    }
+    return null;
+  }
+
   static Future<String> compressImage(dynamic image) async {
     var base64 = '';
     //const quality = 60;
@@ -219,11 +246,39 @@ class CustomAssetPickerTextDelegate extends AssetPickerTextDelegate {
 
   @override
   String get confirm => S.of(context).confirm;
+
+  @override
+  String get cancel => S.of(context).cancel;
+
+  @override
+  String get select => S.of(context).select;
+
+  @override
+  String get loadFailed => S.of(context).loadFail;
+
+  @override
+  String get emptyList => S.of(context).dataEmpty;
 }
 
 class ImagePicker {
+  /// List locales are already supported by picker
+  static List<String> supportDefaultLocales = [
+    'zh',
+    'en',
+    'he',
+    'de',
+    'ru',
+    'ja',
+    'ar',
+    'fr'
+  ];
+
   static Future<List> select(BuildContext context, {int maxFiles = 1}) async {
     final isGranted = await checkGrantedPermission();
+
+    final currentLocale =
+        Localizations.maybeLocaleOf(context)?.languageCode.toLowerCase();
+
     if (!isGranted) {
       showDialogRequestPermission(context);
       return [];
@@ -231,8 +286,11 @@ class ImagePicker {
     final result = await AssetPicker.pickAssets(
       context,
       pickerConfig: AssetPickerConfig(
-          maxAssets: maxFiles,
-          textDelegate: CustomAssetPickerTextDelegate(context: context)),
+        maxAssets: maxFiles,
+        textDelegate: supportDefaultLocales.contains(currentLocale)
+            ? null
+            : CustomAssetPickerTextDelegate(context: context),
+      ),
     );
     return result ?? [];
   }

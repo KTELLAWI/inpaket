@@ -325,7 +325,6 @@ class _StateChooseAddress extends BaseScreen<ChooseAddressScreen> {
                         onTap: () {
                           Provider.of<CartModel>(context, listen: false)
                               .setAddress(listAddress[index]);
-
                           Navigator.of(context).pop();
                           widget.callback(listAddress[index]);
                         },

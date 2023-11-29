@@ -46,6 +46,8 @@ class BlogConfig {
   String? category;
   String? tag;
   int? limit;
+  bool enableAutoSliding = false;
+  int? durationAutoSliding;
   final String type = 'blog';
 
   BlogConfig({this.layout, this.name});
@@ -74,6 +76,8 @@ class BlogConfig {
     category = json['category']?.toString();
     tag = json['tag']?.toString();
     limit = Helper.formatInt(json['limit']);
+    enableAutoSliding = json['enableAutoSliding'] ?? false;
+    durationAutoSliding = Helper.formatInt(json['durationAutoSliding']);
   }
 
   Map<String, dynamic> toJson() {
@@ -98,6 +102,8 @@ class BlogConfig {
     map['tag'] = tag;
     map['limit'] = limit;
     map['type'] = type;
+    map['enableAutoSliding'] = enableAutoSliding;
+    map['durationAutoSliding'] = durationAutoSliding;
     map.removeWhere((key, value) => value == null);
     return map;
   }

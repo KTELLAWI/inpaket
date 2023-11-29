@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterflow/flutterflow_screen.dart';
 import 'package:inspireui/inspireui.dart' show AutoHideKeyboard;
 import 'package:provider/provider.dart';
 
@@ -30,10 +31,13 @@ import '../screens/login_sms/login_sms_viewmodel.dart';
 import '../screens/order_history/index.dart';
 import '../screens/page_tab_screen.dart';
 import '../screens/pages/static_page.dart';
+import '../screens/settings/biometrics_screen.dart';
 import '../screens/subcategories/models/subcategory_model.dart';
 import '../screens/user_update/user_update_screen.dart';
 import '../screens/user_update/user_update_woo_screen.dart';
+import '../screens/videos/videos_screen.dart';
 import '../services/index.dart';
+import '../widgets/multi_site/multi_site_selection_screen.dart';
 
 class Routes {
   static Map<String, WidgetBuilder> getAll() => _routes;
@@ -45,13 +49,7 @@ class Routes {
     RouteList.privacyTerms: (context) => const PrivacyTermScreen(),
     RouteList.register: (context) => const RegistrationScreen(),
     RouteList.login: (context) {
-      final userModel = Provider.of<UserModel>(context, listen: false);
-      return LoginScreen(
-        login: userModel.login,
-        loginFB: userModel.loginFB,
-        loginApple: userModel.loginApple,
-        loginGoogle: userModel.loginGoogle,
-      );
+      return const LoginScreen();
     },
     RouteList.loginSMS: (context) {
       final userModel = Provider.of<UserModel>(context, listen: false);
@@ -73,9 +71,12 @@ class Routes {
     RouteList.notify: (context) => NotificationScreen(),
     RouteList.language: (context) => LanguageScreen(),
     RouteList.currencies: (context) => CurrenciesScreen(),
+    RouteList.biometrics: (context) => BiometricsScreen(),
     RouteList.category: (context) => const CategoriesScreen(),
+    RouteList.flutterflow: (context) => const FlutterFlowScreen(),
     RouteList.audioPlaylist: (context) =>
         Services().renderAudioPlaylistScreen(),
+    RouteList.multiSiteSelection: (context) => const MultiSiteSelectionScreen(),
     // AudioPlaylistScreen(audioService: injector.get()),
   };
 
@@ -179,11 +180,13 @@ class Routes {
           final routeSetting = RouteSettings(
               name: RouteList.products, arguments: settings.arguments);
 
+          var firstBuild = true;
+
           return _buildRoute(routeSetting, (context) {
             final cateId = arguments.cateId;
             final cateName = arguments.cateName;
             final tag = arguments.tag;
-            final products = arguments.data?.cast<Product>();
+            var products = arguments.data?.cast<Product>();
             final config = arguments.config;
             final showCountdown = arguments.showCountdown;
             final countdownDuration = arguments.countdownDuration;
@@ -197,6 +200,7 @@ class Routes {
               var listingLocationId = config?['location']?.toString();
 
               var tagId = tag ?? configValue.tag;
+              var productType = config?['productType'] ?? false;
 
               if (kIsWeb ||
                   (Layout.isDisplayDesktop(context) &&
@@ -209,19 +213,25 @@ class Routes {
               /// for fetching beforehand
               final productModel =
                   Provider.of<ProductModel>(context, listen: false);
-              if (productModel.categoryId != categoryId) {
+              if (productModel.categoryId != categoryId && firstBuild) {
                 productModel.setProductsList([], notify: false);
               }
+
               if (categoryId != null || listingLocationId != null) {
                 productModel.fetchProductsByCategory(
-                  categoryId: categoryId,
-                  categoryName: categoryName,
+                  categoryId: firstBuild ? categoryId : productModel.categoryId,
+                  categoryName:
+                      firstBuild ? categoryName : productModel.categoryName,
                   listingLocationId: listingLocationId,
                   notify: false,
+                  productType: productType,
                 );
               } else {
                 productModel.setCategoryName(null);
               }
+              products = firstBuild ? products : productModel.productsList;
+
+              firstBuild = false;
 
               /// override product config
               var productConfig = configValue
@@ -345,16 +355,9 @@ class Routes {
         }
         return _errorRoute();
       case RouteList.orders:
-        final user = settings.arguments;
         return _buildRoute(
           settings,
-          (_) => ChangeNotifierProvider<ListOrderHistoryModel>(
-            create: (context) => ListOrderHistoryModel(
-              repository: ListOrderRepository(
-                  user: user == null ? User() : user as User),
-            ),
-            child: ListOrderHistoryScreen(),
-          ),
+          (_) => ListOrderHistoryScreen(),
         );
       case RouteList.search:
         return _buildRoute(
@@ -373,6 +376,9 @@ class Routes {
               subGeneralSetting: data.jsonData['subGeneralSetting'],
               background: data.jsonData['background'],
               drawerIcon: data.jsonData['drawerIcon'],
+              showBackground: data.jsonData['showBackground'],
+              cardStyle: data.jsonData['styleItem'],
+              settingStyle: data.jsonData['settingStyle'],
               hideUser: data.jsonData['hideUser'] ?? false,
             ),
           );
@@ -439,9 +445,9 @@ class Routes {
           return _buildRoute(
             settings,
             (_) => PostScreen(
-              pageId: int.parse(data.jsonData['pageId'].toString()),
+              pageId: int.tryParse(data.jsonData['pageId'].toString()),
               pageTitle: data.jsonData['pageTitle'],
-              isLocatedInTabbar: true,
+              isLocatedInTabbar: !data.isFullscreen,
             ),
           );
         }
@@ -529,7 +535,7 @@ class Routes {
       case RouteList.onBoarding:
         return _buildRoute(
           settings,
-          (context) => const OnBoardScreen(),
+          (context) => const OnBoardingScreen(),
         );
       case RouteList.cart:
         final cartArgument = settings.arguments;
@@ -632,6 +638,11 @@ class Routes {
           );
         }
         return _errorRoute();
+      case RouteList.videos:
+        return _buildRoute(
+          settings,
+          (context) => const VideosScreen(),
+        );
       default:
         final allRoutes = {
           ...getAll(),
@@ -639,7 +650,9 @@ class Routes {
           ...Services().getMembershipUltimateRoutesWithSettings(settings),
           ...Services().getPaidMembershipProRoutesWithSettings(settings),
           ...Services().getPOSRoutesWithSettings(settings),
-          ...Services().getDigitsMobileLoginRoutesWithSettings(settings)
+          ...Services().getDigitsMobileLoginRoutesWithSettings(settings),
+          ...Services().getOpenAIRoutesWithSettings(settings),
+          ...Services().getWholesaleRoutesWithSettings(settings),
         };
         if (allRoutes.containsKey(settings.name)) {
           return _buildRoute(

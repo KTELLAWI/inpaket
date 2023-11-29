@@ -1,17 +1,14 @@
-import 'package:country_code_picker/country_code.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:inspireui/inspireui.dart';
-import 'package:phone_number/phone_number.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../generated/l10n.dart';
 import '../../../common/config.dart';
 import '../../../common/tools/tools.dart';
-import '../../../models/cart/cart_base.dart';
-import '../../../models/entities/address.dart';
 import '../../../screens/common/select_country_mixin.dart';
 import '../../../screens/home/privacy_term_screen.dart';
 import '../../../widgets/common/common_safe_area.dart';
@@ -20,12 +17,9 @@ import '../../../widgets/common/index.dart';
 import '../sms_model.dart';
 
 class SMSInputPhoneV2 extends StatefulWidget {
-  bool isCheckOutScreen;
   final VoidCallback onCallBack;
 
-  SMSInputPhoneV2(
-      {Key? key, required this.onCallBack, this.isCheckOutScreen = false})
-      : super(key: key);
+  const SMSInputPhoneV2({Key? key, required this.onCallBack}) : super(key: key);
 
   @override
   State<SMSInputPhoneV2> createState() => _SMSInputPhoneV2State();
@@ -35,69 +29,20 @@ class _SMSInputPhoneV2State extends State<SMSInputPhoneV2>
     with SelectCountryMixin {
   SMSModel get model => Provider.of<SMSModel>(context, listen: false);
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     model.updateCountryCode(CountryCode(
-  //       code: LoginSMSConstants.countryCodeDefault,
-  //       dialCode: LoginSMSConstants.dialCodeDefault,
-  //       name: LoginSMSConstants.nameDefault,
-  //       flagUri: elements
-  //           .where((element) =>
-  //               element.code == LoginSMSConstants.countryCodeDefault)
-  //           .first
-  //           .flagUri,
-  //     ));
-  //   });
-  // }
-
-  Address? address;
-  var phoneController = TextEditingController();
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (widget.isCheckOutScreen == false) {
-        model.updateCountryCode(CountryCode(
-          code: LoginSMSConstants.countryCodeDefault,
-          dialCode: LoginSMSConstants.dialCodeDefault,
-          name: LoginSMSConstants.nameDefault,
-          flagUri: elements
-              .where((element) =>
-                  element.code == LoginSMSConstants.countryCodeDefault)
-              .first
-              .flagUri,
-        ));
-
-        return;
-      }
-      address =
-          await Provider.of<CartModel>(context, listen: false).getAddress();
-
-      print('address ${address?.countryId}');
-      print('address ${address?.phoneNumber}');
-      var number = await PhoneNumberUtil().parse(address?.phoneNumber ?? '');
-      var countryCode = number.countryCode;
-      var dialCode = number.regionCode;
-      var countryName = number.type;
-      var nationalNumber = number.nationalNumber;
-      phoneController.text = nationalNumber;
-      model.updatePhoneNumber(nationalNumber);
-      print('Country Code: $countryCode');
-      print('Dial Code: $dialCode');
-      print('Country Name: $countryName');
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       model.updateCountryCode(CountryCode(
-        code: countryCode,
-        dialCode: '+$countryCode',
-        name: dialCode,
-        flagUri:
-            elements.where((element) => element.code == dialCode).first.flagUri,
+        code: LoginSMSConstants.countryCodeDefault,
+        dialCode: LoginSMSConstants.dialCodeDefault,
+        name: LoginSMSConstants.nameDefault,
+        flagUri: elements
+            .where((element) =>
+                element.code == LoginSMSConstants.countryCodeDefault)
+            .first
+            .flagUri,
       ));
-
-      // Tools.hideKeyboard(context);
-      // widget.onCallBack();
     });
   }
 
@@ -119,9 +64,7 @@ class _SMSInputPhoneV2State extends State<SMSInputPhoneV2>
                   ),
                   const SizedBox(height: 8.0),
                   Text(
-                    widget.isCheckOutScreen
-                        ? S.current.sendCodeToYourPhoneNumber
-                        : S.current.enterYourPhone,
+                    S.current.enterYourPhone,
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                         color: Theme.of(context)
                             .textTheme
@@ -141,14 +84,12 @@ class _SMSInputPhoneV2State extends State<SMSInputPhoneV2>
                         Consumer<SMSModel>(
                           builder: (context, model, child) {
                             return GestureDetector(
-                              onTap: widget.isCheckOutScreen
-                                  ? null
-                                  : () async {
-                                      final result =
-                                          await showModel(model.country.code);
-                                      if (result == null) return;
-                                      model.updateCountryCode(result);
-                                    },
+                              onTap: () async {
+                                final result =
+                                    await showModel(model.country.code);
+                                if (result == null) return;
+                                model.updateCountryCode(result);
+                              },
                               behavior: HitTestBehavior.opaque,
                               child: Padding(
                                 padding: const EdgeInsets.all(16),
@@ -191,17 +132,12 @@ class _SMSInputPhoneV2State extends State<SMSInputPhoneV2>
                             vertical: 4.0,
                           ),
                           child: CustomTextField(
-                            controller: phoneController,
-                            showCancelIcon:
-                                widget.isCheckOutScreen ? false : true,
-
+                            showCancelIcon: true,
                             inputFormatters: <TextInputFormatter>[
                               FilteringTextInputFormatter.digitsOnly
                             ],
                             // Only numbers can
                             keyboardType: TextInputType.number,
-                            enabled:
-                                widget.isCheckOutScreen == false ? true : false,
                             onCancel: () {
                               model.updatePhoneNumber('');
                             },
@@ -219,34 +155,33 @@ class _SMSInputPhoneV2State extends State<SMSInputPhoneV2>
                     ),
                   ),
                   const SizedBox(height: 28.0),
-                  if (!widget.isCheckOutScreen)
-                    Center(
-                      child: RichText(
-                        maxLines: 2,
-                        text: TextSpan(
-                          text: S.current.bySignup,
-                          style: Theme.of(context).textTheme.bodyLarge,
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: S.of(context).agreeWithPrivacy,
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  decoration: TextDecoration.underline),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const PrivacyTermScreen(
-                                          showAgreeButton: false,
-                                        ),
+                  Center(
+                    child: RichText(
+                      maxLines: 2,
+                      text: TextSpan(
+                        text: S.current.bySignup,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: S.of(context).agreeWithPrivacy,
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                decoration: TextDecoration.underline),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const PrivacyTermScreen(
+                                        showAgreeButton: false,
                                       ),
                                     ),
-                            ),
-                          ],
-                        ),
+                                  ),
+                          ),
+                        ],
                       ),
                     ),
+                  ),
                 ],
               ),
             ),

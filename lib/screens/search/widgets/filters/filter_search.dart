@@ -70,7 +70,6 @@ class _FilterSearchState extends BaseScreen<FilterSearch> {
 
   set _listAttribute(value) => _listResult[_slugAttribute] = value ?? [];
 
-
   @override
   void afterFirstLayout(BuildContext context) {
     final listProductAttribute =

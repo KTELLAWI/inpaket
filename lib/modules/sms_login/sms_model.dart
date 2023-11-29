@@ -95,14 +95,12 @@ class SMSModel extends ChangeNotifier {
     }
   }
 
-  Future<bool> smsVerify(Function showMessage, {onlyForCheck = false}) async {
+  Future<bool> smsVerify(Function showMessage) async {
     _updateState(SMSModelState.loading);
     try {
       final credential = Services().firebase.getFirebaseCredential(
           verificationId: _verificationId, smsCode: _smsCode);
 
-      print('credential credential $credential');
-      //  if (!onlyForCheck) {
       final user = await Services()
           .firebase
           .loginFirebaseCredential(credential: credential);
@@ -110,10 +108,6 @@ class SMSModel extends ChangeNotifier {
         _phoneNumber = _phoneNumber.replaceAll('+', '').replaceAll(' ', '');
         return true;
       }
-      //   } else {
-      //   _phoneNumber = _phoneNumber.replaceAll('+', '').replaceAll(' ', '');
-      //  return true;
-      //   }
     } on FirebaseErrorException catch (err) {
       printLog(err.toString());
       showMessage(err);

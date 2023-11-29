@@ -4,7 +4,6 @@ import 'package:inspireui/widgets/expandable/expansion_widget.dart';
 import 'package:jumping_dot/jumping_dot.dart';
 import 'package:provider/provider.dart';
 
-import '../../common/config.dart';
 import '../../common/constants.dart';
 import '../../common/tools.dart';
 import '../../generated/l10n.dart';
@@ -28,6 +27,7 @@ class BackdropMenu extends StatefulWidget {
     String? tagId,
     dynamic listingLocationId,
     FilterSortBy? sortBy,
+    bool? isSearch,
   })? onFilter;
   final String? categoryId;
   final String? tagId;
@@ -108,6 +108,7 @@ class _BackdropMenuState extends State<BackdropMenu> {
     String? categoryId,
     String? categoryName,
     String? tagId,
+    bool? isSearch,
     listingLocationId,
   }) =>
       widget.onFilter!(
@@ -117,6 +118,7 @@ class _BackdropMenuState extends State<BackdropMenu> {
         categoryId: categoryId,
         categoryName: categoryName ?? '',
         tagId: tagId,
+        isSearch: isSearch,
         listingLocationId: listingLocationId ??
             Provider.of<ProductModel>(context, listen: false).listingLocationId,
       );
@@ -164,7 +166,8 @@ class _BackdropMenuState extends State<BackdropMenu> {
                         child: Image.asset(
                           item['image']!,
                           color: selectLayout == item['layout']
-                              ? (widget.isBlog
+                              ? (widget.isBlog &&
+                                      !Services().widget.enableProductBackdrop
                                   ? Colors.white
                                   : Theme.of(context).primaryColor)
                               : Theme.of(context)
@@ -184,7 +187,7 @@ class _BackdropMenuState extends State<BackdropMenu> {
   }
 
   Widget renderPriceSlider() {
-    var primaryColor = kAdvanceConfig.enableProductBackdrop
+    var primaryColor = Services().widget.enableProductBackdrop
         ? Colors.white
         : Theme.of(context).primaryColor;
 
@@ -490,12 +493,13 @@ class _BackdropMenuState extends State<BackdropMenu> {
               onFilter: (category) => _onFilter(
                 categoryId: category.id,
                 categoryName: category.name,
+                isSearch: false,
               ),
             ),
 
           /// render Apply button
           if (!ServerConfig().isListingType &&
-              kAdvanceConfig.enableProductBackdrop)
+              Services().widget.enableProductBackdrop)
             Padding(
               padding: const EdgeInsets.only(
                 left: 15,

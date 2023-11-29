@@ -114,7 +114,7 @@ class ProductAttribute {
   ProductAttribute.fromNotion(
       Map<String, dynamic> parsedJson, String nameAttribute) {
     id = parsedJson['id'].toString();
-    name = nameAttribute; // name for FluxStore Manager
+    name = nameAttribute; // name for khadrah Manager
     label = name;
     slug = nameAttribute;
     isVariation = false;

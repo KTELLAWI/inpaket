@@ -128,9 +128,9 @@ class _CategorySkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0).copyWith(left: 16, right: 16),
-      child: Row(
+      child: const Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
+        children: [
           Skeleton(
             width: 220,
             height: 20,

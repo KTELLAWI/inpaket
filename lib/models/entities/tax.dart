@@ -8,8 +8,16 @@ class Tax {
     amount = double.parse('${(parsedJson['value'] ?? 0.0)}');
   }
 
-  Tax.fromMagentoJson(Map parsedJson, double subtotal) {
-    title = parsedJson['code'];
-    amount = double.parse('${(parsedJson['rate'] ?? 0.0)}') * subtotal / 100;
+  Tax.fromMagentoJson(Map parsedJson) {
+    title = parsedJson['title'];
+    amount = double.parse('${(parsedJson['value'] ?? 0.0)}');
   }
+}
+
+class CartTax {
+  const CartTax({this.items, this.total, this.isIncludingTax});
+
+  final List<Tax>? items;
+  final double? total;
+  final bool? isIncludingTax;
 }

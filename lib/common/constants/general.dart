@@ -25,7 +25,7 @@ const kMagentoPayments = [
 /// The result is limited to 10 items (https://tppr.me/QYsm9) if `options` or `modifiers` is used in `include` field. Refer to this link https://developer.bigcommerce.com/api-reference/4101d472a814d-get-all-products. So we need to override apiPageSize to 10 instead
 final apiPageSize = ServerConfig().isBigCommerce ? 10 : 20;
 
-///-----FLUXSTORE LISTING-----///
+///-----khadrah LISTING-----///
 enum BookStatus { booked, unavailable, waiting, confirmed, cancelled, error }
 
 const kSizeLeftMenu = 250.0;
@@ -84,3 +84,12 @@ mRGunUHBcnWEvgJBQl9nJEiU0Zsnvgc/ubhPgXRR4Xq37Z0j4r7g1SgEEzwxA57d
 emyPxgcYxn/eR44/KJ4EBs+lVDR3veyJm+kXQ99b21/+jh5Xos1AnX5iItreGCc=
 -----END CERTIFICATE-----
 ''';
+
+/// Short video support for shopify
+const kProductVideoSupportTypes = ['mp4'];
+
+/// Appbar default values
+const kAppbarShowOnScreens = [RouteList.home];
+
+/// Tab Setting Profile
+const kItemProfileTypeDefault = SettingItemStyle.listTile;

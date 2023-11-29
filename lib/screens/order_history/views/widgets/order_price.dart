@@ -7,16 +7,19 @@ class OrderPrice extends StatelessWidget {
   final currencyRate;
   final Order order;
   final bool isTax;
+  final String currencyCode;
   const OrderPrice(
       {Key? key,
       required this.order,
       required this.currencyRate,
+      required this.currencyCode,
       this.isTax = false})
       : super(key: key);
   const OrderPrice.tax(
       {Key? key,
       required this.order,
       required this.currencyRate,
+      required this.currencyCode,
       this.isTax = true})
       : super(key: key);
 
@@ -28,12 +31,14 @@ class OrderPrice extends StatelessWidget {
           PriceTools.getCurrencyFormatted(
               order.lineItems
                   .fold(0, (dynamic sum, e) => sum + double.parse(e.total!)),
-              currencyRate)!,
+              currencyRate,
+              currency: currencyCode)!,
           style: const TextStyle(fontWeight: FontWeight.bold),
         );
       }
       return Text(
-        PriceTools.getCurrencyFormatted(order.total, currencyRate)!,
+        PriceTools.getCurrencyFormatted(order.total, currencyRate,
+            currency: currencyCode)!,
         style: const TextStyle(fontWeight: FontWeight.bold),
       );
     }
@@ -42,13 +47,15 @@ class OrderPrice extends StatelessWidget {
           PriceTools.getCurrencyFormatted(
               order.lineItems
                   .fold(0, (dynamic sum, e) => sum + double.parse(e.totalTax!)),
-              currencyRate)!,
+              currencyRate,
+              currency: currencyCode)!,
           style: Theme.of(context).textTheme.titleMedium!.copyWith(
                 fontWeight: FontWeight.w700,
               ));
     }
     return Text(
-      PriceTools.getCurrencyFormatted(order.totalTax, currencyRate)!,
+      PriceTools.getCurrencyFormatted(order.totalTax, currencyRate,
+          currency: currencyCode)!,
       style: Theme.of(context).textTheme.titleMedium!.copyWith(
             fontWeight: FontWeight.w700,
           ),

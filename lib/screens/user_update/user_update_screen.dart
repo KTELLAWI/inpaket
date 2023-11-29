@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:inspireui/widgets/auto_hide_keyboard.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +9,7 @@ import '../../generated/l10n.dart';
 import '../../models/user_model.dart';
 import '../../services/index.dart';
 import '../../widgets/common/common_safe_area.dart';
+import '../../widgets/common/flux_image.dart';
 import '../../widgets/common/loading_body.dart';
 import '../base_screen.dart';
 
@@ -101,6 +104,7 @@ class _StateUserUpdate extends BaseScreen<UserUpdateScreen> {
     return ScaffoldMessenger(
       key: _scaffoldMessengerKey,
       child: Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0.0,
@@ -133,9 +137,20 @@ class _StateUserUpdate extends BaseScreen<UserUpdateScreen> {
                                   blurRadius: 8)
                             ]),
                         child: (avatar?.isNotEmpty ?? false)
-                            ? Image.network(
-                                avatar!,
-                                fit: BoxFit.cover,
+                            ? ClipRRect(
+                                borderRadius: const BorderRadius.vertical(
+                                  bottom: Radius.elliptical(100, 10),
+                                ),
+                                child: ImageFiltered(
+                                  imageFilter: ImageFilter.blur(
+                                    sigmaX: 5,
+                                    sigmaY: 5,
+                                  ),
+                                  child: FluxImage(
+                                    imageUrl: avatar!,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               )
                             : const SizedBox(),
                       ),
@@ -143,13 +158,25 @@ class _StateUserUpdate extends BaseScreen<UserUpdateScreen> {
                         alignment: Alignment.bottomCenter,
                         child: Container(
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(150),
-                              color: Theme.of(context).primaryColorLight),
+                            borderRadius: BorderRadius.circular(150),
+                            color: Theme.of(context).primaryColorLight,
+                            border: Border.all(
+                              color: Theme.of(context).colorScheme.background,
+                              width: 3,
+                            ),
+                          ),
                           child: (avatar?.isNotEmpty ?? false)
-                              ? Image.network(
-                                  avatar!,
-                                  width: 150,
-                                  height: 150,
+                              ? Hero(
+                                  tag: 'user-avatar-$avatar',
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(150),
+                                    child: FluxImage(
+                                      imageUrl: avatar!,
+                                      fit: BoxFit.cover,
+                                      width: 150,
+                                      height: 150,
+                                    ),
+                                  ),
                                 )
                               : const Icon(
                                   Icons.person,
@@ -204,7 +231,6 @@ class _StateUserUpdate extends BaseScreen<UserUpdateScreen> {
                                 ),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
-                                  color: Theme.of(context).primaryColorLight,
                                   border: Border.all(
                                     color: Theme.of(context).primaryColorLight,
                                     width: 1.5,
@@ -293,7 +319,6 @@ class _StateUserUpdate extends BaseScreen<UserUpdateScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: Theme.of(context).primaryColorLight,
             border: Border.all(
                 color: Theme.of(context).primaryColorLight, width: 1.5)),
         child: TextField(
@@ -317,7 +342,6 @@ class _StateUserUpdate extends BaseScreen<UserUpdateScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: Theme.of(context).primaryColorLight,
             border: Border.all(
                 color: Theme.of(context).primaryColorLight, width: 1.5)),
         child: TextField(
@@ -336,7 +360,6 @@ class _StateUserUpdate extends BaseScreen<UserUpdateScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: Theme.of(context).primaryColorLight,
             border: Border.all(
                 color: Theme.of(context).primaryColorLight, width: 1.5)),
         child: TextField(

@@ -47,8 +47,6 @@ class BlogModel with ChangeNotifier {
     page,
   }) async {
     try {
-      printLog('[♻️ getBlogsList] by Category: $categoryId');
-
       printLog('getBlogsList');
       if (_categories.isNotEmpty) {
         printLog(_categories.first);
@@ -56,14 +54,23 @@ class BlogModel with ChangeNotifier {
 
       if (categoryId != null) {
         this.categoryId = categoryId;
+        if (categoryName != null && categoryName.isNotEmpty) {
+          this.categoryName = categoryName;
+        }
+      }
+
+      if (categoryId == null || categoryId == kEmptyCategoryID) {
+        categoryId = null;
         this.categoryName = categoryName;
       }
+
+      printLog('[♻️ getBlogsList] by Category: $categoryId');
 
       isFetching = true;
       isEnd = false;
 
       final blogs = await _service.api.fetchBlogsByCategory(
-          categoryId: categoryId, lang: lang, page: page, order: order);
+          categoryId: categoryId, page: page, order: order);
       if (blogs.isEmpty) {
         isEnd = true;
       }

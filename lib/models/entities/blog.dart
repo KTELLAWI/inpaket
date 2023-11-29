@@ -279,12 +279,16 @@ class Blog {
     }
   }
 
-  static Future getBlogs({String? url, categories, page = 1}) async {
+  static Future getBlogs(
+      {String? url, categories, page = 1, String? lang}) async {
     try {
       var param =
           '_embed&page=$page${kAdvanceConfig.alwaysRefreshBlog ? '&dummy=${DateTime.now().millisecondsSinceEpoch}' : ''}';
       if (categories != null) {
         param += '&categories=$categories';
+      }
+      if (lang != null) {
+        param += '&lang=$lang';
       }
       final response =
           await http.get('$url/wp-json/wp/v2/posts?$param'.toUri()!);

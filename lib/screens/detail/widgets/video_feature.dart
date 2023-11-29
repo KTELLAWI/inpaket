@@ -1,12 +1,18 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 import '../../../common/config.dart' show kLoadingWidget;
 import '../../../common/constants.dart';
+import '../../../generated/l10n.dart';
+import '../../../routes/flux_navigate.dart';
+import '../../../screens/detail/widgets/video_placeholder.dart';
+import '../../../services/index.dart';
 
 class FeatureVideoPlayer extends StatefulWidget {
   final String url;
@@ -15,6 +21,13 @@ class FeatureVideoPlayer extends StatefulWidget {
   final bool enableTimeIndicator;
   final bool tapToPlayPause;
   final bool holdToPlayPause;
+  final bool isSoundOn;
+  final bool isPlaying;
+  final bool isFullScreen;
+  final bool doubleTapToFullScreen;
+  final Duration? startAt;
+  final bool showVolumeButton;
+  final bool showFullScreenButton;
 
   const FeatureVideoPlayer(
     this.url, {
@@ -24,19 +37,47 @@ class FeatureVideoPlayer extends StatefulWidget {
     this.enableTimeIndicator = false,
     this.tapToPlayPause = true,
     this.holdToPlayPause = false,
-  }) : super(key: key);
+    this.isSoundOn = false,
+    this.isPlaying = false,
+    this.doubleTapToFullScreen = false,
+    this.startAt,
+    this.showVolumeButton = false,
+    this.showFullScreenButton = false,
+  }) : isFullScreen = false;
+
+  const FeatureVideoPlayer.fullScreen(
+    this.url, {
+    Key? key,
+    this.autoPlay,
+    this.aspectRatio,
+    this.enableTimeIndicator = false,
+    this.tapToPlayPause = true,
+    this.holdToPlayPause = false,
+    this.isSoundOn = false,
+    this.isPlaying = false,
+    this.doubleTapToFullScreen = false,
+    this.startAt,
+    this.showVolumeButton = false,
+    this.showFullScreenButton = false,
+  }) : isFullScreen = true;
 
   @override
   State<FeatureVideoPlayer> createState() => _FeatureVideoPlayerState();
 }
 
-class _FeatureVideoPlayerState extends State<FeatureVideoPlayer> {
+class _FeatureVideoPlayerState extends State<FeatureVideoPlayer>
+    with WidgetsBindingObserver {
   VideoPlayerController? _controller;
   bool initialized = false;
   double? aspectRatio;
   bool isYoutube = false;
+  bool isSoundOn = false;
+  int lastTap = DateTime.now().millisecondsSinceEpoch;
+  bool isVideoAvailable = true;
 
-  YoutubePlayerController? _youtubeController;
+  late YoutubePlayerController _youtubeController;
+
+  bool get showVideoPlaceholder => isDesktop || ServerConfig().isBuilder;
 
   Timer? _timer;
 
@@ -53,54 +94,77 @@ class _FeatureVideoPlayerState extends State<FeatureVideoPlayer> {
       if (_controller != null && _controller!.value.isPlaying) {
         await _controller!.pause();
       }
-      if (_youtubeController != null &&
-          (await _youtubeController?.playerState) == PlayerState.playing) {
-        await _youtubeController?.pauseVideo();
+      if ((await _youtubeController.playerState) == PlayerState.playing) {
+        await _youtubeController.pauseVideo();
       }
     });
+  }
+
+  Future<void> initVideoController() async {
+    final uri = Uri.parse(widget.url);
+    _controller = VideoPlayerController.networkUrl(uri);
+    await _controller!.initialize();
+    await _controller!.setLooping(true).then(
+      (_) {
+        if (mounted) {
+          setState(() {
+            initialized = true;
+            aspectRatio = widget.aspectRatio ?? _controller?.value.aspectRatio;
+          });
+          if (widget.autoPlay == true && widget.startAt == null) {
+            _controller?.play();
+            return;
+          }
+          if (widget.startAt != null && widget.isPlaying) {
+            _controller?.play();
+          } else {
+            _controller?.pause();
+          }
+        }
+      },
+    );
+    await _controller?.seekTo(widget.startAt ?? Duration.zero);
+    setVolume(widget.isSoundOn);
   }
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
 
-    /// Enable below to use the youtube video
-    /// Compatible with: https://pub.dev/packages/youtube_player_iframe
-    if (!isDesktop &&
-        (widget.url.contains('youtu.be') || widget.url.contains('youtube'))) {
-      isYoutube = true;
-      final videoId = YoutubePlayerController.convertUrlToId(widget.url)!;
-      _youtubeController = YoutubePlayerController.fromVideoId(
-        videoId: videoId,
-        autoPlay: true,
-        params: const YoutubePlayerParams(
-          showControls: false,
-          strictRelatedVideos: true,
-          loop: true,
-          showFullscreenButton: false,
-          showVideoAnnotations: false,
-          enableCaption: false,
-        ),
-      );
-      return;
-    }
+    if (!showVideoPlaceholder) {
+      if (widget.url.contains('youtu.be') || widget.url.contains('youtube')) {
+        isYoutube = true;
+        final videoId = YoutubePlayerController.convertUrlToId(widget.url);
 
-    _controller = VideoPlayerController.network(widget.url)
-      ..initialize()
-      ..setLooping(true).then(
-        (_) {
+        if (videoId == null) {
+          isVideoAvailable = false;
           if (mounted) {
-            setState(() {
-              initialized = true;
-              aspectRatio =
-                  widget.aspectRatio ?? _controller?.value.aspectRatio;
-            });
-
-            if (widget.autoPlay == true) _controller?.play();
+            setState(() {});
           }
-        },
-      );
-    _controller?.addListener(_listener);
+          return;
+        }
+
+        _youtubeController = YoutubePlayerController.fromVideoId(
+          videoId: videoId,
+          autoPlay: widget.autoPlay ?? true,
+          params: const YoutubePlayerParams(
+            showControls: false,
+            strictRelatedVideos: true,
+            pointerEvents: PointerEvents.none,
+            loop: true,
+            showFullscreenButton: false,
+            showVideoAnnotations: false,
+            enableCaption: false,
+          ),
+        );
+        return;
+      }
+
+      // Video player supports web version but I still disable it
+      initVideoController();
+      _controller?.addListener(_listener);
+    }
   }
 
   void _listener() {
@@ -109,76 +173,258 @@ class _FeatureVideoPlayerState extends State<FeatureVideoPlayer> {
     }
   }
 
+  void setVolume(bool value) {
+    if (mounted) {
+      setState(() {
+        isSoundOn = value;
+      });
+    }
+
+    isSoundOn ? _controller?.setVolume(1.0) : _controller?.setVolume(0.0);
+  }
+
+  void setIsPlaying(bool status) {
+    status == true ? _controller?.play() : _controller?.pause();
+  }
+
   @override
   void dispose() {
     if (!isYoutube) {
       _controller?.removeListener(_listener);
       _controller?.dispose();
     } else {
-      _youtubeController?.close();
+      _youtubeController.close();
     }
+    WidgetsBinding.instance.removeObserver(this);
     _cancelTimer();
     super.dispose();
   }
 
-  Widget playPauseButton(bool playStatus) {
-    return playStatus
+  void updateStatusBarColor() {
+    // If fullscreen video mode, always set light status bar
+    widget.isFullScreen == true ||
+            Theme.of(context).brightness == Brightness.dark
+        ? SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light)
+        : SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
+  }
+
+  @override
+  void didChangeDependencies() {
+    updateStatusBarColor();
+    super.didChangeDependencies();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      updateStatusBarColor();
+    }
+  }
+
+  Widget playPauseButton(bool isPlaying) {
+    return isPlaying
         ? const SizedBox.shrink()
         : Container(
             color: Colors.black26,
             child: const Center(
               child: Icon(
-                Icons.play_arrow,
+                CupertinoIcons.play_arrow_solid,
                 color: Colors.white,
-                size: 100.0,
+                size: 50.0,
                 semanticLabel: 'Play',
               ),
             ),
           );
   }
 
+  void updateVideoStatus() {
+    if (widget.holdToPlayPause == false) {
+      _controller!.value.isPlaying ? _controller?.pause() : _controller?.play();
+    }
+  }
+
+  void onTapVolume() {
+    if (mounted) {
+      setState(() {
+        isSoundOn = !isSoundOn;
+        // If the sound button is pressed, the video widget is also pressed (change isPlaying value)
+        updateVideoStatus();
+        isSoundOn ? _controller?.setVolume(1.0) : _controller?.setVolume(0.0);
+      });
+    }
+  }
+
+  void onTapFullScreen() async {
+    // If  fullScreen button is pressed, the video widget is also pressed (change isPlaying value)
+    updateVideoStatus();
+
+    final previousStatus = await FluxNavigate.push(
+      MaterialPageRoute(
+        builder: (_) => FeatureVideoPlayer.fullScreen(
+          widget.url,
+          isSoundOn: isSoundOn,
+          isPlaying: _controller!.value.isPlaying,
+          startAt: _controller!.value.position,
+          aspectRatio: widget.aspectRatio,
+          autoPlay: widget.autoPlay,
+          enableTimeIndicator: widget.enableTimeIndicator,
+          doubleTapToFullScreen: widget.doubleTapToFullScreen,
+          showVolumeButton: widget.showVolumeButton,
+          showFullScreenButton: widget.showFullScreenButton,
+          holdToPlayPause: widget.holdToPlayPause,
+          tapToPlayPause: widget.tapToPlayPause,
+        ),
+      ),
+    );
+    if (previousStatus != null) {
+      setIsPlaying(previousStatus[0] ?? false);
+      setVolume(previousStatus[2] ?? false);
+      await _controller!.seekTo(previousStatus[1] ?? Duration.zero);
+      updateStatusBarColor();
+    }
+  }
+
+  void onTapExitFullScreen() {
+    // If the exit fullScreen button is pressed, the video widget is also pressed (change isPlaying value)
+    updateVideoStatus();
+    Navigator.pop(context,
+        [_controller?.value.isPlaying, _controller?.value.position, isSoundOn]);
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (showVideoPlaceholder) {
+      return const VideoPlaceholder();
+    }
+
+    if (!isVideoAvailable) {
+      return VideoPlaceholder(message: S.of(context).canNotPlayVideo);
+    }
+
     if (!isYoutube) {
       if (initialized && _controller != null) {
-        return Center(
-          child: AspectRatio(
-            aspectRatio: aspectRatio ?? _controller!.value.aspectRatio,
-            child: Listener(
-              onPointerDown: (_) {
-                if (widget.holdToPlayPause) {
-                  _startTimer();
-                }
-              },
-              onPointerUp: (_) {
-                if (widget.holdToPlayPause) {
-                  _cancelTimer();
-                  _controller!.play();
-                }
-                if (widget.tapToPlayPause) {
-                  if (_controller!.value.isPlaying) {
-                    _controller!.pause();
-                  } else {
-                    _controller!.play();
-                  }
-                }
-              },
-              child: Stack(
-                children: [
-                  VideoPlayer(_controller!),
-                  if (widget.tapToPlayPause)
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 50),
-                      reverseDuration: const Duration(milliseconds: 200),
-                      child: playPauseButton(_controller!.value.isPlaying),
+        return WillPopScope(
+          onWillPop: () async {
+            Theme.of(context).brightness == Brightness.dark
+                ? SystemChrome.setSystemUIOverlayStyle(
+                    SystemUiOverlayStyle.light)
+                : SystemChrome.setSystemUIOverlayStyle(
+                    SystemUiOverlayStyle.dark);
+            return true;
+          },
+          child: VisibilityDetector(
+            onVisibilityChanged: (VisibilityInfo info) {
+              if (info.visibleFraction == 0) {
+                _controller?.pause();
+              }
+            },
+            key: ValueKey('mp4_player_iframe-${widget.url}'),
+            child: Container(
+              color: widget.isFullScreen ? Colors.black : Colors.transparent,
+              child: Center(
+                child: AspectRatio(
+                  aspectRatio: aspectRatio ?? _controller!.value.aspectRatio,
+                  child: Listener(
+                    onPointerDown: (_) {
+                      if (widget.holdToPlayPause) {
+                        _startTimer();
+                      }
+                    },
+                    onPointerUp: (_) {
+                      var now = DateTime.now().millisecondsSinceEpoch;
+                      if (widget.doubleTapToFullScreen) {
+                        // https://api.flutter.dev/flutter/gestures/kDoubleTapTimeout-constant.html
+                        if (now - lastTap < 300) {
+                          _cancelTimer();
+                          lastTap = now;
+                          if (!widget.isFullScreen) {
+                            onTapFullScreen();
+                          } else {
+                            onTapExitFullScreen();
+                          }
+                          return;
+                        }
+                      }
+                      if (widget.holdToPlayPause) {
+                        _cancelTimer();
+                        _controller!.play();
+                      }
+                      if (widget.tapToPlayPause) {
+                        if (_controller!.value.isPlaying) {
+                          _controller!.pause();
+                        } else {
+                          _controller!.play();
+                        }
+                      }
+                      lastTap = now;
+                    },
+                    child: Stack(
+                      children: [
+                        Hero(
+                          tag: 'video',
+                          transitionOnUserGestures: true,
+                          child: VideoPlayer(_controller!),
+                        ),
+                        if (widget.tapToPlayPause)
+                          AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 50),
+                            reverseDuration: const Duration(milliseconds: 200),
+                            child:
+                                playPauseButton(_controller!.value.isPlaying),
+                          ),
+                        if (widget.enableTimeIndicator)
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: VideoProgressIndicator(_controller!,
+                                allowScrubbing: true),
+                          ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Row(
+                            children: [
+                              widget.showVolumeButton
+                                  ? GestureDetector(
+                                      behavior: HitTestBehavior.translucent,
+                                      onTap: onTapVolume,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: Icon(
+                                          isSoundOn
+                                              ? Icons.volume_up
+                                              : Icons.volume_off,
+                                          color: Colors.white,
+                                          size: 25.0,
+                                        ),
+                                      ),
+                                    )
+                                  : const SizedBox(),
+                              widget.showFullScreenButton
+                                  ? GestureDetector(
+                                      behavior: HitTestBehavior.translucent,
+                                      onTap: widget.isFullScreen
+                                          ? onTapExitFullScreen
+                                          : onTapFullScreen,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(12.0),
+                                        child: Icon(
+                                          widget.isFullScreen
+                                              ? Icons.fullscreen_exit
+                                              : Icons.fullscreen,
+                                          color: Colors.white,
+                                          size: 25.0,
+                                        ),
+                                      ),
+                                    )
+                                  : const SizedBox(),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
-                  if (widget.enableTimeIndicator)
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: VideoProgressIndicator(_controller!,
-                          allowScrubbing: true),
-                    ),
-                ],
+                  ),
+                ),
               ),
             ),
           ),
@@ -195,17 +441,10 @@ class _FeatureVideoPlayerState extends State<FeatureVideoPlayer> {
       );
     }
 
-    if (isDesktop) {
-      /// Desktop not support webview for YouTube iframe.
-      return const SizedBox();
-    }
-
-    /// Enable below to use the youtube video
-    /// Compatible with: https://pub.dev/packages/youtube_player_iframe
     return VisibilityDetector(
       onVisibilityChanged: (VisibilityInfo info) {
         if (info.visibleFraction == 0) {
-          _youtubeController?.pauseVideo();
+          _youtubeController.pauseVideo();
         }
       },
       key: ValueKey('youtube_player_iframe-${widget.url}'),
@@ -218,14 +457,14 @@ class _FeatureVideoPlayerState extends State<FeatureVideoPlayer> {
         onPointerUp: (_) async {
           if (widget.holdToPlayPause) {
             _cancelTimer();
-            await _youtubeController?.playVideo();
+            await _youtubeController.playVideo();
           }
           if (widget.tapToPlayPause) {
-            if ((await _youtubeController?.playerState) ==
-                PlayerState.playing) {
-              await _youtubeController?.pauseVideo();
+            var playerState = await _youtubeController.playerState;
+            if (playerState == PlayerState.playing) {
+              await _youtubeController.pauseVideo();
             } else {
-              await _youtubeController?.playVideo();
+              await _youtubeController.playVideo();
             }
           }
         },
@@ -245,7 +484,7 @@ class _FeatureVideoPlayerState extends State<FeatureVideoPlayer> {
             height: MediaQuery.of(context).size.width * 0.8,
             width: MediaQuery.of(context).size.width,
             child: YoutubePlayerControllerProvider(
-              controller: _youtubeController!,
+              controller: _youtubeController,
               child: Stack(
                 children: [
                   Positioned.fill(
@@ -289,7 +528,8 @@ class VideoPositionSeeker extends StatelessWidget {
     var value = 0.0;
 
     return StreamBuilder<Duration>(
-      stream: context.ytController.getCurrentPositionStream(),
+      // fixme: getCurrentPositionStream
+      // stream: context.ytController.getCurrentPositionStream(),
       initialData: Duration.zero,
       builder: (context, snapshot) {
         final position = snapshot.data?.inSeconds ?? 0;
@@ -317,6 +557,7 @@ class VideoPositionSeeker extends StatelessWidget {
           },
         );
       },
+      stream: null,
     );
   }
 }

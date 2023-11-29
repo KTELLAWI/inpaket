@@ -1,6 +1,9 @@
 part of 'products_filter_mixin.dart';
 
 extension ProductsFilterMixinMethodExtension on ProductsFilterMixin {
+  List<FilterAttribute> get listProductAttribute =>
+      filterAttrModel.lstProductAttribute ?? <FilterAttribute>[];
+
   @protected
   void onFilter({
     dynamic minPrice,
@@ -11,6 +14,7 @@ extension ProductsFilterMixinMethodExtension on ProductsFilterMixin {
     dynamic listingLocationId,
     FilterSortBy? sortBy,
     String? search,
+    bool? isSearch,
   }) {
     printLog('[onFilter] ♻️ Reload product list');
     onCloseFilter();
@@ -38,13 +42,11 @@ extension ProductsFilterMixinMethodExtension on ProductsFilterMixin {
 
     // set attribute
     if (filterAttrModel.selectedAttr != null &&
-        filterAttrModel.indexSelectedAttr != -1 &&
-        filterAttrModel.lstProductAttribute != null) {
-      var selectedAttr = filterAttrModel.indexSelectedAttr <
-              filterAttrModel.lstProductAttribute!.length
-          ? filterAttrModel
-              .lstProductAttribute![filterAttrModel.indexSelectedAttr]
-          : null;
+        filterAttrModel.indexSelectedAttr >= 0) {
+      var selectedAttr =
+          filterAttrModel.indexSelectedAttr < listProductAttribute.length
+              ? listProductAttribute[filterAttrModel.indexSelectedAttr]
+              : null;
       attribute = selectedAttr?.slug;
     }
 
@@ -52,12 +54,21 @@ extension ProductsFilterMixinMethodExtension on ProductsFilterMixin {
     if (categoryId != null) {
       this.categoryId = categoryId;
 
-      final selectedCategoryName = categoryModel.categories!
-          .firstWhereOrNull((element) => element.id == categoryId.toString())
+      final selectedCategoryName = categoryModel.categories
+          ?.firstWhereOrNull((element) => element.id == categoryId.toString())
           ?.name;
 
-      if (selectedCategoryName != null) {
-        onCategorySelected(selectedCategoryName);
+      onCategorySelected(selectedCategoryName);
+    }
+
+    if (ServerConfig().isShopify) {
+      if (isSearch != null) {
+        if (isSearch) {
+          this.categoryId = kEmptyCategoryID;
+        } else {
+          this.search = null;
+          onClearTextSearch();
+        }
       }
     }
 
@@ -77,6 +88,7 @@ extension ProductsFilterMixinMethodExtension on ProductsFilterMixin {
   @protected
   String getAttributeTerm({bool showName = false}) {
     var terms = '';
+
     for (var i = 0; i < filterAttrModel.lstCurrentSelectedTerms.length; i++) {
       if (filterAttrModel.lstCurrentSelectedTerms[i]) {
         if (showName) {
@@ -86,6 +98,7 @@ extension ProductsFilterMixinMethodExtension on ProductsFilterMixin {
         }
       }
     }
+
     return terms.isNotEmpty ? terms.substring(0, terms.length - 1) : '';
   }
 
@@ -95,7 +108,7 @@ extension ProductsFilterMixinMethodExtension on ProductsFilterMixin {
     await getProductList();
   }
 
-  void initFilter({ProductConfig? config}) {
+  Future<void> initFilter({ProductConfig? config}) async {
     minPrice = null;
     maxPrice = null;
     page = 1;
@@ -116,6 +129,23 @@ extension ProductsFilterMixinMethodExtension on ProductsFilterMixin {
         );
     listingLocationId = config?.jsonData?['location']?.toString();
     include = config?.include;
+
+    var params = config?.advancedParams != null
+        ? FilterProductParams.fromJson(config!.advancedParams!)
+        : null;
+
+    attribute = params?.attribute;
+    var attributeTerm = params?.attributeTerm;
+
+    for (var i = 0; i < listProductAttribute.length; i++) {
+      if (listProductAttribute[i].slug == attribute) {
+        await filterAttrModel.getAttr(
+          id: listProductAttribute[i].id,
+          attributeTerm: attributeTerm,
+        );
+        break;
+      }
+    }
   }
 
   @protected

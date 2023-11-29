@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:inspireui/widgets/skeleton_widget/skeleton_widget.dart';
 
@@ -12,8 +14,8 @@ part '_rating_count_skeleton.dart';
 const _starSize = 14.0;
 
 class RatingCountWidget extends StatefulWidget {
-  final double averageRating;
-  final int ratingCount;
+  final double? averageRating;
+  final int? ratingCount;
   final int rating1;
   final int rating2;
   final int rating3;
@@ -44,10 +46,22 @@ class _RatingCountWidgetState extends State<RatingCountWidget> {
         widget.rating1,
       ];
 
+  int get ratingCount =>
+      max(ratings.reduce((a, b) => a + b), widget.ratingCount ?? 0);
+
+  double get averageRating => max(
+      widget.averageRating ?? 0.0,
+      (widget.rating1 * 1 +
+              widget.rating2 * 2 +
+              widget.rating3 * 3 +
+              widget.rating4 * 4 +
+              widget.rating5 * 5) /
+          ratingCount);
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 110,
+      height: 120,
       child: Row(
         children: [
           Expanded(
@@ -66,7 +80,7 @@ class _RatingCountWidgetState extends State<RatingCountWidget> {
                       backgroundColor: Theme.of(context).dividerColor,
                     ),
                     AnimatedNumber.double(
-                      value: widget.averageRating,
+                      value: averageRating,
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
                             fontSize: 30,
                           ),
@@ -77,7 +91,7 @@ class _RatingCountWidgetState extends State<RatingCountWidget> {
                 Wrap(
                   alignment: WrapAlignment.center,
                   children: [
-                    AnimatedNumber(value: widget.ratingCount),
+                    AnimatedNumber(value: ratingCount),
                     const Text(
                       ' reviews',
                       textScaleFactor: 0.9,
@@ -129,7 +143,7 @@ class _RatingCountWidgetState extends State<RatingCountWidget> {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(4),
                         child: AnimatedLinearProgressIndicator(
-                          value: count / widget.ratingCount,
+                          value: count / ratingCount,
                           minHeight: 6,
                           color: kRatingColor.primaryLinearProgress,
                           backgroundColor:

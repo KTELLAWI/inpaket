@@ -9,12 +9,14 @@ import '../../../services/service_config.dart';
 class ProductPricing extends StatelessWidget {
   final Product product;
   final bool hide;
+  final bool showOnlyPrice;
   final TextStyle? priceTextStyle;
 
   const ProductPricing({
     Key? key,
     required this.product,
     required this.hide,
+    this.showOnlyPrice = false,
     this.priceTextStyle,
   }) : super(key: key);
 
@@ -51,7 +53,8 @@ class ProductPricing extends StatelessWidget {
                   ? S.of(context).loading
                   : ServerConfig().isListingType
                       ? PriceTools.getCurrencyFormatted(
-                          product.price ?? product.regularPrice ?? '0', null)!
+                          product.price ?? product.regularPrice ?? '0', null,
+                          currency: currency)!
                       : PriceTools.getPriceProduct(
                           product, currencyRate, currency,
                           onSale: true)!,
@@ -66,7 +69,7 @@ class ProductPricing extends StatelessWidget {
         ),
 
         /// Not show regular price for variant product (product.regularPrice = "").
-        if (isSale && product.type != 'variable') ...[
+        if (isSale && product.type != 'variable' && showOnlyPrice == false) ...[
           const SizedBox(width: 5),
           Text(
             product.type == 'grouped'
@@ -85,8 +88,10 @@ class ProductPricing extends StatelessWidget {
                 .apply(fontSizeFactor: 0.8)
                 .merge(
                   priceTextStyle?.copyWith(
-                    color: priceTextStyle?.color?.withOpacity(0.6),
-                  ),
+                      color: priceTextStyle?.color?.withOpacity(0.6),
+                      fontSize: priceTextStyle?.fontSize != null
+                          ? priceTextStyle!.fontSize! - 2
+                          : null),
                 ),
           ),
         ],

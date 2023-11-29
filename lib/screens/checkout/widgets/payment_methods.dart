@@ -4,7 +4,6 @@ import 'dart:convert' as convert;
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quiver/strings.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -14,10 +13,10 @@ import '../../../common/constants.dart';
 import '../../../common/tools.dart';
 import '../../../generated/l10n.dart';
 import '../../../models/booking/booking_model.dart';
+import '../../../models/entities/index.dart';
 import '../../../models/index.dart'
     show AppModel, CartModel, Order, PaymentMethodModel, TaxModel, UserModel;
 import '../../../models/tera_wallet/index.dart';
-import '../../../modules/native_payment/credit_card/index.dart';
 import '../../../modules/native_payment/flutterwave/services.dart';
 import '../../../modules/native_payment/mercado_pago/index.dart';
 import '../../../modules/native_payment/paypal/index.dart';
@@ -26,6 +25,7 @@ import '../../../modules/native_payment/paytm/services.dart';
 import '../../../modules/native_payment/razorpay/services.dart';
 import '../../../services/index.dart';
 import '../../../widgets/common/common_safe_area.dart';
+import '../../../widgets/html/index.dart';
 import '../../cart/widgets/shopping_cart_sumary.dart';
 
 class PaymentMethods extends StatefulWidget {
@@ -58,12 +58,12 @@ class _PaymentMethodsState extends State<PaymentMethods> with RazorDelegate {
           langCode: langCode);
 
       if (kPaymentConfig.enableReview != true) {
-        Provider.of<TaxModel>(context, listen: false)
-            .getTaxes(Provider.of<CartModel>(context, listen: false),
-                (taxesTotal, taxes) {
-          Provider.of<CartModel>(context, listen: false).taxesTotal =
-              taxesTotal;
-          Provider.of<CartModel>(context, listen: false).taxes = taxes;
+        Provider.of<TaxModel>(context, listen: false).getTaxes(
+            Provider.of<CartModel>(context, listen: false),
+            Provider.of<UserModel>(context, listen: false).user?.cookie,
+            (taxesTotal, taxes, isIncludingTax) {
+          Provider.of<CartModel>(context, listen: false)
+              .setTaxInfo(taxes, taxesTotal, isIncludingTax);
           setState(() {});
         });
       }
@@ -119,6 +119,16 @@ class _PaymentMethodsState extends State<PaymentMethods> with RazorDelegate {
                           child: Center(
                               child: Text(model.message!,
                                   style: const TextStyle(color: kErrorRed))),
+                        );
+                      }
+                      if (paymentMethodModel.paymentMethods.isEmpty) {
+                        return Center(
+                          child: Image.asset(
+                            'assets/images/leaves.png',
+                            width: 120,
+                            height: 120,
+                            fit: BoxFit.contain,
+                          ),
                         );
                       }
 
@@ -361,33 +371,6 @@ class _PaymentMethodsState extends State<PaymentMethods> with RazorDelegate {
             price: cartModel.getSubTotal(),
           );
 
-      /// Use Credit card. For Shopify only.
-      if (!isSubscriptionProduct &&
-          kPaymentConfig.enableCreditCard &&
-          ServerConfig().isShopify) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => CreditCardPayment(
-              onFinish: (number) {
-                if (number == null) {
-                  widget.onLoading?.call(false);
-                  isPaying = false;
-                  return;
-                } else {
-                  createOrder(paid: true).then((value) {
-                    widget.onLoading?.call(false);
-                    isPaying = false;
-                  });
-                }
-              },
-            ),
-          ),
-        );
-
-        return;
-      }
-
       /// Use Native payment
 
       /// Direct bank transfer (BACS)
@@ -421,9 +404,9 @@ class _PaymentMethodsState extends State<PaymentMethods> with RazorDelegate {
                         ],
                       ),
                       const SizedBox(height: 10),
-                      Text(
+                      HtmlWidget(
                         paymentMethod.description!,
-                        style: Theme.of(context).textTheme.bodySmall,
+                        textStyle: Theme.of(context).textTheme.bodySmall,
                       ),
                       const Expanded(child: SizedBox(height: 10)),
                       ElevatedButton(
@@ -489,20 +472,21 @@ class _PaymentMethodsState extends State<PaymentMethods> with RazorDelegate {
           isNotBlank(kPaypalConfig['paymentMethodId']) &&
           paymentMethod.id!.contains(kPaypalConfig['paymentMethodId']) &&
           kPaypalConfig['enabled'] == true) {
-        if (kPaypalConfig['nativeMode'] ?? false) {
-          return;
-        }
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => PaypalPayment(
-              onFinish: (number) {
-                if (number == null) {
+              onFinish: (payerID, paymentToken) {
+                if (payerID == null) {
                   widget.onLoading?.call(false);
                   isPaying = false;
                   return;
                 } else {
-                  createOrder(paid: true, transactionId: number).then((value) {
+                  createOrder(
+                    paid: true,
+                    additionalPaymentInfo: AdditionalPaymentInfo(
+                        ppPayerId: payerID, ppPaymentToken: paymentToken),
+                  ).then((value) {
                     widget.onLoading?.call(false);
                     isPaying = false;
                   });
@@ -628,7 +612,7 @@ class _PaymentMethodsState extends State<PaymentMethods> with RazorDelegate {
               onFinish: (Order? order) async {
                 if (order != null) {
                   final payStackServices = PayStackServices(
-                    amount: cartModel.getTotal()!.toString(),
+                    amount: order.total?.toString() ?? '',
                     orderId: order.id!,
                     email: cartModel.address?.email,
                   );
@@ -728,17 +712,20 @@ class _PaymentMethodsState extends State<PaymentMethods> with RazorDelegate {
   }
 
   Future<void> createOrder(
-      {paid = false, bacs = false, cod = false, transactionId = ''}) async {
+      {paid = false,
+      bacs = false,
+      cod = false,
+      AdditionalPaymentInfo? additionalPaymentInfo}) async {
     await createOrderOnWebsite(
         paid: paid,
         bacs: bacs,
         cod: cod,
-        transactionId: transactionId,
+        additionalPaymentInfo: additionalPaymentInfo,
         onFinish: (Order? order) async {
-          if (!transactionId.toString().isEmptyOrNull && order != null) {
-            await Services()
-                .api
-                .updateOrderIdForRazorpay(transactionId, order.number);
+          if ((additionalPaymentInfo?.transactionId?.isNotEmpty ?? false) &&
+              order != null) {
+            await Services().api.updateOrderIdForRazorpay(
+                additionalPaymentInfo?.transactionId, order.number);
           }
           widget.onFinish!(order);
         });
@@ -748,22 +735,25 @@ class _PaymentMethodsState extends State<PaymentMethods> with RazorDelegate {
       {paid = false,
       bacs = false,
       cod = false,
-      transactionId = '',
-      required Function(Order?) onFinish}) async {
+      AdditionalPaymentInfo? additionalPaymentInfo,
+      required Function(Order?) onFinish,
+      bool hideLoading = true}) async {
     widget.onLoading!(true);
     await Services().widget.createOrder(
       context,
       paid: paid,
       cod: cod,
       bacs: bacs,
-      transactionId: transactionId,
+      additionalPaymentInfo: additionalPaymentInfo,
       onLoading: widget.onLoading,
       success: onFinish,
       error: (message) {
         Tools.showSnackBar(ScaffoldMessenger.of(context), message);
       },
     );
-    widget.onLoading?.call(false);
+    if (hideLoading) {
+      widget.onLoading?.call(false);
+    }
   }
 
   Future<void> _deletePendingOrder(String? orderId) async {
@@ -775,7 +765,11 @@ class _PaymentMethodsState extends State<PaymentMethods> with RazorDelegate {
 
   @override
   void handlePaymentSuccess(PaymentSuccessResponse response) {
-    createOrder(paid: true, transactionId: response.paymentId).then((value) {
+    createOrder(
+            paid: true,
+            additionalPaymentInfo:
+                AdditionalPaymentInfo(transactionId: response.paymentId))
+        .then((value) {
       widget.onLoading?.call(false);
       isPaying = false;
     });
@@ -792,19 +786,5 @@ class _PaymentMethodsState extends State<PaymentMethods> with RazorDelegate {
           ScaffoldMessenger.of(context), body['error']['description']);
     }
     printLog(response.message);
-  }
-
-  String formatPrice(String? price) {
-    if (isNotBlank(price)) {
-      final currencyRate =
-          Provider.of<AppModel>(context, listen: false).currencyRate;
-      final cartModel = Provider.of<CartModel>(context, listen: false);
-      var p = PriceTools.getPriceValueByCurrency(
-          price, cartModel.currencyCode!, currencyRate);
-      final formatCurrency = NumberFormat('#,##0.00', 'en_US');
-      return formatCurrency.format(p);
-    } else {
-      return '0';
-    }
   }
 }

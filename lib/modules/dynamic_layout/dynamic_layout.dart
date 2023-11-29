@@ -137,6 +137,15 @@ class DynamicLayout extends StatelessWidget {
           return BannerSlider(
             config: BannerConfig.fromJson(config),
             onTap: (itemConfig) {
+              if (itemConfig is Map && itemConfig['category'] != null) {
+                final categoryList =
+                    Provider.of<CategoryModel>(context, listen: false)
+                        .categoryList;
+                final id = itemConfig['category'].toString();
+                itemConfig['name'] =
+                    categoryList[id] != null ? categoryList[id]!.name : '';
+              }
+
               NavigateTools.onTapNavigateOptions(
                 context: context,
                 config: itemConfig,
@@ -191,6 +200,7 @@ class DynamicLayout extends StatelessWidget {
       case Layout.saleOff:
       case Layout.card:
       case Layout.listTile:
+      case Layout.quiltedGridTile:
         return Services()
             .widget
             .renderHorizontalListItem(config, cleanCache: cleanCache);

@@ -6,7 +6,7 @@ import 'bottom_sheet_smart_chat.dart';
 import 'fab_circle_smart_chat.dart';
 
 class SmartChat extends StatelessWidget {
-  final EdgeInsets? margin;//
+  final EdgeInsets? margin;
   final List<Map>? options;
 
   const SmartChat({

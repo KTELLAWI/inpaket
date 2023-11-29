@@ -2,7 +2,7 @@ part of '../config.dart';
 
 class DefaultConfig {
   static String environment = '';
-  static String appName = 'Fluxstore';
+  static String appName = 'khadrah';
   static bool enableRemoteConfigFirebase = false;
   static bool enableFirebaseAnalytics = false;
   static bool enableCrashAnalytics = false;
@@ -15,7 +15,7 @@ class DefaultConfig {
   static String dialCodeDefault = '+84';
   static String nameDefault = 'Vietnam';
   static Map<String, dynamic> phoneNumberConfig = {
-    'enablePhoneNumberValidation': false,
+    'enable': false,
     'countryCodeDefault': 'VN',
     'dialCodeDefault': '+84',
     'useInternationalFormat': true,
@@ -33,9 +33,6 @@ class DefaultConfig {
     'HideEmptyCategories': true,
     'EnableRating': false,
     'hideEmptyProductListRating': false,
-
-    'OnBoardOnlyShowFirstTime': true,
-
     'EnableCart': true,
     'ShowBottomCornerCart': true,
 
@@ -136,7 +133,7 @@ class DefaultConfig {
     'EnableSyncCartFromWebsite': true,
     'EnableSyncCartToWebsite': true,
 
-    /// Enable firebase to support FCM, realtime chat for Fluxstore MV
+    /// Enable firebase to support FCM, realtime chat for khadrah MV
     'EnableFirebase': false,
 
     /// ratio Product Image, default value is 1.2 = height / width
@@ -197,6 +194,7 @@ class DefaultConfig {
     /// Plugin (https://codecanyon.net/item/digits-wordpress-mobile-number-signup-and-login/19801105)
     'EnableDigitsMobileLogin': false,
     'EnableDigitsMobileFirebase': false,
+    'EnableDigitsMobileWhatsApp': false,
 
     /// Enable Delivery Date when doing checkout
     'EnableDeliveryDateOnCheckout': true,
@@ -237,30 +235,44 @@ class DefaultConfig {
 
     // Enable the request Notify permission from onboarding
     'showRequestNotification': true,
+
+    /// Enable WooCommerce Wholesale Prices
+    'EnableWooCommerceWholesalePrices': false,
+
+    /// Enable Multi-Site configuration
+    'IsRequiredSiteSelection': false
   };
-  static Map storeIdentifier = {};
+  static Map appRatingConfig = {};
   static Map defaultDrawer = {};
   static List defaultSettings = [];
   static Map loginSetting = {};
   static Map oneSignalKey = {};
-  static List onBoardingData = [
-    {
-      'title': 'Welcome to FluxStore',
-      'image': 'assets/images/fogg-delivery-1.png',
-      'desc': 'Fluxstore is on the way to serve you. '
-    },
-    {
-      'title': 'Connect Surrounding World',
-      'image': 'assets/images/fogg-uploading-1.png',
-      'desc':
-          'See all things happening around you just by a click in your phone. Fast, convenient and clean.'
-    },
-    {
-      'title': "Let's Get Started",
-      'image': 'assets/images/fogg-order-completed.png',
-      'desc': "Waiting no more, let's see what we get!"
-    }
-  ];
+
+  static Map onBoardingConfig = {
+    'enableOnBoarding': true,
+    'version': 2,
+    'autoCropImageByDesign': true,
+    'isOnlyShowOnFirstTime': true,
+    'showLanguage': true,
+    'data': [
+      {
+        'title': 'Discover something new',
+        'image': 'https://i.imgur.com/XZ48ANH.png',
+        'desc': 'Special new arrivals just for you'
+      },
+      {
+        'title': 'Update trendy outfit',
+        'image': 'https://i.imgur.com/KCkRtvC.png',
+        'desc': 'Favorite brands and hottest trends'
+      },
+      {
+        'title': 'Explore your true style',
+        'image': 'https://i.imgur.com/lbk3KU8.png',
+        'desc': 'Relax and let us bring the style to you'
+      }
+    ],
+  };
+
   static List vendorOnBoardingData = [
     {
       'title': 'Welcome aboard',
@@ -276,10 +288,13 @@ class DefaultConfig {
 
   static Map productDetail = {};
   static Map blogDetail = {
+    'showTextAdjustment': true,
     'showComment': true,
     'showHeart': true,
     'showSharing': true,
     'enableAudioSupport': false,
+    'showRelatedBlog': true,
+    'showAuthorInfo': true,
   };
   static Map productVariantLayout = {};
   static Map adConfig = {
@@ -349,11 +364,11 @@ class DefaultConfig {
     // Domain is the domain name for your product.
     // Let’s assume here that your product domain is “example.com”.
     // Then you have to mention the domain name as : https://example.page.link.
-    'uriPrefix': 'https://fluxstoreinspireui.page.link',
+    'uriPrefix': 'https://khadrahinspireui.page.link',
     //The link your app will open
     'link': 'https://mstore.io/',
     //----------* Android Setting *----------//
-    'androidPackageName': 'com.inspireui.fluxstore',
+    'androidPackageName': 'online.digistacks.khadrah',
     'androidAppMinimumVersion': 1,
     //----------* iOS Setting *----------//
     'iOSBundleId': 'com.inspireui.mstore.flutter',
@@ -474,6 +489,8 @@ class DefaultConfig {
   static Map payStackConfig = {
     'paymentMethodId': 'paystack',
     'publicKey': 'pk_test_a1a37615c9ca90dead5dd84dedbb5e476b640a6f',
+    'secretKey': 'sk_test_d833fcaa6c02a61a9431d2026046c0517888a4a7',
+    'enableMobileMoney': false,
     'production': false,
     'enabled': false
   };
@@ -492,12 +509,36 @@ class DefaultConfig {
     'enabled': false
   };
   static Map mercadoPagoConfig = {};
-  static Map inAppPurchaseConfig = {'productIDs': [], 'enabled': false};
+  static Map midtransConfig = {
+    'paymentMethodId': 'midtrans',
+    'clientKey': 'SB-Mid-client-he8W_FIlvugfA2RD',
+    'enabled': true
+  };
+  static Map inAppPurchaseConfig = {
+    'consumableProductIDs': [],
+    'nonConsumableProductIDs': [],
+    'subscriptionProductIDs': [],
+    'enabled': false
+  };
+  static Map xenditConfig = {
+    'paymentMethodId': 'xendit',
+    'secretApiKey':
+        'xnd_development_4E9ql5zFiC1BBmhK2r7wr9mNYyyvjLs0fIal00tGuHEj1iEYCu7B7tCUudv3Xe',
+    'enabled': true
+  };
+  static Map expressPayConfig = {
+    'paymentMethodId': 'expresspay',
+    'merchantKey': 'b2be2ffc-c8b9-11ed-82a9-42eb4e39c8ae',
+    'merchantPassword': '4a00a5fd3c63dd2b743c75746af6ffe2',
+    'merchantId': 'merchant.com.inspireui.mstore.flutter',
+    'production': false,
+    'enabled': true
+  };
   static Map afterShip = {};
   static Map productAddons = {};
   static Map cartDetail = {};
   static Map productVariantLanguage = {};
-  static int excludedCategory = 311;
+  static String? excludedCategory;
   static Map saleOffProduct = {};
   static bool notStrictVisibleVariant = true;
   static Map configChat = {};
@@ -541,7 +582,7 @@ class DefaultConfig {
     'paddingBottom': 0,
     'paddingLeft': 0,
     'paddingRight': 0,
-    'animationName': 'fluxstore',
+    'animationName': 'khadrah',
     'duration': 2000,
   };
   static Map colorOverrideConfig = {};
@@ -552,5 +593,4 @@ class DefaultConfig {
       'web': 'AIzaSyDW3uXzZepWBPi-69BIYKyS-xo9NjFSFhQ'
     },
   );
-  static bool enableOnBoarding = true;
 }

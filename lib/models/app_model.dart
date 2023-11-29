@@ -9,17 +9,22 @@ import 'package:provider/provider.dart';
 
 import '../common/config.dart';
 import '../common/config/models/index.dart';
+import '../common/config/multi_site.dart';
 import '../common/constants.dart';
 import '../data/boxes.dart';
 import '../modules/dynamic_layout/config/app_config.dart';
+// import '../modules/salesiq_mobilisten/salesiq_services.dart';
 import '../services/index.dart';
 import 'advertisement/index.dart' show AdvertisementConfig;
 import 'cart/cart_model.dart';
 import 'category/category_model.dart';
 import 'entities/currency.dart';
 import 'filter_attribute_model.dart';
+import 'product_wish_list_model.dart';
+import 'user_model.dart';
 
 class AppModel with ChangeNotifier {
+  MultiSiteConfig? multiSiteConfig;
   AppConfig? appConfig;
   AdvertisementConfig advertisement = const AdvertisementConfig();
   Map? deeplink;
@@ -28,6 +33,7 @@ class AppModel with ChangeNotifier {
   /// Loading State setting
   bool isLoading = true;
   bool isInit = false;
+  bool isOpenFloatMenu = false;
 
   /// Current and Payment settings
   String? currency;
@@ -65,6 +71,7 @@ class AppModel with ChangeNotifier {
   List<Map>? remapCategories;
   Map? categoriesIcons;
   String categoryLayout = '';
+  String vendorLayout = '';
 
   String get productListLayout => appConfig!.settings.productListLayout;
 
@@ -79,9 +86,11 @@ class AppModel with ChangeNotifier {
       ? kBlogLayout.values.byName(appConfig!.settings.blogDetail!)
       : kAdvanceConfig.detailedBlogLayout;
 
+  String? get countryCode => SettingsBox().countryCode;
+
   /// App Model Constructor
   AppModel([String? lang]) {
-    _langCode = lang ?? kAdvanceConfig.defaultLanguage;
+    _langCode = lang ?? _langCode;
 
     advertisement = AdvertisementConfig.fromJson(adConfig: kAdConfig);
     isMultivendor = ServerConfig().typeName.isMultiVendor;
@@ -89,16 +98,17 @@ class AppModel with ChangeNotifier {
 
   void _updateAndSaveDefaultLanguage(String? lang) {
     final prefLang = SettingsBox().languageCode;
-    _langCode = prefLang != null && prefLang.isNotEmpty
-        ? prefLang
-        : lang ?? kAdvanceConfig.defaultLanguage;
+    _langCode =
+        prefLang != null && prefLang.isNotEmpty ? prefLang : lang ?? _langCode;
     SettingsBox().languageCode = _langCode.split('-').first.toLowerCase();
   }
 
   /// Get persist config from Share Preference
   Future<bool> getPrefConfig({String? lang}) async {
     try {
-      _updateAndSaveDefaultLanguage(lang);
+      if (multiSiteConfig?.languageCode?.isEmpty ?? true) {
+        _updateAndSaveDefaultLanguage(lang);
+      }
 
       var defaultCurrency = kAdvanceConfig.defaultCurrency;
 
@@ -106,6 +116,7 @@ class AppModel with ChangeNotifier {
       currency = SettingsBox().currency ?? defaultCurrency?.currencyDisplay;
       currencyCode =
           SettingsBox().currencyCode ?? defaultCurrency?.currencyCode;
+      SettingsBox().countryCode = defaultCurrency?.countryCode;
       smallestUnitRate = _getCurrencyByCode(currencyCode)?.smallestUnitRate;
       isInit = true;
       await updateTheme(darkTheme);
@@ -122,8 +133,8 @@ class AppModel with ChangeNotifier {
       SettingsBox().languageCode = _langCode;
 
       await loadAppConfig(isSwitched: true);
-      await loadCurrency();
       eventBus.fire(const EventChangeLanguage());
+      unawaited(loadCurrency());
 
       final categoryModel = Provider.of<CategoryModel>(context, listen: false);
       categoryModel.refreshCategoryList();
@@ -148,15 +159,19 @@ class AppModel with ChangeNotifier {
         (e) => e.currencyCode.toLowerCase() == code?.toLowerCase());
   }
 
-  Future<void> changeCurrency(String? item, BuildContext context,
-      {String? code}) async {
+  Future<void> changeCurrency(
+      BuildContext context, Currency newCurrency) async {
     try {
-      Provider.of<CartModel>(context, listen: false)
-          .changeCurrency(code ?? item);
-      currency = item;
-      currencyCode = code;
+      final cartModel = Provider.of<CartModel>(context, listen: false);
+
+      currency = newCurrency.currencyDisplay;
+      currencyCode = newCurrency.currencyCode;
       SettingsBox().currencyCode = currencyCode;
       SettingsBox().currency = currency;
+      SettingsBox().countryCode = newCurrency.countryCode;
+
+      cartModel.changeCurrency(newCurrency.currencyCode);
+      cartModel.updatePriceWhenCurrencyChanged();
       smallestUnitRate = _getCurrencyByCode(currencyCode)?.smallestUnitRate;
       notifyListeners();
     } catch (error) {
@@ -195,6 +210,48 @@ class AppModel with ChangeNotifier {
     );
   }
 
+  Future applyAppCaching() async {
+    /// apply App Caching if isCaching is enable
+    /// not use for Fluxbuilder
+    if (!ServerConfig().isBuilder) {
+      await Services().widget.onLoadedAppConfig(langCode, (configCache) {
+        appConfig = AppConfig.fromJson(configCache);
+      });
+    }
+  }
+
+  void handleCategoryTab(TabBarMenuConfig categoryTab) {
+    if (categoryTab.categories != null) {
+      categories = List<String>.from(categoryTab.categories ?? []);
+      if (ServerConfig().isShopify) {
+        /// Support old type category (base64) work with new API
+        /// Old type is base64, new type is url like gid://shopify/Collection/123456789
+        categories = categories?.map(_parseShopifyCategories).toList();
+      }
+    }
+    if (categoryTab.images != null) {
+      categoriesIcons =
+          categoryTab.images is Map ? Map.from(categoryTab.images) : null;
+    }
+    if (categoryTab.remapCategories != null) {
+      remapCategories = categoryTab.remapCategories;
+
+      /// Support old type category (base64) work with new API
+      /// Old type is base64, new type is url like gid://shopify/Collection/123456789
+      if (ServerConfig().isShopify) {
+        remapCategories = remapCategories?.map((e) {
+          for (var key in ['parent', 'category']) {
+            if (e[key] != null) {
+              e[key] = _parseShopifyCategories(e[key]);
+            }
+          }
+          return e;
+        }).toList();
+      }
+    }
+    categoryLayout = categoryTab.categoryLayout;
+  }
+
   Future<AppConfig?> loadAppConfig(
       {isSwitched = false, Map<String, dynamic>? config}) async {
     isLoading = true;
@@ -214,93 +271,37 @@ class AppModel with ChangeNotifier {
       if (config != null) {
         appConfig = AppConfig.fromJson(config);
       } else {
-        var loadAppConfigDone = false;
-
         /// load config from Notion
         if (ServerConfig().type == ConfigType.notion) {
           final appCfg = await Services().widget.onGetAppConfig(langCode);
 
           if (appCfg != null) {
             appConfig = appCfg;
-            loadAppConfigDone = true;
           }
         }
 
-        if (loadAppConfigDone == false) {
-          /// we only apply the http config if isUpdated = false, not using switching language
-          // ignore: prefer_contains
-          if (kAppConfig.indexOf('http') != -1) {
-            // load on cloud config and update on air
-            var path = kAppConfig;
-            if (path.contains('.json')) {
-              path = path.substring(0, path.lastIndexOf('/'));
-              path += '/config_$langCode.json';
-            }
-            try {
-              await fetchCloudAppConfig(path);
-            } catch (_) {
-              /// In case config_$langCode.json is not found,
-              /// load user's original config URL.
-              printLog(
-                  '🚑 Config at $path not found. Loading from $kAppConfig instead.');
-              await fetchCloudAppConfig(kAppConfig);
-            }
-          } else {
-            // load local config
-            var path = 'lib/config/config_$langCode.json';
-            try {
-              final appJson = await rootBundle.loadString(path);
-              appConfig = AppConfig.fromJson(convert.jsonDecode(appJson));
-            } catch (e) {
-              final appJson = await rootBundle.loadString(kAppConfig);
-              appConfig = AppConfig.fromJson(convert.jsonDecode(appJson));
-            }
-          }
-        }
+        await _loadConfigJson();
       }
 
-      /// apply App Caching if isCaching is enable
-      /// not use for Fluxbuilder
-      if (!ServerConfig().isBuilder) {
-        await Services().widget.onLoadedAppConfig(langCode, (configCache) {
-          appConfig = AppConfig.fromJson(configCache);
-        });
-      }
+      await applyAppCaching();
 
       /// Load categories config for the Tabbar menu
       /// User to sort the category Setting
-      final categoryTab = appConfig!.tabBar.toList().firstWhereOrNull(
-          (e) => e.layout == 'category' || e.layout == 'vendors');
-      if (categoryTab != null) {
-        if (categoryTab.categories != null) {
-          categories = List<String>.from(categoryTab.categories ?? []);
-          if (ServerConfig().isShopify) {
-            /// Support old type category (base64) work with new API
-            /// Old type is base64, new type is url like gid://shopify/Collection/123456789
-            categories = categories?.map(_parseShopifyCategories).toList();
-          }
-        }
-        if (categoryTab.images != null) {
-          categoriesIcons =
-              categoryTab.images is Map ? Map.from(categoryTab.images) : null;
-        }
-        if (categoryTab.remapCategories != null) {
-          remapCategories = categoryTab.remapCategories;
+      /// Prefer loading category configuration from the first vendor tab
 
-          /// Support old type category (base64) work with new API
-          /// Old type is base64, new type is url like gid://shopify/Collection/123456789
-          if (ServerConfig().isShopify) {
-            remapCategories = remapCategories?.map((e) {
-              for (var key in ['parent', 'category']) {
-                if (e[key] != null) {
-                  e[key] = _parseShopifyCategories(e[key]);
-                }
-              }
-              return e;
-            }).toList();
-          }
-        }
-        categoryLayout = categoryTab.categoryLayout;
+      final vendorTab = appConfig!.tabBar
+          .toList()
+          .firstWhereOrNull((e) => e.layout == 'vendors');
+
+      final categoryTab = appConfig!.tabBar
+          .toList()
+          .firstWhereOrNull((e) => e.layout == 'category');
+
+      if (vendorTab != null) {
+        handleCategoryTab(vendorTab);
+        vendorLayout = vendorTab.vendorLayout;
+      } else if (categoryTab != null) {
+        handleCategoryTab(categoryTab);
       }
 
       if (appConfig?.settings.tabBarConfig.alwaysShowTabBar != null) {
@@ -323,12 +324,14 @@ class AppModel with ChangeNotifier {
   }
 
   Future<void> loadCurrency({Function(Map<String, dynamic>)? callback}) async {
-    /// Load the Rate for Product Currency
-    final rates = await Services().api.getCurrencyRate();
-    if (rates != null) {
-      currencyRate = rates;
-      callback?.call(rates);
-    }
+    try {
+      /// Load the Rate for Product Currency
+      final rates = await Services().api.getCurrencyRate();
+      if (rates != null) {
+        currencyRate = rates;
+        callback?.call(rates);
+      }
+    } catch (_) {}
   }
 
   void updateProductListLayout(layout) {
@@ -346,6 +349,108 @@ class AppModel with ChangeNotifier {
       return EncodeUtils.decode(categoryId);
     } on FormatException catch (_) {
       return categoryId;
+    }
+  }
+
+  void setMainSiteConfig() {
+    if (SettingsBox().isSelectedSiteConfig?.isNotEmpty ?? false) {
+      multiSiteConfig = Configurations.multiSiteConfigs?.firstWhereOrNull(
+          (e) => e.serverConfig?['url'] == SettingsBox().isSelectedSiteConfig);
+    }
+
+    multiSiteConfig ??= (Configurations.multiSiteConfigs?.isNotEmpty ?? false)
+        ? Configurations.multiSiteConfigs!.first
+        : null;
+    SettingsBox().selectedSiteConfig = multiSiteConfig?.serverConfig?['url'];
+    Configurations.serverConfig =
+        multiSiteConfig?.serverConfig ?? Configurations.serverConfig;
+    Services().setAppConfig(serverConfig);
+    MultiSite.mainSiteUrl = Uri.parse(Configurations.mainSiteUrl);
+    _updateAndSaveDefaultLanguage(multiSiteConfig?.languageCode);
+  }
+
+  Future changeSiteConfig(BuildContext context, MultiSiteConfig? config) async {
+    if (multiSiteConfig?.name != config?.name) {
+      try {
+        await Provider.of<UserModel>(context, listen: false).logout();
+        Provider.of<CartModel>(context, listen: false).clearCart();
+        await Provider.of<ProductWishListModel>(context, listen: false)
+            .clearWishList();
+        UserBox().orders = []; //clear local orders when change site
+
+        multiSiteConfig = config;
+        SettingsBox().selectedSiteConfig =
+            multiSiteConfig?.serverConfig?['url'];
+        Configurations.serverConfig =
+            multiSiteConfig?.serverConfig ?? Configurations.serverConfig;
+        Services().setAppConfig(serverConfig);
+        if (config?.currencyCode?.isNotEmpty ?? false) {
+          var currency = _getCurrencyByCode(config!.currencyCode!);
+          if (currency != null) {
+            await changeCurrency(context, currency);
+          }
+        }
+        await changeLanguage(config?.languageCode ?? _langCode, context);
+      } catch (e) {
+        rethrow;
+      }
+    }
+  }
+
+  Map? get overrideTranslation {
+    if ((appConfig?.overrideTranslation?['@@locale'] ?? '') != langCode) {
+      return null;
+    }
+
+    return appConfig?.overrideTranslation;
+  }
+
+  Future _loadConfigJson() async {
+    try {
+      var configFolderPath = multiSiteConfig?.configFolder;
+
+      if (kAppConfig.contains('http')) {
+        // load on cloud config and update on air
+        var path = kAppConfig;
+        if (path.contains('.json')) {
+          path = path.substring(0, path.lastIndexOf('/'));
+          if (configFolderPath?.isNotEmpty ?? false) {
+            path += '/$configFolderPath';
+          }
+          path += '/config_$langCode.json';
+        }
+        try {
+          await fetchCloudAppConfig(path);
+        } catch (_) {
+          /// In case config_$langCode.json is not found,
+          /// load user's original config URL.
+          printLog(
+              '🚑 Config at $path not found. Loading from $kAppConfig instead.');
+          await fetchCloudAppConfig(kAppConfig);
+        }
+      } else {
+        // load local config
+        var path = (configFolderPath?.isNotEmpty ?? false)
+            ? 'lib/config/$configFolderPath/config_$langCode.json'
+            : 'lib/config/config_$langCode.json';
+
+        try {
+          final appJson = await rootBundle.loadString(path);
+          appConfig = AppConfig.fromJson(convert.jsonDecode(appJson));
+        } catch (e) {
+          printLog(e);
+          var path = kAppConfig;
+          //load default template for site if config_xx.json is not existed in configFolderPath for multi sites
+          if (configFolderPath?.isNotEmpty ?? false) {
+            path =
+                'lib/config/$configFolderPath/config_${multiSiteConfig?.languageCode ?? 'en'}.json';
+          }
+          final appJson = await rootBundle.loadString(path);
+          appConfig = AppConfig.fromJson(convert.jsonDecode(appJson));
+        }
+      }
+    } catch (e) {
+      rethrow;
     }
   }
 }

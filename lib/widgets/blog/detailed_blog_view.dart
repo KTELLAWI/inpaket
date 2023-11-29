@@ -44,7 +44,8 @@ class _BlogCardState extends State<BlogDetail> with DetailedBlogMixin {
               icon: Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.background.withOpacity(0.8),
+                  color:
+                      Theme.of(context).colorScheme.background.withOpacity(0.8),
                   borderRadius: const BorderRadius.all(
                     Radius.circular(
                       48,
@@ -97,56 +98,7 @@ class _BlogCardState extends State<BlogDetail> with DetailedBlogMixin {
                           ),
                         ),
                       ),
-                      Row(
-                        children: <Widget>[
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColorLight,
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                            child: Container(
-                              margin: const EdgeInsets.all(5.0),
-                              child: const Icon(
-                                Icons.person,
-                                size: 30.0,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10.0,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                blogData.date,
-                                softWrap: true,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .secondary
-                                      .withOpacity(0.45),
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              const SizedBox(height: 5.0),
-                              Text(
-                                'by ${blogData.author}',
-                                softWrap: true,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .secondary
-                                      .withOpacity(0.45),
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                      renderAuthorInfo(blogData, context),
                       renderAudioWidget(blogData, context),
                       renderBlogContentWithTextEnhancement(blogData),
                     ],

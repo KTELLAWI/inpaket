@@ -103,13 +103,13 @@ class OrderListLoadingItem extends StatelessWidget {
                 ),
                 color: isDarkTheme ? Colors.black26 : Colors.grey.shade300,
               ),
-              child: Center(
+              child: const Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         Skeleton(
                           height: 18.0,
                           width: 70.0,
@@ -123,7 +123,7 @@ class OrderListLoadingItem extends StatelessWidget {
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         Skeleton(
                           height: 18.0,
                           width: 70.0,
@@ -137,7 +137,7 @@ class OrderListLoadingItem extends StatelessWidget {
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         Skeleton(
                           height: 18.0,
                           width: 70.0,
@@ -151,7 +151,7 @@ class OrderListLoadingItem extends StatelessWidget {
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
+                      children: [
                         Skeleton(
                           height: 18.0,
                           width: 70.0,

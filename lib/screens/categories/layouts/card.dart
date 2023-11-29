@@ -15,6 +15,7 @@ import '../../../widgets/common/refresh_scroll_physics.dart';
 import '../../index.dart';
 
 class CardCategories extends StatefulWidget {
+  /// Not support enableLargeCategory
   static const String type = 'card';
   final bool enableParallax;
   final double? parallaxImageRatio;
@@ -296,6 +297,7 @@ class _CategoryCardItem extends StatelessWidget {
                     height: constraints.maxWidth * 0.35,
                     child: Center(
                       child: Text(
+                        textAlign: TextAlign.center,
                         category.name?.toUpperCase() ?? '',
                         style: const TextStyle(
                             color: Colors.white,

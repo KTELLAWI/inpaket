@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../../generated/l10n.dart';
-import '../../../models/index.dart' show AppModel, Product, ProductModel;
+import '../../../models/index.dart' show Product, ProductModel;
 import '../../../services/index.dart' show ServerConfig, Services;
+import '../../../widgets/product/product_quilted_card.dart';
 import '../config/product_config.dart';
 import '../helper/header_view.dart';
 import '../helper/helper.dart';
@@ -44,9 +44,7 @@ class _PinterestLayoutState extends State<PinterestLayout> {
     config['page'] = _page;
     config['limit'] = 10;
 
-    var newProducts = await (_service.api.fetchProductsLayout(
-        config: config,
-        lang: Provider.of<AppModel>(context, listen: false).langCode));
+    var newProducts = await (_service.api.fetchProductsLayout(config: config));
     var isExisted = newProducts!.isNotEmpty &&
         _products!.indexWhere((o) => o.id == newProducts[0].id) > -1;
     if (!isExisted) {
@@ -62,6 +60,8 @@ class _PinterestLayoutState extends State<PinterestLayout> {
     }
   }
 
+  ProductConfig get config => widget.config;
+
   @override
   Widget build(BuildContext context) {
     final isTablet = Helper.isTablet(MediaQuery.of(context));
@@ -69,17 +69,19 @@ class _PinterestLayoutState extends State<PinterestLayout> {
     var column = isTablet ? 3 : 2;
 
     //BUG: has problem when scroll the list products
-    final query = MediaQuery.of(context);
+    final size = MediaQuery.sizeOf(context);
+    final padding = MediaQuery.paddingOf(context);
     return LimitedBox(
-      maxHeight: query.size.height - query.padding.vertical,
+      maxHeight: size.height - padding.vertical,
       child: CustomScrollView(
         cacheExtent: 1000,
         slivers: <Widget>[
-          if (widget.config.name != null)
+          if (config.name?.isNotEmpty == true || config.showSeeAll)
             SliverToBoxAdapter(
               child: HeaderView(
                 headerText: widget.config.name ?? '',
-                showSeeAll: !ServerConfig().isListingType,
+                showSeeAll:
+                    widget.config.showSeeAll && !ServerConfig().isListingType,
                 callback: () => ProductModel.showList(
                   config: widget.config.jsonData,
                 ),
@@ -92,20 +94,33 @@ class _PinterestLayoutState extends State<PinterestLayout> {
             ),
             sliver: SliverMasonryGrid.count(
               crossAxisCount: column,
-              mainAxisSpacing: 4.0,
-              crossAxisSpacing: 4.0,
+              mainAxisSpacing: 16.0,
+              crossAxisSpacing: 16.0,
               childCount: _products!.length,
-              itemBuilder: (context, index) => PinterestCard(
-                item: _products![index],
-                width: MediaQuery.of(context).size.width / 2,
-                config: widget.config,
-              ),
+              itemBuilder: (context, index) {
+                final product = _products![index];
+                if (widget.config.cardDesign.isQuiltedCard) {
+                  return ProductQuiltedCard(
+                    item: product,
+                    width: size.width * 2 / 3,
+                    config: widget.config,
+                  );
+                }
+                return PinterestCard(
+                  item: _products![index],
+                  width: size.width / 2,
+                  config: widget.config,
+                );
+              },
               // staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
             ),
           ),
           SliverToBoxAdapter(
             child: _isEnd
-                ? Center(child: Text(S.of(context).noData))
+                ? Padding(
+                    padding: const EdgeInsets.all(32.0),
+                    child: Center(child: Text(S.of(context).noData)),
+                  )
                 : VisibilityDetector(
                     key: const Key('loading_visible'),
                     onVisibilityChanged: (VisibilityInfo info) =>

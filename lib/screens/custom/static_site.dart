@@ -1,5 +1,5 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:inspireui/inspireui.dart' show PlatformError;
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../common/constants.dart';
@@ -15,20 +15,44 @@ class StaticSite extends StatefulWidget {
 }
 
 class _StaticSiteState extends State<StaticSite> with AppBarMixin {
+  String convertToHtml() {
+    var value = widget.data ?? '';
+    if (value.isEmpty) return '';
+    try {
+      return const Utf8Decoder().convert(base64Decode(value));
+    } catch (e) {
+      return value;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    var controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            // Update loading bar.
+          },
+          onPageStarted: (String url) {},
+          onPageFinished: (String url) {},
+          onWebResourceError: (WebResourceError error) {},
+          onNavigationRequest: (NavigationRequest request) {
+            if (request.url.startsWith('https://www.youtube.com/')) {
+              return NavigationDecision.prevent;
+            }
+            return NavigationDecision.navigate;
+          },
+        ),
+      )
+      ..loadHtmlString(convertToHtml());
+
     return renderScaffold(
       routeName: RouteList.html,
-      child: !isMobile
-          ? const PlatformError()
-          : SafeArea(
-              child: WebView(
-                onWebViewCreated: (controller) async {
-                  await controller
-                      .loadUrl('data:text/html;base64,${widget.data}');
-                },
-              ),
-            ),
+      child: SafeArea(
+        child: WebViewWidget(controller: controller),
+      ),
     );
   }
 }

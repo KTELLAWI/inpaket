@@ -17,9 +17,9 @@ class PageTabScreen extends StatelessWidget {
     var groupTabData = tabData.where((e) => e.groupLayout == true).toList();
     var initialRoute = config.layout;
     var routeData = initialRoute == RouteList.tabMenu ||
-              initialRoute == RouteList.scrollable
-          ? groupTabData
-          : config;
+            initialRoute == RouteList.scrollable
+        ? groupTabData
+        : config;
 
     return Scaffold(
       appBar: AppBar(

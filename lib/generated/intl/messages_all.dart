@@ -34,17 +34,20 @@ import 'messages_hu.dart' deferred as messages_hu;
 import 'messages_id.dart' deferred as messages_id;
 import 'messages_it.dart' deferred as messages_it;
 import 'messages_ja.dart' deferred as messages_ja;
+import 'messages_kk.dart' deferred as messages_kk;
 import 'messages_km.dart' deferred as messages_km;
 import 'messages_kn.dart' deferred as messages_kn;
 import 'messages_ko.dart' deferred as messages_ko;
 import 'messages_ku.dart' deferred as messages_ku;
 import 'messages_lo.dart' deferred as messages_lo;
+import 'messages_lt.dart' deferred as messages_lt;
 import 'messages_mr.dart' deferred as messages_mr;
 import 'messages_ms.dart' deferred as messages_ms;
 import 'messages_my.dart' deferred as messages_my;
 import 'messages_nl.dart' deferred as messages_nl;
 import 'messages_pl.dart' deferred as messages_pl;
-import 'messages_pt.dart' deferred as messages_pt;
+import 'messages_pt_BR.dart' deferred as messages_pt_br;
+import 'messages_pt_PT.dart' deferred as messages_pt_pt;
 import 'messages_ro.dart' deferred as messages_ro;
 import 'messages_ru.dart' deferred as messages_ru;
 import 'messages_sk.dart' deferred as messages_sk;
@@ -85,17 +88,20 @@ Map<String, LibraryLoader> _deferredLibraries = {
   'id': messages_id.loadLibrary,
   'it': messages_it.loadLibrary,
   'ja': messages_ja.loadLibrary,
+  'kk': messages_kk.loadLibrary,
   'km': messages_km.loadLibrary,
   'kn': messages_kn.loadLibrary,
   'ko': messages_ko.loadLibrary,
   'ku': messages_ku.loadLibrary,
   'lo': messages_lo.loadLibrary,
+  'lt': messages_lt.loadLibrary,
   'mr': messages_mr.loadLibrary,
   'ms': messages_ms.loadLibrary,
   'my': messages_my.loadLibrary,
   'nl': messages_nl.loadLibrary,
   'pl': messages_pl.loadLibrary,
-  'pt': messages_pt.loadLibrary,
+  'pt_BR': messages_pt_br.loadLibrary,
+  'pt_PT': messages_pt_pt.loadLibrary,
   'ro': messages_ro.loadLibrary,
   'ru': messages_ru.loadLibrary,
   'sk': messages_sk.loadLibrary,
@@ -156,6 +162,8 @@ MessageLookupByLibrary? _findExact(String localeName) {
       return messages_it.messages;
     case 'ja':
       return messages_ja.messages;
+    case 'kk':
+      return messages_kk.messages;
     case 'km':
       return messages_km.messages;
     case 'kn':
@@ -166,6 +174,8 @@ MessageLookupByLibrary? _findExact(String localeName) {
       return messages_ku.messages;
     case 'lo':
       return messages_lo.messages;
+    case 'lt':
+      return messages_lt.messages;
     case 'mr':
       return messages_mr.messages;
     case 'ms':
@@ -176,8 +186,10 @@ MessageLookupByLibrary? _findExact(String localeName) {
       return messages_nl.messages;
     case 'pl':
       return messages_pl.messages;
-    case 'pt':
-      return messages_pt.messages;
+    case 'pt_BR':
+      return messages_pt_br.messages;
+    case 'pt_PT':
+      return messages_pt_pt.messages;
     case 'ro':
       return messages_ro.messages;
     case 'ru':

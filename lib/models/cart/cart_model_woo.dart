@@ -33,7 +33,8 @@ class CartModelWoo
 
   @override
   Future<void> initData() async {
-    await getShippingAddress();
+    resetValues();
+    await getAddress();
     getCartInLocal();
     getCurrency();
   }
@@ -51,10 +52,10 @@ class CartModelWoo
     }
 
     if (kPaymentConfig.enableShipping) {
-      subtotal += getShippingCost()!;
+      subtotal += getShippingCost(includeTax: true)!;
     }
 
-    if (taxes.isNotEmpty) {
+    if (taxes.isNotEmpty && !isIncludingTax) {
       subtotal += taxesTotal;
     }
 
@@ -149,7 +150,7 @@ class CartModelWoo
         ? (variation.backordersAllowed ?? false)
         : product.backordersAllowed;
 
-    if (!product.manageStock) {
+    if (!product.manageStock || allowBackorder) {
       productsInCart[key] = total;
     } else if (total <= stockQuantity!) {
       if (product.minQuantity == null && product.maxQuantity == null) {
@@ -186,6 +187,7 @@ class CartModelWoo
     }
 
     updateDiscount(onFinish: notifyListeners);
+    notifyListeners();
 
     Services().widget.syncCartToWebsite(this);
 
@@ -254,6 +256,7 @@ class CartModelWoo
     rewardTotal = 0;
     walletAmount = 0;
     taxesTotal = 0;
+    isIncludingTax = false;
     taxes = [];
     notifyListeners();
 
@@ -387,31 +390,31 @@ class CartModelWoo
       var stockQuantity =
           variation == null ? product.stockQuantity : variation.stockQuantity;
 
-      if (!product.manageStock || allowBackorder) {
-        productsInCart[key] = total;
-      } else if (total! <= stockQuantity!) {
-        if (product.minQuantity == null && product.maxQuantity == null) {
+      final minQuantity = product.minQuantity;
+      final maxQuantity = product.maxQuantity;
+
+      if (!product.manageStock || allowBackorder || total! <= stockQuantity!) {
+        if (minQuantity == null && maxQuantity == null) {
           productsInCart[key] = total;
-        } else if (product.minQuantity != null && product.maxQuantity == null) {
-          total < product.minQuantity!
-              ? message =
-                  '${S.current.minimumQuantityIs} ${product.minQuantity}'
+        } else if (minQuantity != null && maxQuantity == null) {
+          total! < minQuantity
+              ? message = '${S.current.minimumQuantityIs} $minQuantity'
               : productsInCart[key] = total;
-        } else if (product.minQuantity == null && product.maxQuantity != null) {
-          (total > product.maxQuantity! && !allowBackorder)
+        } else if (minQuantity == null && maxQuantity != null) {
+          (total! > maxQuantity && !allowBackorder)
               ? message =
-                  '${S.current.youCanOnlyPurchase} ${product.maxQuantity} ${S.current.forThisProduct}'
+                  '${S.current.youCanOnlyPurchase} $maxQuantity ${S.current.forThisProduct}'
               : productsInCart[key] = total;
-        } else if (product.minQuantity != null && product.maxQuantity != null) {
-          if (total >= product.minQuantity! && total <= product.maxQuantity!) {
+        } else if (minQuantity != null && maxQuantity != null) {
+          if (total! >= minQuantity && total <= maxQuantity) {
             productsInCart[key] = total;
           } else {
-            if (total < product.minQuantity!) {
-              message = '${S.current.minimumQuantityIs} ${product.minQuantity}';
+            if (total < minQuantity) {
+              message = '${S.current.minimumQuantityIs} $minQuantity';
             }
-            if (total > product.maxQuantity! && !allowBackorder) {
+            if (total > maxQuantity && !allowBackorder) {
               message =
-                  '${S.current.youCanOnlyPurchase} ${product.maxQuantity} ${S.current.forThisProduct}';
+                  '${S.current.youCanOnlyPurchase} $maxQuantity ${S.current.forThisProduct}';
             }
           }
         }
@@ -453,19 +456,24 @@ class CartModelWoo
     notifyListeners();
   }
 
-  double getShippingVendorCost() {
+  double getShippingVendorCost({bool includeTax = false}) {
     var sum = 0.0;
 
     for (var element in selectedShippingMethods) {
       sum += element.shippingMethods[0].cost ?? 0.0;
+      if (includeTax) {
+        sum += element.shippingMethods[0].shippingTax ?? 0.0;
+      }
     }
     return sum;
   }
 
   @override
-  double? getShippingCost() {
-    var isMultiVendor = ServerConfig().typeName.isMultiVendor;
-    return isMultiVendor ? getShippingVendorCost() : super.getShippingCost();
+  double? getShippingCost({bool includeTax = false}) {
+    var isMultiVendor = ServerConfig().isVendorType();
+    return isMultiVendor
+        ? getShippingVendorCost(includeTax: includeTax)
+        : super.getShippingCost(includeTax: includeTax);
   }
 
   @override
@@ -500,8 +508,44 @@ class CartModelWoo
   }
 
   @override
-  void setTaxInfo(List<Tax> taxes, double taxesTotal) {
-    super.setTaxInfo(taxes, taxesTotal);
+  void setTaxInfo(List<Tax> taxes, double taxesTotal, bool isIncludingTax) {
+    super.setTaxInfo(taxes, taxesTotal, isIncludingTax);
+    notifyListeners();
+  }
+
+  @override
+  double getProductAddonsPrice(String id) {
+    if (productAddonsOptionsInCart.isNotEmpty) {
+      var price = 0.0;
+      if (productAddonsOptionsInCart[id] == null) {
+        return 0.0;
+      }
+      for (var option in productAddonsOptionsInCart[id]!) {
+        var quantity = productsInCart[id] ?? 0;
+        var optionPrice = (double.tryParse(option.price ?? '0.0') ?? 0.0);
+        price += optionPrice * quantity;
+      }
+      return price;
+    }
+    return 0.0;
+  }
+
+  @override
+  void updateProduct(String productId, Product? product) {
+    super.updateProduct(productId, product);
+    notifyListeners();
+  }
+
+  @override
+  void updateProductVariant(
+      String productId, ProductVariation? productVariant) {
+    super.updateProductVariant(productId, productVariant);
+    notifyListeners();
+  }
+
+  @override
+  void updateStateCheckoutButton() {
+    super.updateStateCheckoutButton();
     notifyListeners();
   }
 }

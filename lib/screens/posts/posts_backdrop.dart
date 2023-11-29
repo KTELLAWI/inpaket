@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../common/constants.dart';
 import '../../generated/l10n.dart';
 import '../../models/entities/filter_sorty_by.dart';
 import '../../models/index.dart'
@@ -9,6 +10,7 @@ import '../../services/index.dart';
 import '../../widgets/backdrop/backdrop.dart';
 import '../../widgets/backdrop/backdrop_menu.dart';
 import '../../widgets/blog/blog_list_backdrop.dart';
+import '../common/app_bar_mixin.dart';
 
 class BlogsArgument {
   final dynamic cateId;
@@ -36,7 +38,7 @@ class BlogsPage extends StatefulWidget {
 }
 
 class _BlogsPageState extends State<BlogsPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, AppBarMixin {
   dynamic newCategoryId = -1;
   String? orderBy;
   String? order;
@@ -74,6 +76,7 @@ class _BlogsPageState extends State<BlogsPage>
     attribute,
     currentSelectedTerms,
     listingLocationId,
+    isSearch,
     FilterSortBy? sortBy,
   }) {
     _controller.forward();
@@ -115,7 +118,9 @@ class _BlogsPageState extends State<BlogsPage>
   @override
   Widget build(BuildContext context) {
     final blog = Provider.of<BlogModel>(context);
-    final title = blog.categoryName ?? S.of(context).blog;
+    final title = (blog.categoryName?.isNotEmpty ?? false)
+        ? blog.categoryName!
+        : S.of(context).blog;
     final layout = widget.config != null && widget.config['layout'] != null
         ? widget.config['layout']
         : Provider.of<AppModel>(context).productListLayout;
@@ -123,6 +128,7 @@ class _BlogsPageState extends State<BlogsPage>
 
     _PostBackdrop backdrop({blogs, isFetching, errMsg, isEnd}) => _PostBackdrop(
           backdrop: Backdrop(
+            hasAppBar: showAppBar(RouteList.backdrop),
             frontLayer: BlogListBackdrop(
               blogs: blogs,
               onRefresh: onRefresh,
@@ -156,11 +162,14 @@ class _BlogsPageState extends State<BlogsPage>
     return ListenableProvider.value(
       value: blog,
       child: Consumer<BlogModel>(builder: (context, value, child) {
-        return backdrop(
-            blogs: value.blogList,
-            isFetching: value.isFetching,
-            errMsg: value.errMsg,
-            isEnd: value.isEnd);
+        return renderScaffold(
+          routeName: RouteList.backdrop,
+          child: backdrop(
+              blogs: value.blogList,
+              isFetching: value.isFetching,
+              errMsg: value.errMsg,
+              isEnd: value.isEnd),
+        );
       }),
     );
   }

@@ -27,6 +27,8 @@ class CategoryConfig {
   String? type;
   String? layout;
   bool wrap = false;
+  bool horizontalItem = false;
+  bool gradientDesign = false;
 
   /// type double
   int? columns;
@@ -36,12 +38,15 @@ class CategoryConfig {
   double marginTop = 0.0;
   double marginBottom = 0.0;
 
+  double separateWidth = 24.0;
+
   CommonItemConfig commonItemConfig = CommonItemConfig();
   List<CategoryItemConfig> items = [];
 
   CategoryConfig({
     this.type,
     this.wrap = false,
+    this.horizontalItem = false,
     this.shadow,
     this.columns,
     this.layout,
@@ -49,6 +54,8 @@ class CategoryConfig {
     this.marginRight = 10.0,
     this.marginTop = 0.0,
     this.marginBottom = 0.0,
+    this.separateWidth = 24.0,
+    this.gradientDesign = false,
     required this.commonItemConfig,
     required this.items,
   });
@@ -59,13 +66,17 @@ class CategoryConfig {
 
     wrap = json['wrap'] ?? false;
 
+    horizontalItem = json['horizontalItem'] ?? false;
+
     columns = json['columns'];
     marginLeft = Helper.formatDouble(json['marginLeft']) ?? 15.0;
     marginRight = Helper.formatDouble(json['marginRight']) ?? 15.0;
     marginTop = Helper.formatDouble(json['marginTop']) ?? 10.0;
     marginBottom = Helper.formatDouble(json['marginBottom']) ?? 10.0;
+    separateWidth = Helper.formatDouble(json['separateWidth']) ?? 24.0;
     shadow = Helper.formatDouble(json['shadow']);
     commonItemConfig = CommonItemConfig.fromJson(json);
+    gradientDesign = json['gradientStyle'] ?? false;
 
     if (json['items'] != null) {
       items = [];
@@ -79,12 +90,14 @@ class CategoryConfig {
     var map = <String, dynamic>{};
     map['type'] = type;
     map['wrap'] = wrap;
+    map['horizontalItem'] = horizontalItem;
     map['columns'] = columns;
     map['layout'] = layout;
     map['marginLeft'] = marginLeft;
     map['marginRight'] = marginRight;
     map['marginTop'] = marginTop;
     map['marginBottom'] = marginBottom;
+    map['separateWidth'] = separateWidth;
     map['shadow'] = shadow;
     map.addAll(commonItemConfig.toJson());
 

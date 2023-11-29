@@ -54,19 +54,22 @@ String? floatingActionButtonLocationToString(
 enum FloatingType {
   diamond,
   rectangle,
-}
+  circle;
 
-FloatingType stringToFloatingType(String? value) {
-  switch (value) {
-    case 'diamond':
-      return FloatingType.diamond;
-    default:
-      return FloatingType.rectangle;
+  factory FloatingType.fromString(String? value) {
+    switch (value) {
+      case 'diamond':
+        return FloatingType.diamond;
+      case 'rectangle':
+        // For users who previously used the `rectangle` type, it will be the
+        // same as new `circle` type
+        return FloatingType.rectangle;
+      case 'circle':
+      default:
+        return FloatingType.circle;
+    }
   }
 }
-
-String floatingTypeToString(FloatingType value) =>
-    value.toString().split('.').last;
 
 class TabBarFloatingConfig {
   int? position;
@@ -78,15 +81,20 @@ class TabBarFloatingConfig {
   double? width;
   double? height;
 
+  double notchMargin = 4.0;
+  bool isCoverMode = false;
+
   TabBarFloatingConfig({
     this.position,
     this.radius,
-    this.floatingType = FloatingType.rectangle,
+    this.floatingType = FloatingType.circle,
     this.color,
     this.width,
     this.height,
     this.elevation,
     this.location,
+    this.notchMargin = 4.0,
+    this.isCoverMode = false,
   });
 
   TabBarFloatingConfig.fromJson(dynamic json) {
@@ -95,11 +103,13 @@ class TabBarFloatingConfig {
     }
     location = stringToFloatingActionButtonLocation(json['location']);
     position = Helper.formatInt(json['position'], 0);
-    floatingType = stringToFloatingType(json['floatingType']);
-    radius = Helper.formatDouble(json['radius'], 50.0);
-    width = Helper.formatDouble(json['width'], 50.0);
-    height = Helper.formatDouble(json['height'], 50.0);
-    elevation = Helper.formatDouble(json['elevation'], 2.0);
+    floatingType = FloatingType.fromString(json['floatingType']);
+    radius = Helper.formatDouble(json['radius']) ?? 50.0;
+    width = Helper.formatDouble(json['width']) ?? 50.0;
+    height = Helper.formatDouble(json['height']) ?? 50.0;
+    elevation = Helper.formatDouble(json['elevation']) ?? 2.0;
+    notchMargin = Helper.formatDouble(json['notchMargin']) ?? 4.0;
+    isCoverMode = json['isCoverMode'] ?? false;
   }
 
   Map<String, dynamic> toJson() {
@@ -111,7 +121,9 @@ class TabBarFloatingConfig {
     map['width'] = width;
     map['height'] = height;
     map['elevation'] = elevation;
-    map['floatingType'] = floatingTypeToString(floatingType);
+    map['floatingType'] = floatingType.name;
+    map['notchMargin'] = notchMargin;
+    map['isCoverMode'] = isCoverMode;
     return map;
   }
 }

@@ -23,7 +23,9 @@ enum ConfigType {
   delivery,
   woo,
   notion,
-  bigCommerce
+  bigCommerce,
+  gpt,
+  webview
 }
 
 class ServerConfig {
@@ -32,6 +34,7 @@ class ServerConfig {
   String? blog;
   late String consumerKey;
   late String consumerSecret;
+  String? multiVendorType; //support for listeo with Dokan
   String? addListingUrl;
   String? forgetPassword;
   String? accessToken;
@@ -41,6 +44,10 @@ class ServerConfig {
   /// Platform and Type are different
   /// Platform can be woo, wcfm, dokan
   late String platform;
+
+  /// chatgpt config
+  String? supabaseUrl;
+  String? supabaseAnonKey;
 
   static final ServerConfig _instance = ServerConfig._internal();
 
@@ -84,7 +91,21 @@ class ServerConfig {
   bool get isShopify => typeName == 'shopify';
 
   bool get isWordPress {
-    return typeName == 'wordpress';
+    return typeName == 'wordpress' || typeName == 'gpt';
+  }
+
+  bool get isMStoreApiPluginSupported {
+    return [
+      ConfigType.listeo,
+      ConfigType.listpro,
+      ConfigType.mylisting,
+      ConfigType.dokan,
+      ConfigType.wcfm,
+      ConfigType.woo,
+      ConfigType.wordpress,
+      ConfigType.vendorAdmin,
+      ConfigType.delivery,
+    ].contains(type);
   }
 
   bool get isListProType => typeName == 'listpro';
@@ -93,9 +114,17 @@ class ServerConfig {
 
   bool get isMyListingType => typeName == 'mylisting';
 
+  bool get isFluxGPT => typeName == 'gpt';
+
+  bool get isWebView => typeName == 'webview';
+
+  bool get isOpencart => typeName == 'opencart';
+
+  bool get isMagento => typeName == 'magento';
+
   /// Another framework use the UI of Wordpress blog
   bool get isUseWordPressBlog {
-    return typeName != 'wordpress' && blog != null;
+    return typeName != 'wordpress' && typeName != 'gpt' && blog != null;
   }
 
   bool get isPayPluginSupported {
@@ -116,11 +145,42 @@ class ServerConfig {
   }
 
   bool isVendorType() {
-    return typeName == 'wcfm' || typeName == 'dokan';
+    return typeName == 'wcfm' ||
+        typeName == 'dokan' ||
+        (typeName == 'listeo' && multiVendorType == 'dokan');
   }
 
   bool get isSupportDeleteAccount {
     return true;
+  }
+
+  bool get isNeedToGenerateTokenForGuestCheckout => isOpencart || isShopify;
+
+  bool get isSupportCouponList => !(isShopify || isMagento);
+
+  bool get isWooPluginSupported {
+    return [
+      ConfigType.dokan,
+      ConfigType.wcfm,
+      ConfigType.woo,
+    ].contains(type);
+  }
+
+  /// Only for FluxGPT
+  Map openAIConfig() {
+    try {
+      if (type != ConfigType.gpt) {
+        return {};
+      }
+      var map = {};
+      map['enableChat'] = true;
+      map['supabaseUrl'] = supabaseUrl;
+      map['supabaseAnonKey'] = supabaseAnonKey;
+      map.removeWhere((key, value) => value == null);
+      return map;
+    } catch (e) {
+      return {};
+    }
   }
 
   void setConfig(config) {
@@ -132,12 +192,20 @@ class ServerConfig {
     blog = config['blog'];
     consumerKey = config['consumerKey'] ?? '';
     consumerSecret = config['consumerSecret'] ?? '';
+    multiVendorType = config['multiVendorType'] ?? '';
     forgetPassword = config['forgetPassword'];
     accessToken = config['accessToken'];
     isCacheImage = config['isCacheImage'];
     isBuilder = config['isBuilder'] ?? false;
-    platform = config['platform'] ?? 'wcfm';
+    platform = config['platform'] ??
+        (type == ConfigType.dokan
+            ? 'dokan'
+            : type == ConfigType.wcfm
+                ? 'wcfm'
+                : 'woo');
     addListingUrl = config['addListingUrl'];
+    supabaseUrl = config['supabaseUrl'];
+    supabaseAnonKey = config['supabaseAnonKey'];
   }
 }
 
@@ -178,7 +246,7 @@ mixin ConfigMixin {
 
   void configVendorAdmin(appConfig) {}
 
-  void configWordPress(appConfig) {}
+  void configWordPress(appConfig, {bool? isRoot}) {}
 
   void configDelivery(appConfig) {}
 
@@ -187,6 +255,12 @@ mixin ConfigMixin {
   void configBigCommerce(appConfig) {}
 
   void configPOS(appConfig) {}
+
+  void configGPT(appConfig) {}
+
+  void configWebView(appConfig) {
+    widget = RawFramework();
+  }
 
   void setAppConfig(appConfig) {
     ServerConfig().setConfig(appConfig);
@@ -244,8 +318,13 @@ mixin ConfigMixin {
         configPOS(appConfig);
         break;
       case 'woo':
-      default:
         configWoo(appConfig);
+        break;
+      case 'gpt':
+        configGPT(appConfig);
+        break;
+      default:
+        configWebView(appConfig);
         break;
     }
   }
@@ -309,6 +388,10 @@ mixin ConfigMixin {
 
   dynamic getPOSRoutesWithSettings(RouteSettings settings) => {};
 
+  dynamic getOpenAIRoutesWithSettings(RouteSettings settings) => {};
+
+  dynamic getWholesaleRoutesWithSettings(RouteSettings settings) => {};
+
   void doIAPPayment(
           BuildContext context,
           Product product,
@@ -332,4 +415,31 @@ extension ConfigMixinExt on String {
   bool get isMultiVendor => ['wcfm', 'dokan'].contains(this);
 
   bool get isPos => this == 'pos';
+}
+
+class RawFramework extends BaseFrameworks {
+  @override
+  Future<List<Country>?> loadCountries() {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<CountryState>> loadStates(Country country) {
+    throw UnimplementedError();
+  }
+
+  @override
+  void updateUserInfo(
+      {User? loggedInUser,
+      BuildContext? context,
+      required Function onError,
+      Function? onSuccess,
+      required String currentPassword,
+      required String userDisplayName,
+      String? userEmail,
+      String? userNiceName,
+      String? userUrl,
+      String? userPassword,
+      String? userFirstname,
+      String? userLastname}) {}
 }

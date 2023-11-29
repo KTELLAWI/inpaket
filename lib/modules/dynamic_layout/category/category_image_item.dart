@@ -63,9 +63,10 @@ class CategoryImageItem extends StatelessWidget {
           decoration: BoxDecoration(
               border: border > 0
                   ? Border.all(
-                      color: HexColor(
-                        '5F${kNameToHex['grey']!}',
-                      ),
+                      color: Theme.of(context)
+                          .colorScheme
+                          .secondary
+                          .withOpacity(0.5),
                       width: border.toDouble(),
                     )
                   : null,

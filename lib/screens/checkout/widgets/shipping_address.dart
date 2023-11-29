@@ -13,14 +13,12 @@ import '../../../common/tools/flash.dart';
 import '../../../data/boxes.dart';
 import '../../../generated/l10n.dart';
 import '../../../models/index.dart'
-    show Address, CartModel, City, Country, CountryState, UserModel;
-import '../../../modules/sms_login/sms_login.dart';
+    show Address, AppModel, CartModel, City, Country, CountryState, UserModel;
 import '../../../services/index.dart';
 import '../../../widgets/common/common_safe_area.dart';
 import '../../../widgets/common/flux_image.dart';
 import '../../../widgets/common/place_picker.dart';
 import '../choose_address_screen.dart';
-import 'otp.dart';
 
 part 'shipping_address_extension.dart';
 
@@ -34,6 +32,8 @@ class ShippingAddress extends StatefulWidget {
 }
 
 class _ShippingAddressState extends State<ShippingAddress> {
+  String get langCode => Provider.of<AppModel>(context, listen: false).langCode;
+
   final _formKey = GlobalKey<FormState>();
 
   final Map<int, AddressFieldType> _fieldPosition = {};
@@ -205,8 +205,15 @@ class _ShippingAddressState extends State<ShippingAddress> {
         _textControllers[AddressFieldType.country]?.text ?? '';
     if (currentCountry.isNotEmpty) {
       try {
-        countryName =
-            picker.CountryPickerUtils.getCountryByIsoCode(currentCountry).name;
+        if (countries?.isEmpty ?? true) {
+          countryName =
+              picker.CountryPickerUtils.getCountryByIsoCode(currentCountry)
+                  .name;
+        } else {
+          countryName = countries!
+              .firstWhere((element) => element.code == currentCountry)
+              .name!;
+        }
       } catch (e) {
         countryName = S.of(context).country;
       }
@@ -257,10 +264,7 @@ class _ShippingAddressState extends State<ShippingAddress> {
                               ),
                               (countries!.length == 1)
                                   ? Text(
-                                      picker.CountryPickerUtils
-                                              .getCountryByIsoCode(
-                                                  countries![0].code!)
-                                          .name,
+                                      countryName,
                                       style: const TextStyle(fontSize: 18),
                                     )
                                   : GestureDetector(
@@ -474,7 +478,7 @@ class _ShippingAddressState extends State<ShippingAddress> {
                                 (currentFieldController?.text.isEmpty ?? false),
                             textFieldController: currentFieldController,
                             focusNode: currentFieldFocusNode,
-                            //isReadOnly: isFieldReadOnly(index),
+                            isReadOnly: isFieldReadOnly(index),
                             autofillHints: currentFieldType.autofillHint != null
                                 ? ['${currentFieldType.autofillHint}']
                                 : null,
@@ -500,7 +504,7 @@ class _ShippingAddressState extends State<ShippingAddress> {
                             onInputValidated: (value) => {},
                             spaceBetweenSelectorAndTextField: 0,
                             selectorConfig: SelectorConfig(
-                              //   enable: kPhoneNumberConfig.useInternationalFormat,
+                              enable: kPhoneNumberConfig.useInternationalFormat,
                               showFlags: kPhoneNumberConfig.showCountryFlag,
                               selectorType: kPhoneNumberConfig.selectorType,
                               setSelectorButtonAsPrefixIcon:
@@ -518,6 +522,7 @@ class _ShippingAddressState extends State<ShippingAddress> {
                             ),
                             formatInput: kPhoneNumberConfig.formatInput,
                             countries: kPhoneNumberConfig.customCountryList,
+                            locale: langCode,
                           );
                         }
 

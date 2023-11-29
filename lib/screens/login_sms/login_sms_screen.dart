@@ -33,8 +33,8 @@ class LoginSMSScreenState<T extends LoginSMSScreen> extends State<T>
 
   void loginSMS(context) {
     if (viewModel.phoneNumber.isEmpty) {
-      Tools.showSnackBar(
-          ScaffoldMessenger.of(context), S.of(context).pleaseInput);
+      Tools.showSnackBar(ScaffoldMessenger.of(context),
+          S.of(context).pleaseInputFillAllFields);
     } else {
       Future autoRetrieve(String verId) {
         return stopAnimation();
@@ -156,7 +156,8 @@ class LoginSMSScreenState<T extends LoginSMSScreen> extends State<T>
                             name: countryCode?.name,
                           ),
                           //Get the country information relevant to the initial selection
-                          backgroundColor: Theme.of(context).colorScheme.background,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.background,
                           dialogBackgroundColor:
                               Theme.of(context).dialogBackgroundColor,
                         ),

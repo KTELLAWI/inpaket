@@ -7,6 +7,7 @@ import '../../common/tools/flash.dart';
 import '../../generated/l10n.dart';
 import '../../models/app_model.dart';
 import '../../models/entities/currency.dart';
+import '../../services/services.dart';
 import '../base_screen.dart';
 import '../common/app_bar_mixin.dart';
 
@@ -17,17 +18,30 @@ class CurrenciesScreen extends StatefulWidget {
 
 class _CurrenciesScreenState extends BaseScreen<CurrenciesScreen>
     with AppBarMixin {
+  final ValueNotifier<List<Currency>?> _availableCurrenciesNotifier =
+      ValueNotifier<List<Currency>?>(null);
   String? currencyDisplay;
 
   @override
   void afterFirstLayout(BuildContext context) {
     currencyDisplay = Provider.of<AppModel>(context, listen: false).currency;
+    getCurrency();
     setState(() {});
+  }
+
+  Future<void> getCurrency() async {
+    final currencies = await Services().api.getAvailableCurrencies();
+    _availableCurrenciesNotifier.value = currencies;
+  }
+
+  @override
+  void dispose() {
+    _availableCurrenciesNotifier.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final currencies = kAdvanceConfig.currencies;
     return renderScaffold(
       routeName: RouteList.currencies,
       child: MediaQuery(
@@ -53,37 +67,64 @@ class _CurrenciesScreenState extends BaseScreen<CurrenciesScreen>
               ),
             ),
           ),
-          body: ListView.separated(
-            itemCount: currencies.length,
-            separatorBuilder: (_, __) => const Divider(
-              color: Colors.black12,
-              height: 1.0,
-              indent: 75,
-              //endIndent: 20,
-            ),
-            itemBuilder: (_, index) => buildItem(currencies[index]),
-          ),
+          body: buildListCurrency(),
         ),
       ),
     );
   }
 
-  Widget buildItem(Currency currency) {
+  Widget buildListCurrency() {
+    final currencies = kAdvanceConfig.currencies;
+    return ValueListenableBuilder(
+      valueListenable: _availableCurrenciesNotifier,
+      builder: (_, availableCurrencies, __) {
+        if (availableCurrencies == null) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        final supportedCurrencies = availableCurrencies.isEmpty
+            ? currencies
+            : currencies.where((element) => availableCurrencies
+                .any((e) => e.countryCode == element.countryCode));
+
+        // final unsupportedCurrencies = currencies
+        //     .where((element) => !supportedCurrencies.contains(element));
+
+        // final allCurrencies = [
+        //   ...supportedCurrencies,
+        //   ...unsupportedCurrencies
+        // ];
+        return ListView.separated(
+          itemCount: currencies.length,
+          separatorBuilder: (_, __) => const Divider(
+            color: Colors.black12,
+            height: 1.0,
+            indent: 75,
+          ),
+          itemBuilder: (_, index) {
+            final currency = currencies[index];
+            return buildItem(currency,
+                isEnable: supportedCurrencies.contains(currency));
+          },
+        );
+      },
+    );
+  }
+
+  Widget buildItem(Currency currency, {bool isEnable = true}) {
     return Card(
       elevation: 0,
       margin: const EdgeInsets.all(0),
       child: ListTile(
+        enabled: isEnable,
         title: Text('${currency.currencyDisplay} (${currency.symbol})'),
         onTap: () {
           setState(() {
             currencyDisplay = currency.currencyDisplay;
           });
 
-          Provider.of<AppModel>(context, listen: false).changeCurrency(
-            currency.currencyDisplay,
-            context,
-            code: currency.currencyCode,
-          );
+          Provider.of<AppModel>(context, listen: false)
+              .changeCurrency(context, currency);
 
           FlashHelper.message(
             context,

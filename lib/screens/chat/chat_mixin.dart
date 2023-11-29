@@ -14,7 +14,7 @@ import '../../widgets/common/flux_image.dart';
 import '../../widgets/common/webview.dart';
 import 'chat_screen.dart';
 
-class ChatMixin {
+mixin ChatMixin {
   late List<Map> options;
 
   List<CupertinoActionSheetAction> getListAction({

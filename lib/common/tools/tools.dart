@@ -112,7 +112,7 @@ class Tools {
     dynamic long,
     dynamic address,
   }) async {
-    if (lat == null || long == null) {
+    if (address != null && '$address'.trim().isNotEmpty) {
       /// Launch map query using address.
       final url = 'www.google.com/maps/search/?api=1&'
           'query=${Uri.encodeQueryComponent('$address'.trim())}';

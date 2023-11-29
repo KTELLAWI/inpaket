@@ -67,12 +67,13 @@ class WebView extends StatefulWidget {
   final bool enableForward;
   final bool enableBackward;
   final bool enableClose;
-  final PageFinishedCallback? onPageFinished;
+  final Function(String url)? onPageFinished;
   final Function? onClosed;
   final bool auth;
   final String script;
   final Map<String, String>? headers;
   final String? routeName;
+  final bool hideNewAppBar;
 
   const WebView({
     Key? key,
@@ -84,10 +85,11 @@ class WebView extends StatefulWidget {
     this.auth = false,
     this.script = '',
     this.headers,
-    this.enableForward = true,
-    this.enableBackward = true,
+    this.enableForward = false,
+    this.enableBackward = false,
     this.enableClose = true,
     this.routeName,
+    this.hideNewAppBar = false,
   }) : super(key: key);
 
   @override
@@ -100,6 +102,7 @@ class _WebViewState extends State<WebView> with WebviewMixin, AppBarMixin {
   String html = '';
 
   User? get user => Provider.of<UserModel>(context, listen: true).user;
+  late final WebViewController controller;
 
   flutter.WebViewController? _controller;
 
@@ -107,6 +110,15 @@ class _WebViewState extends State<WebView> with WebviewMixin, AppBarMixin {
       gestureRecognizers = {
     const foundation.Factory(EagerGestureRecognizer.new)
   };
+
+  void onFinishLoading() {
+    setState(() {
+      selectedIndex = 0;
+    });
+    controller.runJavaScript(widget.script.isEmptyOrNull
+        ? kAdvanceConfig.webViewScript
+        : widget.script);
+  }
 
   @override
   void initState() {
@@ -118,7 +130,25 @@ class _WebViewState extends State<WebView> with WebviewMixin, AppBarMixin {
       });
     }
 
-    if (isAndroid) flutter.WebView.platform = flutter.SurfaceAndroidWebView();
+    // Fixme: webview refactor
+    // if (isAndroid) flutter.WebView.platform = flutter.SurfaceAndroidWebView();
+    controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            if (progress == 100) {
+              onFinishLoading();
+            }
+          },
+          onPageStarted: (String url) {},
+          onPageFinished: (String url) => widget.onPageFinished?.call(url),
+          onWebResourceError: (WebResourceError error) {},
+          // onNavigationRequest: (NavigationRequest request) {},
+        ),
+      )
+      ..loadRequest(Uri.parse(widget.url.toString()));
 
     super.initState();
   }
@@ -159,6 +189,7 @@ class _WebViewState extends State<WebView> with WebviewMixin, AppBarMixin {
     if (isMacOS || isWindow) {
       return renderScaffold(
         routeName: widget.routeName ?? RouteList.webview,
+        hideNewAppBar: widget.hideNewAppBar,
         secondAppBar: widget.appBar ??
             AppBar(
               backgroundColor: Theme.of(context).colorScheme.background,
@@ -215,6 +246,7 @@ class _WebViewState extends State<WebView> with WebviewMixin, AppBarMixin {
     if (!kIsWeb && kAdvanceConfig.inAppWebView) {
       return renderScaffold(
         routeName: widget.routeName ?? RouteList.webview,
+        hideNewAppBar: widget.hideNewAppBar,
         child: WebViewInApp(
           url: url,
           overrideNavigation: overrideWebNavigation,
@@ -228,9 +260,7 @@ class _WebViewState extends State<WebView> with WebviewMixin, AppBarMixin {
           enableClose: widget.enableClose,
           onClosed: widget.onClosed,
           onUrlChanged: (String? url) {
-            if (widget.onPageFinished != null) {
-              widget.onPageFinished!(url ?? '');
-            }
+            widget.onPageFinished?.call(url ?? '');
           },
         ),
       );
@@ -238,6 +268,7 @@ class _WebViewState extends State<WebView> with WebviewMixin, AppBarMixin {
 
     return renderScaffold(
       routeName: widget.routeName ?? RouteList.webview,
+      hideNewAppBar: widget.hideNewAppBar,
       secondAppBar: widget.appBar ??
           AppBar(
             backgroundColor: Theme.of(context).colorScheme.background,
@@ -306,39 +337,7 @@ class _WebViewState extends State<WebView> with WebviewMixin, AppBarMixin {
         index: selectedIndex,
         children: [
           Builder(builder: (BuildContext context) {
-            return flutter.WebView(
-              initialUrl: url,
-              javascriptMode: flutter.JavascriptMode.unrestricted,
-              onProgress: (progress) {
-                if (progress == 100) {
-                  setState(() {
-                    selectedIndex = 0;
-                  });
-                }
-              },
-              onPageFinished: (_) {
-                /// Demo the Javascript Style override
-                // var script = "document.querySelector('div.wd-toolbar').style.display = 'none'";
-
-                var script = widget.script.isEmptyOrNull
-                    ? kAdvanceConfig.webViewScript
-                    : widget.script;
-                if (script.isNotEmpty) {
-                  _controller?.runJavascript(script);
-                }
-
-                /// Call back when finish loading
-                if (widget.onPageFinished != null) {
-                  widget.onPageFinished!(_);
-                }
-              },
-              navigationDelegate: getNavigationDelegate,
-              onWebViewCreated: (webViewController) {
-                _controller = webViewController;
-              },
-              gestureRecognizers: gestureRecognizers,
-              gestureNavigationEnabled: true,
-            );
+            return flutter.WebViewWidget(controller: controller);
           }),
           Center(
             child: kLoadingWidget(context),

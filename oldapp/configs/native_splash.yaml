@@ -1,0 +1,8 @@
+flutter_native_splash:
+  web: false
+  color: "#FFFFFF"
+  color_dark: "#FFFFFF"
+  image: "C:/Users/mo_ne/Downloads/splashtop.png"
+  image_dark: "C:/Users/mo_ne/Downloads/splashtop.png"
+  branding: "C:/Users/mo_ne/Downloads/splashbot.png"
+  branding_dark: "C:/Users/mo_ne/Downloads/splashbot.png"

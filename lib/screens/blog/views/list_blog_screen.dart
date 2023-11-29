@@ -62,6 +62,7 @@ class _ListBlogScreenState extends BaseScreen<ListBlogScreen> with AppBarMixin {
                 listBlog:
                     Provider.of<ListBlogModel>(context, listen: false).data,
               ),
+              forceRootNavigator: true,
             );
           },
         ),
@@ -73,8 +74,8 @@ class _ListBlogScreenState extends BaseScreen<ListBlogScreen> with AppBarMixin {
   }
 
   Widget _buildSkeleton() {
-    return Padding(
-      padding: const EdgeInsets.only(
+    return const Padding(
+      padding: EdgeInsets.only(
         left: 16.0,
         right: 16.0,
         bottom: 24.0,
@@ -83,17 +84,17 @@ class _ListBlogScreenState extends BaseScreen<ListBlogScreen> with AppBarMixin {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Skeleton(height: 200),
-          const SizedBox(height: 12),
+          Skeleton(height: 200),
+          SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: const [
+            children: [
               Skeleton(width: 120),
               Skeleton(width: 80),
             ],
           ),
-          const SizedBox(height: 16),
-          const Skeleton(),
+          SizedBox(height: 16),
+          Skeleton(),
         ],
       ),
     );

@@ -7,6 +7,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../../common/config.dart';
 import '../../../models/index.dart' show CartModel, Product, ProductModel;
+import '../../../models/product_variant_model.dart';
 import '../../../services/services.dart';
 import '../../cart/cart_screen.dart';
 import '../product_detail_screen.dart';
@@ -27,7 +28,6 @@ class HalfSizeLayout extends StatefulWidget {
 class _HalfSizeLayoutState extends State<HalfSizeLayout>
     with SingleTickerProviderStateMixin {
   Map<String, String> mapAttribute = HashMap();
-  late final PageController _pageController = PageController();
   final ScrollController _scrollController = ScrollController();
 
   var top = 0.0;
@@ -72,7 +72,7 @@ class _HalfSizeLayoutState extends State<HalfSizeLayout>
                     ),
                     child: SafeArea(
                       child: SmoothPageIndicator(
-                        controller: _pageController,
+                        controller: pageController,
                         count: widget.product?.images.length ?? 0,
                         effect: const ScrollingDotsEffect(
                           dotWidth: 5.0,
@@ -126,7 +126,8 @@ class _HalfSizeLayoutState extends State<HalfSizeLayout>
                         context,
                         MaterialPageRoute<void>(
                           builder: (BuildContext context) => Scaffold(
-                            backgroundColor: Theme.of(context).colorScheme.background,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.background,
                             body: const CartScreen(isModal: true),
                           ),
                           fullscreenDialog: true,
@@ -188,7 +189,8 @@ class _HalfSizeLayoutState extends State<HalfSizeLayout>
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
               decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.background.withOpacity(0.8),
+                  color:
+                      Theme.of(context).colorScheme.background.withOpacity(0.8),
                   borderRadius: BorderRadius.circular(10.0)),
               child: ChangeNotifierProvider(
                 create: (_) => ProductModel(),
@@ -200,11 +202,17 @@ class _HalfSizeLayoutState extends State<HalfSizeLayout>
                     children: <Widget>[
                       if (!(widget.product?.isGroupedProduct ?? false))
                         ProductTitle(widget.product),
-                      ProductCommonInfo(
-                        product: widget.product,
-                        isLoading: widget.isLoading,
-                        wrapSliver: false,
-                      ),
+                      if (Services().widget.enableShoppingCart(
+                          widget.product?.copyWith(isRestricted: false)))
+                        Consumer<ProductVariantModel>(
+                          builder: (context, model, _) {
+                            return ProductCommonInfo(
+                              product: widget.product,
+                              isLoading: widget.isLoading,
+                              wrapSliver: false,
+                            );
+                          },
+                        ),
                       if (!Services().widget.enableShoppingCart(
                               widget.product?.copyWith(isRestricted: false)) &&
                           widget.product?.shortDescription != null &&

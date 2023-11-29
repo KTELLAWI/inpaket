@@ -28,7 +28,8 @@ class CartModelPresta
   CartModelPresta._internal();
   @override
   Future<void> initData() async {
-    await getShippingAddress();
+    resetValues();
+    await getAddress();
     getCartInLocal();
     getCurrency();
   }
@@ -244,6 +245,25 @@ class CartModelPresta
   @override
   void setRewardTotal(double total) {
     rewardTotal = total;
+    notifyListeners();
+  }
+
+  @override
+  void updateProduct(String productId, Product? product) {
+    super.updateProduct(productId, product);
+    notifyListeners();
+  }
+
+  @override
+  void updateProductVariant(
+      String productId, ProductVariation? productVariant) {
+    super.updateProductVariant(productId, productVariant);
+    notifyListeners();
+  }
+
+  @override
+  void updateStateCheckoutButton() {
+    super.updateStateCheckoutButton();
     notifyListeners();
   }
 }

@@ -50,7 +50,8 @@ class _StateGridCategory extends State<GridCategory> with PagingMixin {
       Provider.of<CategoryModel>(context, listen: false);
 
   @override
-  late final ScrollController scrollController = widget.scrollController ?? ScrollController();
+  late final ScrollController scrollController =
+      widget.scrollController ?? ScrollController();
 
   @override
   Future<void> getData() {
@@ -171,9 +172,8 @@ class _StateGridCategory extends State<GridCategory> with PagingMixin {
                             );
                           },
                           childCount: data.length +
-                              (data.length % gridCount == 0
-                                  ? gridCount
-                                  : gridCount - (data.length % gridCount)),
+                              gridCount -
+                              (data.length % gridCount),
                         ),
                       ),
               ],

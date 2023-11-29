@@ -43,6 +43,12 @@ class SpinkitLoading extends StatelessWidget {
           size: size,
         );
         break;
+      case 'fadingCube':
+        icon = SpinKitFadingCube(
+          color: color,
+          size: size,
+        );
+        break;
       case 'pulse':
         icon = SpinKitPulse(
           color: color,
@@ -109,6 +115,12 @@ class SpinkitLoading extends StatelessWidget {
           size: size,
         );
         break;
+      case 'pouringHourGlass':
+        icon = SpinKitPouringHourGlass(
+          color: color,
+          size: size,
+        );
+        break;
       case 'fadingGrid':
         icon = SpinKitFadingGrid(
           color: color,
@@ -135,6 +147,48 @@ class SpinkitLoading extends StatelessWidget {
         break;
       case 'squareCircle':
         icon = SpinKitSquareCircle(
+          color: color,
+          size: size,
+        );
+        break;
+      case 'dancingSquare':
+        icon = SpinKitDancingSquare(
+          color: color,
+          size: size,
+        );
+        break;
+      case 'pianoWave':
+        icon = SpinKitPianoWave(
+          color: color,
+          size: size,
+        );
+        break;
+      case 'pouringHourGlassRefined':
+        icon = SpinKitPouringHourGlassRefined(
+          color: color,
+          size: size,
+        );
+        break;
+      case 'pulsingGrid':
+        icon = SpinKitPulsingGrid(
+          color: color,
+          size: size,
+        );
+        break;
+      case 'spinningLines':
+        icon = SpinKitSpinningLines(
+          color: color,
+          size: size,
+        );
+        break;
+      case 'threeInOut':
+        icon = SpinKitThreeInOut(
+          color: color,
+          size: size,
+        );
+        break;
+      case 'waveSpinner':
+        icon = SpinKitWaveSpinner(
           color: color,
           size: size,
         );

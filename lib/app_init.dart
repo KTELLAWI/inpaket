@@ -16,6 +16,7 @@ import 'models/index.dart'
         FilterAttributeModel,
         FilterTagModel,
         ListingLocationModel,
+        NotificationModel,
         TagModel;
 import 'modules/dynamic_layout/config/app_config.dart';
 import 'screens/app_error.dart';
@@ -40,6 +41,9 @@ class _AppInitState extends BaseScreen<AppInit> {
   late AppConfig? appConfig;
 
   AppModel get appModel => Provider.of<AppModel>(context, listen: false);
+
+  NotificationModel get _notificationModel =>
+      Provider.of<NotificationModel>(context, listen: false);
 
   Future<void> loadInitData() async {
     try {
@@ -97,9 +101,9 @@ class _AppInitState extends BaseScreen<AppInit> {
           }
 
           /// init Facebook & Google Ads
-          Services()
-              .advertisement
-              .initAdvertise(context.read<AppModel>().advertisement);
+          // Services()
+          //     .advertisement
+          //     .initAdvertise(context.read<AppModel>().advertisement);
         },
       );
 
@@ -136,10 +140,15 @@ class _AppInitState extends BaseScreen<AppInit> {
       );
     }
 
+    if (Services().widget.isRequiredLogin &&
+        !SettingsBox().hasFinishedOnboarding) {
+      await _notificationModel.enableNotification();
+    }
+
     if (!kIsWeb && appConfig != null) {
-      if (kEnableOnBoarding &&
+      if (kOnBoardingConfig.enableOnBoarding &&
           (!SettingsBox().hasFinishedOnboarding ||
-              !kAdvanceConfig.onBoardOnlyShowFirstTime)) {
+              !kOnBoardingConfig.isOnlyShowOnFirstTime)) {
         await Navigator.of(context).pushReplacementNamed(RouteList.onBoarding);
         return;
       }
@@ -150,22 +159,29 @@ class _AppInitState extends BaseScreen<AppInit> {
               .pushReplacementNamed(RouteList.notificationRequest);
           return;
         }
-        await injector<NotificationService>().requestPermission();
+        await _notificationModel.enableNotification();
         SettingsBox().hasFinishedOnboarding = true;
       }
-    }
-
-    if (Services().widget.isRequiredLogin && !isLoggedIn) {
-      NavigateTools.navigateToLogin(
-        context,
-        replacement: true,
-      );
-      return;
     }
 
     if (kAdvanceConfig.gdprConfig.showPrivacyPolicyFirstTime &&
         !UserBox().hasAgreedPrivacy) {
       await Navigator.of(context).pushReplacementNamed(RouteList.privacyTerms);
+      return;
+    }
+
+    if (!SettingsBox().hasSelectedSite &&
+        (Configurations.multiSiteConfigs?.isNotEmpty ?? false) &&
+        kAdvanceConfig.isRequiredSiteSelection) {
+      await Navigator.of(context).pushNamed(RouteList.multiSiteSelection);
+      SettingsBox().hasSelectedSite = true;
+    }
+
+    if (Services().widget.isRequiredLogin && !isLoggedIn) {
+      await NavigateTools.navigateToLogin(
+        context,
+        replacement: true,
+      );
       return;
     }
 
@@ -193,9 +209,9 @@ class _AppInitState extends BaseScreen<AppInit> {
 
   @override
   Widget build(BuildContext context) {
-    var splashScreenType = kSplashScreen['type'];
-    dynamic splashScreenImage = kSplashScreen['image'];
-    var duration = kSplashScreen['duration'] ?? 2000;
+    var splashScreenType = kSplashScreen.type;
+    dynamic splashScreenImage = kSplashScreen.image;
+    var duration = kSplashScreen.duration;
     return SplashScreenIndex(
       imageUrl: splashScreenImage,
       splashScreenType: splashScreenType,

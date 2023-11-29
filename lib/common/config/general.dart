@@ -16,7 +16,7 @@ Map<String, dynamic>? get kLayoutConfig =>
 /// This config was moved to env.dart.
 GoogleApiKeyConfig get kGoogleApiKey => Configurations.googleApiKey;
 
-Map get kStoreIdentifier => Configurations.storeIdentifier;
+AppRatingConfig get kAppRatingConfig => Configurations.appRatingConfig;
 
 AdvancedConfig get kAdvanceConfig =>
     AdvancedConfig.fromJson(Configurations.advanceConfig);
@@ -60,7 +60,8 @@ ThemeConfig get kLightConfig =>
 // ignore: camel_case_types
 enum kHeartButtonType { cornerType, squareType }
 
-Map get kSplashScreen => Configurations.splashScreen;
+SplashScreenConfig get kSplashScreen =>
+    SplashScreenConfig.fromJson(Configurations.splashScreen);
 
 ColorOverrideConfig get colorOverrideConfig =>
     ColorOverrideConfig.fromJson(Configurations.colorOverrideConfig);
@@ -76,3 +77,18 @@ bool get kEnableLargeCategories =>
     kAdvanceConfig.categoryConfig.enableLargeCategories &&
     ['woo', 'dokan', 'wcfm', 'bigCommerce', 'shopify', 'presta']
         .contains(serverConfig['type']);
+
+ShopifyPaymentConfig get kShopifyPaymentConfig => ShopifyPaymentConfig.fromJson(
+    Map<String, dynamic>.from(Configurations.shopifyPaymentConfig ?? {}));
+
+Map<String, dynamic> get kOpenAIConfig =>
+    Map<String, dynamic>.from(Configurations.openAIConfig ?? {})
+      ..addAll(Map<String, dynamic>.from(ServerConfig().openAIConfig()));
+
+NotificationRequestScreenConfig get kNotificationRequestScreenConfig =>
+    NotificationRequestScreenConfig.fromJson(
+      Configurations.notificationRequestScreen ?? {},
+    );
+
+ReviewConfig get kReviewConfig => ReviewConfig.fromJson(
+    Map<String, dynamic>.from(Configurations.reviewConfig ?? {}));

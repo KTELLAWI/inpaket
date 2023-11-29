@@ -108,6 +108,11 @@ extension on _ShippingAddressState {
         Provider.of<CartModel>(context, listen: false).setAddress(address);
         _loadShipping(beforehand: false);
         widget.onNext!();
+      } else {
+        FlashHelper.errorMessage(
+          context,
+          message: S.of(context).pleaseInput,
+        );
       }
     }
   }
@@ -410,6 +415,11 @@ extension on _ShippingAddressState {
                   Provider.of<CartModel>(context, listen: false)
                       .setAddress(address);
                   saveDataToLocal();
+                } else {
+                  FlashHelper.errorMessage(
+                    context,
+                    message: S.of(context).pleaseInput,
+                  );
                 }
               },
               icon: const Icon(
@@ -437,33 +447,7 @@ extension on _ShippingAddressState {
                 Icons.local_shipping_outlined,
                 size: 18,
               ),
-              onPressed: () {
-                if (!checkToSave()) return;
-                if (_formKey.currentState!.validate()) {
-                  _formKey.currentState!.save();
-                  Provider.of<CartModel>(context, listen: false)
-                      .setAddress(address);
-                  saveDataToLocal();
-
-                  VerifyPhoneNumberScreen.verifyPhoneNumberValue = false;
-
-                  Navigator.of(context)
-                      .push(
-                    MaterialPageRoute(
-                        builder: (context) => SMSLoginScreen(
-                              onSuccess: (_) {},
-                              isCheckOutScreen: true,
-                            )),
-                  )
-                      .then((value) {
-                    print('VerifyPhoneNumberScreen callBack value : $value ');
-                    print(
-                        'VerifyPhoneNumberScreen callBack value : ${VerifyPhoneNumberScreen.verifyPhoneNumberValue} ');
-                    if (VerifyPhoneNumberScreen.verifyPhoneNumberValue)
-                      _onNext();
-                  });
-                }
-              },
+              onPressed: _onNext,
               label: Text(
                 (kPaymentConfig.enableShipping
                         ? S.of(context).continueToShipping

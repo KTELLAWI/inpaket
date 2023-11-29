@@ -10,7 +10,7 @@ class RecentModel with ChangeNotifier {
   List<Product> products = [];
 
   void addRecentProduct(Product? product) {
-    if (product == null) {
+    if (product == null || product.isTopUpProduct()) {
       return;
     }
     var data = <Map>[];

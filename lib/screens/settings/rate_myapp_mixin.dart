@@ -8,16 +8,17 @@ import '../../generated/l10n.dart';
 mixin RateMyAppMixin<T extends StatefulWidget> on State<T> {
   final _rateMyApp = RateMyApp(
     // rate app on store
-    minDays: 7,
-    minLaunches: 10,
-    remindDays: 7,
-    remindLaunches: 10,
-    googlePlayIdentifier: kStoreIdentifier['android'],
-    appStoreIdentifier: kStoreIdentifier['ios'],
+    minDays: kAppRatingConfig.minDays,
+    minLaunches: kAppRatingConfig.minLaunches,
+    remindDays: kAppRatingConfig.remindDays,
+    remindLaunches: kAppRatingConfig.remindLaunches,
+    googlePlayIdentifier: kAppRatingConfig.googlePlayIdentifier,
+    appStoreIdentifier: kAppRatingConfig.appStoreIdentifier,
   );
 
-  void showRateMyApp() {
-    _rateMyApp.showRateDialog(
+  void showRateMyApp() async {
+    await _rateMyApp.init();
+    await _rateMyApp.showRateDialog(
       context,
       title: S.of(context).rateTheApp,
       // The dialog title.
@@ -50,21 +51,17 @@ mixin RateMyAppMixin<T extends StatefulWidget> on State<T> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
+  /// Only use after show dashboard
+  void showRatingOnOpen() async {
+    if (mounted) {
+      await _rateMyApp.init();
 
-    WidgetsBinding.instance.endOfFrame.then((_) async {
-      if (mounted) {
-        await _rateMyApp.init();
-
-        if (isMobile && !kStoreIdentifier['disable']) {
-          // state of rating the app
-          if (_rateMyApp.shouldOpenDialog) {
-            showRateMyApp();
-          }
+      if (isMobile && kAppRatingConfig.showOnOpen) {
+        if (_rateMyApp.shouldOpenDialog) {
+          await Future.delayed(const Duration(seconds: 1));
+          showRateMyApp();
         }
       }
-    });
+    }
   }
 }

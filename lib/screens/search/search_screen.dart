@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../common/config.dart';
 import '../../common/constants.dart';
 import '../../modules/dynamic_layout/config/product_config.dart';
 import '../../modules/dynamic_layout/helper/helper.dart';
+import '../../services/index.dart';
 import '../common/app_bar_mixin.dart';
 import '../products/products_screen.dart';
 import 'widgets/search_widget.dart';
@@ -33,7 +33,7 @@ class _StateSearchScreen extends State<SearchScreen>
     super.build(context);
 
     /// Use the old Search UX config which is limit Filter
-    if (kAdvanceConfig.enableProductBackdrop) {
+    if (Services().widget.enableProductBackdrop) {
       return SearchWidget(isModal: widget.isModal);
     }
 

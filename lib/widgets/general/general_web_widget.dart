@@ -1,29 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:inspireui/icons/icon_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../common/config.dart';
 import '../../common/config/models/general_setting_item.dart';
 import '../../common/constants.dart';
-import '../../common/tools.dart';
 import '../../generated/l10n.dart';
 import '../../models/user_model.dart';
-import '../../routes/flux_navigate.dart';
+import '../../screens/settings/widgets/setting_item/setting_item_widget.dart';
 import '../common/webview.dart';
+import 'general_widget.dart';
 
-class GeneralWebWidget extends StatelessWidget {
-  final bool useTile;
-  final Color? iconColor;
-  final TextStyle? textStyle;
-  final GeneralSettingItem? item;
-
+class GeneralWebWidget extends GeneralWidget {
   const GeneralWebWidget({
-    required this.item,
-    this.iconColor,
-    this.textStyle,
-    this.useTile = false,
-  });
+    required GeneralSettingItem? item,
+    Color? iconColor,
+    TextStyle? textStyle,
+    bool useTile = false,
+    Function()? onNavigator,
+    super.cardStyle,
+  }) : super(
+          item: item,
+          iconColor: iconColor,
+          textStyle: textStyle,
+          useTile: useTile,
+          onNavigator: onNavigator,
+        );
 
   @override
   Widget build(BuildContext context) {
@@ -50,68 +52,33 @@ class GeneralWebWidget extends StatelessWidget {
           icon = iconPicker(item!.icon, item!.iconFontFamily) ?? Icons.error;
           onTap = () {
             if (item?.webViewMode ?? false) {
-              FluxNavigate.push(
-                MaterialPageRoute(
-                  builder: (context) => WebView(
-                    url: webUrl,
-                    title: title,
-                    enableBackward: item?.enableBackward ?? false,
-                    enableForward: item?.enableForward ?? false,
-                    enableClose: item?.enableClose ?? false,
-                    script: (item?.script?.isEmptyOrNull ?? true)
-                        ? kAdvanceConfig.webViewScript
-                        : item?.script ?? '',
-                  ),
+              onPushScreen(
+                WebView(
+                  url: webUrl,
+                  title: title,
+                  enableBackward: item?.enableBackward ?? false,
+                  enableForward: item?.enableForward ?? false,
+                  enableClose: item?.enableClose ?? false,
+                  script: (item?.script?.isEmptyOrNull ?? true)
+                      ? kAdvanceConfig.webViewScript
+                      : item?.script ?? '',
                 ),
               );
             } else {
-              Tools.launchURL(
-                webUrl,
-                mode: LaunchMode.externalApplication,
-              );
+              onLaunch(webUrl);
             }
           };
         }
-        if (useTile) {
-          return ListTile(
-            leading: Icon(
-              icon,
-              color: iconColor,
-            ),
-            title: Text(
-              title,
-              style: textStyle,
-            ),
-            onTap: onTap,
-          );
-        }
 
-        return Column(
-          children: [
-            Card(
-              margin: const EdgeInsets.only(bottom: 2.0),
-              elevation: 0,
-              child: ListTile(
-                leading: Icon(
-                  icon,
-                  color: Theme.of(context).colorScheme.secondary,
-                  size: 24,
-                ),
-                title: Text(
-                  title,
-                  style: const TextStyle(fontSize: 16),
-                ),
-                trailing: trailing,
-                onTap: onTap,
-              ),
-            ),
-            const Divider(
-              color: Colors.black12,
-              height: 1.0,
-              indent: 75,
-              //endIndent: 20,
-            ),
-          ],
+        return SettingItemWidget(
+          icon: icon,
+          title: title,
+          onTap: onTap,
+          trailing: trailing,
+          useTile: useTile,
+          cardStyle: cardStyle,
+          iconColorTile: iconColor,
+          textStyleTile: textStyle,
         );
       },
     );

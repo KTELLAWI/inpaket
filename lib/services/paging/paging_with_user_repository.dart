@@ -4,7 +4,7 @@ import '../../models/index.dart';
 import '../base_services.dart';
 import 'base_page_repository.dart';
 
-abstract class PagingWithUserRepository<T> extends BasePageRepository<T?> {
+abstract class PagingWithUserRepository<T> extends BasePageRepository<T> {
   Future<PagingResponse<T>>? Function({
     required User user,
     required dynamic cursor,
@@ -15,7 +15,7 @@ abstract class PagingWithUserRepository<T> extends BasePageRepository<T?> {
   PagingWithUserRepository(this.user);
 
   @override
-  Future<List<T?>?> getData() async {
+  Future<List<T>?> getData() async {
     if (!hasNext) return <T>[];
 
     final response = await requestApi(
@@ -42,7 +42,7 @@ abstract class PagingWithUserRepository<T> extends BasePageRepository<T?> {
 }
 
 abstract class PagingWithArgumentRepository<T, R>
-    extends BasePageRepository<T?> {
+    extends BasePageRepository<T> {
   Future<PagingResponse<T>>? Function({
     required R arguments,
     required dynamic cursor,
@@ -53,7 +53,7 @@ abstract class PagingWithArgumentRepository<T, R>
   PagingWithArgumentRepository(this.arguments);
 
   @override
-  Future<List<T?>?> getData() async {
+  Future<List<T>?> getData() async {
     if (!hasNext) return <T>[];
 
     final response = await requestApi(

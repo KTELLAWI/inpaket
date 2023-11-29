@@ -20,6 +20,7 @@ class Category {
   List<Product>? products;
   bool? hasChildren = false;
   List<Category> subCategories = [];
+  String? onlineStoreUrl;
 
   int? _leveldepth;
 
@@ -55,6 +56,12 @@ class Category {
           parsedJson, DataMapping().kCategoryDataMapping['image']);
       if (termImage is String) {
         image = termImage;
+      }
+      if (termImage is List && termImage.isNotEmpty) {
+        var imageCategory = termImage[0]['file'];
+        if (imageCategory is String && imageCategory.isNotEmpty) {
+          image = '${ServerConfig().url}/wp-content/uploads/$imageCategory';
+        }
       }
       if (image == null) {
         if (DataMapping().kCategoryImages[id!] != null) {
@@ -164,7 +171,7 @@ class Category {
       sku = parsedJson['id'];
       name = parsedJson['title'];
       parent = '0';
-
+      onlineStoreUrl = parsedJson['onlineStoreUrl'];
       final image = parsedJson['image'];
       if (image != null) {
         this.image = image['url'].toString();

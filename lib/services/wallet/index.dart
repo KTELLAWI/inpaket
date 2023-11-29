@@ -28,7 +28,7 @@ class TeraWalletServices extends WalletServices {
         return double.parse(jsonDecode);
       }
     } catch (e) {
-      //This error exception is about your Rest API is not config correctly so that not return the correct JSON format, please double check the document from this link https://docs.inspireui.com/fluxstore/woocommerce-setup/
+      //This error exception is about your Rest API is not config correctly so that not return the correct JSON format, please double check the document from this link https://docs.inspireui.com/khadrah/woocommerce-setup/
       rethrow;
     }
   }
@@ -54,7 +54,7 @@ class TeraWalletServices extends WalletServices {
         return PagingResponse(data: list);
       }
     } catch (e) {
-      //This error exception is about your Rest API is not config correctly so that not return the correct JSON format, please double check the document from this link https://docs.inspireui.com/fluxstore/woocommerce-setup/
+      //This error exception is about your Rest API is not config correctly so that not return the correct JSON format, please double check the document from this link https://docs.inspireui.com/khadrah/woocommerce-setup/
       rethrow;
     }
   }
@@ -81,7 +81,7 @@ class TeraWalletServices extends WalletServices {
         return;
       }
     } catch (e) {
-      //This error exception is about your Rest API is not config correctly so that not return the correct JSON format, please double check the document from this link https://docs.inspireui.com/fluxstore/woocommerce-setup/
+      //This error exception is about your Rest API is not config correctly so that not return the correct JSON format, please double check the document from this link https://docs.inspireui.com/khadrah/woocommerce-setup/
       rethrow;
     }
   }
@@ -108,7 +108,7 @@ class TeraWalletServices extends WalletServices {
         return;
       }
     } catch (e) {
-      //This error exception is about your Rest API is not config correctly so that not return the correct JSON format, please double check the document from this link https://docs.inspireui.com/fluxstore/woocommerce-setup/
+      //This error exception is about your Rest API is not config correctly so that not return the correct JSON format, please double check the document from this link https://docs.inspireui.com/khadrah/woocommerce-setup/
       rethrow;
     }
   }
@@ -130,7 +130,7 @@ class TeraWalletServices extends WalletServices {
         return Product.fromJson(jsonDecode);
       }
     } catch (e) {
-      //This error exception is about your Rest API is not config correctly so that not return the correct JSON format, please double check the document from this link https://docs.inspireui.com/fluxstore/woocommerce-setup/
+      //This error exception is about your Rest API is not config correctly so that not return the correct JSON format, please double check the document from this link https://docs.inspireui.com/khadrah/woocommerce-setup/
       rethrow;
     }
   }
@@ -157,7 +157,7 @@ class TeraWalletServices extends WalletServices {
         return User.fromJson(jsonDecode);
       }
     } catch (e) {
-      //This error exception is about your Rest API is not config correctly so that not return the correct JSON format, please double check the document from this link https://docs.inspireui.com/fluxstore/woocommerce-setup/
+      //This error exception is about your Rest API is not config correctly so that not return the correct JSON format, please double check the document from this link https://docs.inspireui.com/khadrah/woocommerce-setup/
       rethrow;
     }
   }
@@ -186,7 +186,7 @@ class TeraWalletServices extends WalletServices {
       }
       return false;
     } catch (e) {
-      //This error exception is about your Rest API is not config correctly so that not return the correct JSON format, please double check the document from this link https://docs.inspireui.com/fluxstore/woocommerce-setup/
+      //This error exception is about your Rest API is not config correctly so that not return the correct JSON format, please double check the document from this link https://docs.inspireui.com/khadrah/woocommerce-setup/
       rethrow;
     }
   }

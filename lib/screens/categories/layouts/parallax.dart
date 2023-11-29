@@ -10,6 +10,7 @@ import '../../base_screen.dart';
 import '../../index.dart';
 
 class ParallaxCategories extends StatefulWidget {
+  /// Not support enableLargeCategory
   static const String type = 'parallax';
 
   const ParallaxCategories();

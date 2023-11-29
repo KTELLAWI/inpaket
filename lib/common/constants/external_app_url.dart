@@ -3,6 +3,7 @@ part of '../constants.dart';
 /// When opening a URL that includes these sites, it will open the external app instead of the webview.
 const kExternalAppURLs = [
   'wa.me', // Whatsapp
+  'wa.link', // Whatsapp
   'm.me', // Messenger
   'ig.me', // Instagram
   'instagram.com', // Instagram

@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../../common/tools/flash.dart';
 import '../../generated/l10n.dart';
 import '../../models/product_model.dart';
-import '../../modules/firebase/firebase_service.dart';
+import '../../services/firebase_service.dart';
 import '../../services/services.dart';
 
 mixin ProductsMixin {
@@ -22,16 +22,21 @@ mixin ProductsMixin {
     var currentTagId = productModel.tagId;
     var url;
     if (currentCategoryId.isValid) {
+      print(currentCategoryId.isValid);
+      print(currentCategoryId);
+      print(currentTagId);
       url = await FirebaseServices()
           .dynamicLinks
           ?.generateProductCategoryUrl(currentCategoryId);
+            print("url is ");
+          print(url);
     } else if (currentTagId != null) {
       url = await FirebaseServices()
           .dynamicLinks
           ?.generateProductTagUrl(currentTagId);
     }
 
-    if (url.isNotEmpty) {
+    if (url?.isNotEmpty ?? false) {
       Services().firebase.shareDynamicLinkProduct(itemUrl: url);
     } else {
       unawaited(

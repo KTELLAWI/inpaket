@@ -30,79 +30,95 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m4(currency) => "ငွေကြေးကို ${currency}သို့ ပြောင်းခဲ့သည်";
 
-  static String m5(currency) => "${currency} ကို မပံ့ပိုးပါ။";
+  static String m5(priceRate, pointRate) => "${priceRate} = ${pointRate} မှတ်";
 
-  static String m6(day) => "${day} days ago";
+  static String m6(country) => "${country} နိုင်ငံကို ပံ့ပိုးမထားပါ။";
 
-  static String m7(total) => "~${total} km";
+  static String m7(currency) => "${currency} ကို မပံ့ပိုးပါ။";
 
-  static String m8(timeLeft) => "ပြီးဆုံးရန် ${timeLeft}";
+  static String m8(day) => "${day} days ago";
 
-  static String m9(captcha) => "အတည်ပြုရန် ${captcha} ကိုထည့်ပါ-";
+  static String m9(total) => "~${total} km";
 
-  static String m10(message) => "Error: ${message}";
+  static String m10(timeLeft) => "ပြီးဆုံးရန် ${timeLeft}";
 
-  static String m11(time) => "Expiring in ${time}";
+  static String m11(captcha) => "အတည်ပြုရန် ${captcha} ကိုထည့်ပါ-";
 
-  static String m12(total) => ">${total} km";
+  static String m12(message) => "Error: ${message}";
 
-  static String m13(hour) => "${hour} hours ago";
+  static String m13(time) => "Expiring in ${time}";
 
-  static String m14(message) =>
+  static String m14(total) => ">${total} km";
+
+  static String m15(hour) => "${hour} hours ago";
+
+  static String m16(message) =>
       "ဒေတာတောင်းခံစဉ် app တွင် ပြဿနာရှိနေသည်၊ ပြဿနာများကိုဖြေရှင်းရန်အတွက် admin ကိုဆက်သွယ်ပါ။: ${message}";
 
-  static String m15(size) => "အကြီးဆုံးလက်ခံနိုင်သည့်ဖိုင်ဆိုဒ်: ${size} MB";
+  static String m17(currency, amount) =>
+      "ဤငွေပေးချေမှုကို အသုံးပြုရန်အတွက် အများဆုံးပမာဏမှာ ${currency} ${amount}ဖြစ်သည်";
 
-  static String m16(minute) => "${minute} minutes ago";
+  static String m18(size) => "အကြီးဆုံးလက်ခံနိုင်သည့်ဖိုင်ဆိုဒ်: ${size} MB";
 
-  static String m17(month) => "${month} လအကြာက";
+  static String m19(currency, amount) =>
+      "ဤငွေပေးချေမှုကို အသုံးပြုရန်အတွက် အနည်းဆုံးပမာဏမှာ ${currency} ${amount}ဖြစ်သည်";
 
-  static String m18(store) => " ${store}မှ နောက်ထပ်";
+  static String m20(minute) => "${minute} minutes ago";
 
-  static String m19(itemCount) => "${itemCount} items";
+  static String m21(month) => "${month} လအကြာက";
 
-  static String m20(price) => "Options total: ${price}";
+  static String m22(store) => " ${store}မှ နောက်ထပ်";
 
-  static String m21(total) => "Qty: ${total}";
+  static String m23(itemCount) => "${itemCount} items";
 
-  static String m22(percent) => "Sale ${percent}%";
+  static String m24(price) => "Options total: ${price}";
 
-  static String m23(second) => "${second} seconds ago";
+  static String m25(amount) => " ${amount}ပေးချေပါ";
 
-  static String m24(totalCartQuantity) =>
+  static String m26(total) => "Qty: ${total}";
+
+  static String m27(percent) => "Sale ${percent}%";
+
+  static String m28(second) => "${second} seconds ago";
+
+  static String m29(totalCartQuantity) =>
       "စျေးဝယ်ခြင်းတောင်း, ${totalCartQuantity} items";
 
-  static String m25(numberOfUnitsSold) => "Sold: ${numberOfUnitsSold}";
+  static String m30(numberOfUnitsSold) => "Sold: ${numberOfUnitsSold}";
 
-  static String m26(fieldName) => " ${fieldName} အကွက် လိုအပ်သည်။";
+  static String m31(fieldName) => " ${fieldName} အကွက် လိုအပ်သည်။";
 
-  static String m27(total) => "${total} products";
+  static String m32(total) => "${total} products";
 
-  static String m28(date) => "Valid til ${date}";
+  static String m33(maxPointDiscount, maxPriceDiscount) =>
+      "ဤအမှာစာအတွက် ${maxPriceDiscount} လျှော့စျေးအတွက် အများဆုံး ${maxPointDiscount} မှတ်များကို သုံးပါ။";
 
-  static String m29(message) => "သတိပေးချက်: ${message}";
+  static String m34(date) => "Valid til ${date}";
 
-  static String m30(default_currency) =>
-      "The currently selected currency is not available for the Wallet feature, please change it to ${default_currency}";
+  static String m35(message) => "သတိပေးချက်: ${message}";
 
-  static String m31(length) => "We found ${length} products";
+  static String m36(defaultCurrency) =>
+      "The currently selected currency is not available for the Wallet feature, please change it to ${defaultCurrency}";
 
-  static String m32(week) => "Week ${week}";
+  static String m37(length) => "We found ${length} products";
 
-  static String m33(year) => "${year} နှစ်အကြာက";
+  static String m38(week) => "Week ${week}";
 
-  static String m34(total) => "You have assigned to order #${total}";
+  static String m39(name) => "ကြိုဆိုပါတယ် ${name}";
+
+  static String m40(year) => "${year} နှစ်အကြာက";
+
+  static String m41(total) => "You have assigned to order #${total}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "UserNameInCorrect": MessageLookupByLibrary.simpleMessage(
-            "နာမည် (သို့မဟုတ်) စကားဝှက်မှားယွင်းနေပါသည်။"),
         "aboutUs": MessageLookupByLibrary.simpleMessage("ကျွန်ုပ်တို့အကြောင်း"),
         "account": MessageLookupByLibrary.simpleMessage("အကောင့်"),
         "accountDeleteDescription": MessageLookupByLibrary.simpleMessage(
             "သင့်အကောင့်ကို ဖျက်ခြင်းသည် ကျွန်ုပ်တို့၏ဒေတာဘေ့စ်မှ ကိုယ်ရေးကိုယ်တာအချက်အလက်များကို ဖယ်ရှားပေးပါသည်။ သင့်အီးမေးလ်ကို အပြီးအပိုင် သိမ်းထားပြီး အကောင့်အသစ်တစ်ခု မှတ်ပုံတင်ရန်အတွက် တူညီသောအီးမေးလ်ကို ပြန်လည်အသုံးမပြုနိုင်ပါ။"),
         "accountIsPendingApproval": MessageLookupByLibrary.simpleMessage(
             "အကောင့်သည် အတည်ပြုချက်ကို ဆိုင်းငံ့ထားသည်။"),
+        "accountNumber": MessageLookupByLibrary.simpleMessage("အကောင့်နံပါတ်"),
         "accountSetup":
             MessageLookupByLibrary.simpleMessage("အကောင့်စတင်စီစဉ်မှု"),
         "active": MessageLookupByLibrary.simpleMessage("Active"),
@@ -187,6 +203,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Wallet သို့ပြန်သွားမည်။"),
         "bagsCollections": MessageLookupByLibrary.simpleMessage("အိတ်များ"),
         "balance": MessageLookupByLibrary.simpleMessage("ငွေလက်ကျန်"),
+        "bank": MessageLookupByLibrary.simpleMessage("ဘဏ်"),
         "bannerListType":
             MessageLookupByLibrary.simpleMessage("Banner List Type"),
         "bannerType": MessageLookupByLibrary.simpleMessage("Banner အမျိုးအစား"),
@@ -194,6 +211,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Banner Youtube URL"),
         "basicInformation":
             MessageLookupByLibrary.simpleMessage("အခြေခံအချက်အလက်"),
+        "becomeAVendor":
+            MessageLookupByLibrary.simpleMessage("ရောင်းသူဖြစ်လာပါ။"),
         "bengali": MessageLookupByLibrary.simpleMessage("Bengali"),
         "billingAddress":
             MessageLookupByLibrary.simpleMessage("ငွေတောင်းရန်လိပ်စာ"),
@@ -225,6 +244,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "brazil": MessageLookupByLibrary.simpleMessage("Portuguese"),
         "burmese": MessageLookupByLibrary.simpleMessage("ဗမာ"),
         "buyNow": MessageLookupByLibrary.simpleMessage("ဝယ်ယူရန်"),
+        "by": MessageLookupByLibrary.simpleMessage("အားဖြင့်"),
         "byCategory":
             MessageLookupByLibrary.simpleMessage(" အမျိုးအစားဖြင့်ကြည့်ရန်"),
         "byPrice":
@@ -234,6 +254,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "byTag": MessageLookupByLibrary.simpleMessage("By Tag"),
         "call": MessageLookupByLibrary.simpleMessage("ခေါ်မည်"),
         "callTo": MessageLookupByLibrary.simpleMessage("Make a Call To"),
+        "callToVendor": MessageLookupByLibrary.simpleMessage(
+            "စတိုးဆိုင်ပိုင်ရှင်ထံ ဖုန်းဆက်ပါ။"),
         "canNotCreateOrder":
             MessageLookupByLibrary.simpleMessage("အော်ဒါဖန်တီး၍မရပါ။"),
         "canNotCreateUser":
@@ -248,6 +270,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Cannot launch this app, make sure your settings on config.dart is correct"),
         "canNotLoadThisLink":
             MessageLookupByLibrary.simpleMessage("ဤလင့်ခ်ကို တင်၍မရပါ။"),
+        "canNotPlayVideo": MessageLookupByLibrary.simpleMessage(
+            "ဝမ်းနည်းပါသည်၊ ဤဗီဒီယိုကို ဖွင့်၍မရပါ။"),
         "canNotSaveOrder": MessageLookupByLibrary.simpleMessage(
             "မှာယူမှုကို ဝဘ်ဆိုက်တွင် သိမ်းဆည်း၍မရပါ။"),
         "canNotUpdateInfo": MessageLookupByLibrary.simpleMessage(
@@ -266,15 +290,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "categories": MessageLookupByLibrary.simpleMessage("အမျိုးအစားများ"),
         "category": MessageLookupByLibrary.simpleMessage("အမျိုးအစား"),
         "change": MessageLookupByLibrary.simpleMessage("ပြောင်းလဲသည်။"),
+        "changeLanguage":
+            MessageLookupByLibrary.simpleMessage("ဘာသာစကားပြောင်းပါ"),
         "changePrinter":
             MessageLookupByLibrary.simpleMessage("ပရင်တာပြောင်းပါ။"),
         "changedCurrencyTo": m4,
         "chat": MessageLookupByLibrary.simpleMessage("စကားပြောရန်"),
+        "chatGPT": MessageLookupByLibrary.simpleMessage("GPT ချတ်"),
         "chatListScreen": MessageLookupByLibrary.simpleMessage("မက်ဆေ့ခ်ျများ"),
         "chatViaFacebook": MessageLookupByLibrary.simpleMessage(
             " Facebook Messenger တွင်စကားပြောရန်"),
         "chatViaWhatApp":
             MessageLookupByLibrary.simpleMessage(" WhatsApp တွင်စကားပြောရန်"),
+        "chatWithBot":
+            MessageLookupByLibrary.simpleMessage("Bot နှင့် ချတ်လုပ်ပါ။"),
         "chatWithStoreOwner":
             MessageLookupByLibrary.simpleMessage("ဆိုင်ရှင်နှင့်စကားပြောရန်"),
         "checkConfirmLink": MessageLookupByLibrary.simpleMessage(
@@ -303,6 +332,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "clear": MessageLookupByLibrary.simpleMessage("ရှင်းလင်းရန်"),
         "clearCart":
             MessageLookupByLibrary.simpleMessage("ရွေးထားသည်များအားပယ်ဖျက်ရန်"),
+        "clearConversation":
+            MessageLookupByLibrary.simpleMessage("ရှင်းလင်းပြောဆိုခြင်း။"),
         "close": MessageLookupByLibrary.simpleMessage("ပိတ်မည်။"),
         "closeNow": MessageLookupByLibrary.simpleMessage("အခုပိတ်ပါ"),
         "codExtraFee": MessageLookupByLibrary.simpleMessage("COD အပိုကြေး"),
@@ -320,6 +351,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "The cart will be cleared when top up."),
         "confirmClearTheCart": MessageLookupByLibrary.simpleMessage(
             "သင်ဈေးခြင်းကိုရှင်းလင်းချင်တာသေချာပြီလား?"),
+        "confirmDelete": MessageLookupByLibrary.simpleMessage(
+            "ဤအရာကို ဖျက်လိုသည်မှာ သေချာပါသလား။ ဤလုပ်ဆောင်ချက်ကို ပြန်ပြင်၍မရပါ။"),
         "confirmDeleteItem": MessageLookupByLibrary.simpleMessage(
             "ဤပစ္စည်းအမျိုးအစားကိုပယ်ဖျက်မှာသေချာပြီလား?"),
         "connect": MessageLookupByLibrary.simpleMessage("ဆက်သွယ်ပါ"),
@@ -335,7 +368,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("ဆက်လက်လုပ်ဆောင်သည်။"),
         "conversations":
             MessageLookupByLibrary.simpleMessage("အပြန်အလှန်ပြောဆိုခြင်း"),
+        "convertPoint": m5,
+        "copied": MessageLookupByLibrary.simpleMessage("ကူးယူသည်။"),
+        "copy": MessageLookupByLibrary.simpleMessage("ကူးပါ"),
         "country": MessageLookupByLibrary.simpleMessage("နိုင်ငံ"),
+        "countryIsNotSupported": m6,
         "countryIsRequired": MessageLookupByLibrary.simpleMessage(
             " နိုင်ငံနာမည်ဖြည့်ရန်လိုအပ်ပါသည်။"),
         "couponCode": MessageLookupByLibrary.simpleMessage("ကူပွန်ကုဒ်"),
@@ -357,11 +394,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "createdOn": MessageLookupByLibrary.simpleMessage("Created on: "),
         "currencies":
             MessageLookupByLibrary.simpleMessage("ငွေကြေးအမျိုးအစားများ"),
-        "currencyIsNotSupported": m5,
+        "currencyIsNotSupported": m7,
         "currentPassword":
             MessageLookupByLibrary.simpleMessage("လက်ရှိစကားဝှက်"),
         "currentlyWeOnlyHave":
             MessageLookupByLibrary.simpleMessage("လောလောဆယ်ရှိသည့်ပစ္စည်း"),
+        "customer": MessageLookupByLibrary.simpleMessage("ဖောက်သည်"),
         "customerDetail":
             MessageLookupByLibrary.simpleMessage("ဝယ်ယူသူအချက်အလက်"),
         "customerNote": MessageLookupByLibrary.simpleMessage("ဝယ်ယူသူမှတ်စု"),
@@ -386,7 +424,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dateTime": MessageLookupByLibrary.simpleMessage("ရက်စွဲ အချိန်"),
         "dateWiseClose":
             MessageLookupByLibrary.simpleMessage("Date wise close"),
-        "daysAgo": m6,
+        "daysAgo": m8,
         "debit": MessageLookupByLibrary.simpleMessage("ငွေပမာဏ"),
         "decline": MessageLookupByLibrary.simpleMessage("ငြင်းသည်။"),
         "delete": MessageLookupByLibrary.simpleMessage("ဖျက်သည်။"),
@@ -416,7 +454,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Disable purchase"),
         "discount": MessageLookupByLibrary.simpleMessage("လျော့ဈေး"),
         "displayName": MessageLookupByLibrary.simpleMessage("ဖော်ပြမည့်အမည်"),
-        "distance": m7,
+        "distance": m9,
         "doNotAnyTransactions": MessageLookupByLibrary.simpleMessage(
             "သင့်တွင်ငွေလွှဲပြောင်းမှုများမရှိသေးပါ"),
         "doYouWantToExitApp":
@@ -463,13 +501,19 @@ class MessageLookup extends MessageLookupByLibrary {
             "အသုံးပြုသူအမည်/အီးမေးလ်သည် ဗလာဖြစ်နေသည်။"),
         "emptyWishlistSubtitle": MessageLookupByLibrary.simpleMessage(
             "ပစ္စည်းဘေးမှအသဲပုံလေးကိုနှိပ်ပြီး Wishlist လုပ်နိုင်ပါသည်... We’ll save them for you here!"),
+        "enableForCheckout":
+            MessageLookupByLibrary.simpleMessage("Checkout အတွက် ဖွင့်ပါ။"),
+        "enableForLogin":
+            MessageLookupByLibrary.simpleMessage("အကောင့်ဝင်ရန် ဖွင့်ပါ။"),
+        "enableForWallet":
+            MessageLookupByLibrary.simpleMessage("Wallet အတွက် ဖွင့်ပါ။"),
         "enableVacationMode":
             MessageLookupByLibrary.simpleMessage("Enable vacation mode"),
         "endDateCantBeAfterFirstDate": MessageLookupByLibrary.simpleMessage(
             "ကျေးဇူးပြု၍ပထမဦးဆုံးရက်စွဲနောက်ပိုင်းကိုရွေးချယ်ပါ "),
-        "endsIn": m8,
+        "endsIn": m10,
         "english": MessageLookupByLibrary.simpleMessage("English"),
-        "enterCaptcha": m9,
+        "enterCaptcha": m11,
         "enterSendedCode": MessageLookupByLibrary.simpleMessage(
             "သို့ပို့ထားသောကုဒ်ကိုထည့်ပါ။ "),
         "enterYourEmail":
@@ -488,7 +532,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "စတင်ရန် သင့်ဖုန်းနံပါတ်ကို ထည့်ပါ။"),
         "enterYourPhoneNumber":
             MessageLookupByLibrary.simpleMessage(" သင်၏ဖုန်းနံပါတ်ထည့်ပါ "),
-        "error": m10,
+        "error": m12,
         "errorAmountTransfer": MessageLookupByLibrary.simpleMessage(
             "လက်ရှိပမာဏသည်သင့်ပိုက်ဆံအိတ်ထဲရှိပမာဏထက်ကျော်လွန်နေပါသည်။ပြန်လည်ကြိုးစားပါ!"),
         "errorEmailFormat": MessageLookupByLibrary.simpleMessage(
@@ -504,7 +548,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "expiredDate":
             MessageLookupByLibrary.simpleMessage("သက်တမ်းကုန်ဆုံးရက်"),
         "expiredDateHint": MessageLookupByLibrary.simpleMessage("MM/YY"),
-        "expiringInTime": m11,
+        "expiringInTime": m13,
         "external": MessageLookupByLibrary.simpleMessage("အပြင်ဘက်"),
         "extraServices":
             MessageLookupByLibrary.simpleMessage("အပိုဝန်ဆောင်မှုများ"),
@@ -517,6 +561,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "failedToLoadImage":
             MessageLookupByLibrary.simpleMessage("ပုံတင်ရန် မအောင်မြင်ပါ။"),
         "favorite": MessageLookupByLibrary.simpleMessage("အကြိုက်ဆုံး"),
+        "featureNotAvailable":
+            MessageLookupByLibrary.simpleMessage("ဝန်ဆောင်မှု မရနိုင်ပါ။"),
         "featureProducts":
             MessageLookupByLibrary.simpleMessage("အထူးပစ္စည်းများ"),
         "featured": MessageLookupByLibrary.simpleMessage("ဦးစားပေး"),
@@ -527,6 +573,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "ဖိုင်တင်ပို့ချင်းမအောင်မြင်ပါ!"),
         "files": MessageLookupByLibrary.simpleMessage("ဖိုင်များ"),
         "filter": MessageLookupByLibrary.simpleMessage("စစ်ထုတ်ခြင်း"),
+        "fingerprintsTouchID":
+            MessageLookupByLibrary.simpleMessage("လက်ဗွေ၊ Touch ID"),
         "finishSetup": MessageLookupByLibrary.simpleMessage("Finish setup"),
         "finnish": MessageLookupByLibrary.simpleMessage("Finnish"),
         "firstComment": MessageLookupByLibrary.simpleMessage(
@@ -566,7 +614,7 @@ class MessageLookup extends MessageLookupByLibrary {
             " နောက်ပြန်ဆုတ်ရန် (Go back to review)"),
         "goBackToShipping": MessageLookupByLibrary.simpleMessage(
             " နောက်ပြန်ဆုတ်ရန် (Go back to shipping)"),
-        "greaterDistance": m12,
+        "greaterDistance": m14,
         "greek": MessageLookupByLibrary.simpleMessage("Greek"),
         "grossSales": MessageLookupByLibrary.simpleMessage("Gross Sales"),
         "grouped": MessageLookupByLibrary.simpleMessage("Grouped"),
@@ -587,13 +635,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "historyTransaction": MessageLookupByLibrary.simpleMessage("History"),
         "home": MessageLookupByLibrary.simpleMessage("ပင်မ"),
         "hour": MessageLookupByLibrary.simpleMessage("နာရီ"),
-        "hoursAgo": m13,
+        "hoursAgo": m15,
         "hungarian": MessageLookupByLibrary.simpleMessage("Hungarian"),
         "hungary": MessageLookupByLibrary.simpleMessage("Hungarian"),
         "iAgree": MessageLookupByLibrary.simpleMessage("လက်ခံသဘောတူပါသည်"),
         "imIn": MessageLookupByLibrary.simpleMessage("ရောက်နေတာ။"),
         "imageFeature": MessageLookupByLibrary.simpleMessage("Image Feature"),
         "imageGallery": MessageLookupByLibrary.simpleMessage("ဓာတ်ပုံပြတိုက်"),
+        "imageGenerate": MessageLookupByLibrary.simpleMessage("ပုံထုတ်ပေးသည်။"),
         "imageNetwork": MessageLookupByLibrary.simpleMessage("ရုပ်ပုံကွန်ရက်"),
         "inStock":
             MessageLookupByLibrary.simpleMessage(" ပစ္စည်းလက်ကျန်ရှိသည်။ "),
@@ -646,15 +695,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "listBannerVideo":
             MessageLookupByLibrary.simpleMessage("List Banner Video"),
         "listMessages": MessageLookupByLibrary.simpleMessage("မက်ဆေ့ချ်များ"),
+        "listening": MessageLookupByLibrary.simpleMessage("နားထောင်နေသည်..."),
         "loadFail": MessageLookupByLibrary.simpleMessage("Load Failed!"),
         "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
         "loadingLink":
             MessageLookupByLibrary.simpleMessage("လင့်ခ်ကို ဖွင့်နေသည်..."),
         "location": MessageLookupByLibrary.simpleMessage("တည်နေရာ"),
+        "lockScreenAndSecurity": MessageLookupByLibrary.simpleMessage(
+            "သော့ခတ်မျက်နှာပြင်နှင့် လုံခြုံရေး"),
         "login": MessageLookupByLibrary.simpleMessage("အကောင့်ဝင်မည်"),
         "loginCanceled": MessageLookupByLibrary.simpleMessage(
             "အကောင့်ဝင်ရောက်မှုကိုပယ်ဖျက်သည်။"),
-        "loginErrorServiceProvider": m14,
+        "loginErrorServiceProvider": m16,
         "loginFailed": MessageLookupByLibrary.simpleMessage(
             "အကောင့်ဝင်ရောက်မှုမအောင်မြင်ပါ !"),
         "loginInvalid": MessageLookupByLibrary.simpleMessage(
@@ -670,6 +722,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "logout": MessageLookupByLibrary.simpleMessage("အကောင့်ထွက်မည်။"),
         "malay": MessageLookupByLibrary.simpleMessage("မလေး"),
         "manCollections": MessageLookupByLibrary.simpleMessage("အမျိုးသားဝတ်"),
+        "manageApiKey":
+            MessageLookupByLibrary.simpleMessage("API ကီးကို စီမံပါ။"),
         "manageStock": MessageLookupByLibrary.simpleMessage(
             "ပစ္စည်းလက်ကျန်စီမံခန့်ခွဲမည်။"),
         "map": MessageLookupByLibrary.simpleMessage("မြေပုံ"),
@@ -680,20 +734,22 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("တင်ပို့ထားသည်ဟုသတ်မှတ်မည်။"),
         "markAsUnread":
             MessageLookupByLibrary.simpleMessage(" မဖတ်ရသေးသောစာရင်းထဲထည့်ပါ"),
-        "maximumFileSizeMb": m15,
+        "maxAmountForPayment": m17,
+        "maximumFileSizeMb": m18,
         "maybeLater": MessageLookupByLibrary.simpleMessage("နောက်မှ"),
         "menuOrder": MessageLookupByLibrary.simpleMessage("မီနူးအော်ဒါ"),
         "message": MessageLookupByLibrary.simpleMessage("စာတို"),
         "messageTo": MessageLookupByLibrary.simpleMessage("Send Message To"),
+        "minAmountForPayment": m19,
         "minimumQuantityIs":
             MessageLookupByLibrary.simpleMessage("အနဲဆုံးအရေအတွက်"),
-        "minutesAgo": m16,
+        "minutesAgo": m20,
         "mobileVerification":
             MessageLookupByLibrary.simpleMessage("Mobile အတည်ပြုမှု"),
         "momentAgo": MessageLookupByLibrary.simpleMessage("မကြာသေးမှီက"),
-        "monthsAgo": m17,
+        "monthsAgo": m21,
         "more": MessageLookupByLibrary.simpleMessage("...ပို၍"),
-        "moreFromStore": m18,
+        "moreFromStore": m22,
         "moreInformation": MessageLookupByLibrary.simpleMessage("အချက်အလက်ပို"),
         "morning": MessageLookupByLibrary.simpleMessage("မနက်ခင်း"),
         "mustSelectOneItem":
@@ -708,8 +764,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("ကျွန်ုပ်၏ပိုက်ဆံအိတ်"),
         "myWishList": MessageLookupByLibrary.simpleMessage(
             "လိုချင်သည့်ပစ္စည်းများ (Wish List)"),
-        "nItems": m19,
+        "nItems": m23,
         "name": MessageLookupByLibrary.simpleMessage("နာမည်"),
+        "nameOnCard": MessageLookupByLibrary.simpleMessage("ကတ်ပေါ်တွင် အမည်"),
         "nearbyPlaces":
             MessageLookupByLibrary.simpleMessage("အနီးအနားရှိနေရာများ"),
         "needToLoginAgain": MessageLookupByLibrary.simpleMessage(
@@ -744,6 +801,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "noListingNearby":
             MessageLookupByLibrary.simpleMessage("အနီးနားတွင်စာရင်းမရှိပါ။"),
         "noOrders": MessageLookupByLibrary.simpleMessage(" မှာယူမှုမရှိသေးပါ"),
+        "noPermissionToViewProduct": MessageLookupByLibrary.simpleMessage(
+            "ဤထုတ်ကုန်ကို သတ်မှတ်ထားသော အခန်းကဏ္ဍရှိသော သုံးစွဲသူများအတွက် ရနိုင်ပါသည်။ ဤထုတ်ကုန်ကိုဝင်ရောက်ကြည့်ရှုရန် သင့်လျော်သောအထောက်အထားများဖြင့် ဝင်ရောက်ပါ သို့မဟုတ် နောက်ထပ်အချက်အလက်များအတွက် ကျွန်ုပ်တို့ထံ ဆက်သွယ်ပါ။"),
         "noPost": MessageLookupByLibrary.simpleMessage(
             "အိုး၊ ဤစာမျက်နှာမရှိတော့ပုံရသည်။"),
         "noPrinters":
@@ -756,6 +815,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "noThanks":
             MessageLookupByLibrary.simpleMessage("ရပါတယ်ကျေးဇူးပါ (No Thanks)"),
         "none": MessageLookupByLibrary.simpleMessage("None"),
+        "notFindResult": MessageLookupByLibrary.simpleMessage(
+            "ဝမ်းနည်းပါတယ်၊ မည်သည့်ရလဒ်ကိုမှ ရှာမတွေ့ပါ။"),
         "notFound": MessageLookupByLibrary.simpleMessage("ရှာမတွေ့ပါ။"),
         "note": MessageLookupByLibrary.simpleMessage("အော်ဒါမှတ်စု"),
         "noteMessage": MessageLookupByLibrary.simpleMessage("မှတ်စု"),
@@ -774,7 +835,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "openMap": MessageLookupByLibrary.simpleMessage("မြေပုံ"),
         "openNow": MessageLookupByLibrary.simpleMessage("အခုဖွင့်ပါ"),
         "options": MessageLookupByLibrary.simpleMessage("ရွေးချယ်စရာများ"),
-        "optionsTotal": m20,
+        "optionsTotal": m24,
         "or": MessageLookupByLibrary.simpleMessage(" (သို့မဟုတ်) "),
         "orLoginWith": MessageLookupByLibrary.simpleMessage("or login with"),
         "orderConfirmation":
@@ -833,9 +894,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "orderSummary":
             MessageLookupByLibrary.simpleMessage("အော်ဒါအကျဉ်းချုပ်"),
         "orderTotal": MessageLookupByLibrary.simpleMessage("စုစုပေါင်းအော်ဒါ"),
+        "orderTracking": MessageLookupByLibrary.simpleMessage("အမိန့်ခြေရာခံ"),
         "orders": MessageLookupByLibrary.simpleMessage("အမှာစာများ"),
         "otpVerification":
             MessageLookupByLibrary.simpleMessage("OTP အတည်ပြုခြင်း။"),
+        "ourBankDetails": MessageLookupByLibrary.simpleMessage(
+            "ကျွန်ုပ်တို့၏ဘဏ်အသေးစိတ်အချက်အလက်များ"),
         "outOfStock":
             MessageLookupByLibrary.simpleMessage("ပစ္စည်းလက်ကျန်ကုန်နေသည်။"),
         "pageView": MessageLookupByLibrary.simpleMessage("Page View"),
@@ -849,9 +913,12 @@ class MessageLookup extends MessageLookupByLibrary {
             " ကျွန်ုပ်၏ပိုက်ဆံအိတ်မှပေးမည်"),
         "payNow":
             MessageLookupByLibrary.simpleMessage("ယခုချက်ချင်းငွေချေမည်။"),
+        "payWithAmount": m25,
         "payment": MessageLookupByLibrary.simpleMessage("ငွေပေးချေမှု"),
         "paymentMethod":
             MessageLookupByLibrary.simpleMessage("ငွေပေးချေမှုနည်းလမ်း"),
+        "paymentMethodIsNotSupported": MessageLookupByLibrary.simpleMessage(
+            "ဤငွေပေးချေမှုနည်းလမ်းကို မပံ့ပိုးပါ။"),
         "paymentMethods":
             MessageLookupByLibrary.simpleMessage("ငွေပေးချေမှုနည်းလမ်းများ"),
         "paymentSuccessful": MessageLookupByLibrary.simpleMessage(
@@ -973,6 +1040,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "ထုတ်ကုန်အမျိုးအစား ကိန်းရှင်သည် အနည်းဆုံး မူကွဲတစ်ခု လိုအပ်သည်။"),
         "productNeedNameAndPrice": MessageLookupByLibrary.simpleMessage(
             "ကုန်ပစ္စည်းအမျိုးအစား ရိုးရိုးအမည်နှင့် ပုံမှန်စျေးနှုန်း လိုအပ်သည်။"),
+        "productOutOfStock":
+            MessageLookupByLibrary.simpleMessage("ပစ္စည်းပြတ်သွားပြီ"),
         "productRating": MessageLookupByLibrary.simpleMessage("သင့် Rating"),
         "productReview": MessageLookupByLibrary.simpleMessage(
             "ထုတ်ကုန်ပြန်လည်သုံးသပ်ခြင်း။"),
@@ -983,7 +1052,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "pullToLoadMore":
             MessageLookupByLibrary.simpleMessage("Pull to Load more"),
         "qty": MessageLookupByLibrary.simpleMessage("qty"),
-        "qtyTotal": m21,
+        "qtyTotal": m26,
+        "quantityProductExceedInStock": MessageLookupByLibrary.simpleMessage(
+            "လက်ရှိ ပမာဏသည် စတော့ရှိ ပမာဏထက် ပိုများသည်။"),
         "rate": MessageLookupByLibrary.simpleMessage("Rate"),
         "rateTheApp":
             MessageLookupByLibrary.simpleMessage("အက်ပ်ကိုအဆင့်သတ်မှတ်ပါ။"),
@@ -1020,6 +1091,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "refundRequested": MessageLookupByLibrary.simpleMessage(
             "ငွေပြန်အမ်းရန်တောင်းဆိုပြီးပါပြီ"),
         "refunds": MessageLookupByLibrary.simpleMessage("ပြန်အမ်းငွေများ"),
+        "regenerateResponse":
+            MessageLookupByLibrary.simpleMessage("တုံ့ပြန်မှုကို ပြန်ထုတ်ပါ။"),
+        "registerAs":
+            MessageLookupByLibrary.simpleMessage("အဖြစ် စာရင်းသွင်းပါ။"),
         "registerAsVendor": MessageLookupByLibrary.simpleMessage(
             "ဈေးရောင်းသူအဖြစ်စာရင်းသွင်းမည်"),
         "registerFailed": MessageLookupByLibrary.simpleMessage(
@@ -1056,7 +1131,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "reviews": MessageLookupByLibrary.simpleMessage("သုံးသပ်ချက်များ"),
         "romanian": MessageLookupByLibrary.simpleMessage("Romanian"),
         "russian": MessageLookupByLibrary.simpleMessage("Russian"),
-        "sale": m22,
+        "sale": m27,
         "salePrice": MessageLookupByLibrary.simpleMessage("လျော့ဈေး"),
         "save": MessageLookupByLibrary.simpleMessage("သိမ်းဆည်းပါ"),
         "saveAddress":
@@ -1084,7 +1159,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "searchPlace": MessageLookupByLibrary.simpleMessage("နေရာကိုရှာရန်"),
         "searchingAddress":
             MessageLookupByLibrary.simpleMessage("လိပ်စာအားရှာဖွေနေပါသည်။"),
-        "secondsAgo": m23,
+        "secondsAgo": m28,
         "seeAll": MessageLookupByLibrary.simpleMessage("အားလုံးကြည့်ရန်"),
         "seeNewAppConfig": MessageLookupByLibrary.simpleMessage(
             "သင့်အက်ပ်တွင် အကြောင်းအရာအသစ်များကို ဆက်လက်ကြည့်ရှုပါ။"),
@@ -1101,8 +1176,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "selectNone": MessageLookupByLibrary.simpleMessage("ဘာမှမရွေးပါ။"),
         "selectPrinter":
             MessageLookupByLibrary.simpleMessage("Printer ကို ရွေးပါ။"),
+        "selectRole": MessageLookupByLibrary.simpleMessage("Role ကို ရွေးပါ။"),
+        "selectStore":
+            MessageLookupByLibrary.simpleMessage("Store ကို ရွေးပါ။"),
         "selectTheColor":
             MessageLookupByLibrary.simpleMessage("အရောင်ကိုရွေးချယ်ပါ။"),
+        "selectTheFile":
+            MessageLookupByLibrary.simpleMessage("ဖိုင်ကိုရွေးချယ်ပါ။"),
         "selectThePoint":
             MessageLookupByLibrary.simpleMessage("အမှတ်ကိုရွေးချယ်ပါ"),
         "selectTheQuantity":
@@ -1112,6 +1192,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "send": MessageLookupByLibrary.simpleMessage("ပေးပို့"),
         "sendBack": MessageLookupByLibrary.simpleMessage("ပြန်ပို့ပါ။"),
         "sendSMSCode": MessageLookupByLibrary.simpleMessage("ကုဒ်ရယူရန်"),
+        "sendSMStoVendor": MessageLookupByLibrary.simpleMessage(
+            "စတိုးဆိုင်ပိုင်ရှင်ထံ SMS ပို့ပါ။"),
         "serbian": MessageLookupByLibrary.simpleMessage("Serbian"),
         "sessionExpired": MessageLookupByLibrary.simpleMessage(
             "စက်ရှင်သက်တမ်းကုန်သွားပါပြီ။"),
@@ -1119,6 +1201,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "ဆက်တင်စာမျက်နှာတွင် လိပ်စာတစ်ခု သတ်မှတ်ပေးပါ။"),
         "settings":
             MessageLookupByLibrary.simpleMessage("ကိုယ်ရေးအချက်အလက်များ"),
+        "setup": MessageLookupByLibrary.simpleMessage("တည်ဆောက်သည်"),
         "share": MessageLookupByLibrary.simpleMessage("ဝေမျှရန်"),
         "shipped": MessageLookupByLibrary.simpleMessage("တင်ပို့ပြီးပါပြီ "),
         "shipping": MessageLookupByLibrary.simpleMessage("ပစ္စည်းပို့ခြင်း"),
@@ -1132,13 +1215,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "shopOrders": MessageLookupByLibrary.simpleMessage("ဆိုင်အော်ဒါများ"),
         "shopPhone": MessageLookupByLibrary.simpleMessage("ဆိုင်ဖုန်းနံပါတ်"),
         "shopSlug": MessageLookupByLibrary.simpleMessage("ဆိုင်၏ဝဘ်ဆိုဒ်"),
-        "shoppingCartItems": m24,
+        "shoppingCartItems": m29,
         "shortDescription":
             MessageLookupByLibrary.simpleMessage("အကျဉ်းချုံးဖော်ပြချက်"),
         "showAllMyOrdered": MessageLookupByLibrary.simpleMessage(
             " မှာယူခဲ့သည့်ပစ္စည်းများအားလုံး"),
         "showDetails": MessageLookupByLibrary.simpleMessage("အသေးစိတ်ပြပါ"),
         "showGallery": MessageLookupByLibrary.simpleMessage("ပုံတွေပြပါ။"),
+        "showLess": MessageLookupByLibrary.simpleMessage("လျှော့ပြပါ။"),
+        "showMore": MessageLookupByLibrary.simpleMessage("ပိုပြပါ။"),
         "signIn": MessageLookupByLibrary.simpleMessage("အကောင့်ဝင်ရန်"),
         "signInWithEmail": MessageLookupByLibrary.simpleMessage(
             "အီးမေးလ်ဖြင့် အကောင့်ဝင်မည်။"),
@@ -1151,12 +1236,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "slovak": MessageLookupByLibrary.simpleMessage("စလိုဗက်"),
         "smsCodeExpired": MessageLookupByLibrary.simpleMessage(
             "SMS ကုဒ် သက်တမ်းကုန်သွားပါပြီ။ ထပ်စမ်းကြည့်ရန် အတည်ပြုကုဒ်ကို ပြန်လည်ပေးပို့ပါ။"),
-        "sold": m25,
+        "sold": m30,
         "soldBy": MessageLookupByLibrary.simpleMessage("ရောင်းသူ-"),
         "somethingWrong": MessageLookupByLibrary.simpleMessage(
             "တစ်ခုခုမှားယွင်းနေသည်။ ခဏစောင့်ပြီးပြန်လည်ကြိုးစားပါ။."),
         "sortBy": MessageLookupByLibrary.simpleMessage("အလိုက်စဥ်သည်"),
+        "sortCode": MessageLookupByLibrary.simpleMessage("ကုဒ်ကိုစီပါ။"),
         "spanish": MessageLookupByLibrary.simpleMessage("Spanish"),
+        "speechNotAvailable":
+            MessageLookupByLibrary.simpleMessage("စကားပြောမရနိုင်ပါ။"),
         "startExploring":
             MessageLookupByLibrary.simpleMessage("စတင်စူးစမ်းရှာဖွေမည်။"),
         "startShopping": MessageLookupByLibrary.simpleMessage("စတင်ဈေးဝယ်ရန်"),
@@ -1215,14 +1303,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "tamil": MessageLookupByLibrary.simpleMessage("Tamil"),
         "tapSelectLocation":
             MessageLookupByLibrary.simpleMessage("ဤနေရာကိုရွေးချယ်ရန်"),
+        "tapTheMicToTalk": MessageLookupByLibrary.simpleMessage(
+            "စကားပြောရန် မိုက်ကို တို့ပါ။"),
         "tax": MessageLookupByLibrary.simpleMessage("အခွန်"),
         "thailand": MessageLookupByLibrary.simpleMessage("Thai"),
-        "theFieldIsRequired": m26,
+        "theFieldIsRequired": m31,
         "thisDateIsNotAvailable":
             MessageLookupByLibrary.simpleMessage("ဤနေ့ရက်ကိုမရရှိနိုင်ပါ။"),
         "thisFeatureDoesNotSupportTheCurrentLanguage":
             MessageLookupByLibrary.simpleMessage(
                 "လက်ရှိဘာသာစကားတွင်ဤလုပ်ဆောင်ချက်ကိုမရရှိနိုင်သေးပါ။"),
+        "thisIsCustomerRole":
+            MessageLookupByLibrary.simpleMessage("ဒါက ဖောက်သည် အခန်းကဏ္ဍ"),
+        "thisIsVendorRole":
+            MessageLookupByLibrary.simpleMessage("ဒါက ရောင်းသူရဲ့ အခန်းကဏ္ဍ"),
         "thisPlatformNotSupportWebview": MessageLookupByLibrary.simpleMessage(
             "This platform is not support for webview"),
         "thisProductNotSupport":
@@ -1240,7 +1334,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "total": MessageLookupByLibrary.simpleMessage("စုစုပေါင်း"),
         "totalCartValue": MessageLookupByLibrary.simpleMessage(
             "စုစုပေါင်းမှာယူမှုတန်ဖိုးသည်အနည်းဆုံးဤမျှဖြစ်ရပါမည်။"),
-        "totalProducts": m27,
+        "totalProducts": m32,
         "totalTax": MessageLookupByLibrary.simpleMessage("အခွန်စုစုပေါင်း"),
         "trackingNumberIs":
             MessageLookupByLibrary.simpleMessage("Tracking နံပါတ်"),
@@ -1267,6 +1361,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "turkish": MessageLookupByLibrary.simpleMessage("Turkish"),
         "turnOnBle":
             MessageLookupByLibrary.simpleMessage("Bluetooth ကိုဖွင့်ပါ။"),
+        "typeAMessage":
+            MessageLookupByLibrary.simpleMessage("မက်ဆေ့ခ်ျရိုက်ပါ..."),
         "typeYourMessage": MessageLookupByLibrary.simpleMessage(
             "သင့်စာကိုဤနေရာတွင်ရိုက်ထည့်ပါ..."),
         "typing": MessageLookupByLibrary.simpleMessage("စာရိုက်နေသည်..."),
@@ -1290,6 +1386,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("ကုန်ပစ္စည်းကိုတင်ပါ။"),
         "uploading": MessageLookupByLibrary.simpleMessage("Uploading"),
         "url": MessageLookupByLibrary.simpleMessage("URL"),
+        "useMaximumPointDiscount": m33,
         "useNow": MessageLookupByLibrary.simpleMessage("ယခုအသုံးပြုရန်"),
         "useThisImage": MessageLookupByLibrary.simpleMessage("ဤပုံကိုသုံးပါ။"),
         "userExists": MessageLookupByLibrary.simpleMessage(
@@ -1302,9 +1399,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "vacationMessage":
             MessageLookupByLibrary.simpleMessage("Vacation Message"),
         "vacationType": MessageLookupByLibrary.simpleMessage("Vacation type"),
-        "validUntilDate": m28,
+        "validUntilDate": m34,
         "variable": MessageLookupByLibrary.simpleMessage("Variable"),
         "variation": MessageLookupByLibrary.simpleMessage("ကွဲပြားမှု"),
+        "vendor": MessageLookupByLibrary.simpleMessage("ရောင်းချသူ"),
         "vendorAdmin":
             MessageLookupByLibrary.simpleMessage("ရောင်းချသူ၏ဒက်ရှ်ဘုတ်စာရင်း"),
         "vendorInfo":
@@ -1330,11 +1428,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "walletBalance":
             MessageLookupByLibrary.simpleMessage("ပိုက်ဆံအိတ် လက်ကျန်"),
         "walletName": MessageLookupByLibrary.simpleMessage("ပိုက်ဆံအိတ်နာမည်"),
-        "warning": m29,
-        "warningCurrencyMessageForWallet": m30,
+        "warning": m35,
+        "warningCurrencyMessageForWallet": m36,
         "weFoundBlogs":
             MessageLookupByLibrary.simpleMessage("We Found Blog(s)"),
-        "weFoundProducts": m31,
+        "weFoundProducts": m37,
         "weNeedCameraAccessTo": MessageLookupByLibrary.simpleMessage(
             "QR ကုဒ် သို့မဟုတ် ဘားကုဒ်ကို စကင်န်ဖတ်ရန် ကင်မရာအသုံးပြုခွင့် လိုအပ်ပါသည်။"),
         "weSentAnOTPTo": MessageLookupByLibrary.simpleMessage(
@@ -1342,21 +1440,26 @@ class MessageLookup extends MessageLookupByLibrary {
         "weWillSendYouNotification": MessageLookupByLibrary.simpleMessage(
             "ထုတ်ကုန်အသစ်များ ရနိုင်ချိန် သို့မဟုတ် ကမ်းလှမ်းမှုများ ရနိုင်သည့်အခါ သင့်အား အကြောင်းကြားချက်များ ပေးပို့ပါမည်။ ဆက်တင်များတွင် သင်သည် ဤဆက်တင်ကို အမြဲပြောင်းနိုင်သည်။"),
         "webView": MessageLookupByLibrary.simpleMessage("Web View"),
-        "week": m32,
+        "week": m38,
         "welcome": MessageLookupByLibrary.simpleMessage("ကြိုဆိုပါသည်။"),
+        "welcomeUser": m39,
+        "whichLanguageDoYouPrefer":
+            MessageLookupByLibrary.simpleMessage("ဘယ်ဘာသာစကားကို ပိုကြိုက်လဲ။"),
+        "wholesaleRegisterMsg": MessageLookupByLibrary.simpleMessage(
+            "သင်၏မှတ်ပုံတင်ခြင်းကို အတည်ပြုရန် စီမံခန့်ခွဲသူထံ ဆက်သွယ်ပါ။"),
         "womanCollections":
             MessageLookupByLibrary.simpleMessage("အမျိုးသမီးဝတ်"),
         "writeComment":
             MessageLookupByLibrary.simpleMessage(" သင်၏မှတ်ချက်ရေးရန် "),
         "writeYourNote":
             MessageLookupByLibrary.simpleMessage(" သင်၏မှတ်စုကိုရေးပါ။"),
-        "yearsAgo": m33,
+        "yearsAgo": m40,
         "yes": MessageLookupByLibrary.simpleMessage("Yes"),
         "youCanOnlyOrderSingleStore": MessageLookupByLibrary.simpleMessage(
             "တစ်ခါလျှင်ဆိုင်တစ်ခုထဲကနေပဲဝယ်ယူလို့ရပါသည်။."),
         "youCanOnlyPurchase": MessageLookupByLibrary.simpleMessage(
             "သင်ဝယ်ယူမှုသာပြုလုပ်နိုင်ပါဦးမည်။"),
-        "youHaveAssignedToOrder": m34,
+        "youHaveAssignedToOrder": m41,
         "youHaveBeenSaveAddressYourLocal": MessageLookupByLibrary.simpleMessage(
             "You have been save address in your local"),
         "youHavePoints":

@@ -26,6 +26,10 @@ const String kLogo = 'assets/images/logo.png';
 
 const String kEmptySearch = 'assets/images/empty_search.png';
 
+const String kNoResult = 'assets/images/no_results.png';
+
+const String kNoCoupon = 'assets/images/no_coupon.png';
+
 const String kOrderCompleted = 'assets/images/fogg-order-completed.png';
 
 /// This is for grid category layout & side menu with sub category layout.

@@ -11,6 +11,7 @@ class ProductOnSale extends StatelessWidget {
   final EdgeInsets? padding;
   final EdgeInsets? margin;
   final BoxDecoration? decoration;
+  final Color? textColor;
 
   const ProductOnSale({
     Key? key,
@@ -19,6 +20,7 @@ class ProductOnSale extends StatelessWidget {
     this.padding,
     this.margin,
     this.decoration,
+    this.textColor,
   }) : super(key: key);
 
   @override
@@ -37,7 +39,9 @@ class ProductOnSale extends StatelessWidget {
         PriceTools.getPriceProductValue(product, onSale: true) !=
             PriceTools.getPriceProductValue(product, onSale: false);
     if (isSale && regularPrice != 0) {
-      salePercent = (double.parse(product.salePrice!) - regularPrice!) * 100 ~/ regularPrice;
+      salePercent = (double.parse(product.salePrice!) - regularPrice!) *
+          100 ~/
+          regularPrice;
     }
 
     if (isSale &&
@@ -51,8 +55,10 @@ class ProductOnSale extends StatelessWidget {
               horizontal: config.hMargin,
               vertical: config.vMargin / 2,
             ),
-        padding: padding ?? const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        decoration: decoration ?? _getSaleDecoration(context, borderRadius: config.borderRadius),
+        padding:
+            padding ?? const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        decoration: decoration ??
+            _getSaleDecoration(context, borderRadius: config.borderRadius),
         child: Text(
           '$salePercent%',
           style: Theme.of(context)
@@ -60,7 +66,7 @@ class ProductOnSale extends StatelessWidget {
               .bodySmall!
               .copyWith(
                 fontWeight: FontWeight.w700,
-                color: Colors.white,
+                color: textColor ?? Colors.white,
               )
               .apply(fontSizeFactor: 0.9),
         ),
@@ -76,11 +82,14 @@ class ProductOnSale extends StatelessWidget {
                 horizontal: config.hMargin,
                 vertical: config.vMargin / 2,
               ),
-          padding: padding ?? const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          decoration: _getSaleDecoration(context, borderRadius: config.borderRadius),
+          padding:
+              padding ?? const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration:
+              _getSaleDecoration(context, borderRadius: config.borderRadius),
           child: Text(
             S.of(context).onSale,
-            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.white),
+            style: const TextStyle(
+                fontSize: 12, fontWeight: FontWeight.w600, color: Colors.white),
           ),
         ),
       );
@@ -90,12 +99,15 @@ class ProductOnSale extends StatelessWidget {
   }
 }
 
-BoxDecoration _getSaleDecoration(BuildContext context, {double? borderRadius = 0.0}) =>
+BoxDecoration _getSaleDecoration(BuildContext context,
+        {double? borderRadius = 0.0}) =>
     BoxDecoration(
       color: Colors.redAccent,
       borderRadius: BorderRadius.only(
-        topLeft: context.isRtl ? Radius.zero : Radius.circular(borderRadius ?? 0.0),
-        topRight: context.isRtl ? Radius.circular(borderRadius ?? 0.0) : Radius.zero,
+        topLeft:
+            context.isRtl ? Radius.zero : Radius.circular(borderRadius ?? 0.0),
+        topRight:
+            context.isRtl ? Radius.circular(borderRadius ?? 0.0) : Radius.zero,
         bottomRight: context.isRtl ? Radius.zero : const Radius.circular(12),
         bottomLeft: context.isRtl ? const Radius.circular(12) : Radius.zero,
       ),

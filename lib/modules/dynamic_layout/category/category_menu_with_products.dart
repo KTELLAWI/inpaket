@@ -77,10 +77,13 @@ class _CategoryMenuWithProductsState extends State<CategoryMenuWithProducts> {
             isSelected: indexVal == selectedItemIndex,
           ),
           if (index != widget.config.items.length - 1)
-            ScreenTypeLayout(
-              mobile: const SizedBox(width: _defaultSeparateWidth),
-              tablet: const SizedBox(width: _defaultSeparateWidth + 12),
-              desktop: const SizedBox(width: _defaultSeparateWidth + 24),
+            ScreenTypeLayout.builder(
+              mobile: (BuildContext context) =>
+                  const SizedBox(width: _defaultSeparateWidth),
+              tablet: (BuildContext context) =>
+                  const SizedBox(width: _defaultSeparateWidth + 12),
+              desktop: (BuildContext context) =>
+                  const SizedBox(width: _defaultSeparateWidth + 24),
             ),
         ],
       );

@@ -22,7 +22,8 @@ class DownloadAppWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(15),
                 child: InkWell(
                   hoverColor: Colors.transparent,
-                  onTap: () => onTap?.call(kStoreIdentifier['android']),
+                  onTap: () =>
+                      onTap?.call(kAppRatingConfig.googlePlayIdentifier),
                   child: const FluxImage(
                     width: 120,
                     imageUrl: 'assets/images/google-play-badge.png',
@@ -35,7 +36,7 @@ class DownloadAppWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(15),
                 child: InkWell(
                   hoverColor: Colors.transparent,
-                  onTap: () => onTap?.call(kStoreIdentifier['ios']),
+                  onTap: () => onTap?.call(kAppRatingConfig.appStoreIdentifier),
                   child: const FluxImage(
                     width: 145,
                     imageUrl: 'assets/images/apple-store-badge.svg',

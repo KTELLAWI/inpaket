@@ -18,7 +18,7 @@ class StaticSplashScreen extends StatefulWidget {
     this.imagePath,
     key,
     this.onNextScreen,
-    this.duration = 1000,
+    this.duration = 2500,
     this.backgroundColor = Colors.white,
     this.boxFit = BoxFit.contain,
     this.paddingTop = 0.0,

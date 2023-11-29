@@ -46,12 +46,14 @@ class PriceTools {
   }
 
   static String? getPriceProductValue(Product? product, {bool? onSale}) {
+    if (product == null) return '';
+
     try {
       var price = onSale == true
-          ? (isNotBlank(product!.salePrice)
+          ? (isNotBlank(product.salePrice)
               ? product.salePrice ?? '0'
               : product.price)
-          : (isNotBlank(product!.regularPrice)
+          : (isNotBlank(product.regularPrice)
               ? product.regularPrice ?? '0'
               : product.price);
       return price;

@@ -6,14 +6,13 @@ part of 'shipping.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SerializerShipping _$SerializerShippingFromJson(Map<String, dynamic> json) {
-  return SerializerShipping(
-    id: json['id'] as int?,
-    title: json['title'] as String?,
-    description: json['description'] as String?,
-    cost: json['cost'] as int?,
-  );
-}
+SerializerShipping _$SerializerShippingFromJson(Map<String, dynamic> json) =>
+    SerializerShipping(
+      id: json['id'] as int?,
+      title: json['title'] as String?,
+      description: json['description'] as String?,
+      cost: json['cost'] as int?,
+    );
 
 Map<String, dynamic> _$SerializerShippingToJson(SerializerShipping instance) =>
     <String, dynamic>{

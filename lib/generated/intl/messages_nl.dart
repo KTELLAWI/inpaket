@@ -30,79 +30,96 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m4(currency) => "Valuta gewijzigd in ${currency}";
 
-  static String m5(currency) => "${currency} wordt niet ondersteund";
+  static String m5(priceRate, pointRate) =>
+      "${priceRate} = ${pointRate} punten";
 
-  static String m6(day) => "${day} dagen geleden";
+  static String m6(country) => "${country} land wordt niet ondersteund";
 
-  static String m7(total) => "~${total} km";
+  static String m7(currency) => "${currency} wordt niet ondersteund";
 
-  static String m8(timeLeft) => "Eindigt over ${timeLeft}";
+  static String m8(day) => "${day} dagen geleden";
 
-  static String m9(captcha) => "Voer ${captcha} in om te bevestigen:";
+  static String m9(total) => "~${total} km";
 
-  static String m10(message) => "Fout: ${message}";
+  static String m10(timeLeft) => "Eindigt over ${timeLeft}";
 
-  static String m11(time) => "Verloopt over ${time}";
+  static String m11(captcha) => "Voer ${captcha} in om te bevestigen:";
 
-  static String m12(total) => ">${total} km";
+  static String m12(message) => "Fout: ${message}";
 
-  static String m13(hour) => "${hour} uur geleden";
+  static String m13(time) => "Verloopt over ${time}";
 
-  static String m14(message) =>
+  static String m14(total) => ">${total} km";
+
+  static String m15(hour) => "${hour} uur geleden";
+
+  static String m16(message) =>
       "Er is een probleem met de app tijdens het opvragen van de gegevens. Neem contact op met de beheerder om de problemen op te lossen: ${message}";
 
-  static String m15(size) => "Maximale bestandsgrootte: ${size} MB";
+  static String m17(currency, amount) =>
+      "Het maximale bedrag voor het gebruik van deze betaling is ${currency} ${amount}";
 
-  static String m16(minute) => "${minute} minuten geleden";
+  static String m18(size) => "Maximale bestandsgrootte: ${size} MB";
 
-  static String m17(month) => "${month} maanden geleden";
+  static String m19(currency, amount) =>
+      "Het minimumbedrag voor het gebruik van deze betaling is ${currency} ${amount}";
 
-  static String m18(store) => "Meer van ${store}";
+  static String m20(minute) => "${minute} minuten geleden";
 
-  static String m19(itemCount) => "${itemCount} items";
+  static String m21(month) => "${month} maanden geleden";
 
-  static String m20(price) => "Opties totaal: ${price}";
+  static String m22(store) => "Meer van ${store}";
 
-  static String m21(total) => "Aantal: ${total}";
+  static String m23(itemCount) => "${itemCount} items";
 
-  static String m22(percent) => "Verkoop ${percent} %";
+  static String m24(price) => "Opties totaal: ${price}";
 
-  static String m23(second) => "${second} seconden geleden";
+  static String m25(amount) => "Betaal ${amount}";
 
-  static String m24(totalCartQuantity) =>
+  static String m26(total) => "Aantal: ${total}";
+
+  static String m27(percent) => "Verkoop ${percent} %";
+
+  static String m28(second) => "${second} seconden geleden";
+
+  static String m29(totalCartQuantity) =>
       "Winkelwagen, ${totalCartQuantity} artikelen";
 
-  static String m25(numberOfUnitsSold) => "Verkocht: ${numberOfUnitsSold}";
+  static String m30(numberOfUnitsSold) => "Verkocht: ${numberOfUnitsSold}";
 
-  static String m26(fieldName) => "Het veld ${fieldName} is verplicht";
+  static String m31(fieldName) => "Het veld ${fieldName} is verplicht";
 
-  static String m27(total) => "${total} producten";
+  static String m32(total) => "${total} producten";
 
-  static String m28(date) => "Geldig tot ${date}";
+  static String m33(maxPointDiscount, maxPriceDiscount) =>
+      "Gebruik maximaal ${maxPointDiscount} punten voor een korting van ${maxPriceDiscount} op deze bestelling!";
 
-  static String m29(message) => "Waarschuwing: ${message}";
+  static String m34(date) => "Geldig tot ${date}";
 
-  static String m30(default_currency) =>
-      "De momenteel geselecteerde valuta is niet beschikbaar voor de Wallet-functie. Wijzig deze in ${default_currency}";
+  static String m35(message) => "Waarschuwing: ${message}";
 
-  static String m31(length) => "We hebben ${length} producten gevonden";
+  static String m36(defaultCurrency) =>
+      "De momenteel geselecteerde valuta is niet beschikbaar voor de Wallet-functie. Wijzig deze in ${defaultCurrency}";
 
-  static String m32(week) => "Week ${week}";
+  static String m37(length) => "We hebben ${length} producten gevonden";
 
-  static String m33(year) => "${year} jaar geleden";
+  static String m38(week) => "Week ${week}";
 
-  static String m34(total) => "Je hebt toegewezen aan bestelling #${total}";
+  static String m39(name) => "Welkom ${name}";
+
+  static String m40(year) => "${year} jaar geleden";
+
+  static String m41(total) => "Je hebt toegewezen aan bestelling #${total}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "UserNameInCorrect": MessageLookupByLibrary.simpleMessage(
-            "De gebruikersnaam of het wachtwoord is niet correct"),
         "aboutUs": MessageLookupByLibrary.simpleMessage("Over Ons"),
         "account": MessageLookupByLibrary.simpleMessage("Account"),
         "accountDeleteDescription": MessageLookupByLibrary.simpleMessage(
             "Als u uw account verwijdert, worden persoonlijke gegevens uit onze database verwijderd. Uw e-mailadres wordt permanent gereserveerd en hetzelfde e-mailadres kan niet opnieuw worden gebruikt om een nieuw account te registreren."),
         "accountIsPendingApproval": MessageLookupByLibrary.simpleMessage(
             "Het account wacht op goedkeuring."),
+        "accountNumber": MessageLookupByLibrary.simpleMessage("Rekeningnummer"),
         "accountSetup":
             MessageLookupByLibrary.simpleMessage("Instellen van een account"),
         "active": MessageLookupByLibrary.simpleMessage("Actief"),
@@ -190,6 +207,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "bagsCollections":
             MessageLookupByLibrary.simpleMessage("Gears-collecties"),
         "balance": MessageLookupByLibrary.simpleMessage("balans"),
+        "bank": MessageLookupByLibrary.simpleMessage("Bank"),
         "bannerListType":
             MessageLookupByLibrary.simpleMessage("Type bannerlijst"),
         "bannerType": MessageLookupByLibrary.simpleMessage("Bannertype"),
@@ -197,6 +215,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("YouTube-URL van banner"),
         "basicInformation":
             MessageLookupByLibrary.simpleMessage("Basis informatie"),
+        "becomeAVendor":
+            MessageLookupByLibrary.simpleMessage("Word een leverancier"),
         "bengali": MessageLookupByLibrary.simpleMessage("Bengalees"),
         "billingAddress":
             MessageLookupByLibrary.simpleMessage("Facturatie adres"),
@@ -225,6 +245,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "brazil": MessageLookupByLibrary.simpleMessage("Portugees"),
         "burmese": MessageLookupByLibrary.simpleMessage("Birmese"),
         "buyNow": MessageLookupByLibrary.simpleMessage("Koop nu"),
+        "by": MessageLookupByLibrary.simpleMessage("door"),
         "byCategory": MessageLookupByLibrary.simpleMessage("Per categorie"),
         "byPrice": MessageLookupByLibrary.simpleMessage("Op prijs"),
         "bySignup": MessageLookupByLibrary.simpleMessage(
@@ -232,6 +253,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "byTag": MessageLookupByLibrary.simpleMessage("Op tag"),
         "call": MessageLookupByLibrary.simpleMessage("telefoontje"),
         "callTo": MessageLookupByLibrary.simpleMessage("Bel naar"),
+        "callToVendor":
+            MessageLookupByLibrary.simpleMessage("Oproep aan winkeleigenaar"),
         "canNotCreateOrder":
             MessageLookupByLibrary.simpleMessage("Kan bestelling niet maken"),
         "canNotCreateUser": MessageLookupByLibrary.simpleMessage(
@@ -246,6 +269,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Kan deze app niet starten, zorg ervoor dat je instellingen op config.dart correct zijn"),
         "canNotLoadThisLink":
             MessageLookupByLibrary.simpleMessage("Kan deze link niet laden"),
+        "canNotPlayVideo": MessageLookupByLibrary.simpleMessage(
+            "Sorry deze video kan niet afgespeeld worden."),
         "canNotSaveOrder": MessageLookupByLibrary.simpleMessage(
             "Kan de bestelling niet opslaan op de website"),
         "canNotUpdateInfo": MessageLookupByLibrary.simpleMessage(
@@ -264,16 +289,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "categories": MessageLookupByLibrary.simpleMessage("Categorieën"),
         "category": MessageLookupByLibrary.simpleMessage("Categorie"),
         "change": MessageLookupByLibrary.simpleMessage("verandering"),
+        "changeLanguage":
+            MessageLookupByLibrary.simpleMessage("Verander de taal"),
         "changePrinter":
             MessageLookupByLibrary.simpleMessage("Printer wijzigen"),
         "changedCurrencyTo": m4,
         "chat": MessageLookupByLibrary.simpleMessage("babbelen"),
+        "chatGPT": MessageLookupByLibrary.simpleMessage("GPT chatten"),
         "chatListScreen":
             MessageLookupByLibrary.simpleMessage("Chatlijstscherm"),
         "chatViaFacebook":
             MessageLookupByLibrary.simpleMessage("Chat via Facebook Messenger"),
         "chatViaWhatApp":
             MessageLookupByLibrary.simpleMessage("Chat via WhatsApp"),
+        "chatWithBot": MessageLookupByLibrary.simpleMessage("Chatten met bot"),
         "chatWithStoreOwner":
             MessageLookupByLibrary.simpleMessage("Chat met winkeleigenaar"),
         "checkConfirmLink": MessageLookupByLibrary.simpleMessage(
@@ -301,6 +330,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Het stadsveld is verplicht"),
         "clear": MessageLookupByLibrary.simpleMessage("Duidelijk"),
         "clearCart": MessageLookupByLibrary.simpleMessage("Wis winkelwagen"),
+        "clearConversation":
+            MessageLookupByLibrary.simpleMessage("Duidelijke conversatie"),
         "close": MessageLookupByLibrary.simpleMessage("Dichtbij"),
         "closeNow": MessageLookupByLibrary.simpleMessage("Nu gesloten"),
         "codExtraFee": MessageLookupByLibrary.simpleMessage("COD Extra kosten"),
@@ -318,6 +349,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "De winkelwagen wordt leeggemaakt bij het opwaarderen."),
         "confirmClearTheCart": MessageLookupByLibrary.simpleMessage(
             "Weet u zeker dat u de winkelwagen wilt leegmaken?"),
+        "confirmDelete": MessageLookupByLibrary.simpleMessage(
+            "Weet je zeker dat je dit wilt verwijderen? Deze actie kan niet ongedaan gemaakt worden."),
         "confirmDeleteItem": MessageLookupByLibrary.simpleMessage(
             "Weet u zeker dat u dit item wilt verwijderen?"),
         "connect": MessageLookupByLibrary.simpleMessage("Aansluiten"),
@@ -331,7 +364,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Ga verder naar Verzenden"),
         "continues": MessageLookupByLibrary.simpleMessage("Doorgaan met"),
         "conversations": MessageLookupByLibrary.simpleMessage("CONVERSATIES"),
+        "convertPoint": m5,
+        "copied": MessageLookupByLibrary.simpleMessage("gekopieerd"),
+        "copy": MessageLookupByLibrary.simpleMessage("Kopiëren"),
         "country": MessageLookupByLibrary.simpleMessage("land"),
+        "countryIsNotSupported": m6,
         "countryIsRequired":
             MessageLookupByLibrary.simpleMessage("Het landveld is verplicht"),
         "couponCode": MessageLookupByLibrary.simpleMessage("coupon code"),
@@ -351,11 +388,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Alle varianten maken"),
         "createdOn": MessageLookupByLibrary.simpleMessage("Gemaakt op:"),
         "currencies": MessageLookupByLibrary.simpleMessage("Valuta"),
-        "currencyIsNotSupported": m5,
+        "currencyIsNotSupported": m7,
         "currentPassword":
             MessageLookupByLibrary.simpleMessage("huidig wachtwoord"),
         "currentlyWeOnlyHave":
             MessageLookupByLibrary.simpleMessage("Momenteel hebben we alleen"),
+        "customer": MessageLookupByLibrary.simpleMessage("Klant"),
         "customerDetail": MessageLookupByLibrary.simpleMessage("Klant details"),
         "customerNote": MessageLookupByLibrary.simpleMessage("klant nota"),
         "cvv": MessageLookupByLibrary.simpleMessage("CVV"),
@@ -375,7 +413,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dateTime": MessageLookupByLibrary.simpleMessage("Datum Tijd"),
         "dateWiseClose":
             MessageLookupByLibrary.simpleMessage("Datum verstandig dichtbij"),
-        "daysAgo": m6,
+        "daysAgo": m8,
         "debit": MessageLookupByLibrary.simpleMessage("Debiteren"),
         "decline": MessageLookupByLibrary.simpleMessage("afwijzen"),
         "delete": MessageLookupByLibrary.simpleMessage("Verwijder"),
@@ -403,7 +441,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Aankoop uitschakelen"),
         "discount": MessageLookupByLibrary.simpleMessage("Korting"),
         "displayName": MessageLookupByLibrary.simpleMessage("Weergavenaam"),
-        "distance": m7,
+        "distance": m9,
         "doNotAnyTransactions": MessageLookupByLibrary.simpleMessage(
             "U heeft nog geen transacties"),
         "doYouWantToExitApp":
@@ -449,13 +487,19 @@ class MessageLookup extends MessageLookupByLibrary {
             "Gebruikersnaam / e-mailadres is leeg"),
         "emptyWishlistSubtitle": MessageLookupByLibrary.simpleMessage(
             "Tik op een hart naast een product als favoriet. We bewaren ze hier voor je!"),
+        "enableForCheckout":
+            MessageLookupByLibrary.simpleMessage("Inschakelen voor afrekenen"),
+        "enableForLogin":
+            MessageLookupByLibrary.simpleMessage("Inschakelen om in te loggen"),
+        "enableForWallet":
+            MessageLookupByLibrary.simpleMessage("Inschakelen voor Wallet"),
         "enableVacationMode":
             MessageLookupByLibrary.simpleMessage("Vakantiemodus inschakelen"),
         "endDateCantBeAfterFirstDate": MessageLookupByLibrary.simpleMessage(
             "Selecteer een datum na de eerste date"),
-        "endsIn": m8,
+        "endsIn": m10,
         "english": MessageLookupByLibrary.simpleMessage("Engels"),
-        "enterCaptcha": m9,
+        "enterCaptcha": m11,
         "enterSendedCode": MessageLookupByLibrary.simpleMessage(
             "Voer de code in die naar is verzonden"),
         "enterYourEmail":
@@ -474,7 +518,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Voer je telefoonnummer in om te beginnen."),
         "enterYourPhoneNumber":
             MessageLookupByLibrary.simpleMessage("Vul je telefoonnummer in"),
-        "error": m10,
+        "error": m12,
         "errorAmountTransfer": MessageLookupByLibrary.simpleMessage(
             "Het ingevoerde bedrag is groter dan het huidige portemonneebedrag. Probeer het opnieuw!"),
         "errorEmailFormat": MessageLookupByLibrary.simpleMessage(
@@ -489,7 +533,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "expiredDate":
             MessageLookupByLibrary.simpleMessage("Houdbaarheidsdatum"),
         "expiredDateHint": MessageLookupByLibrary.simpleMessage("MM / JJ"),
-        "expiringInTime": m11,
+        "expiringInTime": m13,
         "external": MessageLookupByLibrary.simpleMessage("Extern"),
         "extraServices": MessageLookupByLibrary.simpleMessage("Extra services"),
         "failToAssign": MessageLookupByLibrary.simpleMessage(
@@ -501,6 +545,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "failedToLoadImage":
             MessageLookupByLibrary.simpleMessage("Kan afbeelding niet laden"),
         "favorite": MessageLookupByLibrary.simpleMessage("Favoriete"),
+        "featureNotAvailable":
+            MessageLookupByLibrary.simpleMessage("Functie niet beschikbaar"),
         "featureProducts":
             MessageLookupByLibrary.simpleMessage("Feature producten"),
         "featured": MessageLookupByLibrary.simpleMessage("Uitgelicht"),
@@ -511,6 +557,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Bestand uploaden is mislukt!"),
         "files": MessageLookupByLibrary.simpleMessage("bestanden"),
         "filter": MessageLookupByLibrary.simpleMessage("Filter"),
+        "fingerprintsTouchID":
+            MessageLookupByLibrary.simpleMessage("Vingerafdrukken, Touch ID"),
         "finishSetup":
             MessageLookupByLibrary.simpleMessage("Beëindig de installatie"),
         "finnish": MessageLookupByLibrary.simpleMessage("Fins"),
@@ -553,7 +601,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Ga terug om te beoordelen"),
         "goBackToShipping":
             MessageLookupByLibrary.simpleMessage("Ga terug naar verzending"),
-        "greaterDistance": m12,
+        "greaterDistance": m14,
         "greek": MessageLookupByLibrary.simpleMessage("Grieks"),
         "grossSales": MessageLookupByLibrary.simpleMessage("Bruto-omzet"),
         "grouped": MessageLookupByLibrary.simpleMessage("gegroepeerd"),
@@ -572,7 +620,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Geschiedenis"),
         "home": MessageLookupByLibrary.simpleMessage("Huis"),
         "hour": MessageLookupByLibrary.simpleMessage("uur"),
-        "hoursAgo": m13,
+        "hoursAgo": m15,
         "hungarian": MessageLookupByLibrary.simpleMessage("Hongaars"),
         "hungary": MessageLookupByLibrary.simpleMessage("Hongarije"),
         "iAgree": MessageLookupByLibrary.simpleMessage("Ik ga akkoord met"),
@@ -581,6 +629,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Afbeeldingsfunctie"),
         "imageGallery":
             MessageLookupByLibrary.simpleMessage("Afbeeldingengalerij"),
+        "imageGenerate":
+            MessageLookupByLibrary.simpleMessage("Afbeelding genereren"),
         "imageNetwork":
             MessageLookupByLibrary.simpleMessage("Afbeeldingsnetwerk"),
         "inStock": MessageLookupByLibrary.simpleMessage("Op voorraad"),
@@ -632,14 +682,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "listBannerVideo":
             MessageLookupByLibrary.simpleMessage("Lijst met bannervideo"),
         "listMessages": MessageLookupByLibrary.simpleMessage("Meld berichten"),
+        "listening": MessageLookupByLibrary.simpleMessage("Luisteren..."),
         "loadFail": MessageLookupByLibrary.simpleMessage("Laden mislukt!"),
         "loading": MessageLookupByLibrary.simpleMessage("Bezig met laden..."),
         "loadingLink": MessageLookupByLibrary.simpleMessage("Link laden..."),
         "location": MessageLookupByLibrary.simpleMessage("Plaats"),
+        "lockScreenAndSecurity": MessageLookupByLibrary.simpleMessage(
+            "Vergrendelscherm en beveiliging"),
         "login": MessageLookupByLibrary.simpleMessage("log in"),
         "loginCanceled":
             MessageLookupByLibrary.simpleMessage("De login is geannuleerd"),
-        "loginErrorServiceProvider": m14,
+        "loginErrorServiceProvider": m16,
         "loginFailed":
             MessageLookupByLibrary.simpleMessage("Aanmelden mislukt!"),
         "loginInvalid": MessageLookupByLibrary.simpleMessage(
@@ -656,6 +709,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "malay": MessageLookupByLibrary.simpleMessage("Maleis"),
         "manCollections":
             MessageLookupByLibrary.simpleMessage("Man Collecties"),
+        "manageApiKey":
+            MessageLookupByLibrary.simpleMessage("API-sleutel beheren"),
         "manageStock": MessageLookupByLibrary.simpleMessage("Beheer Voorraad"),
         "map": MessageLookupByLibrary.simpleMessage("Kaart"),
         "marathi": MessageLookupByLibrary.simpleMessage("Marathi"),
@@ -665,20 +720,22 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Markeren als verzonden"),
         "markAsUnread":
             MessageLookupByLibrary.simpleMessage("markeren als ongelezen"),
-        "maximumFileSizeMb": m15,
+        "maxAmountForPayment": m17,
+        "maximumFileSizeMb": m18,
         "maybeLater": MessageLookupByLibrary.simpleMessage("Misschien later"),
         "menuOrder": MessageLookupByLibrary.simpleMessage("Menuvolgorde"),
         "message": MessageLookupByLibrary.simpleMessage("Bericht"),
         "messageTo": MessageLookupByLibrary.simpleMessage("Stuur bericht naar"),
+        "minAmountForPayment": m19,
         "minimumQuantityIs":
             MessageLookupByLibrary.simpleMessage("Minimale hoeveelheid is"),
-        "minutesAgo": m16,
+        "minutesAgo": m20,
         "mobileVerification":
             MessageLookupByLibrary.simpleMessage("Mobiele verificatie"),
         "momentAgo": MessageLookupByLibrary.simpleMessage("een moment geleden"),
-        "monthsAgo": m17,
+        "monthsAgo": m21,
         "more": MessageLookupByLibrary.simpleMessage("...meer"),
-        "moreFromStore": m18,
+        "moreFromStore": m22,
         "moreInformation":
             MessageLookupByLibrary.simpleMessage("Meer informatie"),
         "morning": MessageLookupByLibrary.simpleMessage("Ochtend"),
@@ -691,8 +748,9 @@ class MessageLookup extends MessageLookupByLibrary {
             "U heeft geen producten. Probeer er een te maken!"),
         "myWallet": MessageLookupByLibrary.simpleMessage("Mijn portemonnee"),
         "myWishList": MessageLookupByLibrary.simpleMessage("mijn wenslijst"),
-        "nItems": m19,
+        "nItems": m23,
         "name": MessageLookupByLibrary.simpleMessage("Naam"),
+        "nameOnCard": MessageLookupByLibrary.simpleMessage("Naam op kaart"),
         "nearbyPlaces":
             MessageLookupByLibrary.simpleMessage("Plaatsen in de buurt"),
         "needToLoginAgain": MessageLookupByLibrary.simpleMessage(
@@ -727,6 +785,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "noListingNearby": MessageLookupByLibrary.simpleMessage(
             "Geen vermelding in de buurt!"),
         "noOrders": MessageLookupByLibrary.simpleMessage("geen bestellingen"),
+        "noPermissionToViewProduct": MessageLookupByLibrary.simpleMessage(
+            "Dit product is beschikbaar voor gebruikers met specifieke rollen. Log in met de juiste inloggegevens om toegang te krijgen tot dit product of neem contact met ons op voor meer informatie."),
         "noPost": MessageLookupByLibrary.simpleMessage(
             "Opps, deze pagina lijkt niet meer te bestaan!"),
         "noPrinters": MessageLookupByLibrary.simpleMessage("Geen printers"),
@@ -738,6 +798,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Geen slot beschikbaar"),
         "noThanks": MessageLookupByLibrary.simpleMessage("Nee, dank u wel"),
         "none": MessageLookupByLibrary.simpleMessage("GEEN"),
+        "notFindResult": MessageLookupByLibrary.simpleMessage(
+            "Sorry, we konden geen resultaten vinden."),
         "notFound": MessageLookupByLibrary.simpleMessage("Niet gevonden"),
         "note": MessageLookupByLibrary.simpleMessage("Bestel notities"),
         "noteMessage": MessageLookupByLibrary.simpleMessage("Notitie"),
@@ -757,7 +819,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "openMap": MessageLookupByLibrary.simpleMessage("Open de kaart"),
         "openNow": MessageLookupByLibrary.simpleMessage("Nu open"),
         "options": MessageLookupByLibrary.simpleMessage("opties"),
-        "optionsTotal": m20,
+        "optionsTotal": m24,
         "or": MessageLookupByLibrary.simpleMessage("Of"),
         "orLoginWith": MessageLookupByLibrary.simpleMessage("Of log in met"),
         "orderConfirmation":
@@ -813,9 +875,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "orderSummary":
             MessageLookupByLibrary.simpleMessage("overzicht van de bestelling"),
         "orderTotal": MessageLookupByLibrary.simpleMessage("totale bestelling"),
+        "orderTracking":
+            MessageLookupByLibrary.simpleMessage("Bestelling volgen"),
         "orders": MessageLookupByLibrary.simpleMessage("Bestellingen"),
         "otpVerification":
             MessageLookupByLibrary.simpleMessage("OTP-verificatie"),
+        "ourBankDetails":
+            MessageLookupByLibrary.simpleMessage("Onze bankgegevens"),
         "outOfStock":
             MessageLookupByLibrary.simpleMessage("Geen voorraad meer"),
         "pageView": MessageLookupByLibrary.simpleMessage("Paginaweergave"),
@@ -827,9 +893,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "payByWallet":
             MessageLookupByLibrary.simpleMessage("Betalen met portemonnee"),
         "payNow": MessageLookupByLibrary.simpleMessage("Nu betalen"),
+        "payWithAmount": m25,
         "payment": MessageLookupByLibrary.simpleMessage("Betaling"),
         "paymentMethod":
             MessageLookupByLibrary.simpleMessage("Betalingsmiddel"),
+        "paymentMethodIsNotSupported": MessageLookupByLibrary.simpleMessage(
+            "Deze betaalmethode wordt niet ondersteund"),
         "paymentMethods":
             MessageLookupByLibrary.simpleMessage("Betaalmethodes"),
         "paymentSuccessful":
@@ -948,6 +1017,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Producttypevariabele heeft minimaal één variant nodig"),
         "productNeedNameAndPrice": MessageLookupByLibrary.simpleMessage(
             "Producttype eenvoudig heeft de naam en de normale prijs nodig"),
+        "productOutOfStock": MessageLookupByLibrary.simpleMessage(
+            "Er is een product niet op voorraad"),
         "productRating": MessageLookupByLibrary.simpleMessage("Uw beoordeling"),
         "productReview": MessageLookupByLibrary.simpleMessage("Product review"),
         "productType": MessageLookupByLibrary.simpleMessage("product type"),
@@ -956,7 +1027,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "pullToLoadMore":
             MessageLookupByLibrary.simpleMessage("Trek om meer te laden"),
         "qty": MessageLookupByLibrary.simpleMessage("aantal"),
-        "qtyTotal": m21,
+        "qtyTotal": m26,
+        "quantityProductExceedInStock": MessageLookupByLibrary.simpleMessage(
+            "De huidige hoeveelheid is meer dan de hoeveelheid in voorraad"),
         "rate": MessageLookupByLibrary.simpleMessage("tarief"),
         "rateTheApp": MessageLookupByLibrary.simpleMessage("Beoordeel de app"),
         "rateThisApp":
@@ -989,6 +1062,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "refundRequested":
             MessageLookupByLibrary.simpleMessage("terugbetaling aangevraagd"),
         "refunds": MessageLookupByLibrary.simpleMessage("Restitutie"),
+        "regenerateResponse":
+            MessageLookupByLibrary.simpleMessage("Reactie opnieuw genereren"),
+        "registerAs": MessageLookupByLibrary.simpleMessage("Registreer als"),
         "registerAsVendor": MessageLookupByLibrary.simpleMessage(
             "Registreer als leverancier-gebruiker"),
         "registerFailed":
@@ -1025,7 +1101,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "reviews": MessageLookupByLibrary.simpleMessage("beoordelingen"),
         "romanian": MessageLookupByLibrary.simpleMessage("Roemeense"),
         "russian": MessageLookupByLibrary.simpleMessage("Russisch"),
-        "sale": m22,
+        "sale": m27,
         "salePrice": MessageLookupByLibrary.simpleMessage("Verkoopprijs"),
         "save": MessageLookupByLibrary.simpleMessage("Opslaan"),
         "saveAddress": MessageLookupByLibrary.simpleMessage("Adres opslaan"),
@@ -1053,7 +1129,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "searchPlace": MessageLookupByLibrary.simpleMessage("Zoek plaats"),
         "searchingAddress":
             MessageLookupByLibrary.simpleMessage("Adres zoeken"),
-        "secondsAgo": m23,
+        "secondsAgo": m28,
         "seeAll": MessageLookupByLibrary.simpleMessage("Alles zien"),
         "seeNewAppConfig": MessageLookupByLibrary.simpleMessage(
             "Blijf nieuwe inhoud in uw app zien."),
@@ -1071,7 +1147,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "selectNone": MessageLookupByLibrary.simpleMessage("Selecteer niets"),
         "selectPrinter":
             MessageLookupByLibrary.simpleMessage("Selecteer printer"),
+        "selectRole": MessageLookupByLibrary.simpleMessage("Selecteer Rol"),
+        "selectStore": MessageLookupByLibrary.simpleMessage("Selecteer winkel"),
         "selectTheColor": MessageLookupByLibrary.simpleMessage("Kies de kleur"),
+        "selectTheFile":
+            MessageLookupByLibrary.simpleMessage("Selecteer het bestand"),
         "selectThePoint":
             MessageLookupByLibrary.simpleMessage("Selecteer het punt"),
         "selectTheQuantity":
@@ -1081,12 +1161,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "send": MessageLookupByLibrary.simpleMessage("Sturen"),
         "sendBack": MessageLookupByLibrary.simpleMessage("Terug sturen"),
         "sendSMSCode": MessageLookupByLibrary.simpleMessage("Krijg code"),
+        "sendSMStoVendor": MessageLookupByLibrary.simpleMessage(
+            "Stuur een sms naar de winkeleigenaar"),
         "serbian": MessageLookupByLibrary.simpleMessage("Sirbî "),
         "sessionExpired":
             MessageLookupByLibrary.simpleMessage("Sessie verlopen"),
         "setAnAddressInSettingPage": MessageLookupByLibrary.simpleMessage(
             "Stel een adres in op de instellingenpagina"),
         "settings": MessageLookupByLibrary.simpleMessage("instellingen"),
+        "setup": MessageLookupByLibrary.simpleMessage("Opgericht"),
         "share": MessageLookupByLibrary.simpleMessage("Delen"),
         "shipped": MessageLookupByLibrary.simpleMessage("verzonden"),
         "shipping": MessageLookupByLibrary.simpleMessage("Verzenden"),
@@ -1101,7 +1184,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Winkelbestellingen"),
         "shopPhone": MessageLookupByLibrary.simpleMessage("Winkel telefoon"),
         "shopSlug": MessageLookupByLibrary.simpleMessage("Shop naaktslak"),
-        "shoppingCartItems": m24,
+        "shoppingCartItems": m29,
         "shortDescription":
             MessageLookupByLibrary.simpleMessage("Korte beschrijving"),
         "showAllMyOrdered":
@@ -1109,6 +1192,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "showDetails": MessageLookupByLibrary.simpleMessage("Toon details"),
         "showGallery":
             MessageLookupByLibrary.simpleMessage("Galerij weergeven"),
+        "showLess": MessageLookupByLibrary.simpleMessage("Laat minder zien"),
+        "showMore": MessageLookupByLibrary.simpleMessage("Laat meer zien"),
         "signIn": MessageLookupByLibrary.simpleMessage("Aanmelden"),
         "signInWithEmail":
             MessageLookupByLibrary.simpleMessage("Aanmelden met e-mail"),
@@ -1121,12 +1206,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "slovak": MessageLookupByLibrary.simpleMessage("Slowaaks"),
         "smsCodeExpired": MessageLookupByLibrary.simpleMessage(
             "De sms-code is verlopen. Verzend de verificatiecode opnieuw om het opnieuw te proberen."),
-        "sold": m25,
+        "sold": m30,
         "soldBy": MessageLookupByLibrary.simpleMessage("Verkocht door"),
         "somethingWrong": MessageLookupByLibrary.simpleMessage(
             "Er is iets fout gegaan. Probeer het later opnieuw."),
         "sortBy": MessageLookupByLibrary.simpleMessage("Sorteer op"),
+        "sortCode": MessageLookupByLibrary.simpleMessage("Sorteercode"),
         "spanish": MessageLookupByLibrary.simpleMessage("Spaans"),
+        "speechNotAvailable":
+            MessageLookupByLibrary.simpleMessage("Spraak niet beschikbaar"),
         "startExploring":
             MessageLookupByLibrary.simpleMessage("Begin met verkennen"),
         "startShopping":
@@ -1187,14 +1275,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "tamil": MessageLookupByLibrary.simpleMessage("tamil"),
         "tapSelectLocation": MessageLookupByLibrary.simpleMessage(
             "Tik om deze locatie te selecteren"),
+        "tapTheMicToTalk": MessageLookupByLibrary.simpleMessage(
+            "Tik op de microfoon om te praten"),
         "tax": MessageLookupByLibrary.simpleMessage("Belasting"),
         "thailand": MessageLookupByLibrary.simpleMessage("Thais"),
-        "theFieldIsRequired": m26,
+        "theFieldIsRequired": m31,
         "thisDateIsNotAvailable": MessageLookupByLibrary.simpleMessage(
             "Deze datum is niet beschikbaar"),
         "thisFeatureDoesNotSupportTheCurrentLanguage":
             MessageLookupByLibrary.simpleMessage(
                 "Deze functie ondersteunt de huidige taal niet"),
+        "thisIsCustomerRole":
+            MessageLookupByLibrary.simpleMessage("Dit is de rol van de klant"),
+        "thisIsVendorRole":
+            MessageLookupByLibrary.simpleMessage("Dit is de leveranciersrol"),
         "thisPlatformNotSupportWebview": MessageLookupByLibrary.simpleMessage(
             "Dit platform ondersteunt geen webweergave"),
         "thisProductNotSupport": MessageLookupByLibrary.simpleMessage(
@@ -1212,7 +1306,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "total": MessageLookupByLibrary.simpleMessage("Totaal"),
         "totalCartValue": MessageLookupByLibrary.simpleMessage(
             "De totale waarde van de bestelling moet minimaal zijn"),
-        "totalProducts": m27,
+        "totalProducts": m32,
         "totalTax": MessageLookupByLibrary.simpleMessage("Totale belasting"),
         "trackingNumberIs":
             MessageLookupByLibrary.simpleMessage("Trackingnummer is"),
@@ -1239,6 +1333,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "turkish": MessageLookupByLibrary.simpleMessage("Turks"),
         "turnOnBle":
             MessageLookupByLibrary.simpleMessage("Bluetooth inschakelen"),
+        "typeAMessage":
+            MessageLookupByLibrary.simpleMessage("Type een bericht..."),
         "typeYourMessage":
             MessageLookupByLibrary.simpleMessage("Schrijf je bericht hier..."),
         "typing": MessageLookupByLibrary.simpleMessage("Typen..."),
@@ -1261,6 +1357,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "uploadProduct": MessageLookupByLibrary.simpleMessage("Upload product"),
         "uploading": MessageLookupByLibrary.simpleMessage("Uploaden"),
         "url": MessageLookupByLibrary.simpleMessage("url"),
+        "useMaximumPointDiscount": m33,
         "useNow": MessageLookupByLibrary.simpleMessage("Gebruik nu"),
         "useThisImage":
             MessageLookupByLibrary.simpleMessage("Gebruik deze afbeelding"),
@@ -1274,9 +1371,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "vacationMessage":
             MessageLookupByLibrary.simpleMessage("Vakantiebericht"),
         "vacationType": MessageLookupByLibrary.simpleMessage("Vakantietype"),
-        "validUntilDate": m28,
+        "validUntilDate": m34,
         "variable": MessageLookupByLibrary.simpleMessage("veranderlijk"),
         "variation": MessageLookupByLibrary.simpleMessage("Variatie"),
+        "vendor": MessageLookupByLibrary.simpleMessage("Verkoper"),
         "vendorAdmin":
             MessageLookupByLibrary.simpleMessage("Leveranciersbeheerder"),
         "vendorInfo": MessageLookupByLibrary.simpleMessage("Info leverancier"),
@@ -1300,11 +1398,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Wachten op bevestiging"),
         "walletBalance": MessageLookupByLibrary.simpleMessage("Wallet-saldo"),
         "walletName": MessageLookupByLibrary.simpleMessage("Naam portemonnee"),
-        "warning": m29,
-        "warningCurrencyMessageForWallet": m30,
+        "warning": m35,
+        "warningCurrencyMessageForWallet": m36,
         "weFoundBlogs":
             MessageLookupByLibrary.simpleMessage("We hebben blog (s) gevonden"),
-        "weFoundProducts": m31,
+        "weFoundProducts": m37,
         "weNeedCameraAccessTo": MessageLookupByLibrary.simpleMessage(
             "We hebben cameratoegang nodig om te scannen op QR-code of streepjescode."),
         "weSentAnOTPTo": MessageLookupByLibrary.simpleMessage(
@@ -1312,21 +1410,26 @@ class MessageLookup extends MessageLookupByLibrary {
         "weWillSendYouNotification": MessageLookupByLibrary.simpleMessage(
             "We sturen u meldingen wanneer er nieuwe producten beschikbaar zijn of aanbiedingen beschikbaar zijn. U kunt deze instelling altijd wijzigen in de instellingen."),
         "webView": MessageLookupByLibrary.simpleMessage("Webweergave"),
-        "week": m32,
+        "week": m38,
         "welcome": MessageLookupByLibrary.simpleMessage("Welkom"),
+        "welcomeUser": m39,
+        "whichLanguageDoYouPrefer": MessageLookupByLibrary.simpleMessage(
+            "Welke taal heeft jouw voorkeur?"),
+        "wholesaleRegisterMsg": MessageLookupByLibrary.simpleMessage(
+            "Neem contact op met de beheerder om uw registratie goed te keuren."),
         "womanCollections":
             MessageLookupByLibrary.simpleMessage("Vrouwencollecties"),
         "writeComment":
             MessageLookupByLibrary.simpleMessage("Schrijf je commentaar"),
         "writeYourNote":
             MessageLookupByLibrary.simpleMessage("Schrijf je notitie"),
-        "yearsAgo": m33,
+        "yearsAgo": m40,
         "yes": MessageLookupByLibrary.simpleMessage("Ja"),
         "youCanOnlyOrderSingleStore": MessageLookupByLibrary.simpleMessage(
             "U kunt slechts bij één winkel kopen."),
         "youCanOnlyPurchase":
             MessageLookupByLibrary.simpleMessage("U kunt alleen kopen"),
-        "youHaveAssignedToOrder": m34,
+        "youHaveAssignedToOrder": m41,
         "youHaveBeenSaveAddressYourLocal": MessageLookupByLibrary.simpleMessage(
             "U bent een veilig adres in uw lokale"),
         "youHavePoints":

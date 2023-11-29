@@ -81,7 +81,7 @@ class DynamicScreenState extends BaseScreen<DynamicTabMenuScreen>
     printLog('[Dynamic Screen] build');
     return Selector<AppModel, AppConfig?>(
       selector: (_, model) => model.appConfig,
-      builder: (context, appConfig, child) {
+      builder: (ct, appConfig, child) {
         if (appConfig == null) {
           return kLoadingWidget(context);
         }

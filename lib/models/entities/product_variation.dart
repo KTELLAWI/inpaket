@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 
 import '../../common/config.dart';
 import '../../common/constants.dart';
+import '../../data/boxes.dart';
 import '../../services/service_config.dart';
 import 'product.dart';
 import 'product_attribute.dart';
@@ -16,6 +17,7 @@ class ProductVariation {
   String? price;
   String? regularPrice;
   String? salePrice;
+  String? wholesalePrice;
   String? dateOnSaleFrom;
   String? dateOnSaleTo;
   String? stockStatus;
@@ -53,6 +55,7 @@ class ProductVariation {
     List<VariableAttribute>? attributeList,
     String? price,
     String? salePrice,
+    String? wholesalePrice,
     String? imageFeature,
     String? regularPrice,
   }) {
@@ -66,6 +69,7 @@ class ProductVariation {
       price: price ?? this.price,
       regularPrice: regularPrice ?? this.regularPrice,
       salePrice: salePrice ?? this.salePrice,
+      wholesalePrice: wholesalePrice ?? this.wholesalePrice,
       imageFeature: imageFeature ?? this.imageFeature,
     );
   }
@@ -77,6 +81,7 @@ class ProductVariation {
     this.price,
     this.regularPrice,
     this.salePrice,
+    this.wholesalePrice,
     this.dateOnSaleFrom,
     this.dateOnSaleTo,
     this.onSale,
@@ -150,6 +155,35 @@ class ProductVariation {
       attributeList = List<VariableAttribute>.from(
           List<Map<String, dynamic>>.from(parsedJson['attributes_arr'])
               .map(VariableAttribute.fromMap));
+    }
+
+    final rawMetaData = parsedJson['meta_data'];
+    var metaData = <Map>[];
+    if (rawMetaData is List) {
+      metaData = List<Map>.from(rawMetaData);
+    } else {
+      metaData = <Map>[];
+    }
+    if (kAdvanceConfig.enableWooCommerceWholesalePrices &&
+        metaData.isNotEmpty &&
+        ServerConfig().isWooPluginSupported) {
+      var loggedInUser = UserBox().userInfo;
+      if (loggedInUser != null) {
+        var wholesalePriceKey = '${loggedInUser.role ?? ''}_wholesale_price';
+        var wholesalePriceMeta = metaData.firstWhere(
+          (item) => item['key'] == wholesalePriceKey,
+          orElse: () => {},
+        );
+        if (wholesalePriceMeta.isNotEmpty &&
+            wholesalePriceMeta['value'] != null &&
+            wholesalePriceMeta['value'] != '') {
+          if (salePrice?.isNotEmpty ?? false) {
+            salePrice = wholesalePriceMeta['value'];
+          }
+          price = wholesalePriceMeta['value'];
+          wholesalePrice = price;
+        }
+      }
     }
   }
 
@@ -262,6 +296,7 @@ class ProductVariation {
       'price': price,
       'regularPrice': regularPrice,
       'sale_price': salePrice,
+      'wholesale_price': wholesalePrice,
       'date_on_sale_from': dateOnSaleFrom,
       'date_on_sale_to': dateOnSaleTo,
       'on_sale': onSale,
@@ -276,7 +311,7 @@ class ProductVariation {
 
   Map<String, dynamic> toManagerJson() {
     return {
-      'id': id,
+      'id': (id?.contains('temp') ?? false) ? null : id,
       'regular_price': regularPrice,
       'sale_price': salePrice,
       'manage_stock': manageStock,
@@ -296,6 +331,7 @@ class ProductVariation {
       regularPrice = json['regularPrice'];
       onSale = json['onSale'] ?? false;
       salePrice = json['salePrice'];
+      wholesalePrice = json['wholesale_price'];
       dateOnSaleFrom = json['date_on_sale_from'];
       dateOnSaleTo = json['date_on_sale_to'];
       inStock = json['in_stock'];

@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
 
+import '../common/constants.dart';
 import '../services/base_services.dart';
 import '../services/service_config.dart';
 import '../services/services.dart';
@@ -43,7 +44,7 @@ abstract class PagingDataModel<T> extends PagingDataBase<T> {
   bool _hasNext = true;
 
   @protected
-  Future<PagingResponse<T>>? Function(dynamic) get requestApi;
+  Future<PagingResponse<T>> Function(dynamic) get requestApi;
 
   @override
   Future<void> getData() async {
@@ -63,13 +64,14 @@ abstract class PagingDataModel<T> extends PagingDataBase<T> {
 
       final apiData = await _getData();
 
-      _data = [..._data ?? [], ...apiData as Iterable<T>? ?? []];
+      _data = [..._data ?? [], ...apiData ?? []];
       await Future.delayed(const Duration(milliseconds: 300), () {
         _isLoading = false;
       });
       _updateState();
     } catch (e) {
       _isLoading = false;
+      printLog('[PagingDataModel] $e');
     }
   }
 
@@ -94,10 +96,10 @@ abstract class PagingDataModel<T> extends PagingDataBase<T> {
         ConfigType.notion,
       ].contains(ServerConfig().type);
 
+  dynamic get initCursorValue => _cursorIsString ? null : 1;
+
   void _initCursor() {
-    if (!_cursorIsString) {
-      _cursor = 1;
-    }
+    _cursor = initCursorValue;
   }
 
   void _refresh() {
@@ -107,7 +109,7 @@ abstract class PagingDataModel<T> extends PagingDataBase<T> {
   }
 
   void _updateCursor(dynamic newCursor) {
-    if (!_cursorIsString) {
+    if (_cursor is int) {
       _cursor++;
       return;
     }
@@ -120,10 +122,10 @@ abstract class PagingDataModel<T> extends PagingDataBase<T> {
     super.dispose();
   }
 
-  Future<List<T?>?> _getData() async {
+  Future<List<T>?> _getData() async {
     if (!hasNext) return <T>[];
 
-    final response = await requestApi(_cursor)!;
+    final response = await requestApi(_cursor);
 
     // ignore: unnecessary_null_comparison
     if (response == null) return <T>[];

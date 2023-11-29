@@ -31,7 +31,9 @@ class TransactionItem extends StatelessWidget {
     final currentUser = Provider.of<UserModel>(context, listen: false).user!;
 
     var title = transaction.details;
-    if (transaction.isCredit && userCreate?.id != currentUser.id) {
+    if (transaction.isCredit &&
+        userCreate?.id != currentUser.id &&
+        userCreate != null) {
       title =
           'Received money from ${transaction.userCreate?.fullName.toUpperCase()}';
     }

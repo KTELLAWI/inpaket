@@ -13,7 +13,7 @@ class FilterTagModel with ChangeNotifier, LanguageMixin {
     try {
       isLoading = true;
       notifyListeners();
-      lstProductTag = await _service.api.getFilterTags(lang: langCode);
+      lstProductTag = await _service.api.getFilterTags();
       if (lstProductTag == null || lstProductTag!.isEmpty) {
         isLoading = false;
         notifyListeners();

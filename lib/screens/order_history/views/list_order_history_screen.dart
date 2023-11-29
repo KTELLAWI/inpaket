@@ -8,6 +8,7 @@ import '../../../widgets/common/paging_list.dart';
 import '../../common/app_bar_mixin.dart';
 import '../models/list_order_history_model.dart';
 import '../models/order_history_detail_model.dart';
+import '../repositories/list_order_repository.dart';
 import 'widgets/order_list_item.dart';
 import 'widgets/order_list_loading_item.dart';
 
@@ -18,9 +19,6 @@ class ListOrderHistoryScreen extends StatefulWidget {
 
 class _ListOrderHistoryScreenState extends State<ListOrderHistoryScreen>
     with AppBarMixin {
-  ListOrderHistoryModel get listOrderViewModel =>
-      Provider.of<ListOrderHistoryModel>(context, listen: false);
-
   var mapOrderHistoryDetailModel = <int, OrderHistoryDetailModel>{};
 
   @override
@@ -46,23 +44,28 @@ class _ListOrderHistoryScreenState extends State<ListOrderHistoryScreen>
         ),
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
-      child: PagingList<ListOrderHistoryModel, Order>(
-        onRefresh: mapOrderHistoryDetailModel.clear,
-        itemBuilder: (_, order, index) {
-          if (mapOrderHistoryDetailModel[index] == null) {
-            final orderHistoryDetailModel = OrderHistoryDetailModel(
-              order: order,
-              user: user,
+      child: ChangeNotifierProvider<ListOrderHistoryModel>(
+        create: (context) => ListOrderHistoryModel(
+          repository: ListOrderRepository(user: user),
+        ),
+        child: PagingList<ListOrderHistoryModel, Order>(
+          onRefresh: mapOrderHistoryDetailModel.clear,
+          itemBuilder: (_, order, index) {
+            if (mapOrderHistoryDetailModel[index] == null) {
+              final orderHistoryDetailModel = OrderHistoryDetailModel(
+                order: order,
+                user: user,
+              );
+              mapOrderHistoryDetailModel[index] = orderHistoryDetailModel;
+            }
+            return ChangeNotifierProvider<OrderHistoryDetailModel>.value(
+              value: mapOrderHistoryDetailModel[index]!,
+              child: OrderListItem(),
             );
-            mapOrderHistoryDetailModel[index] = orderHistoryDetailModel;
-          }
-          return ChangeNotifierProvider<OrderHistoryDetailModel>.value(
-            value: mapOrderHistoryDetailModel[index]!,
-            child: OrderListItem(),
-          );
-        },
-        lengthLoadingWidget: 3,
-        loadingWidget: const OrderListLoadingItem(),
+          },
+          lengthLoadingWidget: 3,
+          loadingWidget: const OrderListLoadingItem(),
+        ),
       ),
     );
   }

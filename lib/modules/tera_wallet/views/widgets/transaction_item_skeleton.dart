@@ -6,22 +6,22 @@ class TransactionItemSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.0),
       child: ListTile(
         contentPadding: EdgeInsets.zero,
         horizontalTitleGap: 20,
         minVerticalPadding: 4,
         minLeadingWidth: 24,
-        leading: const Skeleton(
+        leading: Skeleton(
           height: 30,
           width: 30,
         ),
         title: Padding(
-          padding: const EdgeInsets.only(bottom: 8.0),
+          padding: EdgeInsets.only(bottom: 8.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Skeleton(
                 height: 16,
                 width: 180,
@@ -39,7 +39,7 @@ class TransactionItemSkeleton extends StatelessWidget {
             ],
           ),
         ),
-        trailing: const Skeleton(
+        trailing: Skeleton(
           height: 22,
           width: 100,
         ),

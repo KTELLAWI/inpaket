@@ -29,6 +29,7 @@ class _PrivacyTermScreenState extends State<PrivacyTermScreen> {
   Widget build(BuildContext context) {
     final pageId = kAdvanceConfig.privacyPoliciesPageId;
     final pageUrl = kAdvanceConfig.privacyPoliciesPageUrl;
+    final script = kAdvanceConfig.webViewScript;
 
     return Scaffold(
       bottomNavigationBar: !widget.showAgreeButton
@@ -79,6 +80,7 @@ class _PrivacyTermScreenState extends State<PrivacyTermScreen> {
           enableBackward: false,
           enableForward: false,
           title: S.of(context).agreeWithPrivacy,
+          script: script,
           appBar: AppBar(
             title: Text(S.of(context).agreeWithPrivacy),
             automaticallyImplyLeading: canPop,

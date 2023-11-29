@@ -68,22 +68,23 @@ class _SocialLoginButtonRowState extends State<SocialLoginButtonRow> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        AnimatedContainer(
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.ease,
-          width: showAppleButton ? 50 + horizontalPadding * 2 : 0,
-          height: showAppleButton ? 50 : 0,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: horizontalPadding,
-            ),
-            child: SignInButtonApple(
-              enabled: !_isCheckingAppleLoginAvailability,
-              onPressed: () => widget.onApplePressed?.call(),
+        if (widget.onApplePressed != null)
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.ease,
+            width: showAppleButton ? 50 + horizontalPadding * 2 : 0,
+            height: showAppleButton ? 50 : 0,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: horizontalPadding,
+              ),
+              child: SignInButtonApple(
+                enabled: !_isCheckingAppleLoginAvailability,
+                onPressed: () => widget.onApplePressed?.call(),
+              ),
             ),
           ),
-        ),
-        if (kLoginSetting.showFacebook)
+        if (kLoginSetting.showFacebook && widget.onFacebookPressed != null)
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: horizontalPadding,
@@ -92,7 +93,7 @@ class _SocialLoginButtonRowState extends State<SocialLoginButtonRow> {
               onPressed: () => widget.onFacebookPressed?.call(),
             ),
           ),
-        if (kLoginSetting.showGoogleLogin)
+        if (kLoginSetting.showGoogleLogin && widget.onGooglePressed != null)
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: horizontalPadding,
@@ -101,7 +102,7 @@ class _SocialLoginButtonRowState extends State<SocialLoginButtonRow> {
               onPressed: () => widget.onGooglePressed?.call(),
             ),
           ),
-        if (kLoginSetting.showSMSLogin)
+        if (kLoginSetting.showSMSLogin && widget.onSmsPressed != null)
           Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: horizontalPadding,

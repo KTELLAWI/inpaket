@@ -26,11 +26,12 @@ class _LoginSMSState extends LoginSMSScreenState<DigitsMobileLoginScreen> {
   @override
   void loginSMS(context) {
     if (viewModel.phoneNumber.isEmpty) {
-      Tools.showSnackBar(
-          ScaffoldMessenger.of(context), S.of(context).pleaseInput);
+      Tools.showSnackBar(ScaffoldMessenger.of(context),
+          S.of(context).pleaseInputFillAllFields);
     } else {
       try {
-        if (kAdvanceConfig.enableDigitsMobileFirebase) {
+        if (kAdvanceConfig.enableDigitsMobileFirebase &&
+            !kAdvanceConfig.enableDigitsMobileWhatsApp) {
           Future autoRetrieve(String verId) {
             return stopAnimation();
           }

@@ -76,6 +76,10 @@ class VacationSettings {
   }
 
   DateTime? _convertStringToDateTime(String date) {
+    if (date.isEmpty) {
+      return null;
+    }
+
     try {
       return DateTime.tryParse(date);
     } catch (e) {

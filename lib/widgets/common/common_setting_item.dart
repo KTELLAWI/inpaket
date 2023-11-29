@@ -44,17 +44,18 @@ class CommonSettingItem extends StatelessWidget {
                   : Theme.of(context).colorScheme.secondary.withOpacity(0.5),
             ),
             const SizedBox(width: 20),
-            Text(
-              title,
-              style: Theme.of(context)
-                  .primaryTextTheme
-                  .titleMedium
-                  ?.copyWith(color: isSensitive ? kColorRed : null),
+            Expanded(
+              child: Text(
+                title,
+                style: Theme.of(context)
+                    .primaryTextTheme
+                    .titleMedium
+                    ?.copyWith(color: isSensitive ? kColorRed : null),
+              ),
             ),
-            const Expanded(
-                child: SizedBox(
+            const SizedBox(
               width: 1,
-            )),
+            ),
             if (actionIcon == null && isSwitchedOn == null) const SizedBox(),
             if (actionIcon != null && isSwitchedOn == null)
               Icon(

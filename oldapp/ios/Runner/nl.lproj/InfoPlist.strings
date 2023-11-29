@@ -1,0 +1,6 @@
+NSCameraUsageDescription = "Deze app vereist toegang tot de camera voor de QR-code- of streepjescodescannerfunctie die toegankelijk is via de zoekbalk";
+NSLocationAlwaysAndWhenInUseUsageDescription = "Ontvang uw huidige locatie voor bezorging";
+NSLocationAlwaysUsageDescription = "Huidige locatietoegang nodig";
+NSLocationWhenInUseUsageDescription = "Ontvang uw huidige locatie voor bezorging";
+NSMicrophoneUsageDescription = "We willen graag toegang tot de microfoon om spraakberichten op te kunnen nemen";
+NSPhotoLibraryAddUsageDescription = "We willen graag toegang om afbeeldingen/video's op te slaan in uw fotobibliotheek";

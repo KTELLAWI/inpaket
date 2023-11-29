@@ -53,7 +53,10 @@ class UserModel with ChangeNotifier {
         case apple.AuthorizationStatus.authorized:
           {
             user = await _service.api.loginApple(
-                token: String.fromCharCodes(result.credential!.identityToken!),
+                token: ServerConfig().isMStoreApiPluginSupported
+                    ? String.fromCharCodes(
+                        result.credential!.authorizationCode!)
+                    : String.fromCharCodes(result.credential!.identityToken!),
                 firstName: result.credential?.fullName?.givenName,
                 lastName: result.credential?.fullName?.familyName);
 
@@ -157,8 +160,7 @@ class UserModel with ChangeNotifier {
 
   Future<void> saveUser(User? user) async {
     try {
-      if (Services().firebase.isEnabled &&
-          ServerConfig().typeName.isMultiVendor) {
+      if (Services().firebase.isEnabled && ServerConfig().isVendorType()) {
         Services().firebase.saveUserToFirestore(user: user);
       }
 
@@ -169,6 +171,12 @@ class UserModel with ChangeNotifier {
       // save the user Info as local storage
       UserBox().userInfo = user;
       delegate?.onLoaded(user);
+
+      //reload Home screen to show product price based on role
+      if (kAdvanceConfig.enableWooCommerceWholesalePrices &&
+          ServerConfig().isWooPluginSupported) {
+        eventBus.fire(const EventLoadedAppConfig());
+      }
     } catch (err) {
       printLog(err);
     }
@@ -185,10 +193,11 @@ class UserModel with ChangeNotifier {
           userInfo.isSocial = user!.isSocial;
           user = userInfo;
         }
-        delegate?.onLoaded(user);
+        await saveUser(user);
         notifyListeners();
       } else {
-        if (kPaymentConfig.guestCheckout) {
+        if (kPaymentConfig.guestCheckout &&
+            ServerConfig().isNeedToGenerateTokenForGuestCheckout) {
           delegate?.onLoaded(User()..cookie = _getGenerateCookie());
         }
         notifyListeners();
@@ -251,17 +260,28 @@ class UserModel with ChangeNotifier {
     loggedIn = false;
     try {
       unawaited(Services().firebase.signOut());
-      await FacebookAuth.instance.logOut();
+      unawaited(FacebookAuth.instance.logOut());
     } catch (err) {
       printLog(err);
     }
 
     delegate?.onLogout(user);
-    await _service.api.logout(user?.cookie);
+    unawaited(_service.api.logout(user?.cookie));
     user = null;
+
+    if (kPaymentConfig.guestCheckout &&
+        ServerConfig().isNeedToGenerateTokenForGuestCheckout) {
+      delegate?.onLoaded(User()..cookie = _getGenerateCookie());
+    }
 
     UserBox().cleanUpForLogout();
     notifyListeners();
+
+    //reload Home screen to show correct product price without basing on role
+    if (kAdvanceConfig.enableWooCommerceWholesalePrices &&
+        ServerConfig().isWooPluginSupported) {
+      eventBus.fire(const EventLoadedAppConfig());
+    }
   }
 
   Future<void> login({

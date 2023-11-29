@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:inspireui/widgets/platform_error/platform_error.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../common/config.dart';
 import '../../common/constants.dart';
@@ -44,15 +45,15 @@ class WebViewInApp extends StatefulWidget {
 
 class _WebViewInAppState extends State<WebViewInApp> {
   final GlobalKey webViewKey = GlobalKey();
-  bool isLoaded = false;
-  bool isDone = false;
-  String addListingUrl = '';
-  late var authUrl;
+
+  int selectedIndex = 1;
+
   InAppWebViewController? webViewController;
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
       crossPlatform: InAppWebViewOptions(
         useShouldOverrideUrlLoading: true,
         mediaPlaybackRequiresUserGesture: false,
+        useOnDownloadStart: true,
       ),
       android: AndroidInAppWebViewOptions(
         useHybridComposition: true,
@@ -76,7 +77,6 @@ class _WebViewInAppState extends State<WebViewInApp> {
     pullToRefreshController = PullToRefreshController(
       options: PullToRefreshOptions(color: Colors.black45),
       onRefresh: () async {
-        // var url = webViewController?.getUrl().toString();
         printLog('[WebView InApp] Pull to Refresh');
         if (isAndroid) {
           await webViewController?.reload();
@@ -147,71 +147,88 @@ class _WebViewInAppState extends State<WebViewInApp> {
           );
         }),
       ),
-      body: InAppWebView(
-        key: webViewKey,
-        initialUrlRequest: URLRequest(
-          url: Uri.parse(
-            '${widget.url}${kAdvanceConfig.alwaysClearWebViewCache ? '${widget.url.paramSymbol}dummy=${DateTime.now().millisecondsSinceEpoch}' : ''}',
-          ),
-          headers: widget.headers,
-        ),
-        shouldOverrideUrlLoading: (controller, navigationAction) async {
-          final url = navigationAction.request.url.toString();
-          printLog('[WebViewInApp] shouldOverrideUrlLoading: $url');
-          final result = await widget.overrideNavigation?.call(url);
-          if (result == true) {
-            return NavigationActionPolicy.CANCEL;
-          }
+      body: IndexedStack(
+        index: selectedIndex,
+        children: [
+          InAppWebView(
+            key: webViewKey,
+            initialUrlRequest: URLRequest(
+              url: Uri.parse(
+                '${widget.url}${kAdvanceConfig.alwaysClearWebViewCache ? '${widget.url.paramSymbol}dummy=${DateTime.now().millisecondsSinceEpoch}' : ''}',
+              ),
+              headers: widget.headers,
+            ),
+            shouldOverrideUrlLoading: (controller, navigationAction) async {
+              final url = navigationAction.request.url.toString();
+              printLog('[WebViewInApp] should OverrideUrlLoading: $url');
+              final result = await widget.overrideNavigation?.call(url);
 
-          return NavigationActionPolicy.ALLOW;
-        },
-        initialUserScripts: UnmodifiableListView<UserScript>([
-          /// Demo the Javascript Style override
-          UserScript(
-            source: widget.script ?? '',
-            injectionTime: UserScriptInjectionTime.AT_DOCUMENT_END,
+              if (result == true) {
+                return NavigationActionPolicy.CANCEL;
+              }
+
+              return NavigationActionPolicy.ALLOW;
+            },
+            initialUserScripts: UnmodifiableListView<UserScript>([
+              /// Demo the Javascript Style override
+              UserScript(
+                source: widget.script ?? '',
+                injectionTime: UserScriptInjectionTime.AT_DOCUMENT_END,
+              ),
+            ]),
+            gestureRecognizers: <Factory<VerticalDragGestureRecognizer>>{}..add(
+                const Factory<VerticalDragGestureRecognizer>(
+                    VerticalDragGestureRecognizer.new),
+              ),
+            initialOptions: options,
+            pullToRefreshController: pullToRefreshController,
+            onWebViewCreated: (controller) {
+              webViewController = controller;
+              controller.clearCache();
+            },
+            androidOnPermissionRequest: (controller, origin, resources) async {
+              return PermissionRequestResponse(
+                  resources: resources,
+                  action: PermissionRequestResponseAction.GRANT);
+            },
+            androidOnGeolocationPermissionsShowPrompt:
+                (InAppWebViewController controller, String origin) async {
+              if (await Permission.locationWhenInUse.isDenied) {
+                await Permission.location.request();
+              } else if (await Permission
+                  .locationWhenInUse.isPermanentlyDenied) {
+                await openAppSettings();
+              }
+              return GeolocationPermissionShowPromptResponse(
+                  origin: origin, allow: true, retain: true);
+            },
+            onLoadError: (controller, url, code, message) {
+              pullToRefreshController.endRefreshing();
+            },
+            onLoadStop: (_, __) {
+              setState(() {
+                selectedIndex = 0;
+              });
+            },
+            onProgressChanged: (_, progress) {
+              if (progress == 100) {
+                pullToRefreshController.endRefreshing();
+              }
+            },
+            onUpdateVisitedHistory: (_, uri, androidIsReload) {
+              if (widget.onUrlChanged != null) {
+                widget.onUrlChanged!(uri?.toString());
+              }
+            },
+            onDownloadStartRequest: (_, request) async {
+              // ignore: deprecated_member_use
+              await launch(request.url.toString());
+            },
           ),
-        ]),
-        gestureRecognizers: <Factory<VerticalDragGestureRecognizer>>{}..add(
-            const Factory<VerticalDragGestureRecognizer>(
-                VerticalDragGestureRecognizer.new),
-          ),
-        initialOptions: options,
-        pullToRefreshController: pullToRefreshController,
-        onWebViewCreated: (controller) {
-          webViewController = controller;
-        },
-        androidOnPermissionRequest: (controller, origin, resources) async {
-          return PermissionRequestResponse(
-              resources: resources,
-              action: PermissionRequestResponseAction.GRANT);
-        },
-        androidOnGeolocationPermissionsShowPrompt:
-            (InAppWebViewController controller, String origin) async {
-          if (await Permission.locationWhenInUse.isDenied) {
-            await Permission.location.request();
-          } else if (await Permission.locationWhenInUse.isPermanentlyDenied) {
-            await openAppSettings();
-          }
-          return GeolocationPermissionShowPromptResponse(
-              origin: origin, allow: true, retain: true);
-        },
-        onLoadError: (controller, url, code, message) {
-          pullToRefreshController.endRefreshing();
-        },
-        onLoadStop: (_, __) {
-          setState(() {});
-        },
-        onProgressChanged: (_, progress) {
-          if (progress == 100) {
-            pullToRefreshController.endRefreshing();
-          }
-        },
-        onUpdateVisitedHistory: (_, uri, androidIsReload) {
-          if (widget.onUrlChanged != null) {
-            widget.onUrlChanged!(uri?.toString());
-          }
-        },
+          Center(
+            child: Center(child: kLoadingWidget(context)),
+          )
+        ],
       ),
     );
   }

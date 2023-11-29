@@ -1,5 +1,6 @@
 export '../../modules/dynamic_layout/config/app_setting.dart';
 export '../order/order.dart';
+export 'additional_payment_info.dart';
 export 'address.dart';
 export 'aftership.dart';
 export 'back_drop_arguments.dart';
@@ -25,6 +26,7 @@ export 'product_addons.dart';
 export 'product_attribute.dart';
 export 'product_variation.dart';
 export 'review.dart';
+export 'review_payload.dart';
 export 'shipping_method.dart';
 export 'store_arguments.dart';
 export 'tag.dart';

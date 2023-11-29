@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../common/config.dart';
 import '../../models/index.dart' show Product, ProductModel;
+import '../../models/product_variant_model.dart';
 import '../../screens/detail/widgets/index.dart';
 import '../../services/index.dart';
 
@@ -60,14 +61,11 @@ class RubberAddToCart extends StatefulWidget {
 
 class _StateRubberAddToCart extends State<RubberAddToCart> {
   bool isLoading = true;
-  Product product = Product.empty('1');
+  late Product product = widget.product;
 
   @override
   void initState() {
     Future.microtask(() async {
-      setState(() {
-        product = widget.product;
-      });
       product = (await Services().widget.getProductDetail(context, product)) ??
           widget.product;
       isLoading = false;
@@ -101,6 +99,7 @@ class _StateRubberAddToCart extends State<RubberAddToCart> {
             product,
             defaultQuantity: widget.quantity,
             onSelectVariantImage: (String url) {},
+            isModal: true,
           );
       }
     }
@@ -111,16 +110,21 @@ class _StateRubberAddToCart extends State<RubberAddToCart> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => ProductModel(),
-      child: Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        body: CustomScrollView(
-          slivers: [
-            const SliverToBoxAdapter(child: SizedBox(height: 40)),
-            SliverToBoxAdapter(child: ProductTitle(product)),
-            const SliverToBoxAdapter(child: SizedBox(height: 20)),
-            renderProductInfo(),
-          ],
-        ),
+      child: ChangeNotifierProvider(
+        create: (_) => ProductVariantModel()..initWithProduct(product),
+        child: Consumer<ProductVariantModel>(builder: (context, model, child) {
+          return Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.background,
+            body: CustomScrollView(
+              slivers: [
+                const SliverToBoxAdapter(child: SizedBox(height: 40)),
+                SliverToBoxAdapter(child: ProductTitle(product)),
+                const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                renderProductInfo(),
+              ],
+            ),
+          );
+        }),
       ),
     );
   }

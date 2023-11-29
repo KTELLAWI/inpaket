@@ -30,78 +30,94 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m4(currency) => "통화를 ${currency}(으)로 변경했습니다.";
 
-  static String m5(currency) => "${currency} 은(는) 지원되지 않습니다";
+  static String m5(priceRate, pointRate) => "${priceRate} = ${pointRate} 포인트";
 
-  static String m6(day) => "${day} 일 전";
+  static String m6(country) => "${country} 국가는 지원되지 않습니다";
 
-  static String m7(total) => "~${total} km";
+  static String m7(currency) => "${currency} 은(는) 지원되지 않습니다";
 
-  static String m8(timeLeft) => " ${timeLeft}로 끝남";
+  static String m8(day) => "${day} 일 전";
 
-  static String m9(captcha) => "확인하려면 ${captcha} 을(를) 입력합니다.";
+  static String m9(total) => "~${total} km";
 
-  static String m10(message) => "오류 : ${message}";
+  static String m10(timeLeft) => " ${timeLeft}로 끝남";
 
-  static String m11(time) => " ${time}후 만료";
+  static String m11(captcha) => "확인하려면 ${captcha} 을(를) 입력합니다.";
 
-  static String m12(total) => ">${total} km";
+  static String m12(message) => "오류 : ${message}";
 
-  static String m13(hour) => "${hour} 시간 전";
+  static String m13(time) => " ${time}후 만료";
 
-  static String m14(message) =>
+  static String m14(total) => ">${total} km";
+
+  static String m15(hour) => "${hour} 시간 전";
+
+  static String m16(message) =>
       "데이터를 요청하는 동안 앱에 문제가 있습니다. 문제를 해결하려면 관리자에게 문의하세요. ${message}";
 
-  static String m15(size) => "최대 파일 크기 : ${size} MB";
+  static String m17(currency, amount) =>
+      "이 결제를 사용할 수 있는 최대 금액은 ${currency} ${amount}입니다.";
 
-  static String m16(minute) => "${minute} 분 전";
+  static String m18(size) => "최대 파일 크기 : ${size} MB";
 
-  static String m17(month) => "${month} 개월 전";
+  static String m19(currency, amount) =>
+      "이 결제를 사용하기 위한 최소 금액은 ${currency} ${amount}입니다.";
 
-  static String m18(store) => " ${store}에서 더보기";
+  static String m20(minute) => "${minute} 분 전";
 
-  static String m19(itemCount) => "${itemCount} 항목";
+  static String m21(month) => "${month} 개월 전";
 
-  static String m20(price) => "총 옵션 : ${price}";
+  static String m22(store) => " ${store}에서 더보기";
 
-  static String m21(total) => "수량: ${total}";
+  static String m23(itemCount) => "${itemCount} 항목";
 
-  static String m22(percent) => "판매 ${percent} %";
+  static String m24(price) => "총 옵션 : ${price}";
 
-  static String m23(second) => "${second} 초 전";
+  static String m25(amount) => " ${amount}지불";
 
-  static String m24(totalCartQuantity) => "장바구니, ${totalCartQuantity} 개 항목";
+  static String m26(total) => "수량: ${total}";
 
-  static String m25(numberOfUnitsSold) => "판매 : ${numberOfUnitsSold}";
+  static String m27(percent) => "판매 ${percent} %";
 
-  static String m26(fieldName) => " ${fieldName} 필드는 필수 항목입니다.";
+  static String m28(second) => "${second} 초 전";
 
-  static String m27(total) => "${total} 제품";
+  static String m29(totalCartQuantity) => "장바구니, ${totalCartQuantity} 개 항목";
 
-  static String m28(date) => " ${date}까지 유효";
+  static String m30(numberOfUnitsSold) => "판매 : ${numberOfUnitsSold}";
 
-  static String m29(message) => "경고 : ${message}";
+  static String m31(fieldName) => " ${fieldName} 필드는 필수 항목입니다.";
 
-  static String m30(default_currency) =>
-      "현재 선택한 통화는 지갑 기능에 사용할 수 없습니다. ${default_currency}(으)로 변경하십시오.";
+  static String m32(total) => "${total} 제품";
 
-  static String m31(length) => " ${length} 개의 제품을 찾았습니다.";
+  static String m33(maxPointDiscount, maxPriceDiscount) =>
+      "이 주문에 ${maxPriceDiscount} 할인을 위해 최대 ${maxPointDiscount} 포인트를 사용하세요!";
 
-  static String m32(week) => "주 ${week}";
+  static String m34(date) => " ${date}까지 유효";
 
-  static String m33(year) => "${year} 년 전";
+  static String m35(message) => "경고 : ${message}";
 
-  static String m34(total) => "주문 번호${total}에 할당했습니다.";
+  static String m36(defaultCurrency) =>
+      "현재 선택한 통화는 지갑 기능에 사용할 수 없습니다. ${defaultCurrency}(으)로 변경하십시오.";
+
+  static String m37(length) => " ${length} 개의 제품을 찾았습니다.";
+
+  static String m38(week) => "주 ${week}";
+
+  static String m39(name) => "환영합니다 ${name}";
+
+  static String m40(year) => "${year} 년 전";
+
+  static String m41(total) => "주문 번호${total}에 할당했습니다.";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "UserNameInCorrect":
-            MessageLookupByLibrary.simpleMessage("사용자 이름 또는 비밀번호가 올바르지 않습니다."),
         "aboutUs": MessageLookupByLibrary.simpleMessage("회사 소개"),
         "account": MessageLookupByLibrary.simpleMessage("계정"),
         "accountDeleteDescription": MessageLookupByLibrary.simpleMessage(
             "계정을 삭제하면 데이터베이스에서 개인 정보가 제거됩니다. 귀하의 이메일은 영구적으로 예약되며 새 계정을 등록하는 데 동일한 이메일을 다시 사용할 수 없습니다."),
         "accountIsPendingApproval":
             MessageLookupByLibrary.simpleMessage("계정이 승인 대기 중입니다."),
+        "accountNumber": MessageLookupByLibrary.simpleMessage("계좌 번호"),
         "accountSetup": MessageLookupByLibrary.simpleMessage("계정 설정"),
         "active": MessageLookupByLibrary.simpleMessage("유효한"),
         "activeFor": m0,
@@ -171,11 +187,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "backToWallet": MessageLookupByLibrary.simpleMessage("지갑으로 돌아가기"),
         "bagsCollections": MessageLookupByLibrary.simpleMessage("Gears 컬렉션"),
         "balance": MessageLookupByLibrary.simpleMessage("균형"),
+        "bank": MessageLookupByLibrary.simpleMessage("은행"),
         "bannerListType": MessageLookupByLibrary.simpleMessage("배너 목록 유형"),
         "bannerType": MessageLookupByLibrary.simpleMessage("배너 유형"),
         "bannerYoutubeURL":
             MessageLookupByLibrary.simpleMessage("배너 Youtube URL"),
         "basicInformation": MessageLookupByLibrary.simpleMessage("기본 정보"),
+        "becomeAVendor": MessageLookupByLibrary.simpleMessage("벤더 되기"),
         "bengali": MessageLookupByLibrary.simpleMessage("벵골 사람"),
         "billingAddress": MessageLookupByLibrary.simpleMessage("청구 지 주소"),
         "bleHasNotBeenEnabled":
@@ -198,12 +216,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "brazil": MessageLookupByLibrary.simpleMessage("포르투갈 인"),
         "burmese": MessageLookupByLibrary.simpleMessage("버마 사람"),
         "buyNow": MessageLookupByLibrary.simpleMessage("지금 구매"),
+        "by": MessageLookupByLibrary.simpleMessage("으로"),
         "byCategory": MessageLookupByLibrary.simpleMessage("카테고리 별"),
         "byPrice": MessageLookupByLibrary.simpleMessage("가격 별"),
         "bySignup": MessageLookupByLibrary.simpleMessage("가입함으로써 귀하는 당사의"),
         "byTag": MessageLookupByLibrary.simpleMessage("태그 별"),
         "call": MessageLookupByLibrary.simpleMessage("요구"),
         "callTo": MessageLookupByLibrary.simpleMessage("전화 걸기"),
+        "callToVendor": MessageLookupByLibrary.simpleMessage("점주에게 전화"),
         "canNotCreateOrder":
             MessageLookupByLibrary.simpleMessage("주문을 생성할 수 없습니다"),
         "canNotCreateUser":
@@ -218,6 +238,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "이 앱을 실행할 수 없습니다. config.dart의 설정이 올바른지 확인하십시오."),
         "canNotLoadThisLink":
             MessageLookupByLibrary.simpleMessage("이 링크를 로드할 수 없습니다"),
+        "canNotPlayVideo":
+            MessageLookupByLibrary.simpleMessage("죄송합니다. 이 동영상을 재생할 수 없습니다."),
         "canNotSaveOrder":
             MessageLookupByLibrary.simpleMessage("웹사이트에 주문을 저장할 수 없습니다"),
         "canNotUpdateInfo":
@@ -235,14 +257,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "categories": MessageLookupByLibrary.simpleMessage("카테고리"),
         "category": MessageLookupByLibrary.simpleMessage("범주"),
         "change": MessageLookupByLibrary.simpleMessage("변화"),
+        "changeLanguage": MessageLookupByLibrary.simpleMessage("언어 변경"),
         "changePrinter": MessageLookupByLibrary.simpleMessage("프린터 변경"),
         "changedCurrencyTo": m4,
         "chat": MessageLookupByLibrary.simpleMessage("잡담"),
+        "chatGPT": MessageLookupByLibrary.simpleMessage("채팅 GPT"),
         "chatListScreen": MessageLookupByLibrary.simpleMessage("채팅 목록 화면"),
         "chatViaFacebook":
             MessageLookupByLibrary.simpleMessage("Facebook Messenger를 통해 채팅"),
         "chatViaWhatApp":
             MessageLookupByLibrary.simpleMessage("WhatsApp을 통해 채팅"),
+        "chatWithBot": MessageLookupByLibrary.simpleMessage("봇과 채팅"),
         "chatWithStoreOwner": MessageLookupByLibrary.simpleMessage("상점 주인과 채팅"),
         "checkConfirmLink":
             MessageLookupByLibrary.simpleMessage("이메일에서 확인 링크를 확인하세요."),
@@ -263,6 +288,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "cityIsRequired": MessageLookupByLibrary.simpleMessage("도시 필드는 필수입니다"),
         "clear": MessageLookupByLibrary.simpleMessage("명확한"),
         "clearCart": MessageLookupByLibrary.simpleMessage("카트 지우기"),
+        "clearConversation": MessageLookupByLibrary.simpleMessage("명확한 대화"),
         "close": MessageLookupByLibrary.simpleMessage("닫기"),
         "closeNow": MessageLookupByLibrary.simpleMessage("지금 폐쇄"),
         "codExtraFee": MessageLookupByLibrary.simpleMessage("COD 추가 요금"),
@@ -279,6 +305,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("카트는 충전 시 비워집니다."),
         "confirmClearTheCart":
             MessageLookupByLibrary.simpleMessage("카트를 비우시겠습니까?"),
+        "confirmDelete":
+            MessageLookupByLibrary.simpleMessage("삭제하시겠습니까? 이 작업은 취소할 수 없습니다."),
         "confirmDeleteItem":
             MessageLookupByLibrary.simpleMessage("이 항목을 삭제 하시겠습니까?"),
         "connect": MessageLookupByLibrary.simpleMessage("잇다"),
@@ -289,7 +317,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "continueToShipping": MessageLookupByLibrary.simpleMessage("계속 배송"),
         "continues": MessageLookupByLibrary.simpleMessage("잇다"),
         "conversations": MessageLookupByLibrary.simpleMessage("대화"),
+        "convertPoint": m5,
+        "copied": MessageLookupByLibrary.simpleMessage("복사 한"),
+        "copy": MessageLookupByLibrary.simpleMessage("부"),
         "country": MessageLookupByLibrary.simpleMessage("국가"),
+        "countryIsNotSupported": m6,
         "countryIsRequired":
             MessageLookupByLibrary.simpleMessage("국가 필드는 필수입니다"),
         "couponCode": MessageLookupByLibrary.simpleMessage("쿠폰 코드"),
@@ -307,9 +339,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "createVariants": MessageLookupByLibrary.simpleMessage("모든 변형 생성"),
         "createdOn": MessageLookupByLibrary.simpleMessage("에 만든:"),
         "currencies": MessageLookupByLibrary.simpleMessage("통화"),
-        "currencyIsNotSupported": m5,
+        "currencyIsNotSupported": m7,
         "currentPassword": MessageLookupByLibrary.simpleMessage("현재 비밀번호"),
         "currentlyWeOnlyHave": MessageLookupByLibrary.simpleMessage("현재 우리는"),
+        "customer": MessageLookupByLibrary.simpleMessage("고객"),
         "customerDetail": MessageLookupByLibrary.simpleMessage("고객 세부 정보"),
         "customerNote": MessageLookupByLibrary.simpleMessage("고객 메모"),
         "cvv": MessageLookupByLibrary.simpleMessage("CVV"),
@@ -328,7 +361,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dateStart": MessageLookupByLibrary.simpleMessage("시작일"),
         "dateTime": MessageLookupByLibrary.simpleMessage("날짜 시간"),
         "dateWiseClose": MessageLookupByLibrary.simpleMessage("날짜 현명한 닫기"),
-        "daysAgo": m6,
+        "daysAgo": m8,
         "debit": MessageLookupByLibrary.simpleMessage("차변"),
         "decline": MessageLookupByLibrary.simpleMessage("쇠퇴"),
         "delete": MessageLookupByLibrary.simpleMessage("지우다"),
@@ -353,7 +386,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "disablePurchase": MessageLookupByLibrary.simpleMessage("구매 비활성화"),
         "discount": MessageLookupByLibrary.simpleMessage("할인"),
         "displayName": MessageLookupByLibrary.simpleMessage("이름 표시하기"),
-        "distance": m7,
+        "distance": m9,
         "doNotAnyTransactions":
             MessageLookupByLibrary.simpleMessage("아직 거래가 없습니다."),
         "doYouWantToExitApp":
@@ -395,12 +428,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("사용자 이름 / 이메일이 비어 있습니다."),
         "emptyWishlistSubtitle": MessageLookupByLibrary.simpleMessage(
             "좋아하는 제품 옆에있는 하트를 탭하세요. 여기에 저장해드립니다!"),
+        "enableForCheckout": MessageLookupByLibrary.simpleMessage("체크아웃 활성화"),
+        "enableForLogin": MessageLookupByLibrary.simpleMessage("로그인 활성화"),
+        "enableForWallet": MessageLookupByLibrary.simpleMessage("지갑에 대해 활성화"),
         "enableVacationMode": MessageLookupByLibrary.simpleMessage("휴가 모드 사용"),
         "endDateCantBeAfterFirstDate":
             MessageLookupByLibrary.simpleMessage("첫 번째 날짜 이후의 날짜를 선택하세요."),
-        "endsIn": m8,
+        "endsIn": m10,
         "english": MessageLookupByLibrary.simpleMessage("영어"),
-        "enterCaptcha": m9,
+        "enterCaptcha": m11,
         "enterSendedCode":
             MessageLookupByLibrary.simpleMessage("전송 된 코드를 입력하세요."),
         "enterYourEmail":
@@ -417,7 +453,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("시작하려면 전화번호를 입력하세요."),
         "enterYourPhoneNumber":
             MessageLookupByLibrary.simpleMessage("전화 번호를 입력하십시오"),
-        "error": m10,
+        "error": m12,
         "errorAmountTransfer": MessageLookupByLibrary.simpleMessage(
             "입력한 금액이 현재 지갑 금액보다 큽니다. 다시 시도해 주세요!"),
         "errorEmailFormat":
@@ -431,7 +467,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "expired": MessageLookupByLibrary.simpleMessage("만료"),
         "expiredDate": MessageLookupByLibrary.simpleMessage("유통 기한"),
         "expiredDateHint": MessageLookupByLibrary.simpleMessage("MM / YY"),
-        "expiringInTime": m11,
+        "expiringInTime": m13,
         "external": MessageLookupByLibrary.simpleMessage("외부"),
         "extraServices": MessageLookupByLibrary.simpleMessage("추가 서비스"),
         "failToAssign":
@@ -443,6 +479,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "failedToLoadImage":
             MessageLookupByLibrary.simpleMessage("이미지를 로드하지 못했습니다."),
         "favorite": MessageLookupByLibrary.simpleMessage("인기 있는 말"),
+        "featureNotAvailable":
+            MessageLookupByLibrary.simpleMessage("사용할 수 없는 기능"),
         "featureProducts": MessageLookupByLibrary.simpleMessage("주요 제품"),
         "featured": MessageLookupByLibrary.simpleMessage("특집"),
         "features": MessageLookupByLibrary.simpleMessage("풍모"),
@@ -451,6 +489,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "fileUploadFailed": MessageLookupByLibrary.simpleMessage("파일 업로드 실패!"),
         "files": MessageLookupByLibrary.simpleMessage("파일"),
         "filter": MessageLookupByLibrary.simpleMessage("필터"),
+        "fingerprintsTouchID":
+            MessageLookupByLibrary.simpleMessage("지문, 터치 ID"),
         "finishSetup": MessageLookupByLibrary.simpleMessage("설정 완료"),
         "finnish": MessageLookupByLibrary.simpleMessage("핀란드어"),
         "firstComment":
@@ -480,7 +520,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "goBackToAddress": MessageLookupByLibrary.simpleMessage("주소로 돌아 가기"),
         "goBackToReview": MessageLookupByLibrary.simpleMessage("검토로 돌아 가기"),
         "goBackToShipping": MessageLookupByLibrary.simpleMessage("배송으로 돌아 가기"),
-        "greaterDistance": m12,
+        "greaterDistance": m14,
         "greek": MessageLookupByLibrary.simpleMessage("그리스 사람"),
         "grossSales": MessageLookupByLibrary.simpleMessage("총 판매"),
         "grouped": MessageLookupByLibrary.simpleMessage("그룹화"),
@@ -498,13 +538,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "historyTransaction": MessageLookupByLibrary.simpleMessage("역사"),
         "home": MessageLookupByLibrary.simpleMessage("집"),
         "hour": MessageLookupByLibrary.simpleMessage("시간"),
-        "hoursAgo": m13,
+        "hoursAgo": m15,
         "hungarian": MessageLookupByLibrary.simpleMessage("헝가리 인"),
         "hungary": MessageLookupByLibrary.simpleMessage("헝가리"),
         "iAgree": MessageLookupByLibrary.simpleMessage("동의합니다"),
         "imIn": MessageLookupByLibrary.simpleMessage("나는 ~ 안에있다"),
         "imageFeature": MessageLookupByLibrary.simpleMessage("이미지 기능"),
         "imageGallery": MessageLookupByLibrary.simpleMessage("이미지 갤러리"),
+        "imageGenerate": MessageLookupByLibrary.simpleMessage("이미지 생성"),
         "imageNetwork": MessageLookupByLibrary.simpleMessage("이미지 네트워크"),
         "inStock": MessageLookupByLibrary.simpleMessage("재고"),
         "incorrectPassword": MessageLookupByLibrary.simpleMessage("잘못된 비밀번호"),
@@ -547,13 +588,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "listBannerType": MessageLookupByLibrary.simpleMessage("목록 배너 유형"),
         "listBannerVideo": MessageLookupByLibrary.simpleMessage("목록 배너 비디오"),
         "listMessages": MessageLookupByLibrary.simpleMessage("알림 메시지"),
+        "listening": MessageLookupByLibrary.simpleMessage("청취..."),
         "loadFail": MessageLookupByLibrary.simpleMessage("로드 실패!"),
         "loading": MessageLookupByLibrary.simpleMessage("로드 중 ..."),
         "loadingLink": MessageLookupByLibrary.simpleMessage("링크 로드 중..."),
         "location": MessageLookupByLibrary.simpleMessage("위치"),
+        "lockScreenAndSecurity":
+            MessageLookupByLibrary.simpleMessage("잠금 화면 및 보안"),
         "login": MessageLookupByLibrary.simpleMessage("로그인"),
         "loginCanceled": MessageLookupByLibrary.simpleMessage("로그인이 취소되었습니다"),
-        "loginErrorServiceProvider": m14,
+        "loginErrorServiceProvider": m16,
         "loginFailed": MessageLookupByLibrary.simpleMessage("로그인 실패!"),
         "loginInvalid":
             MessageLookupByLibrary.simpleMessage("이 앱을 사용할 수 없습니다."),
@@ -567,24 +611,27 @@ class MessageLookup extends MessageLookupByLibrary {
         "logout": MessageLookupByLibrary.simpleMessage("로그 아웃"),
         "malay": MessageLookupByLibrary.simpleMessage("말레이 사람"),
         "manCollections": MessageLookupByLibrary.simpleMessage("남자 컬렉션"),
+        "manageApiKey": MessageLookupByLibrary.simpleMessage("API 키 관리"),
         "manageStock": MessageLookupByLibrary.simpleMessage("재고 관리"),
         "map": MessageLookupByLibrary.simpleMessage("지도"),
         "marathi": MessageLookupByLibrary.simpleMessage("마라 티어"),
         "markAsRead": MessageLookupByLibrary.simpleMessage("읽은 상태로 표시"),
         "markAsShipped": MessageLookupByLibrary.simpleMessage("배송 됨으로 표시"),
         "markAsUnread": MessageLookupByLibrary.simpleMessage("읽지 않은 상태로 표시"),
-        "maximumFileSizeMb": m15,
+        "maxAmountForPayment": m17,
+        "maximumFileSizeMb": m18,
         "maybeLater": MessageLookupByLibrary.simpleMessage("나중에"),
         "menuOrder": MessageLookupByLibrary.simpleMessage("메뉴 주문"),
         "message": MessageLookupByLibrary.simpleMessage("메시지"),
         "messageTo": MessageLookupByLibrary.simpleMessage("메시지 보내기"),
+        "minAmountForPayment": m19,
         "minimumQuantityIs": MessageLookupByLibrary.simpleMessage("최소 수량은"),
-        "minutesAgo": m16,
+        "minutesAgo": m20,
         "mobileVerification": MessageLookupByLibrary.simpleMessage("모바일 인증"),
         "momentAgo": MessageLookupByLibrary.simpleMessage("조금 전"),
-        "monthsAgo": m17,
+        "monthsAgo": m21,
         "more": MessageLookupByLibrary.simpleMessage("...더"),
-        "moreFromStore": m18,
+        "moreFromStore": m22,
         "moreInformation": MessageLookupByLibrary.simpleMessage("추가 정보"),
         "morning": MessageLookupByLibrary.simpleMessage("아침"),
         "mustSelectOneItem":
@@ -596,8 +643,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("상품이 없습니다. 하나 만들어보세요!"),
         "myWallet": MessageLookupByLibrary.simpleMessage("내 지갑"),
         "myWishList": MessageLookupByLibrary.simpleMessage("내 위시리스트"),
-        "nItems": m19,
+        "nItems": m23,
         "name": MessageLookupByLibrary.simpleMessage("이름"),
+        "nameOnCard": MessageLookupByLibrary.simpleMessage("카드 이름"),
         "nearbyPlaces": MessageLookupByLibrary.simpleMessage("주변 장소"),
         "needToLoginAgain":
             MessageLookupByLibrary.simpleMessage("업데이트를 적용하려면 다시 로그인해야 합니다."),
@@ -630,6 +678,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "noListingNearby":
             MessageLookupByLibrary.simpleMessage("근처에 목록이 없습니다!"),
         "noOrders": MessageLookupByLibrary.simpleMessage("주문 없음"),
+        "noPermissionToViewProduct": MessageLookupByLibrary.simpleMessage(
+            "이 제품은 특정 역할을 가진 사용자가 사용할 수 있습니다. 이 제품에 액세스하려면 적절한 자격 증명으로 로그인하거나 자세한 내용은 당사에 문의하십시오."),
         "noPost":
             MessageLookupByLibrary.simpleMessage("이 페이지는 더 이상 존재하지 않는 것 같습니다!"),
         "noPrinters": MessageLookupByLibrary.simpleMessage("프린터 없음"),
@@ -639,6 +689,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "noSlotAvailable": MessageLookupByLibrary.simpleMessage("사용 가능한 슬롯 없음"),
         "noThanks": MessageLookupByLibrary.simpleMessage("고맙지 만 사양 할게"),
         "none": MessageLookupByLibrary.simpleMessage("없음"),
+        "notFindResult":
+            MessageLookupByLibrary.simpleMessage("죄송합니다. 결과를 찾을 수 없습니다."),
         "notFound": MessageLookupByLibrary.simpleMessage("찾을 수 없음"),
         "note": MessageLookupByLibrary.simpleMessage("주문 메모"),
         "noteMessage": MessageLookupByLibrary.simpleMessage("노트"),
@@ -656,7 +708,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "openMap": MessageLookupByLibrary.simpleMessage("지도 열기"),
         "openNow": MessageLookupByLibrary.simpleMessage("지금 열다"),
         "options": MessageLookupByLibrary.simpleMessage("옵션"),
-        "optionsTotal": m20,
+        "optionsTotal": m24,
         "or": MessageLookupByLibrary.simpleMessage("또는"),
         "orLoginWith": MessageLookupByLibrary.simpleMessage("또는 로그인"),
         "orderConfirmation": MessageLookupByLibrary.simpleMessage("주문 확인"),
@@ -697,8 +749,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "orderSuccessTitle2": MessageLookupByLibrary.simpleMessage("귀하의 계정"),
         "orderSummary": MessageLookupByLibrary.simpleMessage("주문 요약"),
         "orderTotal": MessageLookupByLibrary.simpleMessage("주문 합계"),
+        "orderTracking": MessageLookupByLibrary.simpleMessage("주문 추적"),
         "orders": MessageLookupByLibrary.simpleMessage("명령"),
         "otpVerification": MessageLookupByLibrary.simpleMessage("OTP 인증"),
+        "ourBankDetails": MessageLookupByLibrary.simpleMessage("은행 정보"),
         "outOfStock": MessageLookupByLibrary.simpleMessage("품절"),
         "pageView": MessageLookupByLibrary.simpleMessage("페이지보기"),
         "paid": MessageLookupByLibrary.simpleMessage("유료"),
@@ -708,8 +762,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("이미지 URL 붙여넣기"),
         "payByWallet": MessageLookupByLibrary.simpleMessage("지갑으로 지불"),
         "payNow": MessageLookupByLibrary.simpleMessage("지금 지불하세요"),
+        "payWithAmount": m25,
         "payment": MessageLookupByLibrary.simpleMessage("지불"),
         "paymentMethod": MessageLookupByLibrary.simpleMessage("지불 방법"),
+        "paymentMethodIsNotSupported":
+            MessageLookupByLibrary.simpleMessage("이 결제 수단은 지원되지 않습니다."),
         "paymentMethods": MessageLookupByLibrary.simpleMessage("결제 수단"),
         "paymentSuccessful": MessageLookupByLibrary.simpleMessage("결제 성공"),
         "pending": MessageLookupByLibrary.simpleMessage("대기 중"),
@@ -810,6 +867,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "제품 유형 변수에는 하나 이상의 변형이 필요합니다."),
         "productNeedNameAndPrice":
             MessageLookupByLibrary.simpleMessage("제품 유형은 이름과 정가가 필요합니다."),
+        "productOutOfStock":
+            MessageLookupByLibrary.simpleMessage("품절된 상품이 있습니다"),
         "productRating": MessageLookupByLibrary.simpleMessage("당신의 순위"),
         "productReview": MessageLookupByLibrary.simpleMessage("제품 리뷰"),
         "productType": MessageLookupByLibrary.simpleMessage("상품 유형"),
@@ -817,7 +876,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "publish": MessageLookupByLibrary.simpleMessage("게시"),
         "pullToLoadMore": MessageLookupByLibrary.simpleMessage("더로드하려면 당기기"),
         "qty": MessageLookupByLibrary.simpleMessage("수량"),
-        "qtyTotal": m21,
+        "qtyTotal": m26,
+        "quantityProductExceedInStock":
+            MessageLookupByLibrary.simpleMessage("현재 수량이 재고 수량보다 많습니다."),
         "rate": MessageLookupByLibrary.simpleMessage("율"),
         "rateTheApp": MessageLookupByLibrary.simpleMessage("앱 평가"),
         "rateThisApp": MessageLookupByLibrary.simpleMessage("이 앱을 평가 해주십시오"),
@@ -844,6 +905,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "refundRequest": MessageLookupByLibrary.simpleMessage("환불 요청"),
         "refundRequested": MessageLookupByLibrary.simpleMessage("환불 요청"),
         "refunds": MessageLookupByLibrary.simpleMessage("환불"),
+        "regenerateResponse": MessageLookupByLibrary.simpleMessage("응답 재생성"),
+        "registerAs": MessageLookupByLibrary.simpleMessage("다음으로 등록"),
         "registerAsVendor":
             MessageLookupByLibrary.simpleMessage("공급 업체 사용자로 등록"),
         "registerFailed": MessageLookupByLibrary.simpleMessage("등록 실패"),
@@ -872,7 +935,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "reviews": MessageLookupByLibrary.simpleMessage("리뷰"),
         "romanian": MessageLookupByLibrary.simpleMessage("루마니아 사람"),
         "russian": MessageLookupByLibrary.simpleMessage("러시아인"),
-        "sale": m22,
+        "sale": m27,
         "salePrice": MessageLookupByLibrary.simpleMessage("판매 가격"),
         "save": MessageLookupByLibrary.simpleMessage("구하다"),
         "saveAddress": MessageLookupByLibrary.simpleMessage("주소 저장"),
@@ -893,7 +956,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "searchOrderId": MessageLookupByLibrary.simpleMessage("주문 ID 검색 ..."),
         "searchPlace": MessageLookupByLibrary.simpleMessage("장소 검색"),
         "searchingAddress": MessageLookupByLibrary.simpleMessage("주소 검색"),
-        "secondsAgo": m23,
+        "secondsAgo": m28,
         "seeAll": MessageLookupByLibrary.simpleMessage("모두보기"),
         "seeNewAppConfig":
             MessageLookupByLibrary.simpleMessage("앱에서 새 콘텐츠를 계속 확인하세요."),
@@ -908,18 +971,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "selectImage": MessageLookupByLibrary.simpleMessage("이미지 선택"),
         "selectNone": MessageLookupByLibrary.simpleMessage("없음 선택"),
         "selectPrinter": MessageLookupByLibrary.simpleMessage("프린터 선택"),
+        "selectRole": MessageLookupByLibrary.simpleMessage("역할 선택"),
+        "selectStore": MessageLookupByLibrary.simpleMessage("매장 선택"),
         "selectTheColor": MessageLookupByLibrary.simpleMessage("색상 선택"),
+        "selectTheFile": MessageLookupByLibrary.simpleMessage("파일을 선택하세요"),
         "selectThePoint": MessageLookupByLibrary.simpleMessage("포인트 선택"),
         "selectTheQuantity": MessageLookupByLibrary.simpleMessage("수량 선택"),
         "selectTheSize": MessageLookupByLibrary.simpleMessage("사이즈 선택"),
         "send": MessageLookupByLibrary.simpleMessage("보내다"),
         "sendBack": MessageLookupByLibrary.simpleMessage("다시 보내"),
         "sendSMSCode": MessageLookupByLibrary.simpleMessage("코드 받기"),
+        "sendSMStoVendor":
+            MessageLookupByLibrary.simpleMessage("상점 주인에게 SMS 보내기"),
         "serbian": MessageLookupByLibrary.simpleMessage("세르비아 사람"),
         "sessionExpired": MessageLookupByLibrary.simpleMessage("세션 만료"),
         "setAnAddressInSettingPage":
             MessageLookupByLibrary.simpleMessage("설정 페이지에서 주소를 설정하세요"),
         "settings": MessageLookupByLibrary.simpleMessage("설정"),
+        "setup": MessageLookupByLibrary.simpleMessage("설정"),
         "share": MessageLookupByLibrary.simpleMessage("몫"),
         "shipped": MessageLookupByLibrary.simpleMessage("배송 됨"),
         "shipping": MessageLookupByLibrary.simpleMessage("배송"),
@@ -931,11 +1000,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "shopOrders": MessageLookupByLibrary.simpleMessage("쇼핑 주문"),
         "shopPhone": MessageLookupByLibrary.simpleMessage("쇼핑 전화"),
         "shopSlug": MessageLookupByLibrary.simpleMessage("슬러그 쇼핑"),
-        "shoppingCartItems": m24,
+        "shoppingCartItems": m29,
         "shortDescription": MessageLookupByLibrary.simpleMessage("간단한 설명"),
         "showAllMyOrdered": MessageLookupByLibrary.simpleMessage("내 주문 모두 표시"),
         "showDetails": MessageLookupByLibrary.simpleMessage("세부 정보 표시"),
         "showGallery": MessageLookupByLibrary.simpleMessage("갤러리보기"),
+        "showLess": MessageLookupByLibrary.simpleMessage("적게 표시"),
+        "showMore": MessageLookupByLibrary.simpleMessage("자세히보기"),
         "signIn": MessageLookupByLibrary.simpleMessage("로그인"),
         "signInWithEmail": MessageLookupByLibrary.simpleMessage("이메일로 로그인"),
         "signUp": MessageLookupByLibrary.simpleMessage("가입"),
@@ -947,12 +1018,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "slovak": MessageLookupByLibrary.simpleMessage("슬로바키아 사람"),
         "smsCodeExpired": MessageLookupByLibrary.simpleMessage(
             "SMS 코드가 만료되었습니다. 다시 시도하려면 확인 코드를 다시 보내주십시오."),
-        "sold": m25,
+        "sold": m30,
         "soldBy": MessageLookupByLibrary.simpleMessage("판매처"),
         "somethingWrong":
             MessageLookupByLibrary.simpleMessage("문제가 발생했습니다. 나중에 다시 시도하십시오."),
         "sortBy": MessageLookupByLibrary.simpleMessage("정렬"),
+        "sortCode": MessageLookupByLibrary.simpleMessage("식별 코드"),
         "spanish": MessageLookupByLibrary.simpleMessage("스페인 사람"),
+        "speechNotAvailable":
+            MessageLookupByLibrary.simpleMessage("음성을 사용할 수 없음"),
         "startExploring": MessageLookupByLibrary.simpleMessage("탐색 시작"),
         "startShopping": MessageLookupByLibrary.simpleMessage("쇼핑 시작"),
         "state": MessageLookupByLibrary.simpleMessage("상태"),
@@ -999,13 +1073,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "tamil": MessageLookupByLibrary.simpleMessage("타밀 사람"),
         "tapSelectLocation":
             MessageLookupByLibrary.simpleMessage("이 위치를 선택하려면 탭하세요."),
+        "tapTheMicToTalk":
+            MessageLookupByLibrary.simpleMessage("말하려면 마이크를 탭하세요."),
         "tax": MessageLookupByLibrary.simpleMessage("세"),
         "thailand": MessageLookupByLibrary.simpleMessage("타이"),
-        "theFieldIsRequired": m26,
+        "theFieldIsRequired": m31,
         "thisDateIsNotAvailable":
             MessageLookupByLibrary.simpleMessage("이 날짜는 사용할 수 없습니다."),
         "thisFeatureDoesNotSupportTheCurrentLanguage":
             MessageLookupByLibrary.simpleMessage("이 기능은 현재 언어를 지원하지 않습니다."),
+        "thisIsCustomerRole": MessageLookupByLibrary.simpleMessage("고객 역할입니다"),
+        "thisIsVendorRole": MessageLookupByLibrary.simpleMessage("공급업체 역할입니다."),
         "thisPlatformNotSupportWebview":
             MessageLookupByLibrary.simpleMessage("이 플랫폼은 webview를 지원하지 않습니다."),
         "thisProductNotSupport":
@@ -1022,7 +1100,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("충전 제품을 찾을 수 없음"),
         "total": MessageLookupByLibrary.simpleMessage("합계"),
         "totalCartValue": MessageLookupByLibrary.simpleMessage("총 주문 금액은 최소한"),
-        "totalProducts": m27,
+        "totalProducts": m32,
         "totalTax": MessageLookupByLibrary.simpleMessage("총 세금"),
         "trackingNumberIs": MessageLookupByLibrary.simpleMessage("추적 번호는"),
         "trackingPage": MessageLookupByLibrary.simpleMessage("추적 페이지"),
@@ -1039,6 +1117,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "transferSuccess": MessageLookupByLibrary.simpleMessage("전송 성공"),
         "turkish": MessageLookupByLibrary.simpleMessage("터키어"),
         "turnOnBle": MessageLookupByLibrary.simpleMessage("블루투스 켜기"),
+        "typeAMessage": MessageLookupByLibrary.simpleMessage("메시지를 입력하십시오 ..."),
         "typeYourMessage":
             MessageLookupByLibrary.simpleMessage("여기에 메시지를 입력하세요..."),
         "typing": MessageLookupByLibrary.simpleMessage("타자..."),
@@ -1058,6 +1137,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "uploadProduct": MessageLookupByLibrary.simpleMessage("제품 업로드"),
         "uploading": MessageLookupByLibrary.simpleMessage("업로드 중"),
         "url": MessageLookupByLibrary.simpleMessage("URL"),
+        "useMaximumPointDiscount": m33,
         "useNow": MessageLookupByLibrary.simpleMessage("지금 사용"),
         "useThisImage": MessageLookupByLibrary.simpleMessage("이 이미지 사용"),
         "userExists":
@@ -1069,9 +1149,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("사용자 이름과 암호가 필요합니다"),
         "vacationMessage": MessageLookupByLibrary.simpleMessage("휴가 메시지"),
         "vacationType": MessageLookupByLibrary.simpleMessage("휴가 유형"),
-        "validUntilDate": m28,
+        "validUntilDate": m34,
         "variable": MessageLookupByLibrary.simpleMessage("변하기 쉬운"),
         "variation": MessageLookupByLibrary.simpleMessage("변화"),
+        "vendor": MessageLookupByLibrary.simpleMessage("벤더"),
         "vendorAdmin": MessageLookupByLibrary.simpleMessage("공급 업체 관리자"),
         "vendorInfo": MessageLookupByLibrary.simpleMessage("공급 업체 정보"),
         "verificationCode": MessageLookupByLibrary.simpleMessage("인증 코드(6자리)"),
@@ -1091,28 +1172,33 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("확인을 기다리는 중"),
         "walletBalance": MessageLookupByLibrary.simpleMessage("지갑 잔액"),
         "walletName": MessageLookupByLibrary.simpleMessage("지갑 이름"),
-        "warning": m29,
-        "warningCurrencyMessageForWallet": m30,
+        "warning": m35,
+        "warningCurrencyMessageForWallet": m36,
         "weFoundBlogs": MessageLookupByLibrary.simpleMessage("블로그를 찾았습니다."),
-        "weFoundProducts": m31,
+        "weFoundProducts": m37,
         "weNeedCameraAccessTo": MessageLookupByLibrary.simpleMessage(
             "QR 코드 또는 바코드를 스캔하려면 카메라 액세스 권한이 필요합니다."),
         "weSentAnOTPTo": MessageLookupByLibrary.simpleMessage("인증 코드가 전송되었습니다"),
         "weWillSendYouNotification": MessageLookupByLibrary.simpleMessage(
             "새 제품이 출시되거나 제안이 있을 때 알림을 보내드립니다. 설정에서 이 설정을 언제든지 변경할 수 있습니다."),
         "webView": MessageLookupByLibrary.simpleMessage("웹보기"),
-        "week": m32,
+        "week": m38,
         "welcome": MessageLookupByLibrary.simpleMessage("환영"),
+        "welcomeUser": m39,
+        "whichLanguageDoYouPrefer":
+            MessageLookupByLibrary.simpleMessage("어떤 언어를 선호하세요?"),
+        "wholesaleRegisterMsg":
+            MessageLookupByLibrary.simpleMessage("등록을 승인하려면 관리자에게 문의하십시오."),
         "womanCollections": MessageLookupByLibrary.simpleMessage("여성 컬렉션"),
         "writeComment": MessageLookupByLibrary.simpleMessage("댓글 쓰기"),
         "writeYourNote": MessageLookupByLibrary.simpleMessage("메모 작성"),
-        "yearsAgo": m33,
+        "yearsAgo": m40,
         "yes": MessageLookupByLibrary.simpleMessage("예"),
         "youCanOnlyOrderSingleStore":
             MessageLookupByLibrary.simpleMessage("단일 매장에서만 구매할 수 있습니다."),
         "youCanOnlyPurchase":
             MessageLookupByLibrary.simpleMessage("구매 만 가능합니다"),
-        "youHaveAssignedToOrder": m34,
+        "youHaveAssignedToOrder": m41,
         "youHaveBeenSaveAddressYourLocal":
             MessageLookupByLibrary.simpleMessage("당신은 당신의 지역에 주소를 저장했습니다"),
         "youHavePoints": MessageLookupByLibrary.simpleMessage("\$ 포인트가 있습니다."),

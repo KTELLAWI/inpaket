@@ -1,7 +1,6 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 // import 'package:image_fade/image_fade.dart';
 import 'package:lottie/lottie.dart';
 
@@ -52,7 +51,8 @@ class FluxImage extends StatelessWidget {
           width: width,
           height: height,
           fit: fit ?? BoxFit.contain,
-          color: color,
+          colorFilter:
+              color != null ? ColorFilter.mode(color!, BlendMode.srcIn) : null,
           alignment: alignment,
           package: package,
         );
@@ -91,7 +91,7 @@ class FluxImage extends StatelessWidget {
           color: color,
           package: package,
           alignment: alignment,
-          cacheWidth: kIsWeb ? null : cacheWidth,
+          cacheWidth: cacheWidth,
         );
       }
     }
@@ -110,7 +110,8 @@ class FluxImage extends StatelessWidget {
         width: width,
         height: height,
         fit: fit ?? BoxFit.contain,
-        color: color,
+        colorFilter:
+            color != null ? ColorFilter.mode(color!, BlendMode.srcIn) : null,
         alignment: alignment,
       );
     }
@@ -137,7 +138,7 @@ class FluxImage extends StatelessWidget {
         color: color,
         cache: true,
         alignment: alignment,
-        cacheWidth: cacheWidth,
+        cacheWidth: kIsWeb ? null : cacheWidth,
         loadStateChanged: (state) {
           switch (state.extendedImageLoadState) {
             case LoadState.completed:

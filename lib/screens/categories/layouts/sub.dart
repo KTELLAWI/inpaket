@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../generated/l10n.dart';
 import '../../../models/index.dart' show Category, CategoryModel;
 import '../../base_screen.dart';
 import '../widgets/fetch_product_layout.dart';
 
 class SubCategories extends StatelessWidget {
+  /// Not support enableLargeCategory
   static const String type = 'subCategories';
 
   final ScrollController? scrollController;
@@ -37,9 +39,6 @@ class SubCategoriesLayout extends StatefulWidget {
 class _StateSubCategoriesLayout extends BaseScreen<SubCategoriesLayout> {
   int selectedIndex = 0;
 
-  CategoryModel get categoryModel =>
-      Provider.of<CategoryModel>(context, listen: false);
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -48,15 +47,22 @@ class _StateSubCategoriesLayout extends BaseScreen<SubCategoriesLayout> {
       builder: (context, provider, child) {
         final categories = provider.categories ?? <Category>[];
         if (categories.isEmpty) {
-          return const SizedBox();
+          return Center(
+            child: Text(S.of(context).noData),
+          );
         }
+
+        if (categories.length <= selectedIndex) {
+          selectedIndex = categories.length - 1;
+        }
+
         return Column(
           children: <Widget>[
             SizedBox(
               height: 60,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: categoryModel.categories!.length,
+                itemCount: categories.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
@@ -81,12 +87,9 @@ class _StateSubCategoriesLayout extends BaseScreen<SubCategoriesLayout> {
             ),
             Expanded(
               child: Builder(builder: (context) {
-                var category =
-                    (categoryModel.categories?.length ?? 0) > selectedIndex
-                        ? (categoryModel.categories?[selectedIndex])
-                        : null;
+                var category = categories[selectedIndex];
                 return FetchProductLayout(
-                  key: Key('${category?.toString()}'),
+                  key: Key(category.toString()),
                   category: category,
                   scrollController: widget.scrollController,
                 );

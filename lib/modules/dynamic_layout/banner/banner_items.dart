@@ -1,9 +1,67 @@
 import 'package:flutter/material.dart';
 
 import '../../../common/tools.dart';
+import '../../../screens/detail/widgets/video_feature.dart';
 import '../../../widgets/common/flux_image.dart';
 import '../../../widgets/common/parallax_image.dart';
 import '../config/banner_config.dart';
+
+class BannerItemWidget extends StatelessWidget {
+  final BannerItemConfig config;
+  final double? width;
+  final double padding;
+  final BoxFit? boxFit;
+  final double radius;
+  final double? height;
+  final Function onTap;
+  final bool enableParallax;
+  final double parallaxImageRatio;
+  final bool isSoundOn,
+      autoPlayVideo,
+      enableTimeIndicator,
+      doubleTapToFullScreen;
+
+  const BannerItemWidget({
+    key,
+    required this.config,
+    required this.padding,
+    this.width,
+    this.boxFit,
+    required this.radius,
+    this.height,
+    required this.onTap,
+    this.enableParallax = false,
+    this.parallaxImageRatio = 1.2,
+    this.isSoundOn = false,
+    this.autoPlayVideo = false,
+    this.enableTimeIndicator = true,
+    this.doubleTapToFullScreen = false,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return (config.video?.isNotEmpty ?? false)
+        ? BannerVideoItem(
+            config: config,
+            padding: padding,
+            isSoundOn: isSoundOn,
+            autoPlayVideo: autoPlayVideo,
+            enableTimeIndicator: enableTimeIndicator,
+            doubleTapToFullScreen: doubleTapToFullScreen,
+          )
+        : BannerImageItem(
+            config: config,
+            padding: padding,
+            width: width,
+            boxFit: boxFit,
+            radius: radius,
+            height: height,
+            onTap: onTap,
+            enableParallax: enableParallax,
+            parallaxImageRatio: parallaxImageRatio,
+          );
+  }
+}
 
 /// The Banner type to display the image
 class BannerImageItem extends StatelessWidget {
@@ -16,7 +74,6 @@ class BannerImageItem extends StatelessWidget {
   final Function onTap;
   final bool enableParallax;
   final double parallaxImageRatio;
-
   const BannerImageItem({
     key,
     required this.config,
@@ -127,6 +184,44 @@ class BannerImageItem extends StatelessWidget {
               ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class BannerVideoItem extends StatelessWidget {
+  final BannerItemConfig config;
+  final bool isSoundOn,
+      autoPlayVideo,
+      enableTimeIndicator,
+      doubleTapToFullScreen;
+  final double padding;
+
+  const BannerVideoItem({
+    key,
+    required this.config,
+    this.isSoundOn = false,
+    this.autoPlayVideo = false,
+    this.enableTimeIndicator = true,
+    this.doubleTapToFullScreen = false,
+    required this.padding,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var paddingVal = config.padding ?? padding;
+
+    return Padding(
+      padding: EdgeInsets.only(left: paddingVal, right: paddingVal),
+      child: FeatureVideoPlayer(
+        config.video ?? '',
+        autoPlay: autoPlayVideo,
+        isSoundOn: isSoundOn,
+        enableTimeIndicator: enableTimeIndicator,
+        aspectRatio: 16 / 9,
+        doubleTapToFullScreen: doubleTapToFullScreen,
+        showFullScreenButton: true,
+        showVolumeButton: true,
       ),
     );
   }

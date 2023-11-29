@@ -124,7 +124,7 @@ class CategoryModelImpl extends CategoryModel {
       printLog('[Category] getCategories');
       isLoading = true;
       notifyListeners();
-      _allCategories = await _service.api.getCategories(lang: lang);
+      _allCategories = await _service.api.getCategories();
 
       if (remapCategories != null) {
         mapCategories(

@@ -4,11 +4,11 @@ import 'package:responsive_builder/responsive_builder.dart';
 import '../config/category_config.dart';
 import '../config/category_item_config.dart';
 import '../helper/helper.dart';
+import 'category_icon_gradient_item.dart';
 import 'category_icon_item.dart';
 
-const _defaultSeparateWidth = 24.0;
-
 const _paddingList = 24.0;
+const _maxWidth = 64.0;
 
 class CategoryIcons extends StatelessWidget {
   final CategoryConfig config;
@@ -23,6 +23,8 @@ class CategoryIcons extends StatelessWidget {
     this.crossAxisCount = 5,
     Key? key,
   }) : super(key: key);
+
+  double get separateWidth => config.separateWidth;
 
   String? _getCategoryName({required CategoryItemConfig item}) {
     if (config.commonItemConfig.hideTitle) {
@@ -51,7 +53,7 @@ class CategoryIcons extends StatelessWidget {
     final size = config.commonItemConfig.size ?? 1.0;
     final widthItem = (MediaQuery.of(context).size.width -
             _paddingList -
-            (_defaultSeparateWidth * (numberItemOnScreen))) /
+            (separateWidth * (numberItemOnScreen))) /
         numberItemOnScreen *
         size;
     var items = <Widget>[];
@@ -59,15 +61,31 @@ class CategoryIcons extends StatelessWidget {
     for (var item in config.items) {
       var name = _getCategoryName(item: item);
 
-      items.add(
-        CategoryIconItem(
-          onTap: (name) => onShowProductList(item..name = name),
-          iconSize: widthItem > 64 ? 64 : widthItem,
-          name: name,
-          itemConfig: item,
-          commonConfig: config.commonItemConfig,
-        ),
-      );
+      if (config.gradientDesign) {
+        items.add(
+          CategoryIconGradientItem(
+            onTap: (name) => onShowProductList(item..name = name),
+            iconSize: widthItem > _maxWidth ? _maxWidth : widthItem,
+            name: name,
+            itemConfig: item,
+            commonConfig: config.commonItemConfig,
+            isHorizontal: config.horizontalItem,
+            isWrap: config.wrap,
+          ),
+        );
+      } else {
+        items.add(
+          CategoryIconItem(
+            onTap: (name) => onShowProductList(item..name = name),
+            iconSize: widthItem > _maxWidth ? _maxWidth : widthItem,
+            name: name,
+            itemConfig: item,
+            commonConfig: config.commonItemConfig,
+            isHorizontal: config.horizontalItem,
+            isWrap: config.wrap,
+          ),
+        );
+      }
     }
 
     if (config.wrap == false && items.isNotEmpty) {
@@ -84,10 +102,13 @@ class CategoryIcons extends StatelessWidget {
           children: items.expand((element) {
             return [
               element,
-              ScreenTypeLayout(
-                mobile: const SizedBox(width: _defaultSeparateWidth),
-                tablet: const SizedBox(width: _defaultSeparateWidth + 12),
-                desktop: const SizedBox(width: _defaultSeparateWidth + 24),
+              ScreenTypeLayout.builder(
+                mobile: (BuildContext context) =>
+                    SizedBox(width: separateWidth),
+                tablet: (BuildContext context) =>
+                    SizedBox(width: separateWidth + 12),
+                desktop: (BuildContext context) =>
+                    SizedBox(width: separateWidth + 24),
               ),
             ];
           }).toList()

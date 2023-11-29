@@ -106,7 +106,7 @@ class _VendorLocationInformationState extends State<VendorLocationInformation>
           'getAutocompletePlaces', const Duration(milliseconds: 300), () async {
         _autocompletePlaces = await Services()
             .api
-            .getAutoCompletePlaces(_locationController.text, _uuid)!;
+            .getAutoCompletePlaces(_locationController.text, _uuid);
         if (mounted) {
           setState(() {});
         }
@@ -123,10 +123,8 @@ class _VendorLocationInformationState extends State<VendorLocationInformation>
           .api
           .getPlaceDetail(_autocompletePlaces[index], _uuid);
       _uuid = const Uuid().v4();
-      if (prediction != null) {
-        _updatePosition(LatLng(
-            double.parse(prediction.lat!), double.parse(prediction.long!)));
-      }
+      _updatePosition(LatLng(
+          double.parse(prediction.lat!), double.parse(prediction.long!)));
     }
   }
 

@@ -13,12 +13,21 @@ class BoxShadowConfig {
   double x = 0.0;
   double y = 0.0;
 
-  BoxShadowConfig(
-      {this.blurRadius = 10.0,
-      this.colorOpacity = 1.0,
-      this.spreadRadius = 10.0,
-      this.x = 0.0,
-      this.y = 0.0});
+  BoxShadowConfig({
+    this.blurRadius = 10.0,
+    this.colorOpacity = 1.0,
+    this.spreadRadius = 10.0,
+    this.x = 0.0,
+    this.y = 0.0,
+  });
+
+  BoxShadowConfig.empty() {
+    blurRadius = 0.0;
+    colorOpacity = 0.0;
+    spreadRadius = 0.0;
+    x = 0.0;
+    y = 0.0;
+  }
 
   BoxShadowConfig.fromJson(dynamic json) {
     blurRadius = Helper.formatDouble(json['blurRadius']) ?? 10.0;

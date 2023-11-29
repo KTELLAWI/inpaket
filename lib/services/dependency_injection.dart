@@ -2,7 +2,8 @@
 import 'package:get_it/get_it.dart';
 
 // Enable Audio feature
-// import '../modules/audio/services/audio_handler.dart';
+// import 'package:flux_audio/index.dart';
+
 import 'index.dart' show AudioManager, NotificationService, Services;
 import 'location_service.dart';
 import 'wallet/wallet_services.dart';
@@ -28,5 +29,9 @@ class DependencyInjection {
 
     /// Wallet services
     injector.registerLazySingleton<WalletServices>(WalletServicesImpl.new);
+
+    /// App Coordinator
+    // injector.registerFactoryParam<AppCoordinatorShared, BuildContext, dynamic>(
+    //     (param1, _) => AppCoordinatorSharedImpl(param1));
   }
 }

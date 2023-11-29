@@ -61,6 +61,7 @@ class ProductsScreenState extends State<ProductsScreen>
         ProductsMixin,
         ProductsFilterMixin {
   late AnimationController _controller;
+  final _searchFieldController = TextEditingController();
 
   bool get hasAppBar => showAppBar(widget.routeName ?? RouteList.backdrop);
 
@@ -103,10 +104,19 @@ class ProductsScreenState extends State<ProductsScreen>
   String get currentTitle =>
       search != null ? S.of(context).results : _currentTitle;
 
+  bool get enableCounting =>
+      (categoryId?.isNotEmpty ?? false) &&
+      (listingLocationId?.isEmpty ?? true) &&
+      (tagId?.isEmpty ?? true) &&
+      (maxPrice == null || maxPrice == 0.0) &&
+      (search?.isEmpty ?? true) &&
+      !(filterSortBy.featured ?? false) &&
+      !(filterSortBy.onSale ?? false);
+
   @override
   void initState() {
     super.initState();
-    initFilter(config: productConfig);
+    _initFilter();
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 450),
@@ -121,10 +131,14 @@ class ProductsScreenState extends State<ProductsScreen>
 
     /// only request to server if there is empty config params
     // / If there is config, load the products one
-    WidgetsBinding.instance.endOfFrame.then((_) {
+  }
+
+  void _initFilter() {
+    WidgetsBinding.instance.endOfFrame.then((_) async {
+      await initFilter(config: productConfig);
+
       if (mounted) {
-        resetFilter();
-        onRefresh();
+        await onRefresh();
       }
     });
   }
@@ -132,6 +146,12 @@ class ProductsScreenState extends State<ProductsScreen>
   @override
   void clearProductList() {
     productModel.setProductsList([]);
+  }
+
+  @override
+  void dispose() {
+    _searchFieldController.dispose();
+    super.dispose();
   }
 
   @override
@@ -259,6 +279,7 @@ class ProductsScreenState extends State<ProductsScreen>
                           categoryModel.categoryList[productModel.categoryId];
 
                       return ProductFlatView(
+                        searchFieldController: _searchFieldController,
                         hasAppBar: hasAppBar,
                         autoFocusSearch: widget.autoFocusSearch,
                         enableSearchHistory: widget.enableSearchHistory,
@@ -313,7 +334,7 @@ class ProductsScreenState extends State<ProductsScreen>
                                                             ?.totalProduct ??
                                                         0) >
                                                     0 &&
-                                                model.enableCounting()) ...[
+                                                enableCounting) ...[
                                               Text(
                                                 '${currentCategory!.totalProduct} ${S.of(context).items}',
                                                 style: Theme.of(context)
@@ -375,6 +396,7 @@ class ProductsScreenState extends State<ProductsScreen>
                             tagId: tagId,
                             listingLocationId: listingLocationId,
                             search: searchText,
+                            isSearch: true,
                           )
                         },
                         bottomSheet: (Services()
@@ -425,9 +447,9 @@ class ProductsScreenState extends State<ProductsScreen>
   String get lang => appModel.langCode;
 
   @override
-  void onCategorySelected(String name) {
+  void onCategorySelected(String? name) {
     productModel.categoryName = name;
-    _currentTitle = name;
+    _currentTitle = (name?.isNotEmpty ?? false) ? name! : S.of(context).results;
   }
 
   @override
@@ -442,4 +464,9 @@ class ProductsScreenState extends State<ProductsScreen>
 
   @override
   String get tagName => tagModel.getTagName(tagId);
+
+  @override
+  void onClearTextSearch() {
+    _searchFieldController.clear();
+  }
 }

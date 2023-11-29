@@ -21,11 +21,13 @@ import 'video_feature.dart';
 class ProductImageList extends StatefulWidget {
   final Product product;
   final Function onChange;
+  final double height;
 
   const ProductImageList({
     Key? key,
     required this.product,
     required this.onChange,
+    required this.height,
   }) : super(key: key);
 
   @override
@@ -146,7 +148,7 @@ class _ProductImageListState extends State<ProductImageList> {
                 child: InfiniteCarousel.builder(
                   controller: _infiniteController,
                   itemCount: itemList.length,
-                  itemExtent: 400,
+                  itemExtent: widget.height,
                   loop: true,
                   velocityFactor: 1,
                   axisDirection: Axis.vertical,

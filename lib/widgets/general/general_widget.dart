@@ -1,24 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:inspireui/icons/icon_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../common/config/models/general_setting_item.dart';
 import '../../common/constants.dart';
+import '../../common/tools/navigate_tools.dart';
+import '../../common/tools/tools.dart';
 import '../../generated/l10n.dart';
+import '../../models/entities/product.dart';
+import '../../routes/flux_navigate.dart';
+import '../../screens/settings/widgets/setting_item/setting_item_widget.dart';
 
-class GeneralWidget extends StatelessWidget {
+abstract class GeneralWidget extends StatelessWidget {
   final bool useTile;
   final Color? iconColor;
   final TextStyle? textStyle;
   final GeneralSettingItem? item;
-  final void Function()? onTap;
+  final SettingItemStyle? cardStyle;
+  final void Function()? onNavigator;
 
   const GeneralWidget({
     required this.item,
     this.iconColor,
     this.textStyle,
     this.useTile = false,
-    this.onTap,
+    this.onNavigator,
+    this.cardStyle,
   });
+
+  void onTapNavigateOptions({
+    BuildContext? context,
+    required Map config,
+    List<Product>? products,
+  }) {
+    onNavigator?.call();
+    NavigateTools.onTapNavigateOptions(
+      config: config,
+      context: context,
+      products: products,
+    );
+  }
+
+  void onPushScreen(Widget screen) {
+    onNavigator?.call();
+    FluxNavigate.push(MaterialPageRoute(builder: (context) => screen));
+  }
+
+  void onLaunch(String? webUrl) {
+    Tools.launchURL(
+      webUrl,
+      mode: LaunchMode.externalApplication,
+    );
+  }
+
+  void onTap(BuildContext context) {}
 
   @override
   Widget build(BuildContext context) {
@@ -40,36 +75,19 @@ class GeneralWidget extends StatelessWidget {
           title,
           style: textStyle,
         ),
-        onTap: onTap,
+        onTap: () => onTap(context),
       );
     }
 
-    return Column(
-      children: [
-        Card(
-          margin: const EdgeInsets.only(bottom: 2.0),
-          elevation: 0,
-          child: ListTile(
-            leading: Icon(
-              icon,
-              color: Theme.of(context).colorScheme.secondary,
-              size: 24,
-            ),
-            title: Text(
-              title,
-              style: const TextStyle(fontSize: 16),
-            ),
-            trailing: trailing,
-            onTap: onTap,
-          ),
-        ),
-        const Divider(
-          color: Colors.black12,
-          height: 1.0,
-          indent: 75,
-          //endIndent: 20,
-        ),
-      ],
+    return SettingItemWidget(
+      onTap: () => onTap(context),
+      icon: icon,
+      title: title,
+      trailing: trailing,
+      useTile: useTile,
+      iconColorTile: iconColor,
+      textStyleTile: textStyle,
+      cardStyle: cardStyle,
     );
   }
 }

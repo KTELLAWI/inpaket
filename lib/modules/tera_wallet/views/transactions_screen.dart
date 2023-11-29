@@ -32,8 +32,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
       ),
       body: PagingList<WalletTransactionModel, Transaction>(
         lengthLoadingWidget: 10,
-        loadingWidget: Column(
-          children: const [
+        loadingWidget: const Column(
+          children: [
             TransactionItemSkeleton(),
             Divider(),
           ],

@@ -4,6 +4,7 @@ import 'package:inspireui/widgets/radio_button.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/config.dart';
+import '../../generated/l10n.dart';
 import '../../models/index.dart';
 import '../../widgets/common/flux_image.dart';
 
@@ -56,19 +57,19 @@ mixin ChangeLanguage<T extends StatefulWidget> on State<T> {
                     ),
                   ),
                 ),
-                const Text(
-                  'Change language',
-                  style: TextStyle(
+                Text(
+                  S.of(context).changeLanguage,
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: Colors.black,
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 8, bottom: 16),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8, bottom: 16),
                   child: Text(
-                    'Which language do you prefer?',
-                    style: TextStyle(fontSize: 14),
+                    S.of(context).whichLanguageDoYouPrefer,
+                    style: const TextStyle(fontSize: 14),
                   ),
                 ),
                 Expanded(
@@ -126,21 +127,37 @@ mixin ChangeLanguage<T extends StatefulWidget> on State<T> {
     );
   }
 
-  Widget iconLanguage() {
+  Widget iconLanguage({Color? backgroundColor}) {
     return Align(
       alignment: Alignment.topRight,
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(right: 16.0, top: 16),
+          padding: const EdgeInsets.all(16),
           child: GestureDetector(
             key: const Key('changeLanguageIconButton'),
             onTap: () => _showModel(context),
             child: Selector<AppModel, String>(
               selector: (_, model) => model.langCode,
-              builder: (context, langCode, child) => CircleButtonText(
-                langCode.toUpperCase(),
-                radius: 16,
-              ),
+              builder: (context, langCode, child) {
+                final selectedLanguage = languages.firstWhere(
+                  (language) =>
+                      language['code'].toString().toLowerCase() ==
+                      langCode.toLowerCase(),
+                );
+                final countryName = selectedLanguage['text'];
+                final flagAsset = selectedLanguage['icon'];
+                return CircleButtonText(
+                  countryName,
+                  color: backgroundColor,
+                  radius: 16,
+                  imageWidget: FluxImage(
+                    imageUrl: flagAsset,
+                    width: 25,
+                    height: 20,
+                    fit: BoxFit.cover,
+                  ),
+                );
+              },
             ),
           ),
         ),

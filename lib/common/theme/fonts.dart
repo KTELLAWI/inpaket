@@ -24,7 +24,7 @@ TextTheme buildTextTheme(
             ),
         displayMedium: GoogleFonts.getFont(
           fontHeader,
-          textStyle: base.displayLarge!.copyWith(fontWeight: FontWeight.w700),
+          textStyle: base.displayMedium!.copyWith(fontWeight: FontWeight.w700),
         ),
         displaySmall: GoogleFonts.getFont(
           fontHeader,
@@ -65,7 +65,7 @@ TextTheme buildTextTheme(
         ),
         bodyMedium: GoogleFonts.getFont(
           fontFamily,
-          textStyle: base.bodyLarge!.copyWith(),
+          textStyle: base.bodyMedium!.copyWith(),
         ),
         labelLarge: GoogleFonts.getFont(
           fontFamily,

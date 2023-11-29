@@ -1,10 +1,11 @@
 import '../../entities/product.dart';
+import '../../vendor/vendor_shipping_model.dart';
 import 'cart_mixin.dart';
 
 mixin VendorMixin on CartMixin {
-  List<dynamic> selectedShippingMethods = [];
+  List<VendorShippingMethod> selectedShippingMethods = [];
 
-  void setSelectedMethods(List<dynamic> selected) {
+  void setSelectedMethods(List<VendorShippingMethod> selected) {
     selectedShippingMethods = selected;
   }
 

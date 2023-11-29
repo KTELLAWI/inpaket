@@ -2,6 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 
 import '../../../common/tools.dart';
+import '../../../widgets/html/index.dart';
 import '../config/header_config.dart';
 
 class HeaderType extends StatelessWidget {
@@ -25,12 +26,12 @@ class HeaderType extends StatelessWidget {
     );
 
     Widget renderAnimatedText({required List<AnimatedText> animatedTexts}) {
-       return AnimatedTextItem(
-          title: config.title,
-          textStyle: textStyle,
-          minWidth: config.minWidth.toDouble(),
-          animatedTexts: animatedTexts,
-        );
+      return AnimatedTextItem(
+        title: config.title,
+        textStyle: textStyle,
+        minWidth: config.minWidth.toDouble(),
+        animatedTexts: animatedTexts,
+      );
     }
 
     switch (config.type) {
@@ -42,7 +43,7 @@ class HeaderType extends StatelessWidget {
                 name,
                 textStyle: textStyle,
               ),
-          ]
+          ],
         );
       case 'fade':
         return renderAnimatedText(
@@ -103,13 +104,9 @@ class HeaderType extends StatelessWidget {
       case 'static':
       default:
         return config.title != null && config.title.toString().isNotEmpty
-            ? FittedBox(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  config.title ?? '',
-                  style: textStyle,
-                  maxLines: 3,
-                ),
+            ? HtmlWidget(
+                config.title.getReplacedParams(context),
+                textStyle: textStyle,
               )
             : const SizedBox();
     }
@@ -137,9 +134,9 @@ class AnimatedTextItem extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (title?.isNotEmpty ?? false) ...[
-            Text(
-              title!,
-              style: textStyle ?? const TextStyle(fontSize: 16.0),
+            HtmlWidget(
+              title.getReplacedParams(context),
+              textStyle: textStyle ?? const TextStyle(fontSize: 16.0),
             ),
             const SizedBox(width: 10.0),
           ],

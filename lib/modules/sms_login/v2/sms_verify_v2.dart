@@ -15,13 +15,11 @@ const _countDownTime = 30;
 
 class SMSVerifyV2 extends StatefulWidget {
   final Function onCallBack;
-  final bool isCheckOutScreen;
   final Function(VoidCallback) onResend;
 
   const SMSVerifyV2({
     Key? key,
     required this.onCallBack,
-    this.isCheckOutScreen = false,
     required this.onResend,
   }) : super(key: key);
 
@@ -29,37 +27,36 @@ class SMSVerifyV2 extends StatefulWidget {
   State<SMSVerifyV2> createState() => _SMSVerifyV2State();
 }
 
-class _SMSVerifyV2State extends State<SMSVerifyV2> with CountdownMixin {
+class _SMSVerifyV2State extends State<SMSVerifyV2>
+    with CountdownMixin, CodeAutoFill {
   final TextEditingController _pinCodeController = TextEditingController();
 
   SMSModel get model => Provider.of<SMSModel>(context, listen: false);
 
   final _focusNode = FocusNode();
-  final SmsAutoFill _autoFill = SmsAutoFill();
+
+  @override
+  void codeUpdated() {
+    if (mounted && code != null && code!.isNotEmpty) {
+      _pinCodeController.text = code ?? '';
+      onSendCode();
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     startTimer();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
+    listenForCode();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _focusNode.requestFocus();
-
-      await SmsAutoFill().listenForCode();
-
-      _autoFill.code.listen((code) {
-        print('_autoFill.code $code');
-        if (code.isNotEmpty) {
-          _pinCodeController.text = code;
-          if (_pinCodeController.text.length == 6) onSendCode();
-        }
-      });
     });
   }
 
   @override
   void dispose() {
     _focusNode.dispose();
+    cancel();
     super.dispose();
   }
 
@@ -114,80 +111,48 @@ class _SMSVerifyV2State extends State<SMSVerifyV2> with CountdownMixin {
                     ),
                   ),
                   const SizedBox(height: 36.0),
-                  if (!widget.isCheckOutScreen)
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Directionality(
-                        textDirection: TextDirection.ltr,
-                        child: PinCodeTextField(
-                          enablePinAutofill: true,
-                          appContext: context,
-                          controller: _pinCodeController,
-                          cursorColor: Theme.of(context).primaryColor,
-                          keyboardType: TextInputType.number,
-                          pinTheme: PinTheme(
-                            shape: PinCodeFieldShape.underline,
-                            fieldHeight: textStyle.fontSize! * 1.4,
-                            borderWidth: 2,
-                            activeColor:
-                                Theme.of(context).primaryColor.withOpacity(0.5),
-                            selectedColor: Theme.of(context).primaryColor,
-                            inactiveColor:
-                                Theme.of(context).primaryColor.withOpacity(0.5),
-
-                            // activeFillColor:
-                            //     Theme.of(context).backgroundColor,
-                            disabledColor: Theme.of(context).disabledColor,
-                          ),
-                          length: _codeLength,
-                          cursorHeight: 30,
-                          focusNode: _focusNode,
-                          obscuringCharacter: '*',
-                          textStyle: Theme.of(context)
-                              .textTheme
-                              .displaySmall!
-                              .copyWith(
-                                color: Theme.of(context).primaryColor,
-                              ),
-                          animationType: AnimationType.scale,
-                          hapticFeedbackTypes: HapticFeedbackTypes.light,
-                          useHapticFeedback: true,
-                          autoDisposeControllers: false,
-                          animationDuration: const Duration(milliseconds: 300),
-                          onChanged: (value) {
-                            if (value.length == 6) onSendCode();
-                          },
-                        ),
-                      ),
-                    ),
-                  if (widget.isCheckOutScreen)
-                    Center(
-                      child: PinFieldAutoFill(
-                        //   codeLength: 4,
-                        codeLength: _codeLength,
-
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: PinCodeTextField(
+                        appContext: context,
                         controller: _pinCodeController,
+                        cursorColor: Theme.of(context).primaryColor,
                         keyboardType: TextInputType.number,
+                        pinTheme: PinTheme(
+                          shape: PinCodeFieldShape.underline,
+                          fieldHeight: textStyle.fontSize! * 1.4,
+                          borderWidth: 2,
+                          activeColor:
+                              Theme.of(context).primaryColor.withOpacity(0.5),
+                          selectedColor: Theme.of(context).primaryColor,
+                          inactiveColor:
+                              Theme.of(context).primaryColor.withOpacity(0.5),
 
-                        cursor: Cursor(
-                          color: Theme.of(context).primaryColor,
+                          // activeFillColor:
+                          //     Theme.of(context).backgroundColor,
+                          disabledColor: Theme.of(context).disabledColor,
                         ),
+                        length: _codeLength,
+                        cursorHeight: 30,
                         focusNode: _focusNode,
-                        autoFocus: true,
-                        decoration: UnderlineDecoration(
-                          lineHeight: 2,
-                          lineStrokeCap: StrokeCap.square,
-                          bgColorBuilder: PinListenColorBuilder(
-                              Colors.green.shade200, Colors.grey.shade200),
-                          colorBuilder:
-                              const FixedColorBuilder(Colors.transparent),
-                        ),
-
-                        onCodeChanged: (p0) {
-                          if (p0!.length == 6) onSendCode();
+                        obscuringCharacter: '*',
+                        textStyle:
+                            Theme.of(context).textTheme.displaySmall!.copyWith(
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                        animationType: AnimationType.scale,
+                        hapticFeedbackTypes: HapticFeedbackTypes.light,
+                        useHapticFeedback: true,
+                        autoDisposeControllers: false,
+                        animationDuration: const Duration(milliseconds: 300),
+                        onChanged: (value) {
+                          if (value.length == 6) onSendCode();
                         },
                       ),
                     ),
+                  ),
                   const SizedBox(height: 28.0),
                 ],
               ),
@@ -203,7 +168,7 @@ class _SMSVerifyV2State extends State<SMSVerifyV2> with CountdownMixin {
                   return ElevatedButton(
                     onPressed: value == 0 ? resendTheOTP : null,
                     child: Text(
-                      '${S.current.resendtheOTP} ${value == 0 ? '' : " (00:${value.toString().padLeft(2, '0')})"}',
+                      'Resend the OTP${value == 0 ? '' : " (00:${value.toString().padLeft(2, '0')})"}',
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,

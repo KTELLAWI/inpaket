@@ -21,11 +21,11 @@ abstract class PagingDataProvider<T> extends PagingDataBase<T> {
   @override
   bool get hasNext => _dataRepo.hasNext;
 
-  final BasePageRepository _dataRepo;
+  final BasePageRepository<T> _dataRepo;
 
   late StreamSubscription _subscriptionChangeLanguage;
 
-  PagingDataProvider({required BasePageRepository dataRepo})
+  PagingDataProvider({required BasePageRepository<T> dataRepo})
       : _dataRepo = dataRepo {
     _subscriptionChangeLanguage =
         eventBus.on<EventChangeLanguage>().listen((event) {
@@ -55,7 +55,7 @@ abstract class PagingDataProvider<T> extends PagingDataBase<T> {
       _updateState();
 
       final apiData = await _dataRepo.getData();
-      _data = [..._data ?? [], ...apiData as Iterable<T>? ?? []];
+      _data = [..._data ?? [], ...apiData ?? []];
       await Future.delayed(const Duration(milliseconds: 300), () {
         _isLoading = false;
       });

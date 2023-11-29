@@ -3,6 +3,6 @@ import '../../../models/paging_data_provider.dart';
 import '../../../services/paging/paging_with_user_repository.dart';
 
 class ListOrderHistoryModel extends PagingDataProvider<Order> {
-  ListOrderHistoryModel({required PagingWithUserRepository repository})
+  ListOrderHistoryModel({required PagingWithUserRepository<Order> repository})
       : super(dataRepo: repository);
 }

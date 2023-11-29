@@ -17,6 +17,8 @@ import '../../widgets/common/custom_text_field.dart';
 import '../../widgets/common/flux_image.dart';
 import '../home/privacy_term_screen.dart';
 
+enum RegisterType { customer, vendor }
+
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen();
 
@@ -31,7 +33,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final TextEditingController _emailController = TextEditingController();
 
   String? firstName, lastName, emailAddress, phoneNumber, password;
-  bool? isVendor = false;
+  RegisterType? _registerType = RegisterType.customer;
   bool isChecked = true;
 
   final bool showPhoneNumberWhenRegister =
@@ -293,60 +295,87 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             if (kVendorConfig.vendorRegister &&
                                 (appModel.isMultivendor ||
                                     ServerConfig().isListeoType))
-                              Row(
-                                children: <Widget>[
-                                  Checkbox(
-                                    value: isVendor,
-                                    activeColor: Theme.of(context).primaryColor,
-                                    checkColor: Colors.white,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        isVendor = value;
-                                      });
-                                    },
-                                  ),
-                                  Expanded(
-                                    child: InkWell(
-                                      onTap: () {
-                                        isVendor = !isVendor!;
-                                        setState(() {});
-                                      },
-                                      child: Text(
-                                        S.of(context).registerAsVendor,
-                                        maxLines: 2,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge,
-                                      ),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${S.of(context).registerAs}:',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelLarge,
                                     ),
-                                  ),
-                                ],
+                                    Row(
+                                      children: [
+                                        Radio<RegisterType>(
+                                          materialTapTargetSize:
+                                              MaterialTapTargetSize.shrinkWrap,
+                                          value: RegisterType.customer,
+                                          groupValue: _registerType,
+                                          onChanged: (RegisterType? value) {
+                                            setState(() {
+                                              _registerType = value;
+                                            });
+                                          },
+                                        ),
+                                        Text(
+                                          S.of(context).customer,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge,
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Radio<RegisterType>(
+                                          materialTapTargetSize:
+                                              MaterialTapTargetSize.shrinkWrap,
+                                          value: RegisterType.vendor,
+                                          groupValue: _registerType,
+                                          onChanged: (RegisterType? value) {
+                                            setState(() {
+                                              _registerType = value;
+                                            });
+                                          },
+                                        ),
+                                        Text(
+                                          S.of(context).vendor,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge,
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            RichText(
-                              maxLines: 2,
-                              text: TextSpan(
-                                text: S.current.bySignup,
-                                style: Theme.of(context).textTheme.bodyLarge,
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: S.of(context).agreeWithPrivacy,
-                                    style: TextStyle(
-                                        color: Theme.of(context).primaryColor,
-                                        decoration: TextDecoration.underline),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () => FluxNavigate.push(
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const PrivacyTermScreen(
-                                                showAgreeButton: false,
-                                              ),
-                                            ),
-                                            forceRootNavigator: true,
-                                          ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                            // RichText(
+                            //   maxLines: 2,
+                            //   text: TextSpan(
+                            //     text: S.current.bySignup,
+                            //     style: Theme.of(context).textTheme.bodyLarge,
+                            //     children: <TextSpan>[
+                            //       TextSpan(
+                            //         text: S.of(context).agreeWithPrivacy,
+                            //         style: TextStyle(
+                            //             color: Theme.of(context).primaryColor,
+                            //             decoration: TextDecoration.underline),
+                            //         recognizer: TapGestureRecognizer()
+                            //           ..onTap = () => FluxNavigate.push(
+                            //                 MaterialPageRoute(
+                            //                   builder: (context) =>
+                            //                       const PrivacyTermScreen(
+                            //                     showAgreeButton: false,
+                            //                   ),
+                            //                 ),
+                            //                 forceRootNavigator: true,
+                            //               ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                             const SizedBox(height: 10.0),
                             Padding(
                               padding:
@@ -367,7 +396,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                             phoneNumber: phoneNumber,
                                             emailAddress: emailAddress,
                                             password: password,
-                                            isVendor: isVendor,
+                                            isVendor: _registerType ==
+                                                RegisterType.vendor,
                                           );
                                         },
                                   minWidth: 200.0,
@@ -392,8 +422,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 children: <Widget>[
                                   Text(
                                     '${S.of(context).or} ',
-                                    style:
-                                        const TextStyle(color: Colors.black45),
                                   ),
                                   InkWell(
                                     onTap: () {

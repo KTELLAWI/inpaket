@@ -1,14 +1,17 @@
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
-  strong-mode:
-    implicit-dynamic: true
   errors:
     todo: ignore
   exclude:
     - lib/generated/intl/**
     - lib/l10n/
     - lib/generated_plugin_registrant.dart
+    - packages/flutterflow/**
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+  language:
+    strict-raw-types: false
 
 linter:
   rules:
@@ -37,7 +40,7 @@ linter:
     unnecessary_brace_in_string_interps: true
     prefer_iterable_whereType: true
     unnecessary_lambdas: false # enable can cause issues when parsing.
-    prefer_equal_for_default_values: true
+    # prefer_equal_for_default_values: true #removed in Dart '3.0.0'
     avoid_init_to_null: true
     unnecessary_getters_setters: true
     unnecessary_this: true

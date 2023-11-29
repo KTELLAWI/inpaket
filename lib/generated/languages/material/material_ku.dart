@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
@@ -491,4 +492,32 @@ class MaterialLocalizationKu extends GlobalMaterialLocalizations {
   @override
   // TODO: implement scrimOnTapHintRaw
   String get scrimOnTapHintRaw => throw UnimplementedError();
+
+  @override
+  // TODO: implement collapsedHint
+  String get collapsedHint => throw UnimplementedError();
+
+  @override
+  // TODO: implement expandedHint
+  String get expandedHint => throw UnimplementedError();
+
+  @override
+  // TODO: implement expansionTileCollapsedHint
+  String get expansionTileCollapsedHint => throw UnimplementedError();
+
+  @override
+  // TODO: implement expansionTileCollapsedTapHint
+  String get expansionTileCollapsedTapHint => throw UnimplementedError();
+
+  @override
+  // TODO: implement expansionTileExpandedHint
+  String get expansionTileExpandedHint => throw UnimplementedError();
+
+  @override
+  // TODO: implement expansionTileExpandedTapHint
+  String get expansionTileExpandedTapHint => throw UnimplementedError();
+
+  @override
+  // TODO: implement scanTextButtonLabel
+  String get scanTextButtonLabel => throw UnimplementedError();
 }

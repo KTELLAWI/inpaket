@@ -3,6 +3,7 @@ import 'dart:convert' as convert;
 import 'package:inspireui/inspireui.dart';
 import 'package:quiver/strings.dart';
 
+import '../../../common/config.dart';
 import '../../../models/entities/user.dart';
 import '../../../services/services.dart';
 
@@ -41,6 +42,8 @@ class DigitsMobileLoginServices {
       required String email,
       required String? countryCode,
       required String? mobile,
+      String? firstName,
+      String? lastName,
       String? fToken,
       String? otp}) async {
     try {
@@ -48,8 +51,15 @@ class DigitsMobileLoginServices {
         'username': username,
         'email': email,
         'country_code': countryCode,
-        'mobile': mobile
+        'mobile': mobile,
+        'whatsapp': kAdvanceConfig.enableDigitsMobileWhatsApp
       };
+      if (firstName?.isNotEmpty ?? false) {
+        bodyReq['name'] = firstName;
+      }
+      if (lastName?.isNotEmpty ?? false) {
+        bodyReq['last_name'] = lastName;
+      }
       if (fToken?.isNotEmpty ?? false) {
         bodyReq['ftoken'] = fToken;
       }
@@ -64,7 +74,7 @@ class DigitsMobileLoginServices {
       if (jsonDecode is Map && isNotBlank(jsonDecode['message'])) {
         throw Exception(jsonDecode['message']);
       } else {
-        return User.fromWooJson(jsonDecode);
+        return User.fromWooJson(jsonDecode['user'], jsonDecode['cookie']);
       }
     } catch (e) {
       //This error exception is about your Rest API is not config correctly so that not return the correct JSON format, please double check the document from this link https://docs.inspireui.com/fluxstore/woocommerce-setup/
@@ -101,12 +111,13 @@ class DigitsMobileLoginServices {
       var bodyReq = {
         'country_code': countryCode,
         'mobile': mobile,
+        'whatsapp': kAdvanceConfig.enableDigitsMobileWhatsApp
       };
       if (otp?.isNotEmpty ?? false) {
         bodyReq['otp'] = otp;
       }
       if (fToken?.isNotEmpty ?? false) {
-        bodyReq['fToken'] = fToken;
+        bodyReq['ftoken'] = fToken;
       }
       var response = await httpPost(
           Uri.parse('$domain/wp-json/api/flutter_user/digits/login'),
@@ -116,7 +127,7 @@ class DigitsMobileLoginServices {
       if (jsonDecode is Map && isNotBlank(jsonDecode['message'])) {
         throw Exception(jsonDecode['message']);
       } else {
-        return User.fromWooJson(jsonDecode);
+        return User.fromWooJson(jsonDecode['user'], jsonDecode['cookie']);
       }
     } catch (e) {
       //This error exception is about your Rest API is not config correctly so that not return the correct JSON format, please double check the document from this link https://docs.inspireui.com/fluxstore/woocommerce-setup/
@@ -134,7 +145,8 @@ class DigitsMobileLoginServices {
           body: convert.jsonEncode({
             'country_code': countryCode,
             'mobile': mobile,
-            'type': forRegister ? 'register' : 'login'
+            'type': forRegister ? 'register' : 'login',
+            'whatsapp': kAdvanceConfig.enableDigitsMobileWhatsApp
           }),
           headers: {'Content-Type': 'application/json'});
       var jsonDecode = convert.jsonDecode(response.body);
@@ -146,7 +158,7 @@ class DigitsMobileLoginServices {
             isNotBlank(jsonDecode['data']['message'])) {
           throw Exception(jsonDecode['data']['message']);
         }
-        return jsonDecode['code'] == '1';
+        return jsonDecode['code'].toString() == '1';
       } else {
         return false;
       }
@@ -165,7 +177,8 @@ class DigitsMobileLoginServices {
           body: convert.jsonEncode({
             'country_code': countryCode,
             'mobile': mobile,
-            'type': forRegister ? 'register' : 'login'
+            'type': forRegister ? 'register' : 'login',
+            'whatsapp': kAdvanceConfig.enableDigitsMobileWhatsApp
           }),
           headers: {'Content-Type': 'application/json'});
       var jsonDecode = convert.jsonDecode(response.body);

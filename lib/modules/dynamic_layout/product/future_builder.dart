@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../common/config.dart';
 import '../../../common/constants.dart';
-import '../../../models/index.dart' show AppModel, Product, RecentModel;
+import '../../../models/index.dart' show Product, RecentModel;
 import '../../../models/user_model.dart';
 import '../../../services/index.dart';
 import '../config/product_config.dart';
@@ -62,7 +62,6 @@ class _ProductListLayoutState extends State<ProductFutureBuilder> {
 
     var result = Services().api.fetchProductsLayout(
           config: widget.config.jsonData,
-          lang: Provider.of<AppModel>(context, listen: false).langCode,
           userId: userId,
           refreshCache: widget.cleanCache,
         );

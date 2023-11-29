@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../services/index.dart';
+import '../../../widgets/common/auto_silde_show.dart';
 import '../config/product_config.dart';
 import '../helper/custom_physic.dart';
 import '../helper/helper.dart';
@@ -11,13 +12,15 @@ class ProductGrid extends StatelessWidget {
   final maxHeight;
   final ProductConfig config;
 
-  const ProductGrid({
+  ProductGrid({
     Key? key,
     required this.products,
     required this.maxWidth,
     required this.maxHeight,
     required this.config,
   }) : super(key: key);
+
+  final scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +57,7 @@ class ProductGrid extends StatelessWidget {
       rows = 1;
     }
 
-    return Container(
+    final body = Container(
       padding: const EdgeInsets.only(left: padding, top: padding),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.background,
@@ -66,6 +69,7 @@ class ProductGrid extends StatelessWidget {
       ),
       height: rows * productHeight,
       child: GridView.count(
+        controller: scrollController,
         childAspectRatio:
             (ratioProductImage * (ratioProductImage < 1 ? 1.5 : 1)) *
                 getGridRatio(),
@@ -90,6 +94,14 @@ class ProductGrid extends StatelessWidget {
               );
         }),
       ),
+    );
+
+    return HandleAutoSlide.list(
+      durationAutoSliding: config.durationAutoSliding,
+      enable: config.enableAutoSliding,
+      numberOfItems: products.length,
+      controller: scrollController,
+      child: body,
     );
   }
 

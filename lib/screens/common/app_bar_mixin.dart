@@ -54,11 +54,12 @@ mixin AppBarMixin<T extends StatefulWidget> on State<T> {
     return false;
   }
 
-  Widget _getFluxAppBar(bool isAtTop) => Column(
+  Widget _getFluxAppBar(bool isAtTop, {Widget? popButton}) => Column(
         children: [
           FluxAppBar(
             isBottom: false,
             showBottom: isAtTop,
+            popButton: popButton,
           ),
           if (_shouldShowAppBarBottomItems(isAtTop))
             FluxAppBar(
@@ -101,6 +102,7 @@ mixin AppBarMixin<T extends StatefulWidget> on State<T> {
     AppBarConfig? appBar,
     Color? backgroundColor,
     List<Widget>? actions,
+    Widget? popButton,
   }) =>
       ValueListenableBuilder(
           valueListenable: _isAtTopNotifier,
@@ -115,7 +117,7 @@ mixin AppBarMixin<T extends StatefulWidget> on State<T> {
               automaticallyImplyLeading: false,
               backgroundColor:
                   backgroundColor ?? Theme.of(context).colorScheme.background,
-              title: _getFluxAppBar(isAtTop),
+              title: _getFluxAppBar(isAtTop, popButton: popButton),
               toolbarHeight: _getFluxAppBarHeight(isAtTop),
               actions: actions,
             );

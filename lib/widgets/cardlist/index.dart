@@ -21,6 +21,8 @@ class HorizonMenu extends StatefulWidget {
 }
 
 class _StateHorizonMenu extends State<HorizonMenu> {
+  final Map<String, dynamic> _cachedProducts = <String, dynamic>{};
+
   @override
   void initState() {
     Services().api.getCategoryWithCache();
@@ -48,6 +50,10 @@ class _StateHorizonMenu extends State<HorizonMenu> {
         return MenuCard(
           getChildrenOfCategory(category),
           category,
+          onCachedProductsUpdated: (String cachedKey, dynamic products) {
+            _cachedProducts[cachedKey] = products;
+          },
+          cachedProducts: _cachedProducts,
         );
       },
     );

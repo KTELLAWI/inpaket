@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../common/tools/tools.dart';
 import 'flux_image.dart';
 
 class ParallaxImage extends StatelessWidget {
@@ -63,9 +64,10 @@ class ParallaxImage extends StatelessWidget {
     );
   }
 
-  Widget _buildTitleAndSubtitle() {
+  Widget _buildTitleAndSubtitle(BuildContext context) {
     return Positioned(
-      left: 20,
+      left: Tools.isRTL(context) ? 0 : 20,
+      right: Tools.isRTL(context) ? 20 : 0,
       bottom: 20,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -92,7 +94,7 @@ class ParallaxImage extends StatelessWidget {
         children: [
           _buildParallaxBackground(context),
           if (name != null) _buildGradient(),
-          child ?? _buildTitleAndSubtitle(),
+          child ?? _buildTitleAndSubtitle(context),
         ],
       ),
     );

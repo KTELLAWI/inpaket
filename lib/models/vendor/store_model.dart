@@ -1,9 +1,11 @@
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:intl/intl.dart';
 import 'package:quiver/strings.dart';
 
 import '../../common/constants.dart';
+import '../../modules/dynamic_layout/helper/helper.dart';
 import '../../services/index.dart';
 import '../entities/vacation_settings.dart';
 
@@ -27,35 +29,28 @@ class StoreModel with ChangeNotifier {
 
   List<Store>? get stores => _stores;
 
+  CancelableOperation? _cancelLoadStore;
+
   Future<List<Store>?> getFeaturedStores() async {
-    if (lstFeaturedStores != null) {
-      if (lstFeaturedStores!.isNotEmpty) {
-        return lstFeaturedStores;
-      }
+    if (lstFeaturedStores?.isNotEmpty ?? false) {
+      return lstFeaturedStores;
     }
     try {
       var list = await _service.api.getFeaturedStores()!;
       lstFeaturedStores = list;
+      notifyListeners();
     } catch (err) {
       printLog('err $err');
     }
     return lstFeaturedStores;
   }
 
-  Future<List<Store>> getListStore({lang, page}) async {
-    var stores = await _service.api.searchStores(page: page)!;
-    var lstStores = <Store>[];
-
-    for (var store in stores) {
-      if (store.long != null && store.lat != null) {
-        lstStores.add(store);
-      }
-    }
-    return lstStores;
-  }
-
   // Can use search
   Future<void> loadStore({String name = '', Function? onFinish}) async {
+    if (isLoading && _currentNameSearch == name) {
+      await _cancelLoadStore?.cancel();
+    }
+
     isLoading = true;
     notifyListeners();
     if (_currentNameSearch != name) {
@@ -66,10 +61,14 @@ class StoreModel with ChangeNotifier {
       _currentPage++;
     }
 
-    var data = await _service.api.searchStores(
+    _isEnd = false;
+
+    _cancelLoadStore = CancelableOperation.fromFuture(_service.api.searchStores(
       keyword: name,
       page: _currentPage,
-    )!;
+    )!);
+
+    final data = await _cancelLoadStore!.value;
 
     if (data.isEmpty) {
       if (onFinish != null) {
@@ -130,13 +129,13 @@ class Store {
 
     link = parsedJson['shop_url'];
 
-    if (parsedJson['name'] != null) {
+    if (isNotEmpty(parsedJson['name'])) {
       name = parsedJson['name'];
     }
-    if (parsedJson['shop_name'] != null) {
+    if (isNotEmpty(parsedJson['shop_name'])) {
       name = parsedJson['shop_name'];
     }
-    if (parsedJson['store_name'] != null) {
+    if (isNotEmpty(parsedJson['store_name'])) {
       name = parsedJson['store_name'];
     }
     email = parsedJson['email'] ?? '';
@@ -220,7 +219,7 @@ class Store {
             parsedJson['store_rating'].toString().isNotEmpty)
         ? parsedJson['store_rating'].toString()
         : '0.0');
-    address = parsedJson['vendor_address'];
+    address = _formatWCFMAddress(parsedJson['vendor_address']);
 
     showDescription = !(parsedJson['store_hide_description'] != 'no');
     showAddress = !(parsedJson['store_hide_address'] != 'no');
@@ -261,13 +260,8 @@ class Store {
       if (isBlank(image) && parsedJson['vendor_shop_logo'] != false) {
         image = parsedJson['vendor_shop_logo'];
       }
-      try {
-        lat = double.parse(parsedJson['settings']['store_lat']);
-        long = double.parse(parsedJson['settings']['store_lng']);
-      } catch (e) {
-        lat = null;
-        long = null;
-      }
+      lat = Helper.formatDouble(parsedJson['settings']['store_lat']);
+      long = Helper.formatDouble(parsedJson['settings']['store_lng']);
 
       phone = '';
       if (parsedJson['settings']['phone'] is List) {
@@ -329,6 +323,36 @@ class Store {
       printLog(e.toString());
       printLog(trace.toString());
     }
+  }
+
+  // Format address
+  String? _formatWCFMAddress(String? address) {
+    var addressFormat = '';
+    var postCode = '';
+    if (address == null || address.isEmpty) return addressFormat;
+
+    var splitPostcode = address.split('-');
+    var splitAddress = splitPostcode[0].split(',');
+
+    if (splitPostcode.length > 1) {
+      postCode = splitPostcode[1].trim();
+    }
+    if (splitAddress.isNotEmpty) {
+      var newSplitAddress = splitAddress
+          .map((e) => e.trim().replaceAll(RegExp(r'\s+'), ' '))
+          .toList();
+      newSplitAddress.removeWhere((address) => address.isEmpty);
+      addressFormat = newSplitAddress.join(', ');
+    }
+    if (postCode.isNotEmpty) {
+      if (addressFormat.isNotEmpty) {
+        addressFormat += ' - $postCode';
+      } else {
+        addressFormat += postCode;
+      }
+    }
+
+    return addressFormat;
   }
 }
 

@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 
 import '../../common/config/models/general_setting_item.dart';
-import '../../common/tools.dart';
 import '../common/index.dart';
+import 'general_widget.dart';
 
-class GeneralBannerWidget extends StatelessWidget {
-  final GeneralSettingItem? item;
-  const GeneralBannerWidget({required this.item});
+class GeneralBannerWidget extends GeneralWidget {
+  const GeneralBannerWidget({
+    GeneralSettingItem? item,
+    Function()? onNavigator,
+  }) : super(
+          item: item,
+          onNavigator: onNavigator,
+        );
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +34,10 @@ class GeneralBannerWidget extends StatelessWidget {
     tapConfig.removeWhere((key, value) => value == null);
     return InkWell(
       onTap: tapConfig.isNotEmpty
-          ? () => NavigateTools.onTapNavigateOptions(
-              config: tapConfig, context: context)
+          ? () => onTapNavigateOptions(
+                config: tapConfig,
+                context: context,
+              )
           : null,
       child: Container(
         width: double.infinity,

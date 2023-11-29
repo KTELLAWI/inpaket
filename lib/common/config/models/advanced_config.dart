@@ -1,5 +1,7 @@
 // ignore_for_file: unnecessary_lambdas
 
+import 'package:flutter/material.dart';
+
 import '../../../models/entities/currency.dart';
 import '../../../models/entities/social_connect_url.dart';
 import '../../config.dart';
@@ -7,6 +9,15 @@ import '../../constants.dart';
 import 'category_config.dart';
 import 'gdpr_config.dart';
 import 'in_app_update_for_android_config.dart';
+
+enum ButtonLocation {
+  startTop,
+  centerTop,
+  endTop,
+  startFloat,
+  centerFloat,
+  endFloat,
+}
 
 class AdvancedConfig {
   final String defaultLanguage;
@@ -51,6 +62,8 @@ class AdvancedConfig {
   final num minQueryRadiusDistance;
   final num maxQueryRadiusDistance;
   final bool enableMembershipUltimate;
+  final bool enableWooCommerceWholesalePrices;
+  final bool isRequiredSiteSelection;
   final bool enablePaidMembershipPro;
   final bool enableDeliveryDateOnCheckout;
   final bool enableNewSMSLogin;
@@ -61,7 +74,7 @@ class AdvancedConfig {
   final bool categoryImageMenu;
   final bool enableDigitsMobileLogin;
   final bool enableDigitsMobileFirebase;
-  final bool onBoardOnlyShowFirstTime;
+  final bool enableDigitsMobileWhatsApp;
   final String webViewScript;
   final bool enableVersionCheck;
   final String ajaxSearchURL;
@@ -74,6 +87,7 @@ class AdvancedConfig {
   final InAppUpdateForAndroidConfig inAppUpdateForAndroid;
   final CategoryAdvanceConfig categoryConfig;
   final List<String> pinnedProductTags;
+  final ButtonLocation cartCheckoutButtonLocation;
 
   AdvancedConfig({
     required this.defaultLanguage,
@@ -118,6 +132,8 @@ class AdvancedConfig {
     required this.minQueryRadiusDistance,
     required this.maxQueryRadiusDistance,
     required this.enableMembershipUltimate,
+    required this.enableWooCommerceWholesalePrices,
+    required this.isRequiredSiteSelection,
     required this.enablePaidMembershipPro,
     required this.enableDeliveryDateOnCheckout,
     required this.enableNewSMSLogin,
@@ -128,7 +144,7 @@ class AdvancedConfig {
     required this.categoryImageMenu,
     required this.enableDigitsMobileLogin,
     required this.enableDigitsMobileFirebase,
-    required this.onBoardOnlyShowFirstTime,
+    required this.enableDigitsMobileWhatsApp,
     required this.webViewScript,
     required this.enableVersionCheck,
     required this.ajaxSearchURL,
@@ -141,12 +157,17 @@ class AdvancedConfig {
     required this.inAppUpdateForAndroid,
     required this.categoryConfig,
     required this.pinnedProductTags,
+    required this.cartCheckoutButtonLocation,
   });
 
   factory AdvancedConfig.fromJson(Map<dynamic, dynamic> json) {
     final blogLayout = json['DetailedBlogLayout'] ??
         DefaultConfig.advanceConfig['DetailedBlogLayout'];
     final defaultCurrency = json['DefaultCurrency'];
+    final buttonLocation = ButtonLocation.values.firstWhere(
+      (element) => element.name == '${json['cartCheckoutButtonLocation']}',
+      orElse: () => ButtonLocation.endTop,
+    );
     return AdvancedConfig(
       defaultLanguage: json['DefaultLanguage'] ??
           DefaultConfig.advanceConfig['DefaultLanguage'],
@@ -252,6 +273,11 @@ class AdvancedConfig {
           DefaultConfig.advanceConfig['MaxQueryRadiusDistance'],
       enableMembershipUltimate: json['EnableMembershipUltimate'] ??
           DefaultConfig.advanceConfig['EnableMembershipUltimate'],
+      enableWooCommerceWholesalePrices:
+          json['EnableWooCommerceWholesalePrices'] ??
+              DefaultConfig.advanceConfig['EnableWooCommerceWholesalePrices'],
+      isRequiredSiteSelection: json['IsRequiredSiteSelection'] ??
+          DefaultConfig.advanceConfig['IsRequiredSiteSelection'],
       enablePaidMembershipPro: json['EnablePaidMembershipPro'] ??
           DefaultConfig.advanceConfig['EnablePaidMembershipPro'],
       enableDeliveryDateOnCheckout: json['EnableDeliveryDateOnCheckout'] ??
@@ -272,8 +298,8 @@ class AdvancedConfig {
           DefaultConfig.advanceConfig['EnableDigitsMobileLogin'],
       enableDigitsMobileFirebase: json['EnableDigitsMobileFirebase'] ??
           DefaultConfig.advanceConfig['EnableDigitsMobileFirebase'],
-      onBoardOnlyShowFirstTime: json['OnBoardOnlyShowFirstTime'] ??
-          DefaultConfig.advanceConfig['OnBoardOnlyShowFirstTime'],
+      enableDigitsMobileWhatsApp: json['EnableDigitsMobileWhatsApp'] ??
+          DefaultConfig.advanceConfig['EnableDigitsMobileWhatsApp'],
       webViewScript:
           json['WebViewScript'] ?? DefaultConfig.advanceConfig['WebViewScript'],
       enableVersionCheck: json['EnableVersionCheck'] ??
@@ -300,6 +326,7 @@ class AdvancedConfig {
             ? json['pinnedProductTags']
             : DefaultConfig.advanceConfig['pinnedProductTags'] ?? []),
       ],
+      cartCheckoutButtonLocation: buttonLocation,
     );
   }
 
@@ -352,6 +379,8 @@ class AdvancedConfig {
     data['MinQueryRadiusDistance'] = minQueryRadiusDistance;
     data['MaxQueryRadiusDistance'] = maxQueryRadiusDistance;
     data['EnableMembershipUltimate'] = enableMembershipUltimate;
+    data['EnableWooCommerceWholesalePrices'] = enableWooCommerceWholesalePrices;
+    data['IsRequiredSiteSelection'] = isRequiredSiteSelection;
     data['EnablePaidMembershipPro'] = enablePaidMembershipPro;
     data['EnableDeliveryDateOnCheckout'] = enableDeliveryDateOnCheckout;
     data['EnableNewSMSLogin'] = enableNewSMSLogin;
@@ -362,7 +391,7 @@ class AdvancedConfig {
     data['categoryImageMenu'] = categoryImageMenu;
     data['EnableDigitsMobileLogin'] = enableDigitsMobileLogin;
     data['EnableDigitsMobileFirebase'] = enableDigitsMobileFirebase;
-    data['OnBoardOnlyShowFirstTime'] = onBoardOnlyShowFirstTime;
+    data['EnableDigitsMobileWhatsApp'] = enableDigitsMobileWhatsApp;
     data['WebViewScript'] = webViewScript;
     data['EnableVersionCheck'] = enableVersionCheck;
     data['AjaxSearchURL'] = ajaxSearchURL;
@@ -374,5 +403,32 @@ class AdvancedConfig {
     data['categoryConfig'] = categoryConfig.toJson();
     data['pinnedProductTags'] = List<String>.from(pinnedProductTags);
     return data;
+  }
+}
+
+extension ExtensionAdvancedConfig on AdvancedConfig {
+  FloatingActionButtonLocation get floatingCartCheckoutButtonLocation {
+    switch (cartCheckoutButtonLocation) {
+      case ButtonLocation.centerFloat:
+        return FloatingActionButtonLocation.centerFloat;
+      case ButtonLocation.startFloat:
+        return FloatingActionButtonLocation.startFloat;
+      case ButtonLocation.endFloat:
+        return FloatingActionButtonLocation.endFloat;
+      case ButtonLocation.startTop:
+        return FloatingActionButtonLocation.startTop;
+      case ButtonLocation.centerTop:
+        return FloatingActionButtonLocation.centerTop;
+      case ButtonLocation.endTop:
+      default:
+        return FloatingActionButtonLocation.endTop;
+    }
+  }
+
+  /// return default endTop
+  ButtonLocation getButtonLocationFromString(dynamic value) {
+    var values = ButtonLocation.values;
+    return values.firstWhere((element) => element.name == '$value',
+        orElse: () => ButtonLocation.endTop);
   }
 }

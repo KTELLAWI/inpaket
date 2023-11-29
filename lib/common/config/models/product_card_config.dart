@@ -20,7 +20,6 @@ class ProductCardConfig {
   num vMargin = 0.0;
   num hMargin = 6.0;
 
-
   ProductCardConfig({
     this.hidePrice = false,
     this.hideStore = false,

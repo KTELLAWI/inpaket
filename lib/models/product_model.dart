@@ -13,6 +13,7 @@ import '../common/tools.dart';
 import '../routes/flux_navigate.dart';
 import '../services/index.dart';
 import 'entities/back_drop_arguments.dart';
+import 'entities/brand.dart';
 import 'entities/product.dart';
 import 'entities/product_variation.dart';
 
@@ -45,6 +46,9 @@ class ProductModel with ChangeNotifier {
   String? cardPriceRange;
   String detailPriceRange = '';
   bool _isLoading = false;
+
+  // determine the Product type or Listing type
+  bool productType = false;
 
   bool get isLoading => _isLoading;
 
@@ -88,13 +92,22 @@ class ProductModel with ChangeNotifier {
       {required Product product}) async {
     lstGroupedProduct = [];
     for (var productID in product.groupedProducts as Iterable<int>) {
-      await _service.api.getProduct(productID)!.then((product) {
+      // Load product instead of listing if it is listing app
+      await _service.api.overrideGetProduct(productID)!.then((product) {
         if (product != null) {
           lstGroupedProduct!.add(product);
         }
       });
     }
     return lstGroupedProduct;
+  }
+
+  Future <List<Map>> getMetafields (id) async{
+
+    lstGroupedProduct = [];
+    final metaData = await _service.api.getMetaFields(id);
+    return metaData;
+
   }
 
   void changeDetailPriceRange(String? currency, Map<String, dynamic> rates) {
@@ -119,8 +132,7 @@ class ProductModel with ChangeNotifier {
   }
 
   Future<List<Product>?> fetchProductLayout(config, lang, {userId}) async {
-    return _service.api
-        .fetchProductsLayout(config: config, lang: lang, userId: userId);
+    return _service.api.fetchProductsLayout(config: config, userId: userId);
   }
 
   void fetchProductsByCategory({
@@ -128,10 +140,12 @@ class ProductModel with ChangeNotifier {
     categoryName,
     listingLocationId,
     bool notify = true,
+    bool productType = false,
   }) {
     this.categoryId = categoryId;
     this.categoryName = categoryName;
     this.listingLocationId = listingLocationId;
+    this.productType = productType;
     if (notify) notifyListeners();
   }
 
@@ -140,23 +154,24 @@ class ProductModel with ChangeNotifier {
     if (notify) notifyListeners();
   }
 
-  Future<void> getProductsList(
-      {categoryId,
-      minPrice,
-      maxPrice,
-      orderBy,
-      order,
-      String? tagId,
-      lang,
-      required page,
-      featured,
-      onSale,
-      attribute,
-      attributeTerm,
-      listingLocation,
-      userId,
-      List? include,
-      String? search}) async {
+  Future<void> getProductsList({
+    categoryId,
+    minPrice,
+    maxPrice,
+    orderBy,
+    order,
+    String? tagId,
+    lang,
+    required page,
+    featured,
+    onSale,
+    attribute,
+    attributeTerm,
+    listingLocation,
+    userId,
+    List? include,
+    String? search,
+  }) async {
     try {
       if (isFetching) {
         await _cancelLoadProduct?.cancel();
@@ -195,7 +210,6 @@ class ProductModel with ChangeNotifier {
         maxPrice: maxPrice,
         orderBy: orderBy,
         order: order,
-        lang: lang,
         page: page,
         featured: featured,
         onSale: onSale,
@@ -206,6 +220,7 @@ class ProductModel with ChangeNotifier {
         nextCursor: cursor,
         include: include?.join(','),
         search: search,
+        productType: productType,
       ));
 
       final products = await _cancelLoadProduct!.value;
@@ -311,6 +326,7 @@ class ProductModel with ChangeNotifier {
     Map<String, dynamic>? config,
     bool showCountdown = false,
     Duration countdownDuration = Duration.zero,
+    Brand? brandByParams,
   }) async {
     try {
       await FluxNavigate.pushNamed(
@@ -321,6 +337,9 @@ class ProductModel with ChangeNotifier {
           showCountdown: showCountdown,
           countdownDuration: countdownDuration,
           cateId: cateId,
+          brandName: brandByParams?.name,
+          brandId: brandByParams?.id,
+          brandImg: brandByParams?.image,
           cateName: cateName,
           tag: tag,
         ),
@@ -393,13 +412,5 @@ class ProductModel with ChangeNotifier {
 
   void resetTag() {
     tagId = null;
-  }
-
-  bool enableCounting() {
-    return categoryId != null &&
-        (listingLocationId?.isEmpty ?? true) &&
-        tagId == null &&
-        maxPrice == 0.0 &&
-        (search?.isEmpty ?? true);
   }
 }

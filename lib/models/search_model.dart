@@ -193,7 +193,6 @@ class SearchModel extends ChangeNotifier with LanguageMixin {
             attribute: attribute,
             attributeId: attributeTerm,
             page: page,
-            lang: langCode,
             listingLocation: listingLocation,
             userId: userId,
           )!;

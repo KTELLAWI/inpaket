@@ -20,6 +20,7 @@ class ProductList extends StatefulWidget {
   final List<Product>? products;
   final bool isFetching;
   final bool? isEnd;
+  final bool productType;
   final String? errMsg;
   final double? width;
   final double padding;
@@ -47,6 +48,7 @@ class ProductList extends StatefulWidget {
     this.header,
     this.appbar,
     this.scrollController,
+    this.productType = false,
   });
 
   @override

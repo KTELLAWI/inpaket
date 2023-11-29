@@ -5,12 +5,14 @@ import 'package:intl/intl.dart';
 import '../../common/config.dart';
 import '../../common/constants.dart';
 import '../../common/tools.dart';
+import '../../data/boxes.dart';
 import '../../generated/l10n.dart';
 import '../../modules/dynamic_layout/helper/helper.dart';
 import '../../services/index.dart';
 import '../entities/store_delivery_date.dart';
 import '../index.dart';
 import '../serializers/order.dart';
+import 'bank_account_item.dart';
 import 'fee_item.dart';
 import 'user_location.dart';
 
@@ -68,11 +70,12 @@ class Order {
   int quantity = 0;
   Store? wcfmStore;
   UserShippingLocation? userShippingLocation;
-  AfterShipTracking? aftershipTracking;
+  List<AfterShipTracking> aftershipTrackings = [];
   String? deliveryDate;
   List<StoreDeliveryDate>? storeDeliveryDates;
   List<FeeItem> feeLines = [];
   String? currencyCode;
+  List<BankAccountItem> bacsInfo = [];
 
   int get totalQuantity {
     var quantity = 0;
@@ -91,7 +94,7 @@ class Order {
       case ConfigType.magento:
         return Order._fromMagentoJson(parsedJson!);
       case ConfigType.shopify:
-        return Order._fromShopify(parsedJson!);
+        return Order.fromShopify(parsedJson!);
       case ConfigType.presta:
         return Order._fromPrestashop(parsedJson!);
       case ConfigType.strapi:
@@ -114,6 +117,7 @@ class Order {
       case 'canceled reversal':
         return OrderStatus.canceledReversal;
       case 'complete':
+      case 'paid':
         return OrderStatus.completed;
       case 'driver-assigned':
         return OrderStatus.driverAssigned;
@@ -180,6 +184,12 @@ class Order {
         feeLines.add(FeeItem.fromJson(item));
       });
 
+      if (paymentMethod == 'bacs') {
+        parsedJson['bacs_info']?.forEach((item) {
+          bacsInfo.add(BankAccountItem.fromJson(item));
+        });
+      }
+
       billing = Address.fromJson(parsedJson['billing']);
       shipping = Address.fromJson(parsedJson['shipping']);
       shippingMethodTitle = parsedJson['shipping_lines'] != null &&
@@ -203,14 +213,16 @@ class Order {
 
       /// GET AFTERSHIP TRACKING & DELIVERY DATE
       if (parsedJson['meta_data'] != null) {
-        var providerName = '';
-        var trackingNumber = '';
         for (var item in parsedJson['meta_data']) {
-          if (item['key'] == '_aftership_tracking_number') {
-            trackingNumber = item['value'];
-          }
-          if (item['key'] == '_aftership_tracking_provider_name') {
-            providerName = item['value'];
+          if (item['key'] == '_aftership_tracking_items') {
+            for (var shipment in item['value']) {
+              var trackingNumber = shipment['tracking_number'];
+              var providerName = shipment['slug'];
+              if (providerName.isNotEmpty && trackingNumber.isNotEmpty) {
+                aftershipTrackings
+                    .add(AfterShipTracking(trackingNumber, providerName));
+              }
+            }
           }
           if (item['key'] == '_orddd_timestamp') {
             var format = DateFormat('dd-MM-yyyy');
@@ -232,9 +244,6 @@ class Order {
               });
             }
           }
-        }
-        if (!providerName.isEmptyOrNull && !trackingNumber.isEmptyOrNull) {
-          aftershipTracking = AfterShipTracking(trackingNumber, providerName);
         }
       }
     } catch (e, trace) {
@@ -434,16 +443,18 @@ class Order {
     }
   }
 
-  Order._fromShopify(Map parsedJson) {
+  Order.fromShopify(Map parsedJson) {
     try {
       id = parsedJson['id'];
       number = "${parsedJson["orderNumber"]}";
       status = parseOrderStatus(parsedJson['financialStatus']);
+      currencyCode = parsedJson['currencyCode'];
 
       createdAt = DateTime.parse(parsedJson['processedAt']).toLocal();
       total = double.parse(parsedJson['totalPrice']['amount']);
       paymentMethodTitle = '';
       shippingMethodTitle = '';
+      totalShipping = double.parse(parsedJson['totalShippingPrice']['amount']);
       // statusUrl = parsedJson['statusUrl'];
 
       var totalTaxV2 = parsedJson['totalTax']['amount'] ?? '0';
@@ -614,9 +625,23 @@ class Order {
       var item = {
         'product_id': productId,
         'quantity': cartModel.productsInCart[key],
-        'subtotal': '$itemPrice',
-        'total': '$itemPrice'
       };
+      if (cartModel.isIncludingTax != true) {
+        item['subtotal'] = '$itemPrice';
+        item['total'] = '$itemPrice';
+      }
+      if (kAdvanceConfig.enableWooCommerceWholesalePrices &&
+          ServerConfig().isWooPluginSupported) {
+        var loggedInUser = UserBox().userInfo;
+        item['meta_data'] = <Map<String, dynamic>>[
+          {
+            'key': '_wwp_wholesale_priced',
+            'value':
+                (product?.wholesalePrice?.isNotEmpty ?? false) ? 'yes' : 'no'
+          },
+          {'key': '_wwp_wholesale_role', 'value': loggedInUser?.role ?? ''}
+        ];
+      }
 
       var attrNames = <String?>[];
       if (cartModel.productVariationInCart[key] != null &&
@@ -630,7 +655,8 @@ class Order {
         }
       }
 
-      if (cartModel.productsMetaDataInCart[key] != null) {
+      if (cartModel.productsMetaDataInCart[key] != null &&
+          cartModel.productsMetaDataInCart[key].isNotEmpty) {
         var metaData = <Map<String, dynamic>>[];
         cartModel.productsMetaDataInCart[key].forEach((k, v) {
           if (!attrNames.contains(k)) {
@@ -691,7 +717,8 @@ class Order {
                 "${option.parent}${(option.price?.isNotEmpty ?? false) ? ' ($price)' : ''}",
             'value': option.label,
           });
-          itemPrice += double.tryParse(option.price ?? '0.0') ?? 0;
+          itemPrice += (double.tryParse(option.price ?? '0.0') ?? 0) *
+              (int.tryParse('${item['quantity']}') ?? 0);
         }
 
         addons['quantity'] = item['quantity'];
@@ -752,11 +779,11 @@ class Order {
         params['shipping'].removeWhere((key, value) => value == null);
       }
 
-      var isMultiVendor = ServerConfig().typeName.isMultiVendor;
+      var isMultiVendor = ServerConfig().isVendorType();
       if (isMultiVendor) {
         if (kPaymentConfig.enableShipping &&
             cartModel.selectedShippingMethods.isNotEmpty) {
-          var shippings = <Map<String, dynamic>>[];
+          var shippingLines = <Map<String, dynamic>>[];
           for (var element in cartModel.selectedShippingMethods) {
             final shippingFee = PriceTools.getPriceValueByCurrency(
                 element.shippingMethods[0].cost,
@@ -764,13 +791,23 @@ class Order {
                     kAdvanceConfig.defaultCurrency?.currencyCode ??
                     'USD',
                 cartModel.currencyRates ?? {});
-            shippings.add({
+            var shippingLine = <String, dynamic>{
               'method_id': '${element.shippingMethods[0].id}',
               'method_title': element.shippingMethods[0].title,
-              'total': '$shippingFee'
-            });
+              'total': '$shippingFee',
+            };
+            if (element.store?.id != null) {
+              shippingLine['meta_data'] = [
+                {
+                  'key': 'seller_id',
+                  'value': element.store?.id ?? '',
+                  'display_key': 'Creator',
+                }
+              ];
+            }
+            shippingLines.add(shippingLine);
           }
-          params['shipping_lines'] = shippings;
+          params['shipping_lines'] = shippingLines;
         }
       } else {
         if (kPaymentConfig.enableShipping && cartModel.shippingMethod != null) {

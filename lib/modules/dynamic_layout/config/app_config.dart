@@ -1,4 +1,6 @@
 import '../../../common/config/models/index.dart';
+import '../../../common/config/models/onboarding_config.dart';
+import '../../../common/constants.dart';
 import 'app_setting.dart';
 import 'background_config.dart';
 
@@ -7,7 +9,7 @@ import 'background_config.dart';
 /// TabBar : [{'layout':'home','icon':'home','pos':100,'fontFamily':'CupertinoIcons','key':'p1q235ba14'},{'pos':200,'layout':'category','icon':'rectangle_grid_1x2','fontFamily':'CupertinoIcons','categoryLayout':'card','key':'hwu0rkrizt'},{'key':'2reihs4qzc','icon':'search','layout':'search','fontFamily':'CupertinoIcons','pos':300,'size':24},{'pos':400,'icon':'bag','layout':'cart','categoryLayout':'cart','key':'a2xts0oou6','fontFamily':'CupertinoIcons'},{'layout':'profile','fontFamily':'CupertinoIcons','pos':500,'key':'69jw5yx12d','icon':'person'}]
 /// Drawer : {'logo':'assets/images/logo.png','items':[{'type':'home','show':true},{'type':'blog','show':true},{'type':'login','show':true},{'show':true,'type':'category'}]}
 /// Background : {'color':'#eee','image':'https://google.com','height':0.18,'layout':'background'}
-
+/// OnBoardingConfig: {'enableOnBoarding': true,'version': 2,'autoCropImageByDesign': true,'isOnlyShowOnFirstTime': true,'showLanguage': true,'data': [{'title': 'Discover something new','image': 'https://i.imgur.com/XZ48ANH.png','desc':'Special new arrivals just for you'},{'title': 'Update trendy outfit','image': 'https://i.imgur.com/KCkRtvC.png','desc':'Favorite brands and hottest trends'},{'title': 'Explore your true style','image': 'https://i.imgur.com/lbk3KU8.png','desc': "Relax and let us bring the style to you"}],}
 class AppConfig {
   late AppSetting settings;
   BackgroundConfig? background;
@@ -15,7 +17,9 @@ class AppConfig {
   DrawerMenuConfig? drawer;
   AppBarConfig? appBar;
   dynamic jsonData;
+  OnBoardingConfig? onBoardingConfig;
   List<String>? searchSuggestion = [];
+  Map? overrideTranslation;
 
   AppConfig({
     required this.settings,
@@ -45,6 +49,10 @@ class AppConfig {
         ? DrawerMenuConfig.fromJson(json['Drawer'])
         : null;
 
+    onBoardingConfig = json['onBoardingConfig'] != null
+        ? OnBoardingConfig.fromJson(json['onBoardingConfig'])
+        : null;
+
     background = json['Background'] != null
         ? BackgroundConfig.fromJson(json['Background'])
         : null;
@@ -54,6 +62,10 @@ class AppConfig {
       json['searchSuggestion'].forEach((v) {
         searchSuggestion!.add(v);
       });
+    }
+
+    if (json['overrideTranslation'] != null) {
+      overrideTranslation = json['overrideTranslation'];
     }
     // ignore: prefer_initializing_formals
     jsonData = json;
@@ -67,6 +79,9 @@ class AppConfig {
     }
     if (background != null) {
       map['Background'] = background?.toJson();
+    }
+    if (overrideTranslation != null) {
+      map['overrideTranslation'] = overrideTranslation;
     }
     return map;
   }
@@ -308,6 +323,7 @@ class TabBarMenuConfig {
   String icon = 'home';
   String fontFamily = 'Tahoma';
   String categoryLayout = 'card';
+  String vendorLayout = 'card';
   List<Map>? remapCategories;
 
   dynamic jsonData;
@@ -324,6 +340,8 @@ class TabBarMenuConfig {
 
   bool isDefaultTab = false;
 
+  bool isFullscreen = false;
+
   TabBarMenuConfig({
     this.layout,
     this.icon = 'home',
@@ -334,10 +352,12 @@ class TabBarMenuConfig {
     this.categories,
     this.images,
     this.categoryLayout = 'card',
+    this.vendorLayout = 'card',
     this.visible = true,
     this.groupLayout = false,
     this.menuLabel = '',
     this.isDefaultTab = false,
+    this.isFullscreen = false,
     this.key,
   });
 
@@ -351,6 +371,7 @@ class TabBarMenuConfig {
     categories = json['categories'];
     images = json['images'];
     categoryLayout = json['categoryLayout'] ?? 'card';
+    vendorLayout = json['vendorLayout'] ?? 'card';
 
     final jsonRemap = json['remapCategories'];
     if (jsonRemap != null) {
@@ -367,6 +388,7 @@ class TabBarMenuConfig {
     menuLabel = json['menuLabel'] ?? '';
 
     isDefaultTab = json['defaultTab'] ?? false;
+    isFullscreen = json['fullscreen'] ?? false;
   }
 
   Map<String, dynamic> toJson() {
@@ -381,6 +403,7 @@ class TabBarMenuConfig {
     map['menuLabel'] = menuLabel;
     map['defaultTab'] = isDefaultTab;
     map['key'] = key;
+    map['fullscreen'] = isFullscreen;
     return map;
   }
 }
@@ -450,9 +473,9 @@ class AppBarConfig {
 
   AppBarConfig.fromJson(dynamic json) {
     key = json['key'];
-    showOnScreens = json['showOnScreens'] ?? [];
+    showOnScreens = json['showOnScreens'] ?? kAppbarShowOnScreens;
     backgroundColor = json['backgroundColor'];
-    enable = json['enable'] ?? true;
+    enable = json['enable'] ?? false;
     snap = json['snap'] ?? true;
     pinned = json['pinned'] ?? true;
     floating = json['floating'] ?? true;
@@ -525,6 +548,17 @@ class AppBarItemConfig {
   String? image;
   String? imageColor; //use for png
   String? imageBoxFit;
+
+  String? defaultAvatar;
+  num avatarRadius = 100.0;
+
+  num spacingText = 3.0;
+  String? headerText;
+  num headerFontSize = 16.0;
+  num headerTextOpacity = 0.5;
+  String? headerFontWeight;
+  String? headerTextColor;
+
   num? width;
   num? height;
   String? key;
@@ -567,6 +601,14 @@ class AppBarItemConfig {
     this.actionLink,
     this.onlyShowWhenAtTop = false,
     this.isCustomSpace = false,
+    this.defaultAvatar,
+    this.avatarRadius = 100.0,
+    this.spacingText = 3.0,
+    this.headerText,
+    this.headerTextOpacity = 0.5,
+    this.headerFontSize = 16.0,
+    this.headerFontWeight = '400',
+    this.headerTextColor,
   });
 
   AppBarItemConfig.fromJson(dynamic json) {
@@ -604,6 +646,14 @@ class AppBarItemConfig {
     actionLink = json['actionLink'];
     onlyShowWhenAtTop = json['onlyShowWhenAtTop'] ?? false;
     isCustomSpace = json['isCustomSpace'] ?? false;
+    defaultAvatar = json['defaultAvatar'];
+    avatarRadius = json['avatarRadius'] ?? 100.0;
+    spacingText = json['spacingText'] ?? 3.0;
+    headerText = json['headerText'];
+    headerTextOpacity = json['headerTextOpacity'] ?? 0.5;
+    headerFontSize = json['headerFontSize'] ?? 16.0;
+    headerFontWeight = json['headerFontWeight'] ?? '400';
+    headerTextColor = json['headerTextColor'];
   }
 
   Map<String, dynamic> toJson() {
@@ -642,6 +692,14 @@ class AppBarItemConfig {
     if (actionLink != null) data['actionLink'] = actionLink;
     if (onlyShowWhenAtTop) data['onlyShowWhenAtTop'] = onlyShowWhenAtTop;
     if (isCustomSpace) data['isCustomSpace'] = isCustomSpace;
+    if (defaultAvatar != null) data['defaultAvatar'] = defaultAvatar;
+    data['avatarRadius'] = avatarRadius;
+    data['spacingText'] = spacingText;
+    if (headerText != null) data['headerText'] = headerText;
+    data['headerTextOpacity'] = headerTextOpacity;
+    data['headerFontSize'] = headerFontSize;
+    if (headerFontWeight != null) data['headerFontWeight'] = headerFontWeight;
+    if (headerTextColor != null) data['headerTextColor'] = headerTextColor;
     return data;
   }
 }

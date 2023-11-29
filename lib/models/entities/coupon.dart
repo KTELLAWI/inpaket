@@ -23,16 +23,28 @@ class Coupons {
       var params = Order().toJson(
           cartModel, cartModel.user != null ? cartModel.user!.id : null, false);
       params['coupon_code'] = couponCode;
-      final response = await httpPost(
-        endpoint.toUri()!,
-        body: json.encode(params),
-      );
-      if(response.statusCode == 502){
+      final response = await httpPost(endpoint.toUri()!,
+          body: json.encode(params),
+          headers: {
+            'Content-Type': 'application/json',
+            'User-Cookie': cartModel.user?.cookie ?? '',
+          });
+      if (response.statusCode == 502) {
         return null;
       }
       final body = json.decode(response.body) ?? {};
       if (response.statusCode == HttpStatus.ok) {
-        return Discount.fromJson(body);
+        if (body['coupon'] != null &&
+            body['coupon']['email_restrictions'] != null &&
+            body['coupon']['email_restrictions'] is List) {
+          if (List.from(body['coupon']['email_restrictions']).isEmpty ||
+              List.from(body['coupon']['email_restrictions'])
+                  .contains(cartModel.user?.email ?? '')) {
+            return Discount.fromJson(body);
+          }
+        } else {
+          return Discount.fromJson(body);
+        }
       } else if (body['message'] != null) {
         throw Exception(body['message']);
       }

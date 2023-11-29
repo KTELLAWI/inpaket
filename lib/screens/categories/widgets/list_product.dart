@@ -41,20 +41,20 @@ class _ProductSimpleViewSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0).copyWith(left: 16, right: 16),
-      child: Row(
+      child: const Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Skeleton(
+          Skeleton(
             width: 60,
             height: 60,
           ),
-          const SizedBox(width: 10),
+          SizedBox(width: 10),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
-              children: const [
+              children: [
                 Skeleton(width: 200, height: 14),
                 SizedBox(height: 6),
                 Skeleton(width: 90, height: 14),

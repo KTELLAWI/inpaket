@@ -62,7 +62,8 @@ class MainCategoryModel extends ListCategoryModel implements CategoryModel {
   List<Category>? get categories => data;
 
   @override
-  Map<String?, Category> get categoryList => Map.fromIterables(List.generate(data.length, (index) => data[index].id), data);
+  Map<String?, Category> get categoryList => Map.fromIterables(
+      List.generate(data.length, (index) => data[index].id), data);
 
   /// Because the default MainCategoryModel just fetch root categories
   @override

@@ -241,10 +241,8 @@ class TikTokVideoItem extends StatelessWidget {
                     child: Text(
                       item.desc ?? '',
                       maxLines: 2,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall
-                          ?.copyWith(color: Theme.of(context).colorScheme.background),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.background),
                     ),
                   ),
                 )

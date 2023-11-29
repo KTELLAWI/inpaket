@@ -8,11 +8,13 @@ import '../../common/start_rating.dart';
 class ProductRating extends StatelessWidget {
   final Product product;
   final ProductConfig config;
+  final MainAxisAlignment mainAxisAlignment;
 
   const ProductRating({
     Key? key,
     required this.product,
     required this.config,
+    this.mainAxisAlignment = MainAxisAlignment.start,
   }) : super(key: key);
 
   @override
@@ -27,6 +29,7 @@ class ProductRating extends StatelessWidget {
             size: 10.0,
             color: kColorRatingStar,
             borderColor: kColorRatingStar,
+            mainAxisAlignment: mainAxisAlignment,
             label: Text(
               product.ratingCount == 0 || product.ratingCount == null
                   ? ''

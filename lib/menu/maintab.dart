@@ -18,9 +18,11 @@ import '../models/index.dart';
 import '../modules/dynamic_layout/config/tab_bar_config.dart';
 import '../modules/dynamic_layout/helper/helper.dart';
 import '../modules/dynamic_layout/index.dart';
+import '../modules/dynamic_layout/tabbar/mixins/floating_shape.dart';
 import '../routes/flux_navigate.dart';
 import '../routes/route.dart';
 import '../screens/index.dart' show NotificationScreen;
+import '../screens/settings/rate_myapp_mixin.dart';
 import '../screens/users/age_restriction_screen.dart';
 import '../services/services.dart';
 import '../widgets/overlay/custom_overlay_state.dart';
@@ -40,7 +42,7 @@ class MainTabs extends StatefulWidget {
 }
 
 class MainTabsState extends CustomOverlayState<MainTabs>
-    with WidgetsBindingObserver {
+    with WidgetsBindingObserver, TabbarFloatingShape, RateMyAppMixin {
   /// check Desktop screen and app Setting variable
   bool get isDesktopDisplay => Layout.isDisplayDesktop(context);
 
@@ -60,6 +62,7 @@ class MainTabsState extends CustomOverlayState<MainTabs>
   Map<String, String?> childTabName = {};
   int currentTabIndex = 0;
   int defaultTabIndex = 0;
+  bool hasDefaultTab = false;
 
   List<TabBarMenuConfig> get tabData =>
       Provider.of<AppModel>(context, listen: false).appConfig!.tabBar;
@@ -80,14 +83,14 @@ class MainTabsState extends CustomOverlayState<MainTabs>
   StreamSubscription? _subLoadedAppConfig;
 
   @override
-  Future<void> afterFirstLayout(BuildContext context) async {
+  void afterFirstLayout(BuildContext context) {
     _initListenEvent(context);
     _initTabDelegate();
     _initTabData(context);
 
     // In App Update For Android will have higher priority than Enable Version Check
     if (isAndroid && kAdvanceConfig.inAppUpdateForAndroid.enable) {
-      unawaited(InAppUpdateForAndroid().checkForUpdate());
+      InAppUpdateForAndroid().checkForUpdate();
     } else if (kAdvanceConfig.enableVersionCheck) {
       NewVersionPlus().showAlertIfNecessary(context: context);
     }
@@ -95,18 +98,27 @@ class MainTabsState extends CustomOverlayState<MainTabs>
     if (appSetting.ageRestrictionConfig.enable &&
         (appSetting.ageRestrictionConfig.alwaysShowUponOpen ||
             !UserBox().hasAnswerAgeRestriction)) {
-      await FluxNavigate.push(
-        MaterialPageRoute(
-          builder: (context) => AgeRestrictionScreen(
-            config: appSetting.ageRestrictionConfig,
+      Future.delayed(const Duration(seconds: 3), () {
+        FluxNavigate.push(
+          MaterialPageRoute(
+            builder: (context) => AgeRestrictionScreen(
+              config: appSetting.ageRestrictionConfig,
+            ),
+            fullscreenDialog: true,
           ),
-          fullscreenDialog: true,
-        ),
-        forceRootNavigator: true,
-      );
+          forceRootNavigator: true,
+        );
+      });
     }
 
-    await Services().chatServices.init();
+    Services().chatServices.init();
+
+    // App rating
+    showRatingOnOpen();
+
+    if (!kIsWeb) {
+      Services().firebase.initDynamicLinkService(context);
+    }
   }
 
   /// init the Event Bus listening
@@ -124,7 +136,11 @@ class MainTabsState extends CustomOverlayState<MainTabs>
     });
 
     // Attempt to apply new config after refresh or change language
-    _subLoadedAppConfig = eventBus.on<EventLoadedAppConfig>().listen((event) {
+    _subLoadedAppConfig =
+        eventBus.on<EventLoadedAppConfig>().listen((event) async {
+      try {
+        await Provider.of<AppModel>(context, listen: false).applyAppCaching();
+      } catch (_) {}
       _initTabData(context);
     });
   }
@@ -248,20 +264,26 @@ class MainTabsState extends CustomOverlayState<MainTabs>
 
     final media = MediaQuery.of(context);
     final isTabBarEnabled = appSetting.tabBarConfig.enable;
+    final showMinimizeTabBar = appSetting.tabBarConfig.showMinimize;
+
     final showFloating = appSetting.tabBarConfig.showFloating;
     final isClip = appSetting.tabBarConfig.showFloatingClip;
+
+    final tabBarFloating = appSetting.tabBarConfig.tabBarFloating;
     final floatingActionButtonLocation =
-        appSetting.tabBarConfig.tabBarFloating.location ??
-            FloatingActionButtonLocation.centerDocked;
+        tabBarFloating.location ?? FloatingActionButtonLocation.centerDocked;
+    final notchMargin = tabBarFloating.notchMargin;
 
     printLog('[ScreenSize]: ${media.size.width} x ${media.size.height}');
 
     return SideMenu(
-      backgroundColor: showFloating ? null : Theme.of(context).colorScheme.background,
+      backgroundColor:
+          showFloating ? null : Theme.of(context).colorScheme.background,
       bottomNavigationBar: isTabBarEnabled
           ? (showFloating
               ? BottomAppBar(
-                  shape: isClip ? const CircularNotchedRectangle() : null,
+                  shape: isClip ? renderNotchedShape(tabBarFloating) : null,
+                  notchMargin: notchMargin,
                   child: tabBarMenu(),
                 )
               : tabBarMenu())
@@ -269,7 +291,9 @@ class MainTabsState extends CustomOverlayState<MainTabs>
       tabBarOnTop: appConfig.settings.tabBarConfig.enableOnTop,
       floatingActionButtonLocation: floatingActionButtonLocation,
       floatingActionButton: showFloating ? getTabBarMenuAction() : null,
-      zoomConfig: appConfig.drawer?.zoomConfig,
+      zoomConfig: (appConfig.drawer?.enable ?? true)
+          ? appConfig.drawer?.zoomConfig
+          : null,
       sideMenuBackground: appConfig.drawer?.backgroundColor,
       sideMenuBackgroundImage: appConfig.drawer?.backgroundImage,
       colorFilter: appConfig.drawer?.colorFilter,
@@ -311,19 +335,26 @@ class MainTabsState extends CustomOverlayState<MainTabs>
                   /// use for responsive web/mobile
                   return Stack(
                     fit: StackFit.expand,
-                    children: List.generate(
-                      _tabView.length,
-                      (index) {
-                        final active = controller.index == index;
-                        return Offstage(
-                          offstage: !active,
-                          child: TickerMode(
-                            enabled: active,
-                            child: _tabView[index],
-                          ),
-                        );
-                      },
-                    ).toList(),
+                    children: [
+                      ...List.generate(
+                        _tabView.length,
+                        (index) {
+                          final active = controller.index == index;
+                          return Offstage(
+                            offstage: !active,
+                            child: TickerMode(
+                              enabled: active,
+                              child: _tabView[index],
+                            ),
+                          );
+                        },
+                      ).toList(),
+                      if (showMinimizeTabBar)
+                        Align(
+                          alignment: const AlignmentDirectional(1, 1),
+                          child: tabBarMenu(showTabMinimize: true),
+                        ),
+                    ],
                   );
                 }),
               ),
@@ -342,7 +373,13 @@ extension TabBarMenuExtention on MainTabsState {
       tabController.animateTo(saveIndexTab[nameTab]);
       _emitChildTabName();
     } else if (allowPush) {
-      FluxNavigate.pushNamed(nameTab.toString(), forceRootNavigator: true);
+      if (nameTab.toString() == RouteList.profile) {
+        FluxNavigate.pushNamed(nameTab.toString(),
+            forceRootNavigator: true,
+            arguments: TabBarMenuConfig(jsonData: {}));
+      } else {
+        FluxNavigate.pushNamed(nameTab.toString(), forceRootNavigator: true);
+      }
     }
   }
 
@@ -367,6 +404,9 @@ extension TabBarMenuExtention on MainTabsState {
       observers: [
         MyRouteObserver(
           action: (screenName) {
+            final currentScreenOfTab = childTabName[initialRoute!];
+            if (currentScreenOfTab == screenName) return;
+
             childTabName[initialRoute!] = screenName;
             OverlayControlDelegate().emitTab?.call(screenName);
           },
@@ -401,10 +441,13 @@ extension TabBarMenuExtention on MainTabsState {
     var groupTabData = tabData.where((e) => e.groupLayout == true).toList();
 
     var tabView = <Widget>[];
+    saveIndexTab = {};
     for (var i = 0; i < tabData.length; i++) {
       var dataOfTab = tabData[i];
 
-      saveIndexTab[dataOfTab.layout] = i;
+      if (dataOfTab.isFullscreen == false) {
+        saveIndexTab[dataOfTab.layout] = i;
+      }
       navigators[i] = GlobalKey<NavigatorState>();
       final initialRoute = dataOfTab.layout;
       var routeData = initialRoute == RouteList.tabMenu ||
@@ -414,27 +457,40 @@ extension TabBarMenuExtention on MainTabsState {
 
       if (dataOfTab.isDefaultTab) {
         defaultTabIndex = i;
+        hasDefaultTab = true;
       }
 
-      tabView.add(
-        enableOnTop
-            ? MediaQuery(
-                data: MediaQuery.of(context).copyWith(
-                  padding: EdgeInsets.zero,
-                  viewPadding: EdgeInsets.zero,
-                ),
-                child: tabViewItem(
+      if (hasDefaultTab == false &&
+          dataOfTab.groupLayout == false &&
+          dataOfTab.isFullscreen == false) {
+        defaultTabIndex = i;
+        hasDefaultTab = true;
+      }
+
+      final isFullscreen = dataOfTab.isFullscreen;
+      if (isFullscreen) {
+        tabView.add(const SizedBox());
+      } else {
+        tabView.add(
+          enableOnTop
+              ? MediaQuery(
+                  data: MediaQuery.of(context).copyWith(
+                    padding: EdgeInsets.zero,
+                    viewPadding: EdgeInsets.zero,
+                  ),
+                  child: tabViewItem(
+                    key: navigators[i],
+                    initialRoute: initialRoute,
+                    args: routeData,
+                  ),
+                )
+              : tabViewItem(
                   key: navigators[i],
                   initialRoute: initialRoute,
                   args: routeData,
                 ),
-              )
-            : tabViewItem(
-                key: navigators[i],
-                initialRoute: initialRoute,
-                args: routeData,
-              ),
-      );
+        );
+      }
     }
 
     if (tabView.isNotEmpty) {
@@ -481,9 +537,47 @@ extension TabBarMenuExtention on MainTabsState {
   }
 
   /// on tap on the TabBar icon
-  void _onTapTabBar(index) {
+  void _onTapTabBar(int index) {
+    var appModel = Provider.of<AppModel>(context, listen: false);
+    final userModel = Provider.of<UserModel>(context, listen: false);
+
+    var tabBar = appModel.appConfig?.tabBar;
+    final tabData = tabBar?[index];
+
+    var groupTabData = tabBar?.where((e) => e.groupLayout == true).toList();
+
+    var routeData = tabData?.layout == RouteList.tabMenu ||
+            tabData?.layout == RouteList.scrollable
+        ? groupTabData
+        : tabData;
+
+    if (['chat-gpt', 'image-generate', 'text-generate']
+        .contains(tabData?.layout)) {
+      routeData = {
+        'identifier': userModel.user?.email,
+        'loginCallback': () async {
+          await Navigator.of(context).pushNamed(RouteList.login);
+          final userModel = Provider.of<UserModel>(context, listen: false);
+          return userModel.user?.email;
+        },
+      };
+    }
+
+    if (tabData != null && tabData.isFullscreen) {
+      FluxNavigate.pushNamed(
+        tabData.layout.toString(),
+        arguments: routeData,
+        forceRootNavigator: true,
+      );
+
+      if (tabController.indexIsChanging) {
+        tabController.index = tabController.previousIndex;
+      }
+      return;
+    }
+
     if (currentTabIndex == index) {
-      navigators[tabController.index]!.currentState!.popUntil((r) => r.isFirst);
+      navigators[tabController.index]!.currentState?.popUntil((r) => r.isFirst);
     }
     currentTabIndex = index;
 
@@ -499,7 +593,7 @@ extension TabBarMenuExtention on MainTabsState {
   }
 
   /// return the tabBar widget
-  Widget tabBarMenu() {
+  Widget tabBarMenu({bool showTabMinimize = false}) {
     return Selector<CartModel, int>(
       selector: (_, cartModel) => cartModel.totalCartQuantity,
       builder: (context, totalCart, child) {
@@ -510,6 +604,7 @@ extension TabBarMenuExtention on MainTabsState {
           config: appSetting,
           shouldHideTabBar: shouldHideTabBar,
           totalCart: totalCart,
+          showTabMinimize: showTabMinimize,
         );
       },
     );
@@ -522,22 +617,20 @@ extension TabBarMenuExtention on MainTabsState {
         ? position
         : (tabData.length / 2).floor();
 
-    return shouldHideTabBar
-        ? const SizedBox()
-        : Selector<CartModel, int>(
-            selector: (_, cartModel) => cartModel.totalCartQuantity,
-            builder: (context, totalCart, child) {
-              return IconFloatingAction(
-                config: appSetting.tabBarConfig.tabBarFloating,
-                item: tabData[itemIndex].jsonData,
-                onTap: () {
-                  tabController.animateTo(itemIndex);
-                  _onTapTabBar(itemIndex);
-                },
-                totalCart: totalCart,
-              );
-            },
-          );
+    return Selector<CartModel, int>(
+      selector: (_, cartModel) => cartModel.totalCartQuantity,
+      builder: (context, totalCart, child) {
+        return IconFloatingAction(
+          config: appSetting.tabBarConfig.tabBarFloating,
+          item: tabData[itemIndex].jsonData,
+          onTap: () {
+            tabController.animateTo(itemIndex);
+            _onTapTabBar(itemIndex);
+          },
+          totalCart: totalCart,
+        );
+      },
+    );
   }
 
   void customTabBar() {

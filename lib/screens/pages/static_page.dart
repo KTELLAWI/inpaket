@@ -86,6 +86,7 @@ class _StateStaticPage extends State<StaticPage> with AppBarMixin {
   @override
   Widget build(BuildContext context) {
     final design = Map<String, dynamic>.from(widget.data!);
+    var canPop = ModalRoute.of(context)!.canPop;
 
     return renderScaffold(
       routeName: RouteList.static,
@@ -133,7 +134,23 @@ class _StateStaticPage extends State<StaticPage> with AppBarMixin {
                       ),
                     )
                   ],
-                )
+                ),
+                AppBar(
+                  backgroundColor: Colors.transparent,
+                  automaticallyImplyLeading: false,
+                  leading: !canPop
+                      ? null
+                      : IconButton(
+                          icon: const Icon(
+                            Icons.arrow_back_ios,
+                            size: 20,
+                          ),
+                          color: Theme.of(context).colorScheme.secondary,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                ),
               ],
             ),
           );

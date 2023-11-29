@@ -31,7 +31,6 @@ class BrandModel with ChangeNotifier {
       final products = await _service.api.fetchProductsByBrand(
         brandId: brandId,
         page: page,
-        lang: lang,
       );
       if (products!.isEmpty) {
         isEnd = true;

@@ -304,8 +304,8 @@ class PlacePickerState extends State<PlacePicker> with GoogleMapMixin {
             horizontal: 24,
           ),
           color: Theme.of(context).colorScheme.background,
-          child: Row(
-            children: const <Widget>[
+          child: const Row(
+            children: <Widget>[
               SizedBox(
                 height: 24,
                 width: 24,

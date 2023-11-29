@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inspireui/inspireui.dart';
 
+import '../../common/config.dart';
 import '../../common/tools.dart';
 import '../../models/entities/blog.dart';
 import '../../models/index.dart' show Blog;
@@ -100,7 +101,8 @@ class _OneQuarterImageTypeState extends BaseScreen<OneQuarterImageType>
                                                   .size
                                                   .height /
                                               3,
-                                          width: MediaQuery.of(context).size.width,
+                                          width:
+                                              MediaQuery.of(context).size.width,
                                           size: kSize.medium,
                                         ),
                                         videoUrl.isNotEmpty
@@ -156,78 +158,29 @@ class _OneQuarterImageTypeState extends BaseScreen<OneQuarterImageType>
                   ),
                 ],
               ),
-              Positioned(
-                bottom: 0,
-                left: 90,
-                child: AnimatedOpacity(
-                  opacity: isExpandedListView ? 1.0 : 0.0,
-                  duration: const Duration(milliseconds: 500),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width - 180,
-                    child: Card(
-                      shadowColor: Theme.of(context)
-                          .colorScheme
-                          .secondary
-                          .withOpacity(0.2),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColorLight,
-                                borderRadius: BorderRadius.circular(30.0),
-                              ),
-                              child: Container(
-                                margin: const EdgeInsets.all(5.0),
-                                child: const Icon(
-                                  Icons.person,
-                                  size: 30.0,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 10.0),
-                            Flexible(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    'by ${blogData.author} ',
-                                    softWrap: false,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary
-                                          .withOpacity(0.45),
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  Text(
-                                    blogData.date,
-                                    softWrap: true,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary
-                                          .withOpacity(0.45),
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
+              if (kBlogDetail['showAuthorInfo'] ?? true) ...[
+                Positioned(
+                  bottom: 0,
+                  left: 90,
+                  child: AnimatedOpacity(
+                    opacity: isExpandedListView ? 1.0 : 0.0,
+                    duration: const Duration(milliseconds: 500),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width - 180,
+                      child: Card(
+                        shadowColor: Theme.of(context)
+                            .colorScheme
+                            .secondary
+                            .withOpacity(0.2),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: renderAuthorInfo(blogData, context),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
+              ],
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -237,8 +190,10 @@ class _OneQuarterImageTypeState extends BaseScreen<OneQuarterImageType>
                       margin: const EdgeInsets.all(12.0),
                       padding: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
-                        color:
-                            Theme.of(context).colorScheme.background.withOpacity(0.5),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .background
+                            .withOpacity(0.5),
                         borderRadius: BorderRadius.circular(30.0),
                       ),
                       child: Icon(

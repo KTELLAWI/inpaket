@@ -5,6 +5,7 @@ import '../config/app_setting.dart';
 import '../config/tab_bar_config.dart';
 import '../helper/helper.dart';
 import 'tab_indicator/index.dart';
+import 'tab_minimize/index.dart';
 import 'tabbar.dart' as custom;
 import 'tabbar_icon.dart';
 
@@ -18,6 +19,7 @@ class TabBarCustom extends StatelessWidget {
   final Function(int) onTap;
   final List<TabBarMenuConfig> tabData;
   final bool shouldHideTabBar;
+  final bool showTabMinimize;
   final AppSetting config;
 
   final int totalCart;
@@ -25,6 +27,7 @@ class TabBarCustom extends StatelessWidget {
   const TabBarCustom({
     Key? key,
     this.shouldHideTabBar = false,
+    this.showTabMinimize = false,
     required this.config,
     required this.totalCart,
     required this.tabController,
@@ -135,6 +138,16 @@ class TabBarCustom extends StatelessWidget {
     /// error could happen on hide tab menu length
     ErrorWidget.builder = (error) => const SizedBox();
 
+    if (showTabMinimize) {
+      return TabMinimize(
+        tabData: tabData,
+        totalCart: totalCart,
+        selectedIndex: tabController.index,
+        tabBarConfig: tabConfig,
+        onTap: (index) => {tabController.animateTo(index)},
+      );
+    }
+
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 500),
       transitionBuilder: (child, animation) {
@@ -147,68 +160,84 @@ class TabBarCustom extends StatelessWidget {
       child: shouldHideTabBar
           ? const SizedBox()
           : Container(
-              padding: EdgeInsets.only(
-                left: tabConfig.paddingLeft,
-                right: tabConfig.paddingRight,
-                top: tabConfig.paddingTop,
-                bottom: tabConfig.paddingBottom,
-              ),
-              margin: EdgeInsets.only(
-                left: tabConfig.marginLeft,
-                right: tabConfig.marginRight,
-                bottom: tabConfig.marginBottom,
-                top: tabConfig.marginTop,
-              ),
-              decoration: BoxDecoration(
-                  color: tabConfig.showFloating
-                      ? null
-                      : tabConfig.color ?? Theme.of(context).colorScheme.background,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(tabConfig.radiusTopLeft),
-                    topRight: Radius.circular(tabConfig.radiusTopRight),
-                    bottomLeft: Radius.circular(tabConfig.radiusBottomLeft),
-                    bottomRight: Radius.circular(tabConfig.radiusBottomRight),
-                  ),
-                  boxShadow: [
-                    if (!tabConfig.showFloating)
-                      BoxShadow(
-                          spreadRadius:
-                              tabConfig.boxShadow?.spreadRadius ?? 0.0,
-                          blurRadius: tabConfig.boxShadow?.blurRadius ?? 0.0,
-                          offset: Offset(tabConfig.boxShadow?.x ?? 0.0,
-                              tabConfig.boxShadow?.y ?? 0.0),
-                          color: Colors.grey.withOpacity(
-                              tabConfig.boxShadow?.colorOpacity ?? 0.0)),
-                  ]),
-              child: SafeArea(
-                bottom: tabConfig.isSafeArea,
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      top: BorderSide(
-                        color: Theme.of(context).dividerColor,
-                        width: 0.5,
-                      ),
+              color: tabConfig.showFloating
+                  ? null
+                  : Theme.of(context).colorScheme.background,
+              child: Container(
+                padding: EdgeInsets.only(
+                  left: tabConfig.paddingLeft,
+                  right: tabConfig.paddingRight,
+                  top: tabConfig.paddingTop,
+                  bottom: tabConfig.paddingBottom,
+                ),
+                margin: EdgeInsets.only(
+                  left: tabConfig.marginLeft,
+                  right: tabConfig.marginRight,
+                  bottom: tabConfig.marginBottom,
+                  top: tabConfig.marginTop,
+                ),
+                decoration: BoxDecoration(
+                    color: tabConfig.showFloating
+                        ? null
+                        : tabConfig.color ??
+                            Theme.of(context).colorScheme.background,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(tabConfig.radiusTopLeft),
+                      topRight: Radius.circular(tabConfig.radiusTopRight),
+                      bottomLeft: Radius.circular(tabConfig.radiusBottomLeft),
+                      bottomRight: Radius.circular(tabConfig.radiusBottomRight),
                     ),
-                  ),
-                  child: !Layout.isDisplayDesktop(context)
-                      ? SizedBox(
-                          width: double.infinity,
-                          child: _buildTabBar(context),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: Row(
-                            children: [
-                              const Spacer(),
-                              Expanded(
-                                flex: 6,
-                                child: _buildTabBar(context),
-                              ),
-                              const Spacer(),
-                            ],
+                    boxShadow: [
+                      if (!tabConfig.showFloating)
+                        BoxShadow(
+                            spreadRadius:
+                                tabConfig.boxShadow?.spreadRadius ?? 0.0,
+                            blurRadius: tabConfig.boxShadow?.blurRadius ?? 0.0,
+                            offset: Offset(tabConfig.boxShadow?.x ?? 0.0,
+                                tabConfig.boxShadow?.y ?? 0.0),
+                            color: Colors.grey.withOpacity(
+                                tabConfig.boxShadow?.colorOpacity ?? 0.0)),
+                    ]),
+                child: SafeArea(
+                  bottom: tabConfig.isSafeArea,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: tabConfig.enableDivider
+                          ? Border(
+                              top: !tabConfig.enableOnTop
+                                  ? BorderSide(
+                                      color: Theme.of(context).dividerColor,
+                                      width: 0.5,
+                                    )
+                                  : BorderSide.none,
+                              bottom: tabConfig.enableOnTop
+                                  ? BorderSide(
+                                      color: Theme.of(context).dividerColor,
+                                      width: 0.5,
+                                    )
+                                  : BorderSide.none,
+                            )
+                          : null,
+                    ),
+                    child: !Layout.isDisplayDesktop(context)
+                        ? SizedBox(
+                            width: double.infinity,
+                            child: _buildTabBar(context),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Row(
+                              children: [
+                                const Spacer(),
+                                Expanded(
+                                  flex: 6,
+                                  child: _buildTabBar(context),
+                                ),
+                                const Spacer(),
+                              ],
+                            ),
                           ),
-                        ),
+                  ),
                 ),
               ),
             ),

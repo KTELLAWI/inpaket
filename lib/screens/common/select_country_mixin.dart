@@ -1,5 +1,4 @@
-import 'package:country_code_picker/country_code.dart';
-import 'package:country_code_picker/country_codes.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:inspireui/widgets/radio_button.dart';

@@ -4,10 +4,11 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+// ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:inspireui/inspireui.dart';
+// import 'package:openai/localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:tuple/tuple.dart';
 
 import 'app_init.dart';
 import 'common/config.dart';
@@ -15,19 +16,22 @@ import 'common/constants.dart';
 import 'common/events.dart';
 import 'common/theme/index.dart';
 import 'common/tools.dart';
+import 'common/tools/flash.dart';
 import 'generated/l10n.dart';
 import 'generated/languages/index.dart';
+import 'generated/overrides/app_localizations.dart';
 import 'main_layout/main_layout.dart';
 import 'models/category/category_model_impl.dart';
 import 'models/category/main_category_model.dart';
 import 'models/index.dart';
 import 'models/tera_wallet/wallet_model.dart';
 import 'modules/dynamic_layout/config/app_config.dart';
-import 'modules/firebase/firebase_service.dart';
 import 'routes/route.dart';
 import 'screens/blog/models/list_blog_model.dart';
+import 'screens/categories/layouts/fancy_scroll.dart';
 import 'screens/categories/layouts/multi_level.dart';
 import 'screens/index.dart' show ListBlogModel;
+import 'services/firebase_service.dart';
 import 'services/index.dart';
 import 'widgets/overlay/custom_overlay_state.dart';
 
@@ -164,9 +168,12 @@ class AppState extends State<App>
           textTheme: themeData.textTheme.apply(
             displayColor: lightTextColor,
             bodyColor: lightTextColor,
-          ), colorScheme: themeData.colorScheme.copyWith(
-            secondary: lightSecondaryColor,
-          ).copyWith(background: lightBackgroundColor));
+          ),
+          colorScheme: themeData.colorScheme
+              .copyWith(
+                secondary: lightSecondaryColor,
+              )
+              .copyWith(background: lightBackgroundColor));
     }
 
     /// The app will use mainColor from env.dart,
@@ -204,10 +211,20 @@ class AppState extends State<App>
     notificationService.setExternalId(user?.id);
   }
 
+  Map? get _overrideTranslation {
+    
+    if (App.fluxStoreNavigatorKey.currentContext == null) {
+      return null;
+    }
+
+    return Provider.of<AppModel>(App.fluxStoreNavigatorKey.currentContext!)
+        .overrideTranslation;
+  }
+
   @override
   void initState() {
     printLog('[AppState] initState');
-    _app = AppModel(widget.languageCode);
+    _app = AppModel(widget.languageCode)..setMainSiteConfig();
     WidgetsBinding.instance.addObserver(this);
 
     appInitialModules();
@@ -228,6 +245,13 @@ class AppState extends State<App>
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
+  //  @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   if (state == AppLifecycleState.resumed) {
+  //     // App has resumed, execute your onMessageOpenedApp logic here
+  //     // For example: _handleNotification(message);
+  //   }
+  // }
 
   void _onLogout({
     bool isRequiredLogin = false,
@@ -238,6 +262,9 @@ class AppState extends State<App>
     if (!_user.loggedIn && !skipDuplicateCheck) {
       return;
     }
+
+    /// clear cache products  to show correct product price for wholesale
+    _product.setProductsList([]);
     cartModel.model.clearAddress();
     _user.logout();
     if (isRequiredLogin || Services().widget.isRequiredLogin) {
@@ -258,28 +285,27 @@ class AppState extends State<App>
       updateDeviceToken(user);
     }
 
+    /// clear cache products  to show correct product price for wholesale
+    _product.setProductsList([]);
+
     /// init Cart Modal
     cartModel.model.changeCurrencyRates(_app?.currencyRate);
 
     /// save logged in user
     cartModel.model.setUser(user);
-    if (user?.cookie != null &&
-        user?.loggedIn == true &&
-        kAdvanceConfig.enableSyncCartFromWebsite) {
-      await Services()
-          .widget
-          .syncCartFromWebsite(user?.cookie, cartModel.model, context);
-    }
-    if (user?.cookie != null &&
-        user?.loggedIn == true &&
-        kAdvanceConfig.enableSyncCartToWebsite) {
-      await Services().widget.syncCartToWebsite(cartModel.model);
-    }
-
-    if (user?.cookie != null &&
-        user?.loggedIn == true &&
-        kAdvanceConfig.enablePointReward) {
-      await _pointModel.getMyPoint(user?.cookie);
+    if (user?.cookie != null && user?.loggedIn == true) {
+      if (kAdvanceConfig.enableSyncCartFromWebsite) {
+        await Services()
+            .widget
+            .syncCartFromWebsite(user?.cookie, cartModel.model, context);
+      }
+      if (kAdvanceConfig.enableSyncCartToWebsite) {
+        await Services().widget.syncCartToWebsite(cartModel.model);
+      }
+      if (kAdvanceConfig.enablePointReward) {
+        await _pointModel.getMyPoint(user?.cookie);
+      }
+      _notificationModel.updateNotificationStatus(user?.cookie);
     }
 
     /// Preload address.
@@ -312,6 +338,12 @@ class AppState extends State<App>
   void onMessage(FStoreNotificationItem notification) {
     printLog(notification.toJson());
     _notificationModel.saveMessage(notification);
+    if (App.fluxStoreNavigatorKey.currentContext != null) {
+      FlashHelper.message(App.fluxStoreNavigatorKey.currentContext!,
+          title: notification.title, message: notification.body, onTap: () {
+        onMessageOpenedApp(notification);
+      });
+    }
   }
 
   @override
@@ -319,25 +351,34 @@ class AppState extends State<App>
     printLog('[AppState] Build app.dart');
     return ChangeNotifierProvider<AppModel>.value(
       value: _app!,
-      child: Selector<AppModel, Tuple3<String, ThemeMode?, AppConfig?>>(
-        selector: (_, model) =>
-            Tuple3(model.langCode, model.themeMode, model.appConfig),
+      child: Selector<AppModel, (String, ThemeMode?, AppConfig?)>(
+        selector: (_, model) => (
+          model.langCode,
+          model.themeMode,
+          model.appConfig,
+        ),
         builder: (context, value, child) {
-          var langCode = value.item1;
-          var themeMode = value.item2 ?? ThemeMode.light;
-          var appConfig = value.item3;
+          var langCode = value.$1;
+          var themeMode = value.$2 ?? ThemeMode.light;
+          var appConfig = value.$3;
 
           var languageCode = langCode.isEmptyOrNull
               ? kAdvanceConfig.defaultLanguage
               : langCode.toString();
           var countryCode = '';
-          var isMultiLevel = _app?.categoryLayout == MultiLevelCategories.type;
+          var isLazyLoadCategory = [
+            MultiLevelCategories.type,
+            FancyScrollCategories.type
+          ].contains(_app?.categoryLayout);
 
           if (languageCode.contains('_')) {
             countryCode = languageCode.substring(languageCode.indexOf('_') + 1);
             languageCode =
                 languageCode.substring(0, languageCode.indexOf(('_')));
           }
+
+          /// reload data custom language from config json
+          AppLocalization.loadCustomLanguage(_overrideTranslation);
 
           return Directionality(
             textDirection: TextDirection.rtl,
@@ -351,7 +392,7 @@ class AppState extends State<App>
                 Provider<RecentModel>.value(value: _recent),
                 ChangeNotifierProvider<UserModel>.value(value: _user),
                 ChangeNotifierProvider<CategoryModel>(create: (_) {
-                  if (kEnableLargeCategories || isMultiLevel) {
+                  if (kEnableLargeCategories || isLazyLoadCategory) {
                     return MainCategoryModel();
                   }
                   return CategoryModelImpl();
@@ -379,17 +420,12 @@ class AppState extends State<App>
                     create: (_) => cartModel.model, lazy: true),
                 Provider<TaxModel>.value(value: _taxModel),
                 ChangeNotifierProvider.value(value: _notificationModel),
-                if (ServerConfig().isVendorType()) ...[
-                  ChangeNotifierProvider<StoreModel>(
-                      create: (_) => _storeModel),
-                  ChangeNotifierProvider<VendorShippingMethodModel>(
-                      create: (_) => _vendorShippingMethodModel),
-                ],
+                ChangeNotifierProvider<StoreModel>(create: (_) => _storeModel),
+                ChangeNotifierProvider<VendorShippingMethodModel>(
+                    create: (_) => _vendorShippingMethodModel),
                 Provider<PointModel>.value(value: _pointModel),
-                if (ServerConfig().isListingType) ...[
-                  ChangeNotifierProvider<ListingLocationModel>(
-                      create: (_) => _listingLocationModel)
-                ],
+                ChangeNotifierProvider<ListingLocationModel>(
+                    create: (_) => _listingLocationModel),
                 ChangeNotifierProvider<BlogModel>(create: (_) => BlogModel()),
                 ChangeNotifierProvider<TextStyleModel>(
                     create: (_) => TextStyleModel()),
@@ -415,7 +451,8 @@ class AppState extends State<App>
                   ...Services().firebase.getMNavigatorObservers(),
                 ],
                 localizationsDelegates: const [
-                  S.delegate,
+                  // SOpenAI.delegate,
+                  AppLocalization.delegate,
                   GlobalMaterialLocalizations.delegate,
                   GlobalCupertinoLocalizations.delegate,
                   DefaultCupertinoLocalizations.delegate,
@@ -447,12 +484,14 @@ class AppState extends State<App>
 
   @override
   void onMessageOpenedApp(FStoreNotificationItem notification) async {
+    await Future.delayed(Duration(seconds: 1));
     final url = notification.dynamicLink;
-    if (url != null) {
+    final uri = url?.toUri();
+    if (uri != null) {
       await FirebaseServices()
           .dynamicLinks
-          ?.handleDynamicLink(url, App.fluxStoreNavigatorKey.currentContext!);
+          ?.handleDynamicLink(uri, App.fluxStoreNavigatorKey.currentContext!);
     }
-    _notificationModel.saveMessage(notification);
+   _notificationModel.saveMessage(notification);
   }
 }

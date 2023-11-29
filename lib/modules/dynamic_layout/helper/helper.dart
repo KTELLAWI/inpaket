@@ -21,9 +21,12 @@ class Layout {
   static const String listTile = 'listTile';
   static const String list = 'list';
   static const String pinterest = 'pinterest';
+  static const String topProducts = 'topProducts';
   static const String columnsWithFilter = 'columnsWithFilter';
   static const String menu = 'menu';
+  static const String menuCustom = 'menuCustom';
   static const String staggered = 'staggered';
+  static const String quiltedGridTile = 'quiltedGridTile';
   static const String simpleList = 'simpleList';
   static const String simpleVerticalListItems = 'simpleVerticalListItems';
   static const String largeCard = 'largeCard';

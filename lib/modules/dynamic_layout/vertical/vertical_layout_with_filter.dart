@@ -60,7 +60,6 @@ class _VerticalViewLayoutWithFilterState
     rebuild();
     var newProducts = await _service.api.fetchProductsLayout(
       config: config,
-      lang: lang,
     );
 
     if (config['shuffle'] == true && filterSortBy.displayOrderBy == null) {
@@ -253,7 +252,7 @@ class _VerticalViewLayoutWithFilterState
   String get lang => context.read<AppModel>().langCode;
 
   @override
-  void onCategorySelected(String name) {}
+  void onCategorySelected(String? name) {}
 
   @override
   void onCloseFilter() {}
@@ -268,4 +267,9 @@ class _VerticalViewLayoutWithFilterState
 
   @override
   bool get shouldShowLayout => false;
+
+  @override
+  void onClearTextSearch() {
+    // TODO: implement onClearTextSearch
+  }
 }

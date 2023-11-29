@@ -28,6 +28,7 @@ class ProductFlatView extends StatefulWidget {
   final bool enableSearchHistory;
   final bool autoFocusSearch;
   final bool hasAppBar;
+  final TextEditingController searchFieldController;
 
   const ProductFlatView({
     required this.builder,
@@ -40,6 +41,7 @@ class ProductFlatView extends StatefulWidget {
     this.autoFocusSearch = true,
     this.hasAppBar = false,
     Key? key,
+    required this.searchFieldController,
   }) : super(key: key);
 
   @override
@@ -118,7 +120,7 @@ class _ProductFlatViewState extends State<ProductFlatView> with ProductsMixin {
         'icon': CupertinoIcons.heart,
       },
       if (firebaseDynamicLinkConfig['isEnabled'] &&
-          ServerConfig().isWooType &&
+          (ServerConfig().isWooType || ServerConfig().isShopify) &&
           !ServerConfig().isListingType)
         {
           'type': MenuType.share.name,
@@ -156,8 +158,11 @@ class _ProductFlatViewState extends State<ProductFlatView> with ProductsMixin {
   }
 
   void onSearch(String value) {
-    EasyDebounce.debounce('searchCategory', const Duration(milliseconds: 200),
-        () => widget.onSearch(value));
+    final searchedString = value.trim();
+    if (searchedString.isNotEmpty) {
+      EasyDebounce.debounce('searchCategory', const Duration(milliseconds: 200),
+          () => widget.onSearch(searchedString));
+    }
   }
 
   Widget _getStickyWidget() {
@@ -195,6 +200,7 @@ class _ProductFlatViewState extends State<ProductFlatView> with ProductsMixin {
         onSort: widget.onSort,
         onFilter: widget.onFilter,
         autoFocusSearch: widget.autoFocusSearch,
+        searchFieldController: widget.searchFieldController,
       );
     }
 

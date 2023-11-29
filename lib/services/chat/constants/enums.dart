@@ -1,5 +1,6 @@
 /// List of supported chat providers
 enum ChatProviders {
+  chatGPT,
   zohoSalesiq;
 
   @override
@@ -12,6 +13,8 @@ enum ChatProviders {
 extension ChatProvidersExtension on String? {
   ChatProviders? toChatProviders() {
     switch (this) {
+      case 'chatGPT':
+        return ChatProviders.chatGPT;
       case 'zohoSalesiq':
         return ChatProviders.zohoSalesiq;
       default:

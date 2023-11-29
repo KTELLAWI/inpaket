@@ -1,8 +1,10 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 import '../../common/config.dart';
 import '../../common/tools.dart';
 import '../../generated/l10n.dart';
+import '../../services/services.dart';
 import '../index.dart';
 import '../mixins/language_mixin.dart';
 import 'mixin/index.dart';
@@ -30,7 +32,8 @@ class CartModelShopify
 
   @override
   Future<void> initData() async {
-    await getShippingAddress();
+    resetValues();
+    await getAddress();
     getCartInLocal();
     getCurrency();
   }
@@ -119,14 +122,6 @@ class CartModelShopify
     key += '-${defaultVariation!.id}';
     productVariationInCart[key] = defaultVariation;
 
-    if (isSaveLocal) {
-      saveCartToLocal(
-        product: product,
-        quantity: quantity,
-        variation: defaultVariation,
-      );
-    }
-
     var quantityOfProductInCart = productsInCart[key] ?? 0;
 
     if (!productsInCart.containsKey(key)) {
@@ -145,6 +140,14 @@ class CartModelShopify
 
       quantityOfProductInCart += quantity!;
       productsInCart[key] = quantityOfProductInCart;
+    }
+
+    if (isSaveLocal) {
+      saveCartToLocal(
+        product: product,
+        quantity: quantity,
+        variation: defaultVariation,
+      );
     }
 
     productSkuInCart[key] = product.sku;
@@ -221,5 +224,79 @@ class CartModelShopify
   void setRewardTotal(double total) {
     rewardTotal = total;
     notifyListeners();
+  }
+
+  @override
+  Future<void> setShippingMethod(ShippingMethod? data) async {
+    shippingMethod = data;
+    final checkoutUpdated = await Services().api.updateShippingRate(
+          checkoutId: checkout?.id!,
+          shippingRateHandle: data?.id ?? '',
+        );
+    setCheckout(checkoutUpdated);
+    notifyListeners();
+  }
+
+  @override
+  void setAddress(data) {
+    address = data;
+    saveShippingAddress(data);
+    // it's a guest checkout or user not logged in
+    if (checkout?.email == null) {
+      Services().api.updateCheckoutEmail(
+          checkoutId: checkout?.id, email: address?.email ?? '');
+    }
+  }
+
+  @override
+  void updateProduct(String productId, Product? product) {
+    super.updateProduct(productId, product);
+    notifyListeners();
+  }
+
+  @override
+  void updateProductVariant(
+      String productId, ProductVariation? productVariant) {
+    super.updateProductVariant(productId, productVariant);
+    notifyListeners();
+  }
+
+  @override
+  void updateStateCheckoutButton() {
+    super.updateStateCheckoutButton();
+    notifyListeners();
+  }
+
+  @override
+  Future<void> updatePriceWhenCurrencyChanged() async {
+    final cloneProductVariationIds =
+        Map<String, ProductVariation>.from(productVariationInCart);
+    final cloneProductsInCart = Map<String, int>.from(productsInCart);
+
+    clearCart();
+
+    await Future.delayed(const Duration(milliseconds: 250), () {});
+    for (final entry in cloneProductVariationIds.entries) {
+      final productIDAndVariantID = entry.key.split('-');
+      final productId = productIDAndVariantID[0];
+      final variationId = productIDAndVariantID[1];
+
+      final newProductData = await Services().api.getProduct(productId);
+
+      if (newProductData == null) {
+        continue;
+      }
+
+      final quantity = cloneProductsInCart[entry.key];
+      final variation = newProductData.variations?.firstWhereOrNull((element) {
+        return element.id == variationId;
+      });
+      addProductToCart(
+        product: newProductData,
+        quantity: quantity,
+        variation: variation,
+        isSaveLocal: false,
+      );
+    }
   }
 }

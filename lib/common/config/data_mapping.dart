@@ -1,6 +1,6 @@
 part of '../config.dart';
 
-///-----FLUXSTORE LISTING-----///
+///-----khadrah LISTING-----///
 class DataMapping {
   static final DataMapping _instance = DataMapping._internal();
 

@@ -4,15 +4,15 @@ import 'package:provider/provider.dart';
 
 import '../../common/config.dart';
 import '../../common/constants.dart';
-import '../../common/tools.dart';
 import '../../generated/l10n.dart';
-import '../../models/index.dart' show AppModel, CartModel, Product, TaxModel;
+import '../../models/index.dart' show CartModel, Product, TaxModel, UserModel;
 import '../../services/index.dart';
 import '../../widgets/common/common_safe_area.dart';
 import '../../widgets/common/expansion_info.dart';
 import '../../widgets/product/cart_item.dart';
 import '../base_screen.dart';
 import '../cart/widgets/shopping_cart_sumary.dart';
+import 'widgets/price_row_item.dart';
 
 class ReviewScreen extends StatefulWidget {
   final Function? onBack;
@@ -44,16 +44,17 @@ class _ReviewState extends BaseScreen<ReviewScreen> {
   @override
   void afterFirstLayout(BuildContext context) {
     Provider.of<TaxModel>(context, listen: false).getTaxes(
-        Provider.of<CartModel>(context, listen: false), (taxesTotal, taxes) {
-      Provider.of<CartModel>(context, listen: false).taxesTotal = taxesTotal;
-      Provider.of<CartModel>(context, listen: false).taxes = taxes;
+        Provider.of<CartModel>(context, listen: false),
+        Provider.of<UserModel>(context, listen: false).user?.cookie,
+        (taxesTotal, taxes, isIncludingTax) {
+      Provider.of<CartModel>(context, listen: false)
+          .setTaxInfo(taxes, taxesTotal, isIncludingTax);
       setState(() {});
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final currencyRate = Provider.of<AppModel>(context).currencyRate;
     final taxModel = Provider.of<TaxModel>(context);
 
     return Column(
@@ -90,35 +91,12 @@ class _ReviewState extends BaseScreen<ReviewScreen> {
                       ...getProducts(model, context),
                       const ShoppingCartSummary(showPrice: false),
                       const SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              S.of(context).subtotal,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
+                      PriceRowItemWidget(
+                        title: S.of(context).subtotal,
+                        total: model.getSubTotal(),
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              color: Theme.of(context).colorScheme.secondary,
                             ),
-                            Text(
-                              PriceTools.getCurrencyFormatted(
-                                  model.getSubTotal(), currencyRate,
-                                  currency: model.currencyCode)!,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium!
-                                  .copyWith(
-                                    fontSize: 14,
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                  ),
-                            )
-                          ],
-                        ),
                       ),
                       Services().widget.renderShippingMethodInfo(context),
                       if (model.getCoupon() != '')
@@ -158,37 +136,17 @@ class _ReviewState extends BaseScreen<ReviewScreen> {
                         ),
                       Services().widget.renderTaxes(taxModel, context),
                       Services().widget.renderRewardInfo(context),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 8, horizontal: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              S.of(context).total,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Theme.of(context).colorScheme.secondary,
-                              ),
+                      PriceRowItemWidget(
+                        title: S.of(context).total,
+                        total: model.getTotal(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall!
+                            .copyWith(
+                              color: Theme.of(context).colorScheme.secondary,
+                              fontWeight: FontWeight.w600,
+                              decoration: TextDecoration.underline,
                             ),
-                            Text(
-                              PriceTools.getCurrencyFormatted(
-                                  model.getTotal(), currencyRate,
-                                  currency: model.currencyCode)!,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium!
-                                  .copyWith(
-                                    fontSize: 20,
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                    fontWeight: FontWeight.w600,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                            )
-                          ],
-                        ),
                       ),
                       Services().widget.renderRecurringTotals(context),
                       if (kEnableCustomerNote) ...[
@@ -232,6 +190,8 @@ class _ReviewState extends BaseScreen<ReviewScreen> {
   }
 
   Widget _buildBottom() {
+    final cartModel = Provider.of<CartModel>(context, listen: false);
+
     return CommonSafeArea(
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -263,13 +223,13 @@ class _ReviewState extends BaseScreen<ReviewScreen> {
                   backgroundColor: Theme.of(context).primaryColor,
                   elevation: 0,
                 ),
-                onPressed: () {
-                  widget.onNext!();
-                  if (note.text.isNotEmpty) {
-                    Provider.of<CartModel>(context, listen: false)
-                        .setOrderNotes(note.text);
-                  }
-                },
+                onPressed: cartModel.enableCheckoutButton == false
+                    ? null
+                    : () => {
+                          widget.onNext!(),
+                          if (note.text.isNotEmpty)
+                            cartModel.setOrderNotes(note.text)
+                        },
                 icon: const Icon(
                   CupertinoIcons.creditcard,
                   size: 18,
@@ -311,240 +271,101 @@ class ShippingAddressInfo extends StatelessWidget {
       padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 10.0),
       child: Column(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120,
-                  child: Text(
-                    '${S.of(context).firstName} :',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    address.firstName!,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                )
-              ],
+          if (address.firstName?.isNotEmpty ?? false)
+            _ItemInfoCheckout(
+              title: S.of(context).firstName,
+              value: address.firstName!,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120,
-                  child: Text(
-                    '${S.of(context).lastName} :',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    address.lastName!,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                )
-              ],
+          if (address.lastName?.isNotEmpty ?? false)
+            _ItemInfoCheckout(
+              title: S.of(context).lastName,
+              value: address.lastName!,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120,
-                  child: Text(
-                    '${S.of(context).email} :',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    address.email!,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                )
-              ],
+          if (address.phoneNumber?.isNotEmpty ?? false)
+            _ItemInfoCheckout(
+              title: S.of(context).phoneNumber,
+              value: address.phoneNumber!,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120,
-                  child: Text(
-                    '${S.of(context).streetName} :',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    address.street!,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                )
-              ],
+          if (address.email?.isNotEmpty ?? false)
+            _ItemInfoCheckout(
+              title: S.of(context).email,
+              value: address.email!,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120,
-                  child: Text(
-                    '${S.of(context).city} :',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    address.city!,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                )
-              ],
+          if (address.country?.isNotEmpty ?? false)
+            _ItemInfoCheckout(
+              title: S.of(context).country,
+              value: address.country!,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120,
-                  child: Text(
-                    '${S.of(context).stateProvince} :',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    address.state!,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                )
-              ],
+          if (address.state?.isNotEmpty ?? false)
+            _ItemInfoCheckout(
+              title: S.of(context).stateProvince,
+              value: address.state!,
             ),
-          ),
-          FutureBuilder(
-            future: Services().widget.getCountryName(context, address.country),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        width: 120,
-                        child: Text(
-                          '${S.of(context).country} :',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          snapshot.data as String,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Theme.of(context).colorScheme.secondary,
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                );
-              } else {
-                return const SizedBox();
-              }
-            },
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 120,
-                  child: Text(
-                    '${S.of(context).phoneNumber} :',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    address.phoneNumber!,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context).colorScheme.secondary,
-                    ),
-                  ),
-                )
-              ],
+          if (address.city?.isNotEmpty ?? false)
+            _ItemInfoCheckout(
+              title: S.of(context).city,
+              value: address.city!,
             ),
-          ),
+          if (address.apartment?.isNotEmpty ?? false)
+            _ItemInfoCheckout(
+              title: S.of(context).streetNameApartment,
+              value: address.apartment!,
+            ),
+          if (address.block?.isNotEmpty ?? false)
+            _ItemInfoCheckout(
+              title: S.of(context).streetNameBlock,
+              value: address.block!,
+            ),
+          if (address.street?.isNotEmpty ?? false)
+            _ItemInfoCheckout(
+              title: S.of(context).street,
+              value: address.street!,
+            ),
+          if (address.zipCode?.isNotEmpty ?? false)
+            _ItemInfoCheckout(
+              title: S.of(context).zipCode,
+              value: address.zipCode!,
+            ),
           const SizedBox(height: 20),
+        ],
+      ),
+    );
+  }
+}
+
+class _ItemInfoCheckout extends StatelessWidget {
+  final String title;
+  final String value;
+
+  const _ItemInfoCheckout({required this.title, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(
+            width: 120,
+            child: Text(
+              '$title :',
+              style: TextStyle(
+                fontSize: 14,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: TextStyle(
+                fontSize: 14,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+          )
         ],
       ),
     );

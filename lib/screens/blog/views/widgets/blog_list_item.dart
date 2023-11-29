@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:html/parser.dart';
 
+import '../../../../common/config.dart';
 import '../../../../common/tools.dart';
 import '../../../../models/entities/blog.dart';
 
@@ -35,38 +36,40 @@ class BlogListItem extends StatelessWidget {
                 size: kSize.medium,
               ),
             ),
-            SizedBox(
-              height: 30,
-              width: screenWidth,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    blog.date,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Theme.of(context)
-                          .colorScheme
-                          .secondary
-                          .withOpacity(0.5),
-                    ),
-                    maxLines: 2,
-                  ),
-                  const SizedBox(width: 20.0),
-                  if (blog.author.isNotEmpty)
+            if (kBlogDetail['showAuthorInfo'] ?? true) ...[
+              SizedBox(
+                height: 30,
+                width: screenWidth,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
                     Text(
-                      blog.author.toUpperCase(),
-                      style: const TextStyle(
-                        fontSize: 11,
-                        height: 2,
-                        fontWeight: FontWeight.bold,
+                      blog.date,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .secondary
+                            .withOpacity(0.5),
                       ),
                       maxLines: 2,
                     ),
-                ],
+                    const SizedBox(width: 20.0),
+                    if (blog.author.isNotEmpty)
+                      Text(
+                        blog.author.toUpperCase(),
+                        style: const TextStyle(
+                          fontSize: 11,
+                          height: 2,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 2,
+                      ),
+                  ],
+                ),
               ),
-            ),
+            ],
             const SizedBox(height: 20.0),
             Text(
               blog.title,

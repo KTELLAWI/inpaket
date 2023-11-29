@@ -7,7 +7,9 @@ import '../../../../models/entities/filter_sorty_by.dart';
 import '../../../../models/index.dart';
 import '../../../app.dart';
 import '../../../generated/l10n.dart';
+import '../../../models/entities/filter_product_params.dart';
 import '../../../modules/dynamic_layout/config/product_config.dart';
+import '../../../services/service_config.dart';
 import '../../../widgets/backdrop/backdrop_menu.dart';
 import '../../../widgets/common/drag_handler.dart';
 import '../widgets/filter_label.dart';
@@ -36,7 +38,9 @@ mixin ProductsFilterMixin {
 
   void onCloseFilter();
 
-  void onCategorySelected(String name);
+  void onCategorySelected(String? name);
+
+  void onClearTextSearch();
 
   /// Filter params.
   String? categoryId;
@@ -48,6 +52,8 @@ mixin ProductsFilterMixin {
   String? listingLocationId;
   List? include;
   String? search;
+  bool? isSearch;
+
   FilterSortBy filterSortBy = const FilterSortBy();
 
   bool get enableSearchHistory => false;

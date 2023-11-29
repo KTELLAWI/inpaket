@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../common/config.dart';
 import '../../../generated/l10n.dart';
 import '../../../models/entities/index.dart' show Product;
 import '../../../models/index.dart' show ProductModel;
@@ -16,7 +17,7 @@ class ProductDetailCategories extends StatelessWidget {
       return const SizedBox();
     }
     return ExpansionInfo(
-      expand: true,
+      expand: kProductDetail.expandCategories,
       title: S.of(context).categories,
       children: <Widget>[
         Container(

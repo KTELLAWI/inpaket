@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../../generated/l10n.dart';
-import '../../../models/index.dart' show AppModel, Product, ProductModel;
+import '../../../models/index.dart' show Product, ProductModel;
 import '../../../services/index.dart';
 import '../../../widgets/product/product_simple_view.dart';
 import '../config/product_config.dart';
@@ -13,10 +12,14 @@ import '../helper/helper.dart';
 class VerticalViewLayout extends StatefulWidget {
   final ProductConfig config;
   final bool enableScrollView;
+  final Future<void> Function()? onRefresh;
 
-  const VerticalViewLayout(
-      {required this.config, Key? key, required this.enableScrollView})
-      : super(key: key);
+  const VerticalViewLayout({
+    required this.config,
+    Key? key,
+    required this.enableScrollView,
+    this.onRefresh,
+  }) : super(key: key);
 
   @override
   State<VerticalViewLayout> createState() => _PinterestLayoutState();
@@ -37,9 +40,7 @@ class _PinterestLayoutState extends State<VerticalViewLayout> {
     config['page'] = _page;
     if (!canLoad.value) return;
     loading = true;
-    var newProducts = await _service.api.fetchProductsLayout(
-        config: config,
-        lang: Provider.of<AppModel>(context, listen: false).langCode);
+    var newProducts = await _service.api.fetchProductsLayout(config: config);
     if (newProducts == null || newProducts.isEmpty) {
       canLoad.value = false;
     }
@@ -79,6 +80,11 @@ class _PinterestLayoutState extends State<VerticalViewLayout> {
       physics: enableScrollView ? null : const NeverScrollableScrollPhysics(),
       controller: PrimaryScrollController.of(context),
       slivers: [
+        if (widget.onRefresh != null && enableScrollView)
+          CupertinoSliverRefreshControl(
+            onRefresh: widget.onRefresh,
+            refreshTriggerPullDistance: 175,
+          ),
         if (widget.config.name != null)
           SliverToBoxAdapter(
             child: HeaderView(

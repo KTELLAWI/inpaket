@@ -12,6 +12,8 @@ import '../../../models/index.dart'
 import '../../../services/index.dart';
 import '../config/product_config.dart';
 import '../helper/header_view.dart';
+import '../../../widgets/common/flux_image.dart';
+import 'package:inspireui/utils/colors.dart';
 
 class MenuLayout extends StatefulWidget {
   final ProductConfig config;
@@ -24,9 +26,19 @@ class MenuLayout extends StatefulWidget {
 
 class _StateMenuLayout extends State<MenuLayout> {
   int position = 0;
-  bool loading = true;
+  ValueNotifier<bool> loadingNotifier = ValueNotifier(true);
   Map<String, dynamic> productMap = <String, dynamic>{};
-  final StreamController productController = StreamController<List<Product>?>();
+
+  /// Because StreamController with StreamBuilder widget when rendering in
+  /// multiple places will casue the error "Bad state: Stream has already been
+  /// listened to". So we need to use StreamController.broadcast or
+  /// ValueNotifier instead of StreamController to solve this problem. But be
+  /// careful when using ValueNotifier with asynchronous methods.
+
+  // final StreamController productController = StreamController<List<Product>?>();
+
+  final ValueNotifier<List<Product>?> productNotifier =
+      ValueNotifier<List<Product>?>(null);
 
   @override
   void initState() {
@@ -45,10 +57,8 @@ class _StateMenuLayout extends State<MenuLayout> {
     var service = Services();
     final userId = Provider.of<UserModel>(context, listen: false).user?.id;
     try {
-      setState(() {
-        loading = true;
-      });
-      List<dynamic>? productList = [];
+      loadingNotifier.value = true;
+      List<Product>? productList = [];
       if (productMap[category.id.toString()] != null) {
         productList = productMap[category.id.toString()];
       } else {
@@ -58,22 +68,17 @@ class _StateMenuLayout extends State<MenuLayout> {
           maxPrice: maxPrice,
           orderBy: orderBy,
           order: order,
-          lang: lang,
           page: page,
           userId: userId,
         );
       }
       productMap.update(category.id.toString(), (value) => productList,
           ifAbsent: () => productList);
-      productController.add(productList);
-      setState(() {
-        loading = false;
-      });
+      productNotifier.value = productList;
+      loadingNotifier.value = false;
     } catch (e) {
-      productController.add([]);
-      setState(() {
-        loading = false;
-      });
+      productNotifier.value = [];
+      loadingNotifier.value = false;
     }
   }
 
@@ -93,12 +98,37 @@ class _StateMenuLayout extends State<MenuLayout> {
         categories = [...categories, cate];
       }
     }
-    if (loading == true && categories.isNotEmpty) {
+    if (loadingNotifier.value == true && categories.isNotEmpty) {
       getAllListProducts(
           category: categories[position],
           lang: Provider.of<AppModel>(context, listen: false).langCode);
     }
     return categories;
+  }
+
+  @override
+  void dispose() {
+    loadingNotifier.dispose();
+    productNotifier.dispose();
+    super.dispose();
+  }
+   Widget _image( String image,  double width, double height) {
+    // print image vallue to determine how tp treat when no image just grey image
+    // if(image ) {
+
+       return FluxImage(
+      imageUrl: image,
+      width: width,
+      height: height,
+    );
+     
+    // }
+    //  return Text("");
+    // return FluxImage(
+    //   imageUrl: image,
+    //   width: width,
+    //   height: height,
+    // );
   }
 
   @override
@@ -152,8 +182,8 @@ class _StateMenuLayout extends State<MenuLayout> {
                 ),
               SliverToBoxAdapter(
                 child: Container(
-                  height: 70,
-                  padding: const EdgeInsets.only(top: 15),
+                  height: 112,
+                  padding: const EdgeInsets.only(top:15),
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: categories.length,
@@ -170,9 +200,13 @@ class _StateMenuLayout extends State<MenuLayout> {
                                       .langCode);
                         },
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
                           child: Column(
                             children: <Widget>[
+                              _image(categories[index].image!,55,55),
+                              SizedBox(
+                                height:3,
+                              ),
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 8),
                                 child: Text(
@@ -205,66 +239,109 @@ class _StateMenuLayout extends State<MenuLayout> {
                   ),
                 ),
               ),
-              StreamBuilder(
-                stream: productController.stream,
-                builder:
-                    (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                  if (loading) {
-                    return SliverPadding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: widget.config.hPadding,
-                        vertical: widget.config.vPadding,
-                      ),
-                      sliver: SliverMasonryGrid.count(
-                        crossAxisCount: crossAxisCount,
-                        key: categories.isNotEmpty
-                            ? Key(categories[position].id.toString())
-                            : UniqueKey(),
-                        childCount: 4,
-                        itemBuilder: (context, value) {
-                          return Services().widget.renderProductCardView(
-                                item: Product.empty(value.toString()),
-                                width: widthContent,
-                                config: ProductConfig.empty()
-                                  ..imageRatio = widget.config.imageRatio,
-                              );
-                        },
-                        // staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
-                      ),
-                    );
-                  }
-                  if (snapshot.hasData && snapshot.data.isNotEmpty) {
-                    return SliverGrid(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: crossAxisCount,
-                        crossAxisSpacing: 2.0,
-                        mainAxisSpacing: 6.0,
-                        childAspectRatio: childAspectRatio,
-                      ),
-                      delegate: SliverChildBuilderDelegate(
-                        addAutomaticKeepAlives: false,
-                        (BuildContext context, int index) {
-                          return Services().widget.renderProductCardView(
-                                item: snapshot.data[index],
-                                width: widthContent,
-                                config: widget.config,
-                                ratioProductImage: widget.config.imageRatio,
-                              );
-                        },
-                        childCount: snapshot.data.length,
-                      ),
-                    );
-                  }
-                  return SliverToBoxAdapter(
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.width / 2,
-                      child: Center(
-                        child: Text(S.of(context).noProduct),
-                      ),
-                    ),
+              ValueListenableBuilder<List<Product>?>(
+                valueListenable: productNotifier,
+                builder: (_, productList, __) {
+                  return ValueListenableBuilder<bool>(
+                    valueListenable: loadingNotifier,
+                    builder: (_, loading, __) {
+                      if (loading) {
+                        if (widget.config.cardDesign == CardDesign.horizontal) {
+                          return SliverPadding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: widget.config.hPadding,
+                              vertical: widget.config.vPadding,
+                            ),
+                            sliver: SliverList.builder(
+                              itemCount: 4,
+                              key: categories.isNotEmpty
+                                  ? Key(categories[position].id.toString())
+                                  : UniqueKey(),
+                              itemBuilder: (context, value) {
+                                return Services().widget.renderProductCardView(
+                                      item: Product.empty(value.toString()),
+                                      width: widthScreen,
+                                      config: ProductConfig.empty()
+                                        ..imageRatio = widget.config.imageRatio,
+                                    );
+                              },
+                            ),
+                          );
+                        }
+                        return SliverPadding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: widget.config.hPadding,
+                            vertical: widget.config.vPadding,
+                          ),
+                          sliver: SliverMasonryGrid.count(
+                            crossAxisCount: crossAxisCount,
+                            key: categories.isNotEmpty
+                                ? Key(categories[position].id.toString())
+                                : UniqueKey(),
+                            childCount: 4,
+                            itemBuilder: (context, value) {
+                              return Services().widget.renderProductCardView(
+                                    item: Product.empty(value.toString()),
+                                    width: widthContent,
+                                    config: ProductConfig.empty()
+                                      ..imageRatio = widget.config.imageRatio,
+                                  );
+                            },
+                            // staggeredTileBuilder: (index) => const StaggeredTile.fit(2),
+                          ),
+                        );
+                      }
+                      if (productList != null && productList.isNotEmpty) {
+                        if (widget.config.cardDesign == CardDesign.horizontal) {
+                          return SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              addAutomaticKeepAlives: false,
+                              (BuildContext context, int index) {
+                                return Services().widget.renderProductCardView(
+                                      item: productList[index],
+                                      width: widthContent,
+                                      config: widget.config,
+                                      ratioProductImage:
+                                          widget.config.imageRatio,
+                                    );
+                              },
+                              childCount: productList.length,
+                            ),
+                          );
+                        }
+                        return SliverGrid(
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: crossAxisCount,
+                            crossAxisSpacing: 2.0,
+                            mainAxisSpacing: 6.0,
+                            childAspectRatio: childAspectRatio,
+                          ),
+                          delegate: SliverChildBuilderDelegate(
+                            addAutomaticKeepAlives: false,
+                            (BuildContext context, int index) {
+                              return Services().widget.renderProductCardView(
+                                    item: productList[index],
+                                    width: widthContent,
+                                    config: widget.config,
+                                    ratioProductImage: widget.config.imageRatio,
+                                  );
+                            },
+                            childCount: productList.length,
+                          ),
+                        );
+                      }
+                      return SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: Text(
+                          S.of(context).noProduct,
+                          textAlign: TextAlign.center,
+                        ),
+                      );
+                    },
                   );
                 },
-              )
+              ),
             ],
           ),
         );

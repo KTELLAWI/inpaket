@@ -29,7 +29,8 @@ class CartModelOpencart
 
   @override
   Future<void> initData() async {
-    await getShippingAddress();
+    resetValues();
+    await getAddress();
     getCartInLocal();
     getCurrency();
   }
@@ -49,7 +50,7 @@ class CartModelOpencart
       if (couponObj!.discountType == 'percent') {
         subtotal -= subtotal * couponObj!.amount! / 100;
       } else {
-        subtotal -= (couponObj!.amount! * totalCartQuantity);
+        subtotal -= couponObj!.amount!;
       }
     }
 
@@ -270,6 +271,25 @@ class CartModelOpencart
   @override
   void setRewardTotal(double total) {
     rewardTotal = total;
+    notifyListeners();
+  }
+
+  @override
+  void updateProduct(String productId, Product? product) {
+    super.updateProduct(productId, product);
+    notifyListeners();
+  }
+
+  @override
+  void updateProductVariant(
+      String productId, ProductVariation? productVariant) {
+    super.updateProductVariant(productId, productVariant);
+    notifyListeners();
+  }
+
+  @override
+  void updateStateCheckoutButton() {
+    super.updateStateCheckoutButton();
     notifyListeners();
   }
 }

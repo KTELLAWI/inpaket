@@ -6,11 +6,9 @@ part of 'feature_image.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-FeatureImage _$FeatureImageFromJson(Map<String, dynamic> json) {
-  return FeatureImage(
-    url: json['url'] as String?,
-  );
-}
+FeatureImage _$FeatureImageFromJson(Map<String, dynamic> json) => FeatureImage(
+      url: json['url'] as String?,
+    );
 
 Map<String, dynamic> _$FeatureImageToJson(FeatureImage instance) =>
     <String, dynamic>{

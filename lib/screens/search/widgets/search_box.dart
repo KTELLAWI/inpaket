@@ -82,6 +82,11 @@ class _SearchBoxState extends State<SearchBox> {
     }
   }
 
+  void _onCancelText() {
+    _textController!.clear();
+    widget.onCancel?.call();
+  }
+
   @override
   Widget build(BuildContext context) {
     var canPop = Navigator.of(context).canPop() && widget.showCancelButton;
@@ -117,6 +122,7 @@ class _SearchBoxState extends State<SearchBox> {
                 style: Theme.of(context).textTheme.titleMedium,
                 placeholderStyle: Theme.of(context).textTheme.titleMedium,
                 onSubmitted: (value) => widget.onSubmitted?.call(value),
+                onSuffixTap: _onCancelText,
               ),
             ),
           ),
