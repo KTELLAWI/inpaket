@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>FluxStore</string>
+	<string>khadrah</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -64,7 +64,7 @@
 	<key>FacebookAppID</key>
 	<string>430258564493822</string>
 	<key>FacebookDisplayName</key>
-	<string>FluxStore</string>
+	<string>khadrah</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<true/>
 	<key>FirebaseDeepLinkPasteboardRetrievalEnabled</key>
