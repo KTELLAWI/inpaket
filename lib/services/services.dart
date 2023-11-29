@@ -56,13 +56,13 @@ import '../common/config.dart';
 import '../common/constants.dart';
 import '../frameworks/woocommerce/services/woo_mixin.dart';
 import '../frameworks/wordpress/services/wordpress_mixin.dart';
-import '../modules/advertisement/index.dart' show AdvertisementServiceImpl;
+// import '../modules/advertisement/index.dart' show AdvertisementServiceImpl;
 import '../modules/digits_mobile_login/services/digits_mobile_login_service_mixin.dart';
 import '../modules/firebase/firebase_notification_service.dart';
 import '../modules/firebase/firebase_service.dart';
-import '../modules/onesignal/one_signal_notification_service.dart';
+// import '../modules/onesignal/one_signal_notification_service.dart';
 import '../modules/tera_wallet/services/wallet_service_mixin.dart';
-import 'advertisement/advertisement_service.dart';
+// import 'advertisement/advertisement_service.dart';
 import 'chat/all_chat_services.dart';
 import 'notification/notification_service.dart';
 import 'notification/notification_service_impl.dart';
@@ -89,7 +89,7 @@ class Services
 
   /// using AdvertisementService when disable the Advertisement
   // final AdvertisementService advertisement = AdvertisementService();
-  final AdvertisementService advertisement = AdvertisementServiceImpl();
+  //final AdvertisementService advertisement = AdvertisementServiceImpl();
 
   final ChatServices chatServices = ChatServices();
 
@@ -98,8 +98,8 @@ class Services
     NotificationService notificationService = NotificationServiceImpl();
     if (isIos || isAndroid) {
       if (kOneSignalKey['enable'] ?? false) {
-        notificationService =
-            OneSignalNotificationService(appID: kOneSignalKey['appID']);
+      //  notificationService =
+         //   OneSignalNotificationService(appID: kOneSignalKey['appID']);
       } else {
         if (_instance.firebase.isEnabled) {
           notificationService = FirebaseNotificationService();

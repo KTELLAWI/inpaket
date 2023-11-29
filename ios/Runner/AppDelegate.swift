@@ -3,8 +3,8 @@ import Flutter
 import GoogleMaps
 import Firebase
 import UserNotifications
-import GoogleMobileAds
-import AppTrackingTransparency
+// import GoogleMobileAds
+// import AppTrackingTransparency
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -38,12 +38,12 @@ import AppTrackingTransparency
         super.application(application, didReceiveRemoteNotification: notification, fetchCompletionHandler: completionHandler)
     }
 
-    override func applicationDidBecomeActive(_ application: UIApplication){
-        if #available(iOS 14, *){
-            ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in })
-        }
-        NSLog("ATT");
-    }
+    // override func applicationDidBecomeActive(_ application: UIApplication){
+    //     if #available(iOS 14, *){
+    //         ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in })
+    //     }
+    //     NSLog("ATT");
+    // }
     
     override func application(_ application: UIApplication, open url: URL,
                               options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
