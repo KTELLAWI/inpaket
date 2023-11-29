@@ -138,6 +138,14 @@
 			<string>UIInterfaceOrientationLandscapeRight</string>
 			<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		</array>
+		<key>UIApplicationSceneManifest</key>
+    <dict>
+        <key>UIApplicationSupportsMultipleScenes</key>
+        <true/>
+        <key>UISceneConfigurations</key>
+        <dict/>
+    </dict>
+
 		<key>UISupportedInterfaceOrientations~ipad</key>
 		<array>
 			<string>UIInterfaceOrientationPortrait</string>
