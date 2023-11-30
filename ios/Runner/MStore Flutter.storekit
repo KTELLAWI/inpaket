@@ -15,7 +15,7 @@
           "locale" : "en_GB"
         }
       ],
-      "productID" : "com.inpaket.store.test",
+      "productID" : "com.inspireui.fluxstore.test",
       "referenceName" : "In App Purchase Test",
       "type" : "Consumable"
     },
@@ -46,7 +46,7 @@
       "localizations" : [
 
       ],
-      "name" : "khadrah Subscription",
+      "name" : "Fluxstore Subscription",
       "subscriptions" : [
         {
           "adHocOffers" : [
@@ -63,7 +63,7 @@
           "localizations" : [
 
           ],
-          "productID" : "com.inpaket.store.subscription.test",
+          "productID" : "com.inspireui.fluxstore.subscription.test",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Subscription Test",
           "subscriptionGroupID" : "21093766",
