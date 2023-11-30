@@ -744,7 +744,7 @@ class _PaymentMethodsState extends State<PaymentMethods> with RazorDelegate {
       paid: paid,
       cod: cod,
       bacs: bacs,
-      additionalPaymentInfo: additionalPaymentInfo,
+     // additionalPaymentInfo: additionalPaymentInfo,
       onLoading: widget.onLoading,
       success: onFinish,
       error: (message) {
