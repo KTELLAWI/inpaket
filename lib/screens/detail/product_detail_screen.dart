@@ -193,19 +193,19 @@ class _ProductDetailPageState extends BaseScreen<ProductDetailScreen>
         return false;
       }
     }
-    if (Services().widget.enableWooCommerceWholesalePrices &&
-        (p?.isRestricted ?? false)) {
-      setState(() {
-        _isChecking = false;
-        _checkingErrorMessage = S.current.noPermissionToViewProduct;
-      });
-      return false;
-    } else {
-      setState(() {
-        _isChecking = false;
-      });
-      return true;
-    }
+    // if (Services().widget.enableWooCommerceWholesalePrices &&
+    //     (p?.isRestricted ?? false)) {
+    //   setState(() {
+    //     _isChecking = false;
+    //     _checkingErrorMessage = S.current.noPermissionToViewProduct;
+    //   });
+    //   return false;
+    // } else {
+    //   setState(() {
+    //     _isChecking = false;
+    //   });
+    //   return true;
+    // }
   }
 
   @override
