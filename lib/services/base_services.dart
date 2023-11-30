@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:convert' as convert;
 
 import 'package:http/http.dart' as http;
 import 'package:http_auth/http_auth.dart';
@@ -10,15 +9,12 @@ import '../common/constants.dart';
 import '../data/boxes.dart';
 import '../models/comment.dart';
 import '../models/entities/brand.dart';
-import '../models/entities/currency.dart';
 import '../models/entities/order_delivery_date.dart';
 import '../models/entities/paging_response.dart';
 import '../models/entities/prediction.dart';
-import '../models/entities/stripe_payment_intent.dart';
 import '../models/entities/vacation_settings.dart';
 import '../models/index.dart';
 import '../modules/dynamic_layout/config/app_config.dart';
-import 'review_service.dart';
 import 'service_config.dart';
 import 'wordpress/blognews_api.dart';
 
@@ -26,19 +22,15 @@ export '../models/entities/paging_response.dart';
 
 abstract class BaseServices {
   final BlogNewsApi blogApi;
-  final ReviewService reviewService;
 
   final String domain;
 
   BaseServices({
     required this.domain,
     String? blogDomain,
-    bool? isRoot,
-    ReviewService? reviewService,
-  })  : reviewService = reviewService ?? ReviewService.create(),
-        blogApi = BlogNewsApi(
+  }) : blogApi = BlogNewsApi(
           blogDomain ?? domain,
-          isRoot: isRoot ?? blogDomain == null,
+          isRoot: blogDomain == null,
         );
 
   String get currencyCode => SettingsBox().currencyCode ?? 'USD';
@@ -50,34 +42,32 @@ abstract class BaseServices {
 
   dynamic getOrderDirection(order) => null;
 
-  Future<List<Category>?>? getCategories() async => const <Category>[];
+  Future<List<Category>?>? getCategories({lang}) async => const <Category>[];
 
   Future<List<Product>>? getProducts({userId}) => null;
-  Future<List<Map>> getMetaFields(id)async => const <Map>[];
 
   Future<List<Product>?> fetchProductsLayout(
-          {required config, userId, bool refreshCache = false}) async =>
+          {required config, lang, userId, bool refreshCache = false}) async =>
       const <Product>[];
 
-  Future<List<Product>?> fetchProductsByCategory({
-    categoryId,
-    tagId,
-    required page,
-    minPrice,
-    maxPrice,
-    orderBy,
-    order,
-    featured,
-    onSale,
-    attribute,
-    attributeTerm,
-    listingLocation,
-    userId,
-    String? search,
-    String? include,
-    bool? productType,
-    String? nextCursor,
-  }) async =>
+  Future<List<Product>?> fetchProductsByCategory(
+          {categoryId,
+          tagId,
+          required page,
+          minPrice,
+          maxPrice,
+          orderBy,
+          lang,
+          order,
+          featured,
+          onSale,
+          attribute,
+          attributeTerm,
+          listingLocation,
+          userId,
+          String? search,
+          String? include,
+          String? nextCursor}) async =>
       const <Product>[];
 
   Future<AppConfig?> getAppConfig({String lang = 'en'}) async => null;
@@ -94,33 +84,34 @@ abstract class BaseServices {
 
   Future<User?>? loginGoogle({String? token}) => null;
 
-  Future<PagingResponse<Review>> getReviews(String productId,
-          {int page = 1, int perPage = 10}) async =>
-      const PagingResponse();
-
-  Future<List<ProductVariation>?>? getProductVariations(Product product) =>
+  Future<PagingResponse<Review>>? getReviews(productId,
+          {int page = 1, int perPage = 10}) =>
       null;
 
-  Future<List<ShippingMethod>>? getShippingMethods({
-    CartModel? cartModel,
-    String? token,
-    String? checkoutId,
-    Store? store,
-  }) =>
+  Future<List<ProductVariation>?>? getProductVariations(Product product,
+          {String? lang}) =>
       null;
 
-  Future<List<PaymentMethod>>? getPaymentMethods({
-    CartModel? cartModel,
-    ShippingMethod? shippingMethod,
-    String? token,
-  }) =>
+  Future<List<ShippingMethod>>? getShippingMethods(
+          {CartModel? cartModel,
+          String? token,
+          String? checkoutId,
+          Store? store,
+          String? langCode}) =>
+      null;
+
+  Future<List<PaymentMethod>>? getPaymentMethods(
+          {CartModel? cartModel,
+          ShippingMethod? shippingMethod,
+          String? token,
+          String? langCode}) =>
       null;
 
   Future<Order>? createOrder({
     CartModel? cartModel,
     UserModel? user,
     bool? paid,
-    AdditionalPaymentInfo? additionalPaymentInfo,
+    String? transactionId,
   }) =>
       null;
 
@@ -149,6 +140,7 @@ abstract class BaseServices {
     attribute,
     attributeId,
     required page,
+    lang,
     listingLocation,
     userId,
   }) =>
@@ -176,18 +168,9 @@ abstract class BaseServices {
   }) =>
       null;
 
-  Future<Product?>? getProduct(id) => null;
+  Future<Product?>? getProduct(id, {lang}) => null;
 
-  /// The `overrideGetProduct` function use same as [getProduct] function on all
-  /// platforms. But this must be used because in case listing app loads of
-  /// WooCommerce products. This function is overridden in the file
-  /// `listing_service.dart`
-  Future<Product?>? overrideGetProduct(id) => getProduct(id);
-
-  Future<ProductVariation?> getVariationProduct(
-    String productId,
-    String? variationId,
-  ) async =>
+  Future<ProductVariation?>? getVariationProduct(id, variationId, {lang}) =>
       null;
 
   Future<Coupons>? getCoupons({int page = 1, String search = ''}) => null;
@@ -198,16 +181,18 @@ abstract class BaseServices {
   }) =>
       null;
 
-  Future? createReview(ReviewPayload payload) => null;
+  Future? createReview(
+          {String? productId, Map<String, dynamic>? data, String? token}) =>
+      null;
 
   Future<Map<String, dynamic>?>? getHomeCache(String? lang) => null;
 
-  Future<List<Blog>?> fetchBlogLayout({required config}) async {
+  Future<List<Blog>?> fetchBlogLayout({required config, lang}) async {
     try {
       var list = <Blog>[];
       var endPoint = 'posts?_embed';
       if (kAdvanceConfig.isMultiLanguages) {
-        endPoint += '&lang=$languageCode';
+        endPoint += '&lang=$lang';
       }
       if (config.containsKey('category')) {
         endPoint += "&categories=${config["category"]}";
@@ -243,15 +228,16 @@ abstract class BaseServices {
 
   Future? getCategoryWithCache() => null;
 
-  Future<List<FilterAttribute>>? getFilterAttributes() => null;
+  Future<List<FilterAttribute>>? getFilterAttributes({String? lang}) => null;
 
   Future<List<SubAttribute>>? getSubAttributes({
     int? id,
+    String? lang,
     int page = 1,
   }) =>
       null;
 
-  Future<List<FilterTag>>? getFilterTags() => null;
+  Future<List<FilterTag>>? getFilterTags({String? lang}) => null;
 
   Future<String>? getCheckoutUrl(Map<String, dynamic> params, String? lang) =>
       null;
@@ -273,6 +259,12 @@ abstract class BaseServices {
     return null;
   }
 
+  Future<PaymentSettings>? addCreditCard(
+      PaymentSettingsModel paymentSettingsModel,
+      CreditCardModel creditCardModel) {
+    return null;
+  }
+
   Future<Map<String, dynamic>?>? getCurrencyRate() => null;
 
   Future<List<dynamic>?>? getCartInfo(String? token) => null;
@@ -281,15 +273,15 @@ abstract class BaseServices {
 
   Future<Map<String, dynamic>>? getCustomerInfo(String? id) => null;
 
-  Future<CartTax?>? getTaxes(CartModel cartModel, String? token) => null;
+  Future<Map<String, dynamic>?>? getTaxes(CartModel cartModel) => null;
 
-  Future<PagingResponse<Tag>?> getTags() async => null;
+  Future<PagingResponse<Tag>?> getTags({String? lang}) async => null;
 
   Future<Tag>? getTagById({required String tagId}) => null;
 
-  Future<PagingResponse<Tag>> getTagsByPage(
-          {int? page, required int limit}) async =>
-      const PagingResponse();
+  Future<PagingResponse<Tag>>? getTagsByPage(
+          {String? lang, int? page, required int limit}) =>
+      null;
 
   Future<Tag?> getTagBySlug(String slug) async => null;
 
@@ -318,16 +310,16 @@ abstract class BaseServices {
 
   Future<List<Review>>? getReviewsStore({storeId, page, perPage}) => null;
 
-  Future<List<Product>>? getProductsByStore({
-    storeId,
-    int? page,
-    int? perPage,
-    int? catId,
-    bool? onSale,
-    String? order,
-    String? orderBy,
-    String? searchTerm,
-  }) =>
+  Future<List<Product>>? getProductsByStore(
+          {storeId,
+          int? page,
+          int? perPage,
+          int? catId,
+          bool? onSale,
+          String? order,
+          String? orderBy,
+          String? searchTerm,
+          String lang = 'en'}) =>
       null;
 
   Future<List<Store>>? searchStores({
@@ -360,46 +352,13 @@ abstract class BaseServices {
 
   Future<dynamic>? uploadImage(dynamic data, String? token) => null;
 
-  Future<List<Prediction>> getAutoCompletePlaces(
-      String term, String? sessionToken) async {
-    try {
-      var endpoint =
-          'https://maps.googleapis.com/maps/api/place/autocomplete/json?'
-          'input=$term&key=${isIos ? kGoogleApiKey.ios : kGoogleApiKey.android}'
-          '&sessiontoken=$sessionToken';
+  Future<List<Prediction>>? getAutoCompletePlaces(
+          String term, String? sessionToken) =>
+      null;
 
-      var response = await httpGet(endpoint.toUri()!);
-      var result = convert.jsonDecode(response.body);
-      var list = <Prediction>[];
-      for (var item in result['predictions']) {
-        list.add(Prediction.fromJson(item));
-      }
-      return list;
-    } catch (e) {
-      printLog('getAutoCompletePlaces: $e');
-    }
-    return [];
-  }
-
-  Future<Prediction> getPlaceDetail(
-      Prediction prediction, String? sessionToken) async {
-    try {
-      var endpoint = 'https://maps.googleapis.com/maps/api/place/details/json?'
-          'place_id=${prediction.placeId}'
-          '&fields=geometry&key=${isIos ? kGoogleApiKey.ios : kGoogleApiKey.android}'
-          '&sessiontoken=$sessionToken';
-
-      var response = await httpGet(endpoint.toUri()!);
-      var result = convert.jsonDecode(response.body);
-      var lat = result['result']['geometry']['location']['lat'].toString();
-      var long = result['result']['geometry']['location']['lng'].toString();
-      prediction.lat = lat;
-      prediction.long = long;
-    } catch (e) {
-      printLog('getPlaceDetail: $e');
-    }
-    return prediction;
-  }
+  Future<Prediction>? getPlaceDetail(
+          Prediction prediction, String? sessionToken) =>
+      null;
 
   Future<List<Store>>? getNearbyStores(Prediction prediction,
           {int page = 1, int perPage = 10, int radius = 10, String? name}) =>
@@ -422,17 +381,15 @@ abstract class BaseServices {
     return null;
   }
 
-  Future<List<Brand>?> getBrands({
-    int page = 1,
-    int perPage = 10,
-  }) async =>
+  Future<List<Brand>?> getBrands(
+          {int page = 1, int perPage = 10, required String lang}) async =>
       null;
 
   Future<List<Product>?> fetchProductsByBrand(
-          {dynamic page, String? brandId}) async =>
+          {dynamic page, String? lang, String? brandId}) async =>
       null;
 
-  ///----khadrah LISTING----///
+  ///----FLUXSTORE LISTING----///
   Future<dynamic>? bookService({userId, value, message}) => null;
 
   Future<List<Product>>? getProductNearest(location) => null;
@@ -455,7 +412,7 @@ abstract class BaseServices {
   Future<PagingResponse<Blog>>? getBlogs(dynamic cursor) async {
     try {
       final param =
-          '_embed&page=${cursor ?? 1}${kAdvanceConfig.alwaysRefreshBlog ? '&dummy=${DateTime.now().millisecondsSinceEpoch}' : ''}&lang=$languageCode';
+          '_embed&page=${cursor ?? 1}${kAdvanceConfig.alwaysRefreshBlog ? '&dummy=${DateTime.now().millisecondsSinceEpoch}' : ''}';
       final response =
           await http.get('${blogApi.url}/wp-json/wp/v2/posts?$param'.toUri()!);
       if (response.statusCode != 200) {
@@ -521,12 +478,12 @@ abstract class BaseServices {
   Future<List<Blog>> searchBlog({required String name}) async => const <Blog>[];
 
   Future<List<Blog>> fetchBlogsByCategory(
-      {categoryId, page, order = 'desc'}) async {
+      {categoryId, page, lang, order = 'desc'}) async {
     try {
       var list = <Blog>[];
 
       var endPoint =
-          'posts?_embed&lang=$languageCode&per_page=15&page=$page&order=${order ?? 'desc'}';
+          'posts?_embed&lang=$lang&per_page=15&page=$page&order=${order ?? 'desc'}';
       if (categoryId != null) {
         endPoint += '&categories=$categoryId';
       }
@@ -537,19 +494,18 @@ abstract class BaseServices {
       }
 
       return list;
-    } catch (e, trace) {
-      printError(e, trace);
-      return [];
+    } catch (e) {
+      rethrow;
     }
   }
 
-  Future<List<Tag>> getBlogTags() async {
+  Future<List<Tag>> getBlogTags({String? lang}) async {
     try {
       var list = <Tag>[];
       var endPoint =
           'tags?per_page=100&page=1&hide_empty=${kAdvanceConfig.hideEmptyTags}';
-      if (kAdvanceConfig.isMultiLanguages) {
-        endPoint += '&lang=$languageCode';
+      if (lang != null && kAdvanceConfig.isMultiLanguages) {
+        endPoint += '&lang=$lang';
       }
       var response = await blogApi.getAsync(endPoint);
 
@@ -575,17 +531,18 @@ abstract class BaseServices {
     return Blog.empty(id);
   }
 
-  Future<List<Category>> getCategoriesByPage({
-    page,
-    limit,
-    storeId,
-    String? searchTerm,
-    int? parent,
-    bool useCompute = true,
-  }) async =>
+  Future<List<Category>> getCategoriesByPage(
+          {lang,
+          page,
+          limit,
+          storeId,
+          String? searchTerm,
+          int? parent,
+          bool useCompute = true}) async =>
       [];
 
   Future<PagingResponse<Category>> getSubCategories({
+    String? langCode,
     dynamic page = 1,
     int limit = 25,
     required String? parentId,
@@ -661,7 +618,6 @@ abstract class BaseServices {
       if (cateId != null) {
         url = 'posts?_embed&categories=$cateId';
       }
-      url += '&lang=$languageCode';
       var response = await blogApi.getAsync(url);
       var list = <Blog>[];
       for (var item in response) {
@@ -673,7 +629,7 @@ abstract class BaseServices {
     }
   }
 
-  Future<List<Category>> getBlogCategories() async {
+  Future<List<Category>> getBlogCategories({lang = 'en'}) async {
     try {
       var response = await blogApi.getAsync('categories?per_page=20');
       var list = <Category>[];
@@ -780,25 +736,65 @@ abstract class BaseServices {
     return null;
   }
 
-  Future<StripePaymentIntent?> createPaymentIntentStripeV3({
-    String? orderId,
+  Future<String?> createPaymentIntentStripeV2({
     required String totalPrice,
     String? currencyCode,
     String? emailAddress,
     String? name,
-    String? cookie,
   }) async {
     try {
-      final version = kStripeConfig['stripeApiVersion'] ?? 3;
-      final urlReq =
-          '${kStripeConfig["serverEndpoint"]}/payment-intent-v$version';
+      final urlReq = '${kStripeConfig["serverEndpoint"]}/payment-intent-v2';
       final result = await http.post(
         urlReq.toUri()!,
         body: jsonEncode(
           {
             'email': emailAddress,
             'amount': totalPrice,
-            'cookieWoo': cookie,
+            'currencyCode': currencyCode,
+            'returnUrl': kStripeConfig['returnUrl'],
+            'captureMethod': (kStripeConfig['enableManualCapture'] ?? false)
+                ? 'manual'
+                : 'automatic',
+          },
+        ),
+        headers: {'content-type': 'application/json'},
+      );
+
+      var response = json.decode(result.body);
+      if (result.statusCode == 200) {
+        final body = response is List ? response[0] : response;
+        final success = body['success'];
+        if (success == true) {
+          return body['client_secret'];
+        }
+
+        if (response['message'] != null) {
+          throw Exception(response['message']);
+        }
+      }
+
+      throw Exception('Unknown error. Please try again.');
+    } catch (e, trace) {
+      printError(e, trace);
+      rethrow;
+    }
+  }
+
+  Future<String?> createPaymentIntentStripeV3({
+    String? orderId,
+    required String totalPrice,
+    String? currencyCode,
+    String? emailAddress,
+    String? name,
+  }) async {
+    try {
+      final urlReq = '${kStripeConfig["serverEndpoint"]}/payment-intent-v3';
+      final result = await http.post(
+        urlReq.toUri()!,
+        body: jsonEncode(
+          {
+            'email': emailAddress,
+            'amount': totalPrice,
             'currencyCode': currencyCode,
             'returnUrl': kStripeConfig['returnUrl'],
             'captureMethod': (kStripeConfig['enableManualCapture'] ?? false)
@@ -816,46 +812,12 @@ abstract class BaseServices {
         final body = response is List ? response[0] : response;
         final success = body['success'];
         if (success == true) {
-          return StripePaymentIntent(
-            id: response['id'],
-            clientSecret: response['client_secret'],
-            status: response['status'],
-            customerId: response['customer_id'],
-            customerEphemeralKeySecret: response['ephemeral_key'],
-            setupIntentClientSecret: response['setupIntent'],
-          );
+          return body['client_secret'];
         }
 
         if (response['message'] != null) {
           throw Exception(response['message']);
         }
-      }
-
-      throw Exception('Unknown error. Please try again.');
-    } catch (e, trace) {
-      printError(e, trace);
-      rethrow;
-    }
-  }
-
-  Future<StripePaymentIntent?> getPaymentIntentStripeV3(String id) async {
-    try {
-      final urlReq = '${kStripeConfig["serverEndpoint"]}/payment-intent/$id';
-      final result = await httpGet(urlReq.toUri()!);
-
-      var response = json.decode(result.body);
-      if (result.statusCode == 200) {
-        if (response['message'] != null) {
-          throw Exception(response['message']);
-        }
-        return StripePaymentIntent(
-          id: response['id'],
-          clientSecret: response['client_secret'],
-          status: response['status'],
-          customerId: response['customerId'],
-          customerEphemeralKeySecret: response['ephemeralKey'],
-          setupIntentClientSecret: response['setupIntent'],
-        );
       }
 
       throw Exception('Unknown error. Please try again.');
@@ -895,10 +857,9 @@ abstract class BaseServices {
 
   Future<PagingResponse<Product>> getProductsByCategoryId(
     String categoryId, {
+    String? langCode,
     dynamic page = 1,
     int limit = 25,
-    String? orderBy,
-    String? order,
   }) async =>
       const PagingResponse<Product>();
 
@@ -911,39 +872,5 @@ abstract class BaseServices {
 
   Future<RatingCount?>? getProductRatingCount(String productId) async {
     return null;
-  }
-
-  Future<CheckoutCart?> updateShippingRate({
-    required String checkoutId,
-    required String shippingRateHandle,
-  }) async {
-    return null;
-  }
-
-  Future<Order?> getLatestOrder({required String cookie}) async {
-    return null;
-  }
-
-  Future<List<Product>> getVideoProducts({
-    required int page,
-    int perPage = 10,
-  }) async {
-    throw 'This feature supports only for khadrah WooCommerce, khadrah Shopify and khadrah Multi Vendor now.';
-  }
-
-  Future<void> updateCheckoutEmail({
-    required String checkoutId,
-    required String email,
-  }) async {
-    throw 'This feature supports only for khadrah Shopify.';
-  }
-
-  Future<bool> enableNotification(
-      {String? cookie, required bool enabled}) async {
-    return enabled;
-  }
-
-  Future<List<Currency>?> getAvailableCurrencies() async {
-    return <Currency>[];
   }
 }

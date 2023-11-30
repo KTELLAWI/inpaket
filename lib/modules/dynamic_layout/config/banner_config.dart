@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
 import '../helper/helper.dart';
-import 'box_shadow_config.dart';
 import 'header_config.dart';
 import 'text_config.dart';
 
@@ -18,27 +17,9 @@ import 'text_config.dart';
 /// marginRight : 5
 /// marginTop : 5
 /// radius : 2
-/// PageIndicatorType: 'circle'
 
 const imageDefault =
     'https://user-images.githubusercontent.com/1459805/59846818-12672e80-938b-11e9-8184-5f7bfe66f1a2.png';
-
-enum PageIndicatorType {
-  line,
-  circle,
-  ;
-
-  bool get isCircle => this == PageIndicatorType.circle;
-  bool get isLine => this == PageIndicatorType.line;
-
-  factory PageIndicatorType.fromString(String? pageIndicatorType) {
-    if (pageIndicatorType == circle.name) {
-      return PageIndicatorType.circle;
-    }
-
-    return PageIndicatorType.line;
-  }
-}
 
 class BannerConfig {
   HeaderConfig? title;
@@ -61,11 +42,6 @@ class BannerConfig {
   double upHeight = 0.0;
   double radius = 6.0;
   double padding = 0.0;
-  PageIndicatorType? pageIndicatorType;
-  bool? isSoundOn; // Volume for banner video
-  bool? enableTimeIndicator; // Time indicator for banner video
-  bool? autoPlayVideo;
-  bool? doubleTapToFullScreen;
 
   /// bool type
   double? height;
@@ -75,7 +51,6 @@ class BannerConfig {
   double marginBottom = 0.0;
   bool enableParallax = false;
   double parallaxImageRatio = 1.2;
-  BoxShadowConfig? boxShadow;
 
   BannerConfig({
     this.layout,
@@ -92,13 +67,7 @@ class BannerConfig {
     required this.showNumber,
     required this.isBlur,
     required this.showBackground,
-    this.pageIndicatorType,
-    this.isSoundOn,
-    this.enableTimeIndicator,
-    this.autoPlayVideo,
-    this.doubleTapToFullScreen,
     this.height,
-    this.boxShadow,
     required this.padding,
     required this.marginLeft,
     required this.marginRight,
@@ -132,14 +101,6 @@ class BannerConfig {
     enableParallax = json['parallax'] ?? false;
     parallaxImageRatio = Helper.formatDouble(json['parallaxImageRatio']) ?? 1.2;
     isHorizontal = json['isHorizontal'] ?? false;
-    isSoundOn = json['isSoundOn'] ?? false;
-    enableTimeIndicator = json['enableTimeIndicator'] ?? true;
-    autoPlayVideo = json['autoPlayVideo'] ?? false;
-    doubleTapToFullScreen = json['doubleTapToFullScreen'] ?? false;
-    pageIndicatorType = PageIndicatorType.fromString(json['pageIndicatorType']);
-    boxShadow = json['boxShadow'] != null
-        ? BoxShadowConfig.fromJson(json['boxShadow'])
-        : null;
 
     /// double
     height = Helper.formatDouble(json['height']);
@@ -173,7 +134,6 @@ class BannerConfig {
     map['enableParallax'] = enableParallax;
     map['parallaxImageRatio'] = parallaxImageRatio;
     map['isHorizontal'] = isHorizontal;
-    map['boxShadow'] = boxShadow?.toJson();
 
     if (isSlider) {
       map['isSlider'] = isSlider;
@@ -183,11 +143,6 @@ class BannerConfig {
       map['isBlur'] = isBlur;
       map['showBackground'] = showBackground;
       map['upHeight'] = upHeight;
-      map['isSoundOn'] = isSoundOn;
-      map['enableTimeIndicator'] = enableTimeIndicator;
-      map['autoPlayVideo'] = autoPlayVideo;
-      map['doubleTapToFullScreen'] = doubleTapToFullScreen;
-      map['pageIndicatorType'] = pageIndicatorType?.name;
     }
     map.removeWhere((key, value) => value == null);
     return map;
@@ -215,7 +170,6 @@ class BannerItemConfig {
   bool defaultShowProduct = false;
   int productLength = 3;
   List<String> products = [];
-  String? video;
 
   /// If set it true then click to banner item, it will navigate to
   /// the [SubcategoryScreen] instead of navigate to product page as default
@@ -237,7 +191,6 @@ class BannerItemConfig {
     this.defaultShowProduct = false,
     this.products = const [],
     this.showSubcategory = false,
-    this.video = '',
   });
 
   BannerItemConfig.fromJson(dynamic json) {
@@ -263,7 +216,6 @@ class BannerItemConfig {
         ? products.length
         : (int.tryParse(json['productLength'].toString()) ?? 3);
     showSubcategory = json['showSubcategory'] ?? false;
-    video = json['video'] ?? '';
     // ignore: prefer_initializing_formals
     jsonData = json;
   }
@@ -283,7 +235,6 @@ class BannerItemConfig {
     map['bannerWithProduct'] = bannerWithProduct;
     map['defaultShowProduct'] = defaultShowProduct;
     map['showSubcategory'] = showSubcategory;
-    map['video'] = video;
     map['products'] = List<String>.from(products);
     if (products.isNotEmpty) {
       map['productLength'] = products.length;
@@ -309,10 +260,7 @@ class BannerButtonConfig {
     text = json['text'] ?? '';
     backgroundColor = json['backgroundColor'] ?? '#3FC1BE';
     textColor = json['textColor'] ?? '#3FC1BE';
-
-    final x = Helper.formatDouble(json['x']) ?? 0.0;
-    final y = Helper.formatDouble(json['y']) ?? 0.0;
-    alignment = Alignment(x, y);
+    alignment = Alignment(json['x'] ?? 0.0, json['y'] ?? 0.0);
   }
 
   Map<String, dynamic> toJson() {

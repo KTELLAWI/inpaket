@@ -21,15 +21,9 @@ Map get kFlutterwaveConfig => Configurations.flutterwaveConfig;
 
 Map get kMyFatoorahConfig => Configurations.myFatoorahConfig;
 
-Map get kMidtransConfig => Configurations.midtransConfig;
-
 Map get kMercadoPagoConfig => Configurations.mercadoPagoConfig;
 
 Map get kInAppPurchaseConfig => Configurations.inAppPurchaseConfig;
-
-Map get kXenditConfig => Configurations.xenditConfig;
-
-Map get kExpressPayConfig => Configurations.expressPayConfig;
 
 Map get afterShip => Configurations.afterShip;
 

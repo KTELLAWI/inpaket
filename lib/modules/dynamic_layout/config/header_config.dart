@@ -1,5 +1,3 @@
-import 'package:inspireui/utils/colors.dart';
-
 import '../helper/helper.dart';
 import 'box_shadow_config.dart';
 
@@ -53,7 +51,6 @@ class HeaderConfig {
   /// other type
   BoxShadowConfig? boxShadow;
   List<String> rotate = [];
-  List<HexColor>? backgroundGradientColor;
 
   HeaderConfig({
     this.isSafeArea = false,
@@ -81,7 +78,6 @@ class HeaderConfig {
     this.boxShadow,
     this.rotate = const [],
     this.minWidth = 0.0,
-    this.backgroundGradientColor,
   });
 
   HeaderConfig.fromJson(dynamic json) {
@@ -90,7 +86,7 @@ class HeaderConfig {
     borderInput = json['borderInput'] ?? false;
     usePrimaryColor = json['usePrimaryColor'] ?? true;
     title = json['title'] ?? json['text'];
-    type = json['type'] ?? 'static';
+    type = json['type'];
     backgroundColor = json['backgroundColor'];
     textColor = json['textColor'];
     alignment = json['alignment'] ?? 'centerLeft';
@@ -113,8 +109,6 @@ class HeaderConfig {
 
     rotate = List<String>.from(json['rotate'] ?? []);
     minWidth = json['minWidth'] ?? 0.0;
-    backgroundGradientColor =
-        HexColor.fromListJson(json['backgroundGradientColor'] ?? [])!;
   }
 
   Map<String, dynamic> toJson() {
@@ -144,8 +138,6 @@ class HeaderConfig {
     map['boxShadow'] = boxShadow?.toJson();
     map['rotate'] = rotate;
     map['minWidth'] = minWidth;
-    map['backgroundGradientColor'] =
-        backgroundGradientColor?.map((e) => e.toJson()).toList();
     map.removeWhere((key, value) => value == null);
     return map;
   }

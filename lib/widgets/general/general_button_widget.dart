@@ -3,16 +3,10 @@ import 'package:flutter/material.dart';
 import '../../common/config/models/general_setting_item.dart';
 import '../../common/tools.dart';
 import '../common/flux_image.dart';
-import 'general_widget.dart';
 
-class GeneralButtonWidget extends GeneralWidget {
-  const GeneralButtonWidget({
-    required GeneralSettingItem? item,
-    Function()? onNavigator,
-  }) : super(
-          onNavigator: onNavigator,
-          item: item,
-        );
+class GeneralButtonWidget extends StatelessWidget {
+  final GeneralSettingItem? item;
+  const GeneralButtonWidget({required this.item});
 
   Widget renderButtonItem(BuildContext context, GeneralButton item) {
     if (item.image != null) {
@@ -54,7 +48,7 @@ class GeneralButtonWidget extends GeneralWidget {
           children: List.generate(
             buttons.length,
             (index) => InkWell(
-              onTap: () => onTapNavigateOptions(
+              onTap: () => NavigateTools.onTapNavigateOptions(
                   context: context, config: buttons[index].navigator),
               child: Container(
                   margin: EdgeInsets.only(

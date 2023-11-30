@@ -1,8 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-// ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
-// ignore: depend_on_referenced_packages, implementation_imports
+// ignore: implementation_imports
 import 'package:flutter_localizations/src/utils/date_localizations.dart'
     as util;
 import 'package:intl/date_symbol_data_custom.dart';

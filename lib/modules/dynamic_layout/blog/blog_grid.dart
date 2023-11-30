@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inspireui/inspireui.dart' show Skeleton;
 import 'package:provider/provider.dart';
-
 // import 'package:responsive_builder/responsive_builder.dart';
 
 import '../../../common/constants.dart';
@@ -9,7 +8,6 @@ import '../../../routes/flux_navigate.dart';
 import '../../../screens/base_screen.dart';
 import '../../../screens/blog/index.dart';
 import '../../../widgets/blog/blog_grid_item.dart';
-import '../../../widgets/common/auto_silde_show.dart';
 import '../helper/helper.dart';
 import '../index.dart' show BlogConfig, HeaderView;
 
@@ -102,7 +100,7 @@ class _BlogGridState extends BaseScreen<BlogGrid> {
             ),
           );
         }
-        final body = Column(
+        return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             _buildHeader(context, listBlog,
@@ -169,14 +167,6 @@ class _BlogGridState extends BaseScreen<BlogGrid> {
             ),
           ],
         );
-
-        return HandleAutoSlide.list(
-          numberOfItems: listBlog.length,
-          controller: pageController!,
-          durationAutoSliding: widget.config!.durationAutoSliding,
-          enable: widget.config!.enableAutoSliding,
-          child: body,
-        );
       }),
     );
   }
@@ -187,21 +177,21 @@ class _BlogViewSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(vertical: 4.0),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Flexible(
+          const Flexible(
             flex: 4,
             child: Skeleton(),
           ),
-          SizedBox(width: 12),
+          const SizedBox(width: 12),
           Expanded(
             flex: 7,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: const [
                 Skeleton(
                   width: 200,
                   height: 20,

@@ -147,7 +147,7 @@ class ProductItem {
       //   }
       // }
 
-      /// For khadrah Manager
+      /// For FluxStore Manager
       id = parsedJson['id'].toString();
       if (parsedJson['delivery_user'] != null) {
         deliveryUser = DeliveryUser.fromJson(parsedJson['delivery_user']);
@@ -198,21 +198,13 @@ class ProductItem {
   }
 
   Map<String, dynamic> toJson() {
-    try {
-      return {
-        'product_id': productId,
-        'id': id,
-        'name': name,
-        'quantity': quantity,
-        'total': total,
-        'price': double.parse(total!),
-        'featuredImage': featuredImage
-      };
-    } catch (e, trace) {
-      printLog(e.toString());
-      printLog(trace.toString());
-      return {};
-    }
+    return {
+      'product_id': productId,
+      'name': name,
+      'quantity': quantity,
+      'total': total,
+      'featuredImage': featuredImage
+    };
   }
 
   ProductItem.fromLocalJson(Map parsedJson) {
@@ -237,12 +229,10 @@ class ProductItem {
 
   ProductItem.fromShopifyJson(Map parsedJson) {
     try {
-      productId = parsedJson['variant']?['product']?['id'];
-      id = parsedJson['id'];
+      productId = parsedJson['variant']['product']['id'];
       name = parsedJson['title'];
       quantity = parsedJson['quantity'];
-      // total = parsedJson['variant']?['price']?['amount'];
-      total = parsedJson['originalTotalPrice']?['amount'];
+      total = parsedJson['originalTotalPrice']['amount'];
       featuredImage = ((parsedJson['variant'] ?? {})['image'] ?? {})['url'];
     } catch (e, trace) {
       printLog(e.toString());

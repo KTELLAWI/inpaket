@@ -68,7 +68,7 @@ const ColorScheme kDarkColorScheme = ColorScheme(
   onPrimary: kLightBG,
   onSecondary: kGrey900,
   onSurface: kSurfaceWhite,
-  onBackground: kSurfaceWhite,
+  onBackground: kGrey900,
   onError: kSurfaceWhite,
   brightness: Brightness.dark,
 );

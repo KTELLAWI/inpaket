@@ -144,12 +144,12 @@ class _FireIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
+    return SizedBox(
       height: 24.0,
       width: 24.0,
       child: Stack(
         alignment: Alignment.center,
-        children: [
+        children: const [
           Positioned.fill(
             child: Icon(
               Icons.local_fire_department_rounded,

@@ -108,9 +108,9 @@ class __AnimatedSplashStateChild extends BaseScreen<_AnimatedSplashChild>
 
   @override
   void dispose() {
+    super.dispose();
     _animationController.reset();
     _animationController.dispose();
-    super.dispose();
   }
 
   Widget _buildAnimation(Size size) {

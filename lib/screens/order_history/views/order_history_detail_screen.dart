@@ -9,10 +9,8 @@ import 'package:provider/provider.dart';
 import '../../../common/config.dart';
 import '../../../common/tools.dart';
 import '../../../generated/l10n.dart';
-import '../../../models/entities/aftership.dart';
 import '../../../models/index.dart' show AppModel;
-
-// import '../../../models/order/order.dart';
+import '../../../models/order/order.dart';
 import '../../../models/user_model.dart';
 import '../../../services/index.dart';
 import '../../../widgets/common/box_comment.dart';
@@ -62,13 +60,13 @@ class _OrderHistoryDetailScreenState
     orderHistoryModel.cancelOrder();
   }
 
-  void _onNavigate(context, AfterShipTracking afterShipTracking) {
+  void _onNavigate(context, OrderHistoryDetailModel model) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => WebView(
           url:
-              "${afterShip['tracking_url']}/${afterShipTracking.slug}/${afterShipTracking.trackingNumber}",
+              "${afterShip['tracking_url']}/${model.order.aftershipTracking!.slug}/${model.order.aftershipTracking!.trackingNumber}",
           appBar: AppBar(
             backgroundColor: Theme.of(context).colorScheme.background,
             leading: GestureDetector(
@@ -89,7 +87,7 @@ class _OrderHistoryDetailScreenState
     return Consumer<OrderHistoryDetailModel>(builder: (context, model, child) {
       final order = model.order;
       final currencyCode =
-          order.currencyCode ?? Provider.of<AppModel>(context).currencyCode!;
+          order.currencyCode ?? Provider.of<AppModel>(context).currencyCode;
       final currencyRate = (order.currencyCode?.isEmpty ?? true)
           ? Provider.of<AppModel>(context).currencyRate
           : null;
@@ -176,7 +174,7 @@ class _OrderHistoryDetailScreenState
                           ],
                         ),
                       ),
-                    if (order.paymentMethodTitle?.isNotEmpty ?? false)
+                    if (order.paymentMethodTitle != null)
                       Row(
                         children: <Widget>[
                           Text(S.of(context).paymentMethod,
@@ -201,10 +199,10 @@ class _OrderHistoryDetailScreenState
                           )
                         ],
                       ),
-                    if (order.paymentMethodTitle?.isNotEmpty ?? false)
+                    if (order.paymentMethodTitle != null)
                       const SizedBox(height: 10),
-                    (order.shippingMethodTitle?.isNotEmpty ?? false) &&
-                            kPaymentConfig.enableShipping
+                    (order.shippingMethodTitle != null &&
+                            kPaymentConfig.enableShipping)
                         ? Row(
                             children: <Widget>[
                               Text(S.of(context).shippingMethod,
@@ -331,10 +329,7 @@ class _OrderHistoryDetailScreenState
                                   ),
                         ),
                         OrderPrice.tax(
-                          order: order,
-                          currencyRate: currencyRate,
-                          currencyCode: currencyCode,
-                        ),
+                            order: order, currencyRate: currencyRate),
                       ],
                     ),
                     Divider(
@@ -355,54 +350,34 @@ class _OrderHistoryDetailScreenState
                         OrderPrice(
                           order: order,
                           currencyRate: currencyRate,
-                          currencyCode: currencyCode,
                         ),
                       ],
                     ),
                   ],
                 ),
               ),
-
-              if (model.order.aftershipTrackings.isNotEmpty)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 10),
-                    Text(S.of(context).orderTracking,
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold)),
-                    Column(
-                      children: List.generate(
-                        model.order.aftershipTrackings.length,
-                        (index) => Padding(
-                          padding: const EdgeInsets.only(top: 10.0),
-                          child: GestureDetector(
-                            onTap: () => _onNavigate(
-                                context, model.order.aftershipTrackings[index]),
-                            child: Align(
-                              alignment: Alignment.topLeft,
-                              child: Row(
-                                children: <Widget>[
-                                  Text(
-                                      '${index + 1}. ${S.of(context).trackingNumberIs} '),
-                                  Text(
-                                    model.order.aftershipTrackings[index]
-                                        .trackingNumber!,
-                                    style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      decoration: TextDecoration.underline,
-                                    ),
-                                  )
-                                ],
-                              ),
+              if (model.order.aftershipTracking != null)
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: GestureDetector(
+                    onTap: () => _onNavigate(context, model),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Row(
+                        children: <Widget>[
+                          Text('${S.of(context).trackingNumberIs} '),
+                          Text(
+                            model.order.aftershipTracking!.trackingNumber!,
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              decoration: TextDecoration.underline,
                             ),
-                          ),
-                        ),
+                          )
+                        ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
-
               Services().widget.renderOrderTimelineTracking(context, order),
               const SizedBox(height: 20),
 
@@ -419,8 +394,37 @@ class _OrderHistoryDetailScreenState
                     style: const TextStyle(
                         fontSize: 18, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 10),
-                Text(order.billing!.fullInfoAddress),
+                Text(
+                  '${(order.billing!.apartment?.isEmpty ?? true) ? '' : '${order.billing!.apartment} '}${(order.billing!.block?.isEmpty ?? true) ? '' : '${(order.billing!.apartment?.isEmpty ?? true) ? '' : '- '} ${order.billing!.block}, '}${order.billing!.street!}, ${order.billing!.city!}, ${getCountryName(order.billing!.country)}',
+                ),
               ],
+              if (order.status == OrderStatus.processing &&
+                  kPaymentConfig.enableRefundCancel)
+                Column(
+                  children: <Widget>[
+                    const SizedBox(height: 30),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ButtonTheme(
+                            height: 45,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  foregroundColor: Colors.white,
+                                  backgroundColor: HexColor('#056C99'),
+                                ),
+                                onPressed: refundOrder,
+                                child: Text(
+                                    S.of(context).refundRequest.toUpperCase(),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w700))),
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                  ],
+                ),
               if (kPaymentConfig.showOrderNotes)
                 Padding(
                   padding: const EdgeInsets.only(top: 20.0),

@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 import '../common/config.dart';
@@ -24,30 +23,24 @@ class PaymentMethodModel extends ChangeNotifier {
       String? token,
       required String? langCode}) async {
     try {
-      if (ServerConfig().isOpencart && paymentMethods.isNotEmpty) {
-        paymentMethods = [];
-      }
       isLoading = paymentMethods.isEmpty ? true : false;
       message = null;
       notifyListeners();
       paymentMethods = await _service.api.getPaymentMethods(
-        cartModel: cartModel,
-        shippingMethod: shippingMethod,
-        token: token,
-      )!;
+          cartModel: cartModel,
+          shippingMethod: shippingMethod,
+          token: token,
+          langCode: langCode)!;
 
       paymentMethods.removeWhere((element) =>
           kPaymentConfig.excludedPaymentIds?.contains(element.id) ?? false);
 
-      final isStripeSupported = paymentMethods.firstWhereOrNull((e) =>
-              [...(kStripeConfig['paymentMethodIds'] ?? [])].contains(e.id)) !=
-          null;
       final shouldShowApplePay = isIos &&
           kStripeConfig['enabled'] == true &&
           kStripeConfig['useV1'] != true &&
           kStripeConfig['enableApplePay'] == true &&
           ServerConfig().isPayPluginSupported;
-      if (shouldShowApplePay && isStripeSupported) {
+      if (shouldShowApplePay) {
         paymentMethods.add(PaymentMethod(
           id: kStripeApplePayMethod,
           title: 'Apple Pay',
@@ -60,7 +53,7 @@ class PaymentMethodModel extends ChangeNotifier {
           kStripeConfig['useV1'] != true &&
           kStripeConfig['enableGooglePay'] == true &&
           ServerConfig().isPayPluginSupported;
-      if (shouldShowGooglePay && isStripeSupported) {
+      if (shouldShowGooglePay) {
         paymentMethods.add(
           PaymentMethod(
             id: kStripeGooglePayMethod,
@@ -75,7 +68,8 @@ class PaymentMethodModel extends ChangeNotifier {
       notifyListeners();
     } catch (err) {
       isLoading = false;
-      message = err.toString().replaceAll('Exception: ', '');
+      message =
+          'There is an issue with the app during request the data, please contact admin for fixing the issues $err';
       notifyListeners();
     }
   }

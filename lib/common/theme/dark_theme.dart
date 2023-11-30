@@ -35,7 +35,7 @@ ThemeData buildDarkTheme(String? language, [fontFamily, fontHeader]) {
     appBarTheme: const AppBarTheme(
       elevation: 0,
       titleTextStyle: TextStyle(
-        color: kLightBG,
+        color: kDarkBG,
         fontSize: 18.0,
         fontWeight: FontWeight.w800,
       ),
@@ -57,11 +57,8 @@ ThemeData buildDarkTheme(String? language, [fontFamily, fontHeader]) {
       labelStyle: TextStyle(fontSize: 13),
       unselectedLabelStyle: TextStyle(fontSize: 13),
     ),
-    dialogBackgroundColor: kDarkBG,
-    colorScheme: kDarkColorScheme
-        .copyWith(
-          secondary: kDarkAccent,
-        )
-        .copyWith(background: kDarkBG),
+    dialogBackgroundColor: kDarkBG, colorScheme: kDarkColorScheme.copyWith(
+      secondary: kDarkAccent,
+    ).copyWith(background: kDarkBG),
   );
 }

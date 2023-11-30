@@ -13,7 +13,6 @@ import '../../../models/entities/coupon.dart';
 import '../../../models/index.dart' show AppModel, UserModel;
 import '../../../services/index.dart';
 import '../../base_screen.dart';
-import 'empty_coupon.dart';
 
 class CouponList extends StatefulWidget {
   final String? couponCode;
@@ -72,10 +71,7 @@ class _CouponListState extends BaseScreen<CouponList> {
         .getCoupons(page: currentPage, search: search ?? '')
         ?.then((coupons) {
       for (var coupon in coupons.coupons) {
-        if (email != null ||
-            (email == null && coupon.status == CouponStatus.publish)) {
-          _couponsMap[coupon.id] = coupon;
-        }
+        _couponsMap[coupon.id] = coupon;
       }
 
       setState(() {
@@ -95,18 +91,6 @@ class _CouponListState extends BaseScreen<CouponList> {
 
     coupons.retainWhere((c) {
       var shouldKeep = true;
-      final isExactCodeSearch = c.code.toString().toLowerCase() == searchQuery;
-      final isContainRestriction = c.emailRestrictions.contains(email);
-
-      /// Hide a coupon if the visibility of the coupon is private
-      /// Only show the coupon if user enter the exact code on search
-      /// and is restricted to user
-      if (c.isPrivateStatus) {
-        shouldKeep &= isExactCodeSearch;
-        if (c.emailRestrictions.isNotEmpty) {
-          shouldKeep &= isContainRestriction;
-        }
-      }
 
       /// Hide expired coupons
       if (!showExpiredCoupons && c.dateExpires != null) {
@@ -125,19 +109,19 @@ class _CouponListState extends BaseScreen<CouponList> {
       /// Users can search for hidden coupons by entering
       /// exact code when showAllCoupons is false.
       if (!showAllCoupons && searchQuery.isNotEmpty) {
-        shouldKeep &= isExactCodeSearch;
+        shouldKeep &= c.code.toString().toLowerCase() == searchQuery;
       }
 
       /// Show only coupons which is restricted to user.
       if (!showAllCoupons && searchQuery.isEmpty) {
-        shouldKeep &= isContainRestriction;
+        shouldKeep &= c.emailRestrictions.contains(email);
       }
 
       /// Hide coupons which is restricted to other users.
       if (showAllCoupons &&
           searchQuery.isEmpty &&
           c.emailRestrictions.isNotEmpty) {
-        shouldKeep &= isContainRestriction;
+        shouldKeep &= c.emailRestrictions.contains(email);
       }
 
       return shouldKeep;
@@ -155,11 +139,9 @@ class _CouponListState extends BaseScreen<CouponList> {
     final model = Provider.of<AppModel>(context);
 
     return Scaffold(
-      backgroundColor:
-          isDarkTheme ? theme.colorScheme.background : theme.cardColor,
+      backgroundColor: isDarkTheme ? theme.colorScheme.background : theme.cardColor,
       appBar: AppBar(
-        backgroundColor:
-            isDarkTheme ? theme.colorScheme.background : theme.cardColor,
+        backgroundColor: isDarkTheme ? theme.colorScheme.background : theme.cardColor,
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).pop();
@@ -185,6 +167,7 @@ class _CouponListState extends BaseScreen<CouponList> {
                 currentPage = 0;
                 refreshController.requestLoading();
               }
+              _displayCoupons(context);
               EasyDebounce.debounce(
                 'searchCoupon',
                 const Duration(milliseconds: 500),
@@ -247,83 +230,73 @@ class _CouponListState extends BaseScreen<CouponList> {
         children: [
           Expanded(
             child: Container(
-              color: isDarkTheme
-                  ? theme.colorScheme.background
-                  : theme.primaryColorLight,
-              child: isFetching
+              color:
+                  isDarkTheme ? theme.colorScheme.background : theme.primaryColorLight,
+              child: (isFetching && coupons.isEmpty)
                   ? kLoadingWidget(context)
-                  : coupons.isEmpty
-                      ? const Center(child: EmptyCoupon())
-                      : SmartRefresher(
-                          enablePullDown: false,
-                          enablePullUp: true,
-                          footer: kCustomFooter(context),
-                          onLoading: () {
-                            final count = _couponsMap.length;
-                            currentPage++;
-                            services.api
-                                .getCoupons(page: currentPage)!
-                                .then((Coupons coupons) {
-                              for (var coupon in coupons.coupons) {
-                                _couponsMap[coupon.id] = coupon;
-                              }
-                              final newCount = _couponsMap.length;
-                              if (newCount == count) {
-                                refreshController.loadNoData();
-                              } else {
-                                refreshController.loadComplete();
-                              }
-                              _displayCoupons(context);
-                            });
-                          },
-                          controller: refreshController,
-                          child: ListView.builder(
-                            itemCount: coupons.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              final coupon = coupons[index];
-                              if (coupon.code == null) {
-                                return Center(
-                                  child: Image.asset(
-                                    'assets/images/leaves.png',
-                                    width: 120,
-                                    height: 120,
-                                    fit: BoxFit.contain,
-                                  ),
-                                );
-                              }
-                              return Container(
-                                margin: const EdgeInsets.symmetric(
-                                  horizontal: 24.0,
-                                  vertical: 8.0,
-                                ),
-                                child: CouponItem(
-                                  translate: CouponTrans(context),
-                                  getCurrencyFormatted: (data) {
-                                    return PriceTools.getCurrencyFormatted(
-                                      data,
-                                      model.currencyRate,
-                                      currency: model.currency,
-                                    )!;
-                                  },
-                                  coupon: coupon,
-                                  onSelect: (couponCode) {
-                                    Navigator.of(context).pop();
-                                    Services()
-                                        .firebase
-                                        .firebaseAnalytics
-                                        ?.logSelectPromotion(
-                                            promotionId: coupon.code,
-                                            promotionName: _getCouponTypeTitle(
-                                                coupon, CouponTrans(context)));
-                                    widget.onSelect?.call(couponCode);
-                                  },
-                                  email: email,
-                                  isFromCart: widget.isFromCart,
-                                ),
-                              );
-                            },
-                          ),
-                        ),
+                  : SmartRefresher(
+                      enablePullDown: false,
+                      enablePullUp: true,
+                      footer: kCustomFooter(context),
+                      onLoading: () {
+                        final count = _couponsMap.length;
+                        currentPage++;
+                        services.api
+                            .getCoupons(page: currentPage)!
+                            .then((Coupons coupons) {
+                          for (var coupon in coupons.coupons) {
+                            _couponsMap[coupon.id] = coupon;
+                          }
+                          final newCount = _couponsMap.length;
+                          if (newCount == count) {
+                            refreshController.loadNoData();
+                          } else {
+                            refreshController.loadComplete();
+                          }
+                          _displayCoupons(context);
+                        });
+                      },
+                      controller: refreshController,
+                      child: ListView.builder(
+                        itemCount: coupons.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final coupon = coupons[index];
+                          if (coupon.code == null) {
+                            return const SizedBox();
+                          }
+                          return Container(
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 24.0,
+                              vertical: 8.0,
+                            ),
+                            child: CouponItem(
+                              translate: CouponTrans(context),
+                              getCurrencyFormatted: (data) {
+                                return PriceTools.getCurrencyFormatted(
+                                  data,
+                                  model.currencyRate,
+                                  currency: model.currency,
+                                )!;
+                              },
+                              coupon: coupon,
+                              onSelect: (couponCode) {
+                                Navigator.of(context).pop();
+                                Services()
+                                    .firebase
+                                    .firebaseAnalytics
+                                    ?.logSelectPromotion(
+                                        promotionId: coupon.code,
+                                        promotionName: _getCouponTypeTitle(
+                                            coupon, CouponTrans(context)));
+                                widget.onSelect?.call(couponCode);
+                              },
+                              email: email,
+                              isFromCart: widget.isFromCart,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
             ),
           ),
         ],

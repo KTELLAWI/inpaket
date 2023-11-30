@@ -1,3 +1,5 @@
 part of '../../boxes.dart';
 
-extension BlogCacheExtension on CacheBox {}
+extension BlogCacheExtension on CacheBox {
+
+}

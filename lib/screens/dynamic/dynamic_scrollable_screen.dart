@@ -117,6 +117,7 @@ class DynamicScrollableScreenState extends BaseScreen<DynamicScrollableScreen>
       children: [
         if (configs['Background'] != null)
           HomeBackground(config: pageConfig.background),
+
         PrimaryScrollController(
           controller: ScrollController(),
           child: HomeLayout(

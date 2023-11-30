@@ -1,33 +1,36 @@
 import 'package:flutter/material.dart';
 
 import '../../common/config/models/general_setting_item.dart';
+import '../../common/tools.dart';
 import 'general_widget.dart';
 
-class GeneralCategoryWidget extends GeneralWidget {
-  const GeneralCategoryWidget(
-      {required GeneralSettingItem? item,
-      Color? iconColor,
-      TextStyle? textStyle,
-      bool useTile = false,
-      super.cardStyle,
-      Function()? onNavigator})
-      : super(
-          onNavigator: onNavigator,
-          item: item,
-          iconColor: iconColor,
-          textStyle: textStyle,
-          useTile: useTile,
-        );
+class GeneralCategoryWidget extends StatelessWidget {
+  final bool useTile;
+  final Color? iconColor;
+  final TextStyle? textStyle;
+  final GeneralSettingItem? item;
+
+  const GeneralCategoryWidget({
+    required this.item,
+    this.iconColor,
+    this.textStyle,
+    this.useTile = false,
+  });
 
   @override
-  void onTap(BuildContext context) {
-    var config = Map<String, dynamic>.from({
-      'category': item?.category,
-      'tag': item?.tag,
-    });
-    config.removeWhere((key, value) => value == null);
-    if (config.isNotEmpty) {
-      onTapNavigateOptions(context: context, config: config);
-    }
+  Widget build(BuildContext context) {
+    return GeneralWidget(
+      item: item,
+      useTile: useTile,
+      iconColor: iconColor,
+      textStyle: textStyle,
+      onTap: () {
+        if (item?.category != null) {
+          NavigateTools.onTapNavigateOptions(context: context, config: {
+            'category': item?.category,
+          });
+        }
+      },
+    );
   }
 }

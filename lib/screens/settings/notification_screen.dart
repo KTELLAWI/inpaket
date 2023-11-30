@@ -7,8 +7,8 @@ import '../../common/constants.dart';
 import '../../generated/l10n.dart';
 import '../../models/index.dart' show FStoreNotificationItem;
 import '../../models/notification_model.dart';
+import '../../modules/firebase/firebase_service.dart';
 import '../../screens/common/app_bar_mixin.dart';
-import '../../services/firebase_service.dart';
 import '../../widgets/common/flux_image.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -231,9 +231,8 @@ class _NotificationScreenState extends State<NotificationScreen>
 
   void onTapMessage(FStoreNotificationItem data) async {
     final url = data.dynamicLink;
-    final uri = url?.toUri();
-    if (uri != null) {
-      await FirebaseServices().dynamicLinks?.handleDynamicLink(uri, context);
+    if (url != null) {
+      await FirebaseServices().dynamicLinks?.handleDynamicLink(url, context);
       return;
     }
     await showDialog(

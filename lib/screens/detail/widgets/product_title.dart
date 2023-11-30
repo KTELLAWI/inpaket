@@ -88,8 +88,9 @@ class _ProductTitleState extends BaseScreen<ProductTitle> {
         ?.millisecondsSinceEpoch;
     final countDown =
         (dateOnSaleTo ?? 0) - DateTime.now().millisecondsSinceEpoch;
-    var isShowCountDown =
-        kSaleOffProduct.showCountDown && dateOnSaleTo != null && countDown > 0;
+    var isShowCountDown = kSaleOffProduct.showCountDown &&
+        dateOnSaleTo != null &&
+        countDown > 0;
 
     var isSaleOff = (onSale &&
             widget.product!.type != 'grouped' &&

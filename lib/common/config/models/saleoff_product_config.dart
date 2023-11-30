@@ -6,7 +6,7 @@ class SaleoffProductConfig {
   SaleoffProductConfig({
     this.showCountDown = true,
     this.hideEmptySaleOffLayout = false,
-    this.color,
+    this.color ,
   });
 
   SaleoffProductConfig.fromJson(dynamic json) {
@@ -14,7 +14,7 @@ class SaleoffProductConfig {
     hideEmptySaleOffLayout = json['HideEmptySaleOffLayout'] ?? false;
     color = json['Color'];
   }
-
+  
   Map toJson() {
     var map = <String, dynamic>{};
     map['ShowCountDown'] = showCountDown;
@@ -24,12 +24,10 @@ class SaleoffProductConfig {
     return map;
   }
 
-  SaleoffProductConfig copyWith(
-      {bool? showCountDown, bool? hideEmptySaleOffLayout, String? color}) {
+  SaleoffProductConfig copyWith({bool? showCountDown, bool? hideEmptySaleOffLayout, String? color}) {
     return SaleoffProductConfig(
       showCountDown: showCountDown ?? this.showCountDown,
-      hideEmptySaleOffLayout:
-          hideEmptySaleOffLayout ?? this.hideEmptySaleOffLayout,
+      hideEmptySaleOffLayout: hideEmptySaleOffLayout ?? this.hideEmptySaleOffLayout,
       color: color ?? this.color,
     );
   }

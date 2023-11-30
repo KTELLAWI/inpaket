@@ -160,9 +160,12 @@ class _BlogListBackdropState extends State<BlogListBackdrop> {
     }
 
     return SmartRefresher(
-      header: const MaterialClassicHeader(),
+      header: MaterialClassicHeader(
+        color: Theme.of(context).colorScheme.secondary,
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
       enablePullDown: true,
-      enablePullUp: !(widget.isEnd ?? false),
+      enablePullUp: true,
       controller: _refreshController,
       onRefresh: _onRefresh,
       onLoading: _onLoading,

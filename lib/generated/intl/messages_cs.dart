@@ -30,95 +30,79 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m4(currency) => "Měna změněna na ${currency}";
 
-  static String m5(priceRate, pointRate) => "${priceRate} = ${pointRate} bodů";
+  static String m5(currency) => "${currency} není podporováno";
 
-  static String m6(country) => "${country} země není podporována";
+  static String m6(day) => " Před${day} dny";
 
-  static String m7(currency) => "${currency} není podporováno";
+  static String m7(total) => "~${total} km";
 
-  static String m8(day) => " Před${day} dny";
+  static String m8(timeLeft) => "Končí za ${timeLeft}";
 
-  static String m9(total) => "~${total} km";
+  static String m9(captcha) => "Zadejte ${captcha} pro potvrzení:";
 
-  static String m10(timeLeft) => "Končí za ${timeLeft}";
+  static String m10(message) => "Chyba: ${message}";
 
-  static String m11(captcha) => "Zadejte ${captcha} pro potvrzení:";
+  static String m11(time) => "Končí za ${time}";
 
-  static String m12(message) => "Chyba: ${message}";
+  static String m12(total) => ">${total} km";
 
-  static String m13(time) => "Končí za ${time}";
+  static String m13(hour) => " Před${hour} hodinami";
 
-  static String m14(total) => ">${total} km";
-
-  static String m15(hour) => " Před${hour} hodinami";
-
-  static String m16(message) =>
+  static String m14(message) =>
       "Během žádosti o data došlo k problému s aplikací. O vyřešení problémů se obraťte na správce: ${message}";
 
-  static String m17(currency, amount) =>
-      "Maximální částka pro použití této platby je ${currency} ${amount}";
+  static String m15(size) => "Maximální velikost souboru: ${size} MB";
 
-  static String m18(size) => "Maximální velikost souboru: ${size} MB";
+  static String m16(minute) => " Před${minute} minutami";
 
-  static String m19(currency, amount) =>
-      "Minimální částka pro použití této platby je ${currency} ${amount}";
+  static String m17(month) => " Před${month} měsíci";
 
-  static String m20(minute) => " Před${minute} minutami";
+  static String m18(store) => "Více od uživatele ${store}";
 
-  static String m21(month) => " Před${month} měsíci";
+  static String m19(itemCount) => " Položky:${itemCount} ";
 
-  static String m22(store) => "Více od uživatele ${store}";
+  static String m20(price) => "Celkem možností: ${price}";
 
-  static String m23(itemCount) => " Položky:${itemCount} ";
+  static String m21(total) => "Množství: ${total}";
 
-  static String m24(price) => "Celkem možností: ${price}";
+  static String m22(percent) => "Výprodej ${percent}%";
 
-  static String m25(amount) => "Zaplatit ${amount}";
+  static String m23(second) => " Před${second} s";
 
-  static String m26(total) => "Množství: ${total}";
-
-  static String m27(percent) => "Výprodej ${percent}%";
-
-  static String m28(second) => " Před${second} s";
-
-  static String m29(totalCartQuantity) =>
+  static String m24(totalCartQuantity) =>
       "Nákupní košík, položky: ${totalCartQuantity} ";
 
-  static String m30(numberOfUnitsSold) => "Prodáno: ${numberOfUnitsSold}";
+  static String m25(numberOfUnitsSold) => "Prodáno: ${numberOfUnitsSold}";
 
-  static String m31(fieldName) => "Pole ${fieldName} je povinné";
+  static String m26(fieldName) => "Pole ${fieldName} je povinné";
 
-  static String m32(total) => "${total} produktů";
+  static String m27(total) => "${total} produktů";
 
-  static String m33(maxPointDiscount, maxPriceDiscount) =>
-      "Použijte maximálně ${maxPointDiscount} bodů pro slevu ${maxPriceDiscount} na tuto objednávku!";
+  static String m28(date) => "Platí do ${date}";
 
-  static String m34(date) => "Platí do ${date}";
+  static String m29(message) => "Upozornění: ${message}";
 
-  static String m35(message) => "Upozornění: ${message}";
+  static String m30(default_currency) =>
+      "Aktuálně vybraná měna není pro funkci Peněženka k dispozici, změňte ji na ${default_currency}";
 
-  static String m36(defaultCurrency) =>
-      "Aktuálně vybraná měna není pro funkci Peněženka k dispozici, změňte ji na ${defaultCurrency}";
+  static String m31(length) => "Našli jsme ${length} produktů";
 
-  static String m37(length) => "Našli jsme ${length} produktů";
+  static String m32(week) => "Týden ${week}";
 
-  static String m38(week) => "Týden ${week}";
+  static String m33(year) => " Před${year} lety";
 
-  static String m39(name) => "Vítejte ${name}";
-
-  static String m40(year) => " Před${year} lety";
-
-  static String m41(total) => "Přiřadili jste k objednávce č.${total}";
+  static String m34(total) => "Přiřadili jste k objednávce č.${total}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "UserNameInCorrect": MessageLookupByLibrary.simpleMessage(
+            "Uživatelské jméno nebo heslo je nesprávné"),
         "aboutUs": MessageLookupByLibrary.simpleMessage("O nás"),
         "account": MessageLookupByLibrary.simpleMessage("Účet"),
         "accountDeleteDescription": MessageLookupByLibrary.simpleMessage(
             "Smazáním vašeho účtu odstraníte osobní údaje z naší databáze. Váš e-mail bude trvale rezervován a stejný e-mail nelze znovu použít k registraci nového účtu."),
         "accountIsPendingApproval":
             MessageLookupByLibrary.simpleMessage("Účet čeká na schválení."),
-        "accountNumber": MessageLookupByLibrary.simpleMessage("Číslo účtu"),
         "accountSetup": MessageLookupByLibrary.simpleMessage("Nastavení účtu"),
         "active": MessageLookupByLibrary.simpleMessage("Aktivní"),
         "activeFor": m0,
@@ -200,7 +184,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "bagsCollections":
             MessageLookupByLibrary.simpleMessage("Kolekce Gears"),
         "balance": MessageLookupByLibrary.simpleMessage("Zůstatek"),
-        "bank": MessageLookupByLibrary.simpleMessage("banka"),
         "bannerListType":
             MessageLookupByLibrary.simpleMessage("Typ seznamu bannerů"),
         "bannerType": MessageLookupByLibrary.simpleMessage("Typ banneru"),
@@ -208,8 +191,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Bannerová URL na YouTube"),
         "basicInformation":
             MessageLookupByLibrary.simpleMessage("Základní informace"),
-        "becomeAVendor":
-            MessageLookupByLibrary.simpleMessage("Staňte se prodejcem"),
         "bengali": MessageLookupByLibrary.simpleMessage("bengálský"),
         "billingAddress":
             MessageLookupByLibrary.simpleMessage("Fakturační adresa"),
@@ -238,7 +219,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "brazil": MessageLookupByLibrary.simpleMessage("portugalština"),
         "burmese": MessageLookupByLibrary.simpleMessage("Barmský"),
         "buyNow": MessageLookupByLibrary.simpleMessage("Koupit hned"),
-        "by": MessageLookupByLibrary.simpleMessage("podle"),
         "byCategory": MessageLookupByLibrary.simpleMessage("Podle kategorie"),
         "byPrice": MessageLookupByLibrary.simpleMessage("Podle ceny"),
         "bySignup": MessageLookupByLibrary.simpleMessage(
@@ -246,8 +226,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "byTag": MessageLookupByLibrary.simpleMessage("Podle značky"),
         "call": MessageLookupByLibrary.simpleMessage("Volání"),
         "callTo": MessageLookupByLibrary.simpleMessage("Zavolejte"),
-        "callToVendor":
-            MessageLookupByLibrary.simpleMessage("Zavolejte majiteli prodejny"),
         "canNotCreateOrder":
             MessageLookupByLibrary.simpleMessage("Nelze vytvořit objednávku"),
         "canNotCreateUser":
@@ -262,8 +240,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "Tuto aplikaci nelze spustit, ujistěte se, že je vaše nastavení na config.dart správné"),
         "canNotLoadThisLink":
             MessageLookupByLibrary.simpleMessage("Tento odkaz nelze načíst"),
-        "canNotPlayVideo": MessageLookupByLibrary.simpleMessage(
-            "Je nám líto, toto video nelze přehrát."),
         "canNotSaveOrder": MessageLookupByLibrary.simpleMessage(
             "Objednávku nelze uložit na web"),
         "canNotUpdateInfo": MessageLookupByLibrary.simpleMessage(
@@ -281,18 +257,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "categories": MessageLookupByLibrary.simpleMessage("Kategorie"),
         "category": MessageLookupByLibrary.simpleMessage("Kategorie"),
         "change": MessageLookupByLibrary.simpleMessage("Změna"),
-        "changeLanguage": MessageLookupByLibrary.simpleMessage("Změnit jazyk"),
         "changePrinter":
             MessageLookupByLibrary.simpleMessage("Změnit tiskárnu"),
         "changedCurrencyTo": m4,
         "chat": MessageLookupByLibrary.simpleMessage("Chat"),
-        "chatGPT": MessageLookupByLibrary.simpleMessage("Chat GPT"),
         "chatListScreen": MessageLookupByLibrary.simpleMessage("Zprávy"),
         "chatViaFacebook": MessageLookupByLibrary.simpleMessage(
             "Chatujte přes Facebook Messenger"),
         "chatViaWhatApp":
             MessageLookupByLibrary.simpleMessage("Chatujte přes WhatsApp"),
-        "chatWithBot": MessageLookupByLibrary.simpleMessage("Chatujte s Botem"),
         "chatWithStoreOwner": MessageLookupByLibrary.simpleMessage(
             "Chatujte s majitelem obchodu"),
         "checkConfirmLink": MessageLookupByLibrary.simpleMessage(
@@ -320,8 +293,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Pole je povinné"),
         "clear": MessageLookupByLibrary.simpleMessage("Průhledná"),
         "clearCart": MessageLookupByLibrary.simpleMessage("Vymazat košík"),
-        "clearConversation":
-            MessageLookupByLibrary.simpleMessage("Jasná konverzace"),
         "close": MessageLookupByLibrary.simpleMessage("Zavřít"),
         "closeNow": MessageLookupByLibrary.simpleMessage("Nyní zavřeno"),
         "codExtraFee":
@@ -340,8 +311,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "Po doplnění bude košík vymazán."),
         "confirmClearTheCart": MessageLookupByLibrary.simpleMessage(
             "Opravdu chcete vymazat košík?"),
-        "confirmDelete": MessageLookupByLibrary.simpleMessage(
-            "Opravdu to chcete smazat? Tuto akci nelze vrátit zpět."),
         "confirmDeleteItem": MessageLookupByLibrary.simpleMessage(
             "Opravdu chcete tuto položku smazat?"),
         "connect": MessageLookupByLibrary.simpleMessage("Připojit"),
@@ -355,11 +324,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Pokračovat k dopravě"),
         "continues": MessageLookupByLibrary.simpleMessage("Pokračovat"),
         "conversations": MessageLookupByLibrary.simpleMessage("Konverzace"),
-        "convertPoint": m5,
-        "copied": MessageLookupByLibrary.simpleMessage("kopírovat"),
-        "copy": MessageLookupByLibrary.simpleMessage("kopírovat"),
         "country": MessageLookupByLibrary.simpleMessage("Země"),
-        "countryIsNotSupported": m6,
         "countryIsRequired":
             MessageLookupByLibrary.simpleMessage("Pole je povinné"),
         "couponCode": MessageLookupByLibrary.simpleMessage("Kód kupónu"),
@@ -381,12 +346,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Vytvořte všechny varianty"),
         "createdOn": MessageLookupByLibrary.simpleMessage("Vytvořeno dne:"),
         "currencies": MessageLookupByLibrary.simpleMessage("Měny"),
-        "currencyIsNotSupported": m7,
+        "currencyIsNotSupported": m5,
         "currentPassword":
             MessageLookupByLibrary.simpleMessage("Aktuální heslo"),
         "currentlyWeOnlyHave":
             MessageLookupByLibrary.simpleMessage("V současné době máme pouze"),
-        "customer": MessageLookupByLibrary.simpleMessage("Zákazník"),
         "customerDetail":
             MessageLookupByLibrary.simpleMessage("Podrobnosti o zákazníkovi"),
         "customerNote":
@@ -408,7 +372,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dateTime": MessageLookupByLibrary.simpleMessage("Čas schůzky"),
         "dateWiseClose":
             MessageLookupByLibrary.simpleMessage("Datum moudře zavřít"),
-        "daysAgo": m8,
+        "daysAgo": m6,
         "debit": MessageLookupByLibrary.simpleMessage("Debet"),
         "decline": MessageLookupByLibrary.simpleMessage("pokles"),
         "delete": MessageLookupByLibrary.simpleMessage("Odstranit"),
@@ -436,7 +400,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "discount": MessageLookupByLibrary.simpleMessage("Sleva"),
         "displayName":
             MessageLookupByLibrary.simpleMessage("Zobrazovaný název"),
-        "distance": m9,
+        "distance": m7,
         "doNotAnyTransactions": MessageLookupByLibrary.simpleMessage(
             "Zatím nemáte žádné transakce"),
         "doYouWantToExitApp":
@@ -482,19 +446,13 @@ class MessageLookup extends MessageLookupByLibrary {
             "Uživatelské jméno/e -mail je prázdný"),
         "emptyWishlistSubtitle": MessageLookupByLibrary.simpleMessage(
             "Klepněte na libovolné srdce vedle oblíbeného produktu. Zde je pro vás uložíme!"),
-        "enableForCheckout":
-            MessageLookupByLibrary.simpleMessage("Povolit pro službu Checkout"),
-        "enableForLogin":
-            MessageLookupByLibrary.simpleMessage("Povolit pro přihlášení"),
-        "enableForWallet":
-            MessageLookupByLibrary.simpleMessage("Povolit pro Peněženku"),
         "enableVacationMode":
             MessageLookupByLibrary.simpleMessage("Povolit prázdninový režim"),
         "endDateCantBeAfterFirstDate": MessageLookupByLibrary.simpleMessage(
             "Vyberte datum po prvním datu"),
-        "endsIn": m10,
+        "endsIn": m8,
         "english": MessageLookupByLibrary.simpleMessage("Angličtina"),
-        "enterCaptcha": m11,
+        "enterCaptcha": m9,
         "enterSendedCode":
             MessageLookupByLibrary.simpleMessage("Zadejte kód odeslaný na"),
         "enterYourEmail":
@@ -513,7 +471,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Začněte zadáním svého telefonního čísla."),
         "enterYourPhoneNumber":
             MessageLookupByLibrary.simpleMessage("Vložte své telefonní číslo"),
-        "error": m12,
+        "error": m10,
         "errorAmountTransfer": MessageLookupByLibrary.simpleMessage(
             "Zadaná částka je větší než aktuální částka peněženky. Prosím zkuste to znovu!"),
         "errorEmailFormat": MessageLookupByLibrary.simpleMessage(
@@ -528,7 +486,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "expiredDate":
             MessageLookupByLibrary.simpleMessage("Datum vypršení platnosti"),
         "expiredDateHint": MessageLookupByLibrary.simpleMessage("MM / RR"),
-        "expiringInTime": m13,
+        "expiringInTime": m11,
         "external": MessageLookupByLibrary.simpleMessage("Externí"),
         "extraServices":
             MessageLookupByLibrary.simpleMessage("Doplňkové služby"),
@@ -541,8 +499,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "failedToLoadImage": MessageLookupByLibrary.simpleMessage(
             "Načtení obrázku se nezdařilo"),
         "favorite": MessageLookupByLibrary.simpleMessage("Oblíbený"),
-        "featureNotAvailable":
-            MessageLookupByLibrary.simpleMessage("Funkce není k dispozici"),
         "featureProducts":
             MessageLookupByLibrary.simpleMessage("Hlavní produkty"),
         "featured": MessageLookupByLibrary.simpleMessage("Doporučené"),
@@ -553,8 +509,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "Odeslání souboru se nezdařilo!"),
         "files": MessageLookupByLibrary.simpleMessage("Soubory"),
         "filter": MessageLookupByLibrary.simpleMessage("Filtr"),
-        "fingerprintsTouchID":
-            MessageLookupByLibrary.simpleMessage("Otisky prstů, Touch ID"),
         "finishSetup":
             MessageLookupByLibrary.simpleMessage("Dokončete nastavení"),
         "finnish": MessageLookupByLibrary.simpleMessage("Finština"),
@@ -596,7 +550,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Vraťte se ke kontrole"),
         "goBackToShipping":
             MessageLookupByLibrary.simpleMessage("Vraťte se k odeslání"),
-        "greaterDistance": m14,
+        "greaterDistance": m12,
         "greek": MessageLookupByLibrary.simpleMessage("řecký"),
         "grossSales": MessageLookupByLibrary.simpleMessage("Hrubé tržby"),
         "grouped": MessageLookupByLibrary.simpleMessage("Seskupeny"),
@@ -614,15 +568,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "historyTransaction": MessageLookupByLibrary.simpleMessage("Dějiny"),
         "home": MessageLookupByLibrary.simpleMessage("Domů"),
         "hour": MessageLookupByLibrary.simpleMessage("Hodina"),
-        "hoursAgo": m15,
+        "hoursAgo": m13,
         "hungarian": MessageLookupByLibrary.simpleMessage("maďarský"),
         "hungary": MessageLookupByLibrary.simpleMessage("maďarský"),
         "iAgree": MessageLookupByLibrary.simpleMessage("Souhlasím s"),
         "imIn": MessageLookupByLibrary.simpleMessage("jdu do toho"),
         "imageFeature": MessageLookupByLibrary.simpleMessage("Funkce obrázku"),
         "imageGallery": MessageLookupByLibrary.simpleMessage("Galerie Obrázků"),
-        "imageGenerate":
-            MessageLookupByLibrary.simpleMessage("Generování obrázku"),
         "imageNetwork": MessageLookupByLibrary.simpleMessage("Obrazová síť"),
         "inStock": MessageLookupByLibrary.simpleMessage("Skladem"),
         "incorrectPassword":
@@ -674,19 +626,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Seznam bannerového videa"),
         "listMessages":
             MessageLookupByLibrary.simpleMessage("Upozorňovat na zprávy"),
-        "listening": MessageLookupByLibrary.simpleMessage("Naslouchání..."),
         "loadFail":
             MessageLookupByLibrary.simpleMessage("Načtení se nezdařilo!"),
         "loading": MessageLookupByLibrary.simpleMessage("Načítání..."),
         "loadingLink":
             MessageLookupByLibrary.simpleMessage("Načítání odkazu..."),
         "location": MessageLookupByLibrary.simpleMessage("Umístění"),
-        "lockScreenAndSecurity": MessageLookupByLibrary.simpleMessage(
-            "Uzamčení obrazovky a zabezpečení"),
         "login": MessageLookupByLibrary.simpleMessage("Přihlásit se"),
         "loginCanceled":
             MessageLookupByLibrary.simpleMessage("Přihlášení je zrušeno"),
-        "loginErrorServiceProvider": m16,
+        "loginErrorServiceProvider": m14,
         "loginFailed":
             MessageLookupByLibrary.simpleMessage("Přihlášení selhalo!"),
         "loginInvalid": MessageLookupByLibrary.simpleMessage(
@@ -702,8 +651,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "logout": MessageLookupByLibrary.simpleMessage("Odhlásit se"),
         "malay": MessageLookupByLibrary.simpleMessage("Malay"),
         "manCollections": MessageLookupByLibrary.simpleMessage("Mužské sbírky"),
-        "manageApiKey":
-            MessageLookupByLibrary.simpleMessage("Správa klíče API"),
         "manageStock": MessageLookupByLibrary.simpleMessage("Spravovat akcie"),
         "map": MessageLookupByLibrary.simpleMessage("Mapa"),
         "marathi": MessageLookupByLibrary.simpleMessage("Marathi"),
@@ -713,22 +660,20 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Označit jako odeslané"),
         "markAsUnread":
             MessageLookupByLibrary.simpleMessage("Označit jako nepřečtené"),
-        "maxAmountForPayment": m17,
-        "maximumFileSizeMb": m18,
+        "maximumFileSizeMb": m15,
         "maybeLater": MessageLookupByLibrary.simpleMessage("Možná později"),
         "menuOrder": MessageLookupByLibrary.simpleMessage("Pořadí menu"),
         "message": MessageLookupByLibrary.simpleMessage("Zpráva"),
         "messageTo": MessageLookupByLibrary.simpleMessage("Odeslat zprávu"),
-        "minAmountForPayment": m19,
         "minimumQuantityIs":
             MessageLookupByLibrary.simpleMessage("Minimální množství je"),
-        "minutesAgo": m20,
+        "minutesAgo": m16,
         "mobileVerification":
             MessageLookupByLibrary.simpleMessage("Mobilní ověření"),
         "momentAgo": MessageLookupByLibrary.simpleMessage("před chvilkou"),
-        "monthsAgo": m21,
+        "monthsAgo": m17,
         "more": MessageLookupByLibrary.simpleMessage("...více"),
-        "moreFromStore": m22,
+        "moreFromStore": m18,
         "moreInformation":
             MessageLookupByLibrary.simpleMessage("více informací"),
         "morning": MessageLookupByLibrary.simpleMessage("ráno"),
@@ -741,9 +686,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Nemáte žádné produkty. Zkuste si jeden vytvořit!"),
         "myWallet": MessageLookupByLibrary.simpleMessage("Moje peněženka"),
         "myWishList": MessageLookupByLibrary.simpleMessage("Můj list přání"),
-        "nItems": m23,
+        "nItems": m19,
         "name": MessageLookupByLibrary.simpleMessage("Název"),
-        "nameOnCard": MessageLookupByLibrary.simpleMessage("Jméno na kartě"),
         "nearbyPlaces": MessageLookupByLibrary.simpleMessage("Místa v okolí"),
         "needToLoginAgain": MessageLookupByLibrary.simpleMessage(
             "Pro provedení aktualizace se musíte znovu přihlásit"),
@@ -777,8 +721,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "noListingNearby": MessageLookupByLibrary.simpleMessage(
             "V blízkosti není žádný zápis!"),
         "noOrders": MessageLookupByLibrary.simpleMessage("Žádné objednávky"),
-        "noPermissionToViewProduct": MessageLookupByLibrary.simpleMessage(
-            "Tento produkt je dostupný pro uživatele se specifickými rolemi. Pro přístup k tomuto produktu se prosím přihlaste pomocí příslušných přihlašovacích údajů nebo nás kontaktujte pro další informace."),
         "noPost": MessageLookupByLibrary.simpleMessage(
             "Opps, zdá se, že tato stránka již neexistuje!"),
         "noPrinters": MessageLookupByLibrary.simpleMessage("Žádné tiskárny"),
@@ -790,8 +732,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Není k dispozici žádný slot"),
         "noThanks": MessageLookupByLibrary.simpleMessage("Ne, díky"),
         "none": MessageLookupByLibrary.simpleMessage("žádný"),
-        "notFindResult": MessageLookupByLibrary.simpleMessage(
-            "Omlouváme se, nepodařilo se nám najít žádné výsledky."),
         "notFound": MessageLookupByLibrary.simpleMessage("Nenalezeno"),
         "note": MessageLookupByLibrary.simpleMessage("Poznámka k objednávce"),
         "noteMessage": MessageLookupByLibrary.simpleMessage("Poznámka"),
@@ -811,7 +751,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "openMap": MessageLookupByLibrary.simpleMessage("Mapa"),
         "openNow": MessageLookupByLibrary.simpleMessage("Otevřít teď"),
         "options": MessageLookupByLibrary.simpleMessage("Možnosti"),
-        "optionsTotal": m24,
+        "optionsTotal": m20,
         "or": MessageLookupByLibrary.simpleMessage("nebo"),
         "orLoginWith":
             MessageLookupByLibrary.simpleMessage("Nebo přihlaste se"),
@@ -865,12 +805,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "orderSummary":
             MessageLookupByLibrary.simpleMessage("Přehled objednávky"),
         "orderTotal": MessageLookupByLibrary.simpleMessage("Objednat celkem"),
-        "orderTracking":
-            MessageLookupByLibrary.simpleMessage("Sledování objednávky"),
         "orders": MessageLookupByLibrary.simpleMessage("Objednávky"),
         "otpVerification": MessageLookupByLibrary.simpleMessage("OTP ověření"),
-        "ourBankDetails":
-            MessageLookupByLibrary.simpleMessage("Naše bankovní údaje"),
         "outOfStock": MessageLookupByLibrary.simpleMessage("Vyprodáno"),
         "pageView": MessageLookupByLibrary.simpleMessage("Zobrazení stránky"),
         "paid": MessageLookupByLibrary.simpleMessage("Uhrazeno"),
@@ -881,11 +817,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "payByWallet":
             MessageLookupByLibrary.simpleMessage("Plaťte peněženkou"),
         "payNow": MessageLookupByLibrary.simpleMessage("Zaplať teď"),
-        "payWithAmount": m25,
         "payment": MessageLookupByLibrary.simpleMessage("Platba"),
         "paymentMethod": MessageLookupByLibrary.simpleMessage("Způsob platby"),
-        "paymentMethodIsNotSupported": MessageLookupByLibrary.simpleMessage(
-            "Tato platební metoda není podporována"),
         "paymentMethods":
             MessageLookupByLibrary.simpleMessage("Platební metody"),
         "paymentSuccessful":
@@ -1007,8 +940,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "Proměnná typu produktu potřebuje alespoň jednu variantu"),
         "productNeedNameAndPrice": MessageLookupByLibrary.simpleMessage(
             "Typ produktu jednoduchý potřebuje název a běžnou cenu"),
-        "productOutOfStock":
-            MessageLookupByLibrary.simpleMessage("Produkt není skladem"),
         "productRating": MessageLookupByLibrary.simpleMessage("Vase hodnoceni"),
         "productReview":
             MessageLookupByLibrary.simpleMessage("Produktová recenze"),
@@ -1018,9 +949,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pullToLoadMore":
             MessageLookupByLibrary.simpleMessage("Zatažením načtete více"),
         "qty": MessageLookupByLibrary.simpleMessage("Ks"),
-        "qtyTotal": m26,
-        "quantityProductExceedInStock": MessageLookupByLibrary.simpleMessage(
-            "Aktuální množství je větší než množství na skladě"),
+        "qtyTotal": m21,
         "rate": MessageLookupByLibrary.simpleMessage("Hodnotit"),
         "rateTheApp":
             MessageLookupByLibrary.simpleMessage("Ohodnoťte aplikaci"),
@@ -1055,10 +984,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "refundRequested":
             MessageLookupByLibrary.simpleMessage("Žádost o vrácení peněz"),
         "refunds": MessageLookupByLibrary.simpleMessage("Vrácení peněz"),
-        "regenerateResponse":
-            MessageLookupByLibrary.simpleMessage("Regenerovat odezvu"),
-        "registerAs":
-            MessageLookupByLibrary.simpleMessage("Zaregistrujte se jako"),
         "registerAsVendor": MessageLookupByLibrary.simpleMessage(
             "Zaregistrujte se jako uživatel dodavatele"),
         "registerFailed":
@@ -1094,7 +1019,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "reviews": MessageLookupByLibrary.simpleMessage("Recenze"),
         "romanian": MessageLookupByLibrary.simpleMessage("Rumunština"),
         "russian": MessageLookupByLibrary.simpleMessage("ruština"),
-        "sale": m27,
+        "sale": m22,
         "salePrice": MessageLookupByLibrary.simpleMessage("Prodejní cena"),
         "save": MessageLookupByLibrary.simpleMessage("Uložit"),
         "saveAddress": MessageLookupByLibrary.simpleMessage("Uložit adresu"),
@@ -1122,7 +1047,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "searchPlace": MessageLookupByLibrary.simpleMessage("Hledat místo"),
         "searchingAddress":
             MessageLookupByLibrary.simpleMessage("Vyhledávací adresa"),
-        "secondsAgo": m28,
+        "secondsAgo": m23,
         "seeAll": MessageLookupByLibrary.simpleMessage("Zobrazit vše"),
         "seeNewAppConfig": MessageLookupByLibrary.simpleMessage(
             "Pokračujte v zobrazování nového obsahu v aplikaci."),
@@ -1138,10 +1063,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "selectNone": MessageLookupByLibrary.simpleMessage("Vyberte žádný"),
         "selectPrinter":
             MessageLookupByLibrary.simpleMessage("Vyberte položku Tiskárna"),
-        "selectRole": MessageLookupByLibrary.simpleMessage("Vyberte roli"),
-        "selectStore": MessageLookupByLibrary.simpleMessage("Vyberte Obchod"),
         "selectTheColor": MessageLookupByLibrary.simpleMessage("Vyberte barvu"),
-        "selectTheFile": MessageLookupByLibrary.simpleMessage("Vyberte soubor"),
         "selectThePoint": MessageLookupByLibrary.simpleMessage("Vyberte bod"),
         "selectTheQuantity":
             MessageLookupByLibrary.simpleMessage("Vyberte množství"),
@@ -1150,15 +1072,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "send": MessageLookupByLibrary.simpleMessage("Poslat"),
         "sendBack": MessageLookupByLibrary.simpleMessage("Poslat zpět"),
         "sendSMSCode": MessageLookupByLibrary.simpleMessage("Získat kód"),
-        "sendSMStoVendor": MessageLookupByLibrary.simpleMessage(
-            "Odešlete SMS majiteli obchodu"),
         "serbian": MessageLookupByLibrary.simpleMessage("Srbština"),
         "sessionExpired":
             MessageLookupByLibrary.simpleMessage("Relace vypršela"),
         "setAnAddressInSettingPage": MessageLookupByLibrary.simpleMessage(
             "Nastavte prosím adresu na stránce nastavení"),
         "settings": MessageLookupByLibrary.simpleMessage("Nastavení"),
-        "setup": MessageLookupByLibrary.simpleMessage("Založit"),
         "share": MessageLookupByLibrary.simpleMessage("Sdílet"),
         "shipped": MessageLookupByLibrary.simpleMessage("Dodáno"),
         "shipping": MessageLookupByLibrary.simpleMessage("Lodní doprava"),
@@ -1173,15 +1092,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Nakupujte objednávky"),
         "shopPhone": MessageLookupByLibrary.simpleMessage("Obchod telefon"),
         "shopSlug": MessageLookupByLibrary.simpleMessage("Odkaz obchdu"),
-        "shoppingCartItems": m29,
+        "shoppingCartItems": m24,
         "shortDescription":
             MessageLookupByLibrary.simpleMessage("Stručný popis"),
         "showAllMyOrdered":
             MessageLookupByLibrary.simpleMessage("Zobrazit vše mé objednané"),
         "showDetails": MessageLookupByLibrary.simpleMessage("Ukázat detaily"),
         "showGallery": MessageLookupByLibrary.simpleMessage("Zobrazit galerii"),
-        "showLess": MessageLookupByLibrary.simpleMessage("Ukaž méně"),
-        "showMore": MessageLookupByLibrary.simpleMessage("Zobrazit více"),
         "signIn": MessageLookupByLibrary.simpleMessage("Přihlásit se"),
         "signInWithEmail":
             MessageLookupByLibrary.simpleMessage("Přihlaste se pomocí e-mailu"),
@@ -1194,15 +1111,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "slovak": MessageLookupByLibrary.simpleMessage("Slovák"),
         "smsCodeExpired": MessageLookupByLibrary.simpleMessage(
             "Platnost SMS kódu vypršela. Chcete-li to zkusit znovu, odešlete ověřovací kód znovu."),
-        "sold": m30,
+        "sold": m25,
         "soldBy": MessageLookupByLibrary.simpleMessage("Prodáno"),
         "somethingWrong": MessageLookupByLibrary.simpleMessage(
             "Něco se pokazilo. Prosím zkuste to znovu později."),
         "sortBy": MessageLookupByLibrary.simpleMessage("Seřazeno podle"),
-        "sortCode": MessageLookupByLibrary.simpleMessage("Krátký kód"),
         "spanish": MessageLookupByLibrary.simpleMessage("Španělština"),
-        "speechNotAvailable":
-            MessageLookupByLibrary.simpleMessage("Řeč není k dispozici"),
         "startExploring":
             MessageLookupByLibrary.simpleMessage("Začněte zkoumat"),
         "startShopping":
@@ -1262,20 +1176,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "tamil": MessageLookupByLibrary.simpleMessage("Tamil"),
         "tapSelectLocation": MessageLookupByLibrary.simpleMessage(
             "Klepnutím vyberte toto umístění"),
-        "tapTheMicToTalk": MessageLookupByLibrary.simpleMessage(
-            "Chcete-li mluvit, klepněte na mikrofon"),
         "tax": MessageLookupByLibrary.simpleMessage("Daň"),
         "thailand": MessageLookupByLibrary.simpleMessage("Thajské"),
-        "theFieldIsRequired": m31,
+        "theFieldIsRequired": m26,
         "thisDateIsNotAvailable":
             MessageLookupByLibrary.simpleMessage("Toto datum není k dispozici"),
         "thisFeatureDoesNotSupportTheCurrentLanguage":
             MessageLookupByLibrary.simpleMessage(
                 "Tato funkce nepodporuje aktuální jazyk"),
-        "thisIsCustomerRole":
-            MessageLookupByLibrary.simpleMessage("Toto je role zákazníka"),
-        "thisIsVendorRole":
-            MessageLookupByLibrary.simpleMessage("Toto je role dodavatele"),
         "thisPlatformNotSupportWebview": MessageLookupByLibrary.simpleMessage(
             "Tato platforma nepodporuje webový prohlížeč"),
         "thisProductNotSupport": MessageLookupByLibrary.simpleMessage(
@@ -1293,7 +1201,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "total": MessageLookupByLibrary.simpleMessage("Celkový"),
         "totalCartValue": MessageLookupByLibrary.simpleMessage(
             "Celková hodnota objednávky musí být minimálně"),
-        "totalProducts": m32,
+        "totalProducts": m27,
         "totalTax": MessageLookupByLibrary.simpleMessage("Celková daň"),
         "trackingNumberIs":
             MessageLookupByLibrary.simpleMessage("Sledovací číslo je"),
@@ -1320,8 +1228,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Přenos úspěšný"),
         "turkish": MessageLookupByLibrary.simpleMessage("turečtina"),
         "turnOnBle": MessageLookupByLibrary.simpleMessage("Zapněte Bluetooth"),
-        "typeAMessage":
-            MessageLookupByLibrary.simpleMessage("Napište zprávu..."),
         "typeYourMessage":
             MessageLookupByLibrary.simpleMessage("Zde Napište svou zprávu..."),
         "typing": MessageLookupByLibrary.simpleMessage("Psaní na stroji..."),
@@ -1346,7 +1252,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "uploadProduct": MessageLookupByLibrary.simpleMessage("Nahrát produkt"),
         "uploading": MessageLookupByLibrary.simpleMessage("Nahrávání"),
         "url": MessageLookupByLibrary.simpleMessage("Url"),
-        "useMaximumPointDiscount": m33,
         "useNow": MessageLookupByLibrary.simpleMessage("Použít teď"),
         "useThisImage":
             MessageLookupByLibrary.simpleMessage("Použijte tento obrázek"),
@@ -1360,10 +1265,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "vacationMessage":
             MessageLookupByLibrary.simpleMessage("Zpráva o dovolené"),
         "vacationType": MessageLookupByLibrary.simpleMessage("Typ dovolené"),
-        "validUntilDate": m34,
+        "validUntilDate": m28,
         "variable": MessageLookupByLibrary.simpleMessage("proměnná"),
         "variation": MessageLookupByLibrary.simpleMessage("Variace"),
-        "vendor": MessageLookupByLibrary.simpleMessage("Prodejce"),
         "vendorAdmin": MessageLookupByLibrary.simpleMessage("Prodejce Admin"),
         "vendorInfo":
             MessageLookupByLibrary.simpleMessage("Informace o prodejci"),
@@ -1388,11 +1292,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "walletBalance":
             MessageLookupByLibrary.simpleMessage("Zůstatek v peněžence"),
         "walletName": MessageLookupByLibrary.simpleMessage("Název peněženky"),
-        "warning": m35,
-        "warningCurrencyMessageForWallet": m36,
+        "warning": m29,
+        "warningCurrencyMessageForWallet": m30,
         "weFoundBlogs":
             MessageLookupByLibrary.simpleMessage("Našli jsme blog (y)"),
-        "weFoundProducts": m37,
+        "weFoundProducts": m31,
         "weNeedCameraAccessTo": MessageLookupByLibrary.simpleMessage(
             "K naskenování QR kódu nebo čárového kódu potřebujeme přístup k fotoaparátu."),
         "weSentAnOTPTo": MessageLookupByLibrary.simpleMessage(
@@ -1400,25 +1304,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "weWillSendYouNotification": MessageLookupByLibrary.simpleMessage(
             "Jakmile budou k dispozici nové produkty nebo nabídky, zašleme vám upozornění. Toto nastavení můžete kdykoli změnit v nastavení."),
         "webView": MessageLookupByLibrary.simpleMessage("Webové zobrazení"),
-        "week": m38,
+        "week": m32,
         "welcome": MessageLookupByLibrary.simpleMessage("Vítejte"),
-        "welcomeUser": m39,
-        "whichLanguageDoYouPrefer":
-            MessageLookupByLibrary.simpleMessage("Jaký jazyk preferujete?"),
-        "wholesaleRegisterMsg": MessageLookupByLibrary.simpleMessage(
-            "Obraťte se na administrátora, aby vaši registraci schválil."),
         "womanCollections": MessageLookupByLibrary.simpleMessage("Sbírky žen"),
         "writeComment":
             MessageLookupByLibrary.simpleMessage("Napište svůj komentář"),
         "writeYourNote":
             MessageLookupByLibrary.simpleMessage("Napište svou poznámku"),
-        "yearsAgo": m40,
+        "yearsAgo": m33,
         "yes": MessageLookupByLibrary.simpleMessage("Ano"),
         "youCanOnlyOrderSingleStore": MessageLookupByLibrary.simpleMessage(
             "Nakupovat lze pouze z jednoho obchodu."),
         "youCanOnlyPurchase":
             MessageLookupByLibrary.simpleMessage("Můžete pouze nakupovat"),
-        "youHaveAssignedToOrder": m41,
+        "youHaveAssignedToOrder": m34,
         "youHaveBeenSaveAddressYourLocal": MessageLookupByLibrary.simpleMessage(
             "Byla vám uložena adresa ve vašem místním umístění"),
         "youHavePoints":

@@ -19,8 +19,8 @@ class ProductRatingCount extends StatelessWidget {
         if (data == null) return const RatingCountSkeleton();
 
         return RatingCountWidget(
-          averageRating: product.averageRating,
-          ratingCount: product.ratingCount,
+          averageRating: product.averageRating ?? 0.0,
+          ratingCount: product.ratingCount ?? 0,
           rating1: data.oneStar,
           rating2: data.twoStar,
           rating3: data.threeStar,

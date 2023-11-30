@@ -8,12 +8,9 @@ import '../../generated/l10n.dart';
 import '../../models/user_model.dart';
 import '../../services/chat/constants/enums.dart';
 import '../../services/index.dart';
-import '../../widgets/common/flux_image.dart';
 import 'chat_mixin.dart';
 import 'chat_screen.dart';
 import 'scale_animation_mixin.dart';
-import '../../../models/index.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class BottomSheetSmartChat extends StatefulWidget {
   final EdgeInsets? margin;
@@ -27,10 +24,7 @@ class BottomSheetSmartChat extends StatefulWidget {
 
 class _BottomSheetSmartChatState extends State<BottomSheetSmartChat>
     with ChatMixin, ScaleAnimationMixin, SingleTickerProviderStateMixin {
-  List<Map> get optionData => widget.options ?? config.smartChat;//
-  //final listo = Provider.of<AppModel>(context,listen:false).appConfig!.jsonData!['smartChat'];
-
-  //config.smartChat;
+  List<Map> get optionData => widget.options ?? config.smartChat;
 
   @override
   void initState() {
@@ -42,26 +36,15 @@ class _BottomSheetSmartChatState extends State<BottomSheetSmartChat>
     });
   }
 
-  Widget getIconButton(Map option, double iconSize, Color iconColor) {
-    final iconData = option['iconData'];
-    final imageData = option['imageData'] ?? '';
-    final appUrl = option['app']?.toString();
-
-    var icon = imageData.isNotEmpty
-        ? FluxImage(
-            imageUrl: imageData,
-            width: iconSize,
-            fit: BoxFit.contain,
-            color: iconColor,
-          )
-        : Icon(
-           FontAwesomeIcons.whatsapp,
-            size: iconSize,
-            color: iconColor,
-          );
-    return GestureDetector(
-      child: icon,
-      onTap: () async {
+  IconButton getIconButton(
+      IconData? iconData, double iconSize, Color iconColor, String? appUrl) {
+    return IconButton(
+      icon: Icon(
+        iconData,
+        size: iconSize,
+        color: iconColor,
+      ),
+      onPressed: () async {
         if ((config.kConfigChat['UseRealtimeChat'] ?? false) &&
                 Services().firebase.isEnabled ||
             ServerConfig().isBuilder) {
@@ -121,8 +104,6 @@ class _BottomSheetSmartChatState extends State<BottomSheetSmartChat>
   }
 
   List<Map> getSmartChatOptions() {
-   // final listo = [];
-   // listo.add(optionData);
     final result = [];
     for (var i = 0; i < optionData.length; i++) {
       if (Services()
@@ -176,22 +157,18 @@ class _BottomSheetSmartChatState extends State<BottomSheetSmartChat>
 
     var list = getSmartChatOptions();
     if (list.isEmpty) return const SizedBox();
-    final chatList= Provider.of<AppModel>(context,listen:false).appConfig!.jsonData!['smartChat']!;
 
-  //  if (list.length == 1) {
-    //final option2 = chatList['smartChat'];
-   // printLog(option2);
-      final option = 
-      //chatList;
-      optionData[0];
+    if (list.length == 1) {
+      final option = optionData[0];
       final iconButton = getIconButton(
-        chatList,
+        option['iconData'],
         28,
         Theme.of(context).primaryColorLight,
+        option['app'],
       );
       return Align(
-        alignment:Alignment.bottomCenter,
-           // Tools.isRTL(context) ? Alignment.bottomLeft : Alignment.bottomRight,
+        alignment:
+            Tools.isRTL(context) ? Alignment.bottomLeft : Alignment.bottomRight,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: FloatingActionButton(
@@ -202,36 +179,36 @@ class _BottomSheetSmartChatState extends State<BottomSheetSmartChat>
           ),
         ),
       );
-  // }
+    }
 
-    // return Align(
-    //   alignment:Alignment.bottomCenter,
-    //       //Tools.isRTL(context) ? Alignment.bottomLeft : Alignment.bottomRight,
-    //   child: Padding(
-    //     padding: const EdgeInsets.all(14.0),
-    //     child: ScaleTransition(
-    //       scale: scaleAnimation,
-    //       alignment: Alignment.center,
-    //       child: FloatingActionButton(
-    //         heroTag: null,
-    //         backgroundColor: Theme.of(context).colorScheme.background,
-    //         onPressed: () async {
-    //           if (scaleAnimationController.isCompleted) {
-    //             Future.delayed(Duration.zero, scaleAnimationController.reverse);
-    //             await Future.delayed(const Duration(milliseconds: 80), () {});
-    //             await showActionSheet(context: context);
-    //             await scaleAnimationController.forward();
-    //           }
-    //         },
-    //         child: Icon(
-    //           Icons.chat_rounded,
-    //           color: Theme.of(context).primaryColor,
-    //           size: 35,
-    //         ),
-    //       ),
-    //     ),
-    //   ),
-    // );
+    return Align(
+      alignment:
+          Tools.isRTL(context) ? Alignment.bottomLeft : Alignment.bottomRight,
+      child: Padding(
+        padding: const EdgeInsets.all(14.0),
+        child: ScaleTransition(
+          scale: scaleAnimation,
+          alignment: Alignment.center,
+          child: FloatingActionButton(
+            heroTag: null,
+            backgroundColor: Theme.of(context).colorScheme.background,
+            onPressed: () async {
+              if (scaleAnimationController.isCompleted) {
+                Future.delayed(Duration.zero, scaleAnimationController.reverse);
+                await Future.delayed(const Duration(milliseconds: 80), () {});
+                await showActionSheet(context: context);
+                await scaleAnimationController.forward();
+              }
+            },
+            child: Icon(
+              Icons.chat_rounded,
+              color: Theme.of(context).primaryColor,
+              size: 35,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   @override

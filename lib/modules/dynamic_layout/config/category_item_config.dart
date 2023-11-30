@@ -20,15 +20,10 @@ class CategoryItemConfig {
   String? tag;
   bool? showText = false;
   bool showDescription = true;
-  bool productType = false;
   dynamic category;
   HexColor? backgroundColor;
   List<dynamic>? data;
   dynamic jsonData;
-  String? orderby;
-  String? order;
-  bool? onSale = false;
-  bool? isFeatured = false;
 
   CategoryItemConfig({
     this.originalColor,
@@ -44,10 +39,6 @@ class CategoryItemConfig {
     this.backgroundColor,
     this.jsonData,
     this.category,
-    this.orderby,
-    this.order,
-    this.onSale = false,
-    this.isFeatured = false,
   });
 
   CategoryItemConfig.fromJson(dynamic json) {
@@ -59,7 +50,6 @@ class CategoryItemConfig {
     showDescription =
         json['showDescription'] ?? showText ?? true; //old config use showText
     keepDefaultTitle = json['keepDefaultTitle'] ?? false;
-    productType = json['productType'] ?? false;
     colors =
         json['colors'] != null ? HexColor.fromListJson(json['colors']) : null;
     image = json['image'];
@@ -70,10 +60,6 @@ class CategoryItemConfig {
     backgroundColor = HexColor.fromJson(json['backgroundColor']);
     // ignore: prefer_initializing_formals
     jsonData = json;
-    orderby = json['orderby'];
-    order = json['order'];
-    onSale = json['onSale'] ?? false;
-    isFeatured = json['featured'] ?? false;
   }
 
   Map<String, dynamic> toJson() {
@@ -88,11 +74,6 @@ class CategoryItemConfig {
     map['tag'] = tag;
     map['category'] = category;
     map['showDescription'] = showDescription;
-    map['productType'] = productType;
-    map['orderby'] = orderby;
-    map['order'] = order;
-    map['onSale'] = onSale;
-    map['featured'] = isFeatured;
     return map;
   }
 

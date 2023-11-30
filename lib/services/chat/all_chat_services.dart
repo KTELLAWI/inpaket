@@ -1,17 +1,15 @@
 import 'dart:async';
 
-// // Zoho SalesIQ Mobilisten
+// Zoho SalesIQ Mobilisten
 // import '../../modules_ext/zoho_salesiq_mobilisten/salesiq_services.dart';
-// import '../../modules_ext/openai/chat_gpt/services/chat_gpt_service.dart';
 import 'chat_service.dart';
 import 'constants/enums.dart';
 
 class ChatServices {
   // Add or remove your chat provider here
   final Map<ChatProviders, ChatService> supportChatProviders = {
-    // // Zoho SalesIQ Mobilisten
+    // Zoho SalesIQ Mobilisten
     // ChatProviders.zohoSalesiq: SalesiqService(),
-    // ChatProviders.chatGPT: ChatGPTService(),
   };
 
   Future<void> init() async {

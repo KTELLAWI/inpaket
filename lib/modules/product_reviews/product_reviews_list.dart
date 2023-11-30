@@ -29,7 +29,6 @@ class ProductReviewsList extends StatelessWidget {
         if (reviews.isEmpty) return const SizedBox();
 
         return ExpansionInfo(
-          expand: kProductDetail.expandReviews,
           title: S.of(context).reviews,
           children: [
             const SizedBox(height: 16),

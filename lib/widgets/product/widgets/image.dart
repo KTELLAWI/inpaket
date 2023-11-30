@@ -13,7 +13,6 @@ class ProductImage extends StatelessWidget {
   final double? offset;
   final double? ratioProductImage;
   final Function() onTapProduct;
-  final Alignment? alignmentImage;
 
   const ProductImage({
     Key? key,
@@ -23,7 +22,6 @@ class ProductImage extends StatelessWidget {
     required this.width,
     required this.config,
     required this.onTapProduct,
-    this.alignmentImage,
   }) : super(key: key);
 
   @override
@@ -34,7 +32,8 @@ class ProductImage extends StatelessWidget {
         : 0.0;
 
     return ClipRRect(
-      borderRadius: BorderRadius.circular((config.borderRadius ?? 3)),
+      borderRadius: BorderRadius.circular(
+          ((config.borderRadius ?? config.borderRadius ?? 3) * 0.7)),
       child: Container(
         constraints: BoxConstraints(maxHeight: maxHeight),
         height: maxHeight,
@@ -64,7 +63,6 @@ class ProductImage extends StatelessWidget {
               : GestureDetector(
                   onTap: onTapProduct,
                   child: ImageResize(
-                    alignmentImage: alignmentImage,
                     url: product.imageFeature,
                     width: width,
                     size: kSize.medium,

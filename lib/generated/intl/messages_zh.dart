@@ -30,91 +30,76 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m4(currency) => "将货币更改为 ${currency}";
 
-  static String m5(priceRate, pointRate) => "${priceRate} = ${pointRate} 点";
+  static String m5(currency) => " 不支持${currency} ";
 
-  static String m6(country) => " 不支持${country} 个国家/地区";
+  static String m6(day) => "${day} 天前";
 
-  static String m7(currency) => " 不支持${currency} ";
+  static String m7(total) => "~${total} 公里";
 
-  static String m8(day) => "${day} 天前";
+  static String m8(timeLeft) => "以 ${timeLeft}结尾";
 
-  static String m9(total) => "~${total} 公里";
+  static String m9(captcha) => "输入 ${captcha} 确认：";
 
-  static String m10(timeLeft) => "以 ${timeLeft}结尾";
+  static String m10(message) => "Error: ${message}";
 
-  static String m11(captcha) => "输入 ${captcha} 确认：";
+  static String m11(time) => "在 ${time}期满";
 
-  static String m12(message) => "Error: ${message}";
+  static String m12(total) => ">${total} 公里";
 
-  static String m13(time) => "在 ${time}期满";
+  static String m13(hour) => "${hour} 小时前";
 
-  static String m14(total) => ">${total} 公里";
+  static String m14(message) => "应用程序在请求数据期间出现问题，请联系管理员解决问题： ${message}";
 
-  static String m15(hour) => "${hour} 小时前";
+  static String m15(size) => "档案大小上限： ${size} MB";
 
-  static String m16(message) => "应用程序在请求数据期间出现问题，请联系管理员解决问题： ${message}";
+  static String m16(minute) => "${minute} 分钟钱";
 
-  static String m17(currency, amount) => "使用此付款的最大金额为 ${currency} ${amount}";
+  static String m17(month) => "${month} 个月前";
 
-  static String m18(size) => "档案大小上限： ${size} MB";
+  static String m18(store) => " ${store}的更多内容";
 
-  static String m19(currency, amount) => "使用此付款的最低金额为 ${currency} ${amount}";
+  static String m19(itemCount) => "${itemCount} 件商品";
 
-  static String m20(minute) => "${minute} 分钟钱";
+  static String m20(price) => "选项总数： ${price}";
 
-  static String m21(month) => "${month} 个月前";
+  static String m21(total) => "数量： ${total}";
 
-  static String m22(store) => " ${store}的更多内容";
+  static String m22(percent) => "出售${percent}%";
 
-  static String m23(itemCount) => "${itemCount} 件商品";
+  static String m23(second) => "${second} 秒前";
 
-  static String m24(price) => "选项总数： ${price}";
+  static String m24(totalCartQuantity) => "购物车, ${totalCartQuantity} 件商品";
 
-  static String m25(amount) => "支付 ${amount}";
+  static String m25(numberOfUnitsSold) => "已售出： ${numberOfUnitsSold}";
 
-  static String m26(total) => "数量： ${total}";
+  static String m26(fieldName) => " ${fieldName} 字段是必需的";
 
-  static String m27(percent) => "出售${percent}%";
+  static String m27(total) => "${total} 个产品";
 
-  static String m28(second) => "${second} 秒前";
+  static String m28(date) => "有效期至 ${date}";
 
-  static String m29(totalCartQuantity) => "购物车, ${totalCartQuantity} 件商品";
+  static String m29(message) => "警告: ${message}";
 
-  static String m30(numberOfUnitsSold) => "已售出： ${numberOfUnitsSold}";
+  static String m30(default_currency) =>
+      "当前选择的货币不适用于电子钱包功能，请将其更改为 ${default_currency}";
 
-  static String m31(fieldName) => " ${fieldName} 字段是必需的";
+  static String m31(length) => "我们找到 ${length} 个产品";
 
-  static String m32(total) => "${total} 个产品";
+  static String m32(week) => "周 ${week}";
 
-  static String m33(maxPointDiscount, maxPriceDiscount) =>
-      "最多使用 ${maxPointDiscount} 点积分即可获得此订单的 ${maxPriceDiscount} 折扣！";
+  static String m33(year) => "${year} 年前";
 
-  static String m34(date) => "有效期至 ${date}";
-
-  static String m35(message) => "警告: ${message}";
-
-  static String m36(defaultCurrency) =>
-      "当前选择的货币不适用于电子钱包功能，请将其更改为 ${defaultCurrency}";
-
-  static String m37(length) => "我们找到 ${length} 个产品";
-
-  static String m38(week) => "周 ${week}";
-
-  static String m39(name) => "欢迎 ${name}";
-
-  static String m40(year) => "${year} 年前";
-
-  static String m41(total) => "您已指定订单 #${total}";
+  static String m34(total) => "您已指定订单 #${total}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "UserNameInCorrect": MessageLookupByLibrary.simpleMessage("用户名或密码不正确"),
         "aboutUs": MessageLookupByLibrary.simpleMessage("關於我們"),
         "account": MessageLookupByLibrary.simpleMessage("帐户"),
         "accountDeleteDescription": MessageLookupByLibrary.simpleMessage(
             "删除您的帐户会从我们的数据库中删除个人信息。您的电子邮件将被永久保留，并且不能重复使用同一电子邮件注册新帐户。"),
         "accountIsPendingApproval":
             MessageLookupByLibrary.simpleMessage("该帐户正在等待批准。"),
-        "accountNumber": MessageLookupByLibrary.simpleMessage("帐号"),
         "accountSetup": MessageLookupByLibrary.simpleMessage("帐户设置"),
         "active": MessageLookupByLibrary.simpleMessage("活性"),
         "activeFor": m0,
@@ -179,12 +164,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "backToWallet": MessageLookupByLibrary.simpleMessage("返回钱包"),
         "bagsCollections": MessageLookupByLibrary.simpleMessage("合金系列"),
         "balance": MessageLookupByLibrary.simpleMessage("平衡"),
-        "bank": MessageLookupByLibrary.simpleMessage("银行"),
         "bannerListType": MessageLookupByLibrary.simpleMessage("标语列表类型"),
         "bannerType": MessageLookupByLibrary.simpleMessage("横幅类型"),
         "bannerYoutubeURL": MessageLookupByLibrary.simpleMessage("横幅YouTube网址"),
         "basicInformation": MessageLookupByLibrary.simpleMessage("基本信息"),
-        "becomeAVendor": MessageLookupByLibrary.simpleMessage("成为供应商"),
         "bengali": MessageLookupByLibrary.simpleMessage("孟加拉"),
         "billingAddress": MessageLookupByLibrary.simpleMessage("帐单地址"),
         "bleHasNotBeenEnabled": MessageLookupByLibrary.simpleMessage("蓝牙尚未启用"),
@@ -205,14 +188,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "brazil": MessageLookupByLibrary.simpleMessage("葡萄牙语"),
         "burmese": MessageLookupByLibrary.simpleMessage("缅甸语"),
         "buyNow": MessageLookupByLibrary.simpleMessage("立即购买"),
-        "by": MessageLookupByLibrary.simpleMessage("通过"),
         "byCategory": MessageLookupByLibrary.simpleMessage("按类别"),
         "byPrice": MessageLookupByLibrary.simpleMessage("按价格"),
         "bySignup": MessageLookupByLibrary.simpleMessage("注册即表示您同意我们的"),
         "byTag": MessageLookupByLibrary.simpleMessage("按标签"),
         "call": MessageLookupByLibrary.simpleMessage("呼叫"),
         "callTo": MessageLookupByLibrary.simpleMessage("打电话给"),
-        "callToVendor": MessageLookupByLibrary.simpleMessage("致电店主"),
         "canNotCreateOrder": MessageLookupByLibrary.simpleMessage("无法创建订单"),
         "canNotCreateUser": MessageLookupByLibrary.simpleMessage("无法创建用户。"),
         "canNotGetPayments": MessageLookupByLibrary.simpleMessage("无法获取付款方式"),
@@ -221,7 +202,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "canNotLaunch": MessageLookupByLibrary.simpleMessage(
             "无法启动此应用，请确保您在config.dart上的设置正确"),
         "canNotLoadThisLink": MessageLookupByLibrary.simpleMessage("无法加载此链接"),
-        "canNotPlayVideo": MessageLookupByLibrary.simpleMessage("抱歉，这部影片无法播放。"),
         "canNotSaveOrder": MessageLookupByLibrary.simpleMessage("无法将订单保存到网站"),
         "canNotUpdateInfo": MessageLookupByLibrary.simpleMessage("无法更新用户信息。"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
@@ -236,16 +216,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "categories": MessageLookupByLibrary.simpleMessage("分类目录"),
         "category": MessageLookupByLibrary.simpleMessage("类别"),
         "change": MessageLookupByLibrary.simpleMessage("更改"),
-        "changeLanguage": MessageLookupByLibrary.simpleMessage("改变语言"),
         "changePrinter": MessageLookupByLibrary.simpleMessage("更换打印机"),
         "changedCurrencyTo": m4,
         "chat": MessageLookupByLibrary.simpleMessage("聊"),
-        "chatGPT": MessageLookupByLibrary.simpleMessage("聊天 GPT"),
         "chatListScreen": MessageLookupByLibrary.simpleMessage("聊天列表屏幕"),
         "chatViaFacebook":
             MessageLookupByLibrary.simpleMessage("通过Facebook Messenger聊天"),
         "chatViaWhatApp": MessageLookupByLibrary.simpleMessage("通过WhatsApp聊天"),
-        "chatWithBot": MessageLookupByLibrary.simpleMessage("与机器人聊天"),
         "chatWithStoreOwner": MessageLookupByLibrary.simpleMessage("与店主聊天"),
         "checkConfirmLink":
             MessageLookupByLibrary.simpleMessage("检查您的电子邮件以获取确认链接"),
@@ -266,7 +243,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "cityIsRequired": MessageLookupByLibrary.simpleMessage("必須填写城市字段"),
         "clear": MessageLookupByLibrary.simpleMessage("明确"),
         "clearCart": MessageLookupByLibrary.simpleMessage("清空购物车"),
-        "clearConversation": MessageLookupByLibrary.simpleMessage("清晰的对话"),
         "close": MessageLookupByLibrary.simpleMessage("关闭"),
         "closeNow": MessageLookupByLibrary.simpleMessage("现已关闭"),
         "codExtraFee": MessageLookupByLibrary.simpleMessage("COD 额外费用"),
@@ -283,8 +259,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("充值时将清空购物车。"),
         "confirmClearTheCart":
             MessageLookupByLibrary.simpleMessage("您确定要清除购物车吗？"),
-        "confirmDelete":
-            MessageLookupByLibrary.simpleMessage("你确定要删除这个吗？此操作无法撤消。"),
         "confirmDeleteItem":
             MessageLookupByLibrary.simpleMessage("您确定要删除此项目吗？"),
         "connect": MessageLookupByLibrary.simpleMessage("连"),
@@ -295,11 +269,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "continueToShipping": MessageLookupByLibrary.simpleMessage("继续运送"),
         "continues": MessageLookupByLibrary.simpleMessage("继续"),
         "conversations": MessageLookupByLibrary.simpleMessage("对话"),
-        "convertPoint": m5,
-        "copied": MessageLookupByLibrary.simpleMessage("复制"),
-        "copy": MessageLookupByLibrary.simpleMessage("复制"),
         "country": MessageLookupByLibrary.simpleMessage("国家"),
-        "countryIsNotSupported": m6,
         "countryIsRequired": MessageLookupByLibrary.simpleMessage("国家字段为必填項"),
         "couponCode": MessageLookupByLibrary.simpleMessage("优惠卷代码"),
         "couponHasBeenSavedSuccessfully":
@@ -315,10 +285,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "createVariants": MessageLookupByLibrary.simpleMessage("创建所有变体"),
         "createdOn": MessageLookupByLibrary.simpleMessage("创建于："),
         "currencies": MessageLookupByLibrary.simpleMessage("货币"),
-        "currencyIsNotSupported": m7,
+        "currencyIsNotSupported": m5,
         "currentPassword": MessageLookupByLibrary.simpleMessage("当前密码"),
         "currentlyWeOnlyHave": MessageLookupByLibrary.simpleMessage("目前我们只有"),
-        "customer": MessageLookupByLibrary.simpleMessage("顾客"),
         "customerDetail": MessageLookupByLibrary.simpleMessage("客户详情"),
         "customerNote": MessageLookupByLibrary.simpleMessage("客户须知"),
         "cvv": MessageLookupByLibrary.simpleMessage("CVV"),
@@ -337,7 +306,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dateStart": MessageLookupByLibrary.simpleMessage("开始日期"),
         "dateTime": MessageLookupByLibrary.simpleMessage("约会时间"),
         "dateWiseClose": MessageLookupByLibrary.simpleMessage("日期明智关闭"),
-        "daysAgo": m8,
+        "daysAgo": m6,
         "debit": MessageLookupByLibrary.simpleMessage("借方"),
         "decline": MessageLookupByLibrary.simpleMessage("下降"),
         "delete": MessageLookupByLibrary.simpleMessage("删除"),
@@ -361,7 +330,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "disablePurchase": MessageLookupByLibrary.simpleMessage("禁止购买"),
         "discount": MessageLookupByLibrary.simpleMessage("折扣"),
         "displayName": MessageLookupByLibrary.simpleMessage("顯示名稱"),
-        "distance": m9,
+        "distance": m7,
         "doNotAnyTransactions":
             MessageLookupByLibrary.simpleMessage("您还没有任何交易"),
         "doYouWantToExitApp": MessageLookupByLibrary.simpleMessage("是否要退出应用程序"),
@@ -398,15 +367,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "emptyUsername": MessageLookupByLibrary.simpleMessage("用戶名/电子邮件为空"),
         "emptyWishlistSubtitle":
             MessageLookupByLibrary.simpleMessage("轻按产品旁边的任何一个即可收藏。我们将在这里为您保存！"),
-        "enableForCheckout": MessageLookupByLibrary.simpleMessage("启用结帐"),
-        "enableForLogin": MessageLookupByLibrary.simpleMessage("启用登录"),
-        "enableForWallet": MessageLookupByLibrary.simpleMessage("为钱包启用"),
         "enableVacationMode": MessageLookupByLibrary.simpleMessage("开启假期模式"),
         "endDateCantBeAfterFirstDate":
             MessageLookupByLibrary.simpleMessage("请选择第一次约会之后的日期"),
-        "endsIn": m10,
+        "endsIn": m8,
         "english": MessageLookupByLibrary.simpleMessage("英语"),
-        "enterCaptcha": m11,
+        "enterCaptcha": m9,
         "enterSendedCode": MessageLookupByLibrary.simpleMessage("输入发送到的代码"),
         "enterYourEmail": MessageLookupByLibrary.simpleMessage("请输入你的电子游戏"),
         "enterYourEmailOrUsername":
@@ -419,7 +385,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("输入您的电话号码以开始使用。"),
         "enterYourPhoneNumber":
             MessageLookupByLibrary.simpleMessage("输入你的电话号码"),
-        "error": m12,
+        "error": m10,
         "errorAmountTransfer":
             MessageLookupByLibrary.simpleMessage("输入的金额大于当前钱包金额。请再试一次！"),
         "errorEmailFormat":
@@ -432,7 +398,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "expired": MessageLookupByLibrary.simpleMessage("过期"),
         "expiredDate": MessageLookupByLibrary.simpleMessage("到期日"),
         "expiredDateHint": MessageLookupByLibrary.simpleMessage("MM / YY"),
-        "expiringInTime": m13,
+        "expiringInTime": m11,
         "external": MessageLookupByLibrary.simpleMessage("外部"),
         "extraServices": MessageLookupByLibrary.simpleMessage("额外服务"),
         "failToAssign": MessageLookupByLibrary.simpleMessage("分配用户失败"),
@@ -441,7 +407,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("无法加载应用程序配置。请重试或重新启动您的应用程序。"),
         "failedToLoadImage": MessageLookupByLibrary.simpleMessage("无法加载图片"),
         "favorite": MessageLookupByLibrary.simpleMessage("喜爱"),
-        "featureNotAvailable": MessageLookupByLibrary.simpleMessage("功能不可用"),
         "featureProducts": MessageLookupByLibrary.simpleMessage("特色产品"),
         "featured": MessageLookupByLibrary.simpleMessage("精选"),
         "features": MessageLookupByLibrary.simpleMessage("特征"),
@@ -450,8 +415,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "fileUploadFailed": MessageLookupByLibrary.simpleMessage("文件上传失败！"),
         "files": MessageLookupByLibrary.simpleMessage("档"),
         "filter": MessageLookupByLibrary.simpleMessage("过滤"),
-        "fingerprintsTouchID":
-            MessageLookupByLibrary.simpleMessage("指纹、Touch ID"),
         "finishSetup": MessageLookupByLibrary.simpleMessage("完成设置"),
         "finnish": MessageLookupByLibrary.simpleMessage("芬兰"),
         "firstComment": MessageLookupByLibrary.simpleMessage("成为第一个评论这篇文章的人！"),
@@ -478,7 +441,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "goBackToAddress": MessageLookupByLibrary.simpleMessage("返回地址"),
         "goBackToReview": MessageLookupByLibrary.simpleMessage("返回查看"),
         "goBackToShipping": MessageLookupByLibrary.simpleMessage("返回运输"),
-        "greaterDistance": m14,
+        "greaterDistance": m12,
         "greek": MessageLookupByLibrary.simpleMessage("希腊语"),
         "grossSales": MessageLookupByLibrary.simpleMessage("总销售额"),
         "grouped": MessageLookupByLibrary.simpleMessage("分组"),
@@ -496,14 +459,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "historyTransaction": MessageLookupByLibrary.simpleMessage("历史"),
         "home": MessageLookupByLibrary.simpleMessage("家"),
         "hour": MessageLookupByLibrary.simpleMessage("小时"),
-        "hoursAgo": m15,
+        "hoursAgo": m13,
         "hungarian": MessageLookupByLibrary.simpleMessage("匈牙利"),
         "hungary": MessageLookupByLibrary.simpleMessage("Hungary"),
         "iAgree": MessageLookupByLibrary.simpleMessage("我同意"),
         "imIn": MessageLookupByLibrary.simpleMessage("算我一个"),
         "imageFeature": MessageLookupByLibrary.simpleMessage("图片特征"),
         "imageGallery": MessageLookupByLibrary.simpleMessage("图库"),
-        "imageGenerate": MessageLookupByLibrary.simpleMessage("图像生成"),
         "imageNetwork": MessageLookupByLibrary.simpleMessage("影像网络"),
         "inStock": MessageLookupByLibrary.simpleMessage("有现货"),
         "incorrectPassword": MessageLookupByLibrary.simpleMessage("密码错误"),
@@ -542,15 +504,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "listBannerType": MessageLookupByLibrary.simpleMessage("列出横幅广告类型"),
         "listBannerVideo": MessageLookupByLibrary.simpleMessage("列出横幅视频"),
         "listMessages": MessageLookupByLibrary.simpleMessage("通知消息"),
-        "listening": MessageLookupByLibrary.simpleMessage("听..."),
         "loadFail": MessageLookupByLibrary.simpleMessage("加载失败！请重试！"),
         "loading": MessageLookupByLibrary.simpleMessage("正在加载..."),
         "loadingLink": MessageLookupByLibrary.simpleMessage("正在加载链接..."),
         "location": MessageLookupByLibrary.simpleMessage("地点"),
-        "lockScreenAndSecurity": MessageLookupByLibrary.simpleMessage("锁屏和安全"),
         "login": MessageLookupByLibrary.simpleMessage("登陆"),
         "loginCanceled": MessageLookupByLibrary.simpleMessage("登录被取消了"),
-        "loginErrorServiceProvider": m16,
+        "loginErrorServiceProvider": m14,
         "loginFailed": MessageLookupByLibrary.simpleMessage("登录失败！"),
         "loginInvalid": MessageLookupByLibrary.simpleMessage("您无权使用此应用。"),
         "loginSuccess": MessageLookupByLibrary.simpleMessage("登录成功！"),
@@ -560,27 +520,24 @@ class MessageLookup extends MessageLookupByLibrary {
         "logout": MessageLookupByLibrary.simpleMessage("登出"),
         "malay": MessageLookupByLibrary.simpleMessage("马来语"),
         "manCollections": MessageLookupByLibrary.simpleMessage("男人收藏"),
-        "manageApiKey": MessageLookupByLibrary.simpleMessage("管理 API 密钥"),
         "manageStock": MessageLookupByLibrary.simpleMessage("管理库存"),
         "map": MessageLookupByLibrary.simpleMessage("地图"),
         "marathi": MessageLookupByLibrary.simpleMessage("马拉地语"),
         "markAsRead": MessageLookupByLibrary.simpleMessage("标记为已读"),
         "markAsShipped": MessageLookupByLibrary.simpleMessage("标记为已发货"),
         "markAsUnread": MessageLookupByLibrary.simpleMessage("标记为未读"),
-        "maxAmountForPayment": m17,
-        "maximumFileSizeMb": m18,
+        "maximumFileSizeMb": m15,
         "maybeLater": MessageLookupByLibrary.simpleMessage("也许以后"),
         "menuOrder": MessageLookupByLibrary.simpleMessage("菜单顺序"),
         "message": MessageLookupByLibrary.simpleMessage("信息"),
         "messageTo": MessageLookupByLibrary.simpleMessage("发送消息给"),
-        "minAmountForPayment": m19,
         "minimumQuantityIs": MessageLookupByLibrary.simpleMessage("最小数量是"),
-        "minutesAgo": m20,
+        "minutesAgo": m16,
         "mobileVerification": MessageLookupByLibrary.simpleMessage("手机验证"),
         "momentAgo": MessageLookupByLibrary.simpleMessage("刚才"),
-        "monthsAgo": m21,
+        "monthsAgo": m17,
         "more": MessageLookupByLibrary.simpleMessage("...更多"),
-        "moreFromStore": m22,
+        "moreFromStore": m18,
         "moreInformation": MessageLookupByLibrary.simpleMessage("更多信息"),
         "morning": MessageLookupByLibrary.simpleMessage("早上"),
         "mustSelectOneItem": MessageLookupByLibrary.simpleMessage("必须选择1项"),
@@ -591,9 +548,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("您没有任何产品。尝试创建一个！"),
         "myWallet": MessageLookupByLibrary.simpleMessage("我的钱包"),
         "myWishList": MessageLookupByLibrary.simpleMessage("我的收藏"),
-        "nItems": m23,
+        "nItems": m19,
         "name": MessageLookupByLibrary.simpleMessage("名称"),
-        "nameOnCard": MessageLookupByLibrary.simpleMessage("卡片上的名字"),
         "nearbyPlaces": MessageLookupByLibrary.simpleMessage("附近地点"),
         "needToLoginAgain": MessageLookupByLibrary.simpleMessage("您需要重新登录才能生效"),
         "netherlands": MessageLookupByLibrary.simpleMessage("荷兰"),
@@ -619,8 +575,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "noInternetConnection": MessageLookupByLibrary.simpleMessage("没有网络连接"),
         "noListingNearby": MessageLookupByLibrary.simpleMessage("附近没有列表！"),
         "noOrders": MessageLookupByLibrary.simpleMessage("沒有订单"),
-        "noPermissionToViewProduct": MessageLookupByLibrary.simpleMessage(
-            "该产品可供具有特定角色的用户使用。请使用适当的凭据登录以访问该产品或联系我们以获取更多信息。"),
         "noPost": MessageLookupByLibrary.simpleMessage("哎呀，这个页面好像不存在了！"),
         "noPrinters": MessageLookupByLibrary.simpleMessage("没有打印机"),
         "noProduct": MessageLookupByLibrary.simpleMessage("沒有产品"),
@@ -629,7 +583,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "noSlotAvailable": MessageLookupByLibrary.simpleMessage("无空位"),
         "noThanks": MessageLookupByLibrary.simpleMessage("不，谢谢"),
         "none": MessageLookupByLibrary.simpleMessage("没有"),
-        "notFindResult": MessageLookupByLibrary.simpleMessage("抱歉，我们找不到任何结果。"),
         "notFound": MessageLookupByLibrary.simpleMessage("未找到"),
         "note": MessageLookupByLibrary.simpleMessage("订购须知"),
         "noteMessage": MessageLookupByLibrary.simpleMessage("注意"),
@@ -647,7 +600,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "openMap": MessageLookupByLibrary.simpleMessage("打开地图"),
         "openNow": MessageLookupByLibrary.simpleMessage("现在开门了"),
         "options": MessageLookupByLibrary.simpleMessage("选项"),
-        "optionsTotal": m24,
+        "optionsTotal": m20,
         "or": MessageLookupByLibrary.simpleMessage("要么"),
         "orLoginWith": MessageLookupByLibrary.simpleMessage("或登录"),
         "orderConfirmation": MessageLookupByLibrary.simpleMessage("订单确认"),
@@ -687,10 +640,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "orderSuccessTitle2": MessageLookupByLibrary.simpleMessage("您的账户"),
         "orderSummary": MessageLookupByLibrary.simpleMessage("订购摘要"),
         "orderTotal": MessageLookupByLibrary.simpleMessage("合计订单"),
-        "orderTracking": MessageLookupByLibrary.simpleMessage("订单跟踪"),
         "orders": MessageLookupByLibrary.simpleMessage("命令"),
         "otpVerification": MessageLookupByLibrary.simpleMessage("一次性密码验证"),
-        "ourBankDetails": MessageLookupByLibrary.simpleMessage("我们的银行资料"),
         "outOfStock": MessageLookupByLibrary.simpleMessage("缺货"),
         "pageView": MessageLookupByLibrary.simpleMessage("页面预览"),
         "paid": MessageLookupByLibrary.simpleMessage("付费"),
@@ -699,11 +650,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "pasteYourImageUrl": MessageLookupByLibrary.simpleMessage("粘贴您的图片网址"),
         "payByWallet": MessageLookupByLibrary.simpleMessage("用钱包支付"),
         "payNow": MessageLookupByLibrary.simpleMessage("现在付款"),
-        "payWithAmount": m25,
         "payment": MessageLookupByLibrary.simpleMessage("付款"),
         "paymentMethod": MessageLookupByLibrary.simpleMessage("付款方法"),
-        "paymentMethodIsNotSupported":
-            MessageLookupByLibrary.simpleMessage("不支持此付款方式"),
         "paymentMethods": MessageLookupByLibrary.simpleMessage("支付方式"),
         "paymentSuccessful": MessageLookupByLibrary.simpleMessage("支付成功"),
         "pending": MessageLookupByLibrary.simpleMessage("有待"),
@@ -796,7 +744,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("产品类型变量至少需要一个变体"),
         "productNeedNameAndPrice":
             MessageLookupByLibrary.simpleMessage("产品类型简单需要名称和正常价格"),
-        "productOutOfStock": MessageLookupByLibrary.simpleMessage("有产品缺货"),
         "productRating": MessageLookupByLibrary.simpleMessage("你的评分"),
         "productReview": MessageLookupByLibrary.simpleMessage("产品审核"),
         "productType": MessageLookupByLibrary.simpleMessage("产品类别"),
@@ -804,9 +751,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "publish": MessageLookupByLibrary.simpleMessage("发布"),
         "pullToLoadMore": MessageLookupByLibrary.simpleMessage("拉动加载更多"),
         "qty": MessageLookupByLibrary.simpleMessage("数量"),
-        "qtyTotal": m26,
-        "quantityProductExceedInStock":
-            MessageLookupByLibrary.simpleMessage("当前数量多于库存数量"),
+        "qtyTotal": m21,
         "rate": MessageLookupByLibrary.simpleMessage("评分"),
         "rateTheApp": MessageLookupByLibrary.simpleMessage("评价应用程序"),
         "rateThisApp": MessageLookupByLibrary.simpleMessage("为这个应用软件评分"),
@@ -830,8 +775,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "refundRequest": MessageLookupByLibrary.simpleMessage("退款要求"),
         "refundRequested": MessageLookupByLibrary.simpleMessage("要求退款"),
         "refunds": MessageLookupByLibrary.simpleMessage("退款"),
-        "regenerateResponse": MessageLookupByLibrary.simpleMessage("重新生成响应"),
-        "registerAs": MessageLookupByLibrary.simpleMessage("注册为"),
         "registerAsVendor": MessageLookupByLibrary.simpleMessage("注册为供应商"),
         "registerFailed": MessageLookupByLibrary.simpleMessage("注册失败"),
         "registerSuccess": MessageLookupByLibrary.simpleMessage("注册成功"),
@@ -857,7 +800,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "reviews": MessageLookupByLibrary.simpleMessage("评测"),
         "romanian": MessageLookupByLibrary.simpleMessage("羅馬尼亞語"),
         "russian": MessageLookupByLibrary.simpleMessage("Russian"),
-        "sale": m27,
+        "sale": m22,
         "salePrice": MessageLookupByLibrary.simpleMessage("销售价格"),
         "save": MessageLookupByLibrary.simpleMessage("保存"),
         "saveAddress": MessageLookupByLibrary.simpleMessage("保存地址"),
@@ -877,7 +820,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "searchOrderId": MessageLookupByLibrary.simpleMessage("搜索订单ID ..."),
         "searchPlace": MessageLookupByLibrary.simpleMessage("搜索地点"),
         "searchingAddress": MessageLookupByLibrary.simpleMessage("搜索地址"),
-        "secondsAgo": m28,
+        "secondsAgo": m23,
         "seeAll": MessageLookupByLibrary.simpleMessage("查看全部"),
         "seeNewAppConfig":
             MessageLookupByLibrary.simpleMessage("继续在您的应用程序上查看新内容。"),
@@ -891,23 +834,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "selectImage": MessageLookupByLibrary.simpleMessage("选择图像"),
         "selectNone": MessageLookupByLibrary.simpleMessage("选择无"),
         "selectPrinter": MessageLookupByLibrary.simpleMessage("选择打印机"),
-        "selectRole": MessageLookupByLibrary.simpleMessage("选择角色"),
-        "selectStore": MessageLookupByLibrary.simpleMessage("选择店铺"),
         "selectTheColor": MessageLookupByLibrary.simpleMessage("选择顏色"),
-        "selectTheFile": MessageLookupByLibrary.simpleMessage("选择文件"),
         "selectThePoint": MessageLookupByLibrary.simpleMessage("选择点"),
         "selectTheQuantity": MessageLookupByLibrary.simpleMessage("选择数量"),
         "selectTheSize": MessageLookupByLibrary.simpleMessage("选择尺寸"),
         "send": MessageLookupByLibrary.simpleMessage("发送"),
         "sendBack": MessageLookupByLibrary.simpleMessage("退还"),
         "sendSMSCode": MessageLookupByLibrary.simpleMessage("获取代码"),
-        "sendSMStoVendor": MessageLookupByLibrary.simpleMessage("发送短信给店主"),
         "serbian": MessageLookupByLibrary.simpleMessage("塞尔维亚"),
         "sessionExpired": MessageLookupByLibrary.simpleMessage("会话已过期"),
         "setAnAddressInSettingPage":
             MessageLookupByLibrary.simpleMessage("请在设置页面设置地址"),
         "settings": MessageLookupByLibrary.simpleMessage("设定"),
-        "setup": MessageLookupByLibrary.simpleMessage("设置"),
         "share": MessageLookupByLibrary.simpleMessage("分享"),
         "shipped": MessageLookupByLibrary.simpleMessage("已出货"),
         "shipping": MessageLookupByLibrary.simpleMessage("运输"),
@@ -919,13 +857,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "shopOrders": MessageLookupByLibrary.simpleMessage("车间订单"),
         "shopPhone": MessageLookupByLibrary.simpleMessage("店铺电话"),
         "shopSlug": MessageLookupByLibrary.simpleMessage("商店"),
-        "shoppingCartItems": m29,
+        "shoppingCartItems": m24,
         "shortDescription": MessageLookupByLibrary.simpleMessage("简短的介绍"),
         "showAllMyOrdered": MessageLookupByLibrary.simpleMessage("显示我所有的订单"),
         "showDetails": MessageLookupByLibrary.simpleMessage("显示详细资料"),
         "showGallery": MessageLookupByLibrary.simpleMessage("展览馆"),
-        "showLess": MessageLookupByLibrary.simpleMessage("显示较少"),
-        "showMore": MessageLookupByLibrary.simpleMessage("显示更多"),
         "signIn": MessageLookupByLibrary.simpleMessage("登入"),
         "signInWithEmail": MessageLookupByLibrary.simpleMessage("使用电子邮箱登陆"),
         "signUp": MessageLookupByLibrary.simpleMessage("注册"),
@@ -937,13 +873,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "slovak": MessageLookupByLibrary.simpleMessage("斯洛伐克"),
         "smsCodeExpired":
             MessageLookupByLibrary.simpleMessage("短信代码已过期。请重新发送验证码重试。"),
-        "sold": m30,
+        "sold": m25,
         "soldBy": MessageLookupByLibrary.simpleMessage("所售"),
         "somethingWrong": MessageLookupByLibrary.simpleMessage("出问题了。请稍后再试。"),
         "sortBy": MessageLookupByLibrary.simpleMessage("排序方式"),
-        "sortCode": MessageLookupByLibrary.simpleMessage("排序码"),
         "spanish": MessageLookupByLibrary.simpleMessage("西班牙文"),
-        "speechNotAvailable": MessageLookupByLibrary.simpleMessage("语音不可用"),
         "startExploring": MessageLookupByLibrary.simpleMessage("开始探索"),
         "startShopping": MessageLookupByLibrary.simpleMessage("开始购物"),
         "state": MessageLookupByLibrary.simpleMessage("州"),
@@ -986,16 +920,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "takePicture": MessageLookupByLibrary.simpleMessage("拍照片"),
         "tamil": MessageLookupByLibrary.simpleMessage("泰米尔语"),
         "tapSelectLocation": MessageLookupByLibrary.simpleMessage("点击选择地点"),
-        "tapTheMicToTalk": MessageLookupByLibrary.simpleMessage("点击麦克风说话"),
         "tax": MessageLookupByLibrary.simpleMessage("税"),
         "thailand": MessageLookupByLibrary.simpleMessage("Thai"),
-        "theFieldIsRequired": m31,
+        "theFieldIsRequired": m26,
         "thisDateIsNotAvailable":
             MessageLookupByLibrary.simpleMessage("该日期不可用"),
         "thisFeatureDoesNotSupportTheCurrentLanguage":
             MessageLookupByLibrary.simpleMessage("此功能不支持当前语言"),
-        "thisIsCustomerRole": MessageLookupByLibrary.simpleMessage("这是客户角色"),
-        "thisIsVendorRole": MessageLookupByLibrary.simpleMessage("这是供应商角色"),
         "thisPlatformNotSupportWebview":
             MessageLookupByLibrary.simpleMessage("此平台不支持 webview"),
         "thisProductNotSupport": MessageLookupByLibrary.simpleMessage("该产品不支持"),
@@ -1010,7 +941,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "topUpProductNotFound": MessageLookupByLibrary.simpleMessage("未找到充值产品"),
         "total": MessageLookupByLibrary.simpleMessage("总"),
         "totalCartValue": MessageLookupByLibrary.simpleMessage("总订单的价值必须至少为"),
-        "totalProducts": m32,
+        "totalProducts": m27,
         "totalTax": MessageLookupByLibrary.simpleMessage("总税金"),
         "trackingNumberIs": MessageLookupByLibrary.simpleMessage("跟踪号是"),
         "trackingPage": MessageLookupByLibrary.simpleMessage("跟踪頁面"),
@@ -1027,7 +958,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "transferSuccess": MessageLookupByLibrary.simpleMessage("转移成功"),
         "turkish": MessageLookupByLibrary.simpleMessage("土耳其"),
         "turnOnBle": MessageLookupByLibrary.simpleMessage("打开蓝牙"),
-        "typeAMessage": MessageLookupByLibrary.simpleMessage("输入讯息..."),
         "typeYourMessage": MessageLookupByLibrary.simpleMessage("在这里输入你的消息..."),
         "typing": MessageLookupByLibrary.simpleMessage("正在输入..."),
         "ukrainian": MessageLookupByLibrary.simpleMessage("乌克兰"),
@@ -1045,7 +975,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "uploadProduct": MessageLookupByLibrary.simpleMessage("上传产品"),
         "uploading": MessageLookupByLibrary.simpleMessage("上传"),
         "url": MessageLookupByLibrary.simpleMessage("URL"),
-        "useMaximumPointDiscount": m33,
         "useNow": MessageLookupByLibrary.simpleMessage("现在使用"),
         "useThisImage": MessageLookupByLibrary.simpleMessage("使用此图像"),
         "userExists": MessageLookupByLibrary.simpleMessage("此用户名/电子邮件不可用。"),
@@ -1055,10 +984,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("用户名和密码为必填项"),
         "vacationMessage": MessageLookupByLibrary.simpleMessage("假期留言"),
         "vacationType": MessageLookupByLibrary.simpleMessage("假期类型"),
-        "validUntilDate": m34,
+        "validUntilDate": m28,
         "variable": MessageLookupByLibrary.simpleMessage("变量"),
         "variation": MessageLookupByLibrary.simpleMessage("变化"),
-        "vendor": MessageLookupByLibrary.simpleMessage("供应商"),
         "vendorAdmin": MessageLookupByLibrary.simpleMessage("供应商管理员"),
         "vendorInfo": MessageLookupByLibrary.simpleMessage("供应商信息"),
         "verificationCode": MessageLookupByLibrary.simpleMessage("验证码（6位）"),
@@ -1076,32 +1004,27 @@ class MessageLookup extends MessageLookupByLibrary {
         "waitingForConfirmation": MessageLookupByLibrary.simpleMessage("等待确认中"),
         "walletBalance": MessageLookupByLibrary.simpleMessage("钱包余额"),
         "walletName": MessageLookupByLibrary.simpleMessage("钱包名称"),
-        "warning": m35,
-        "warningCurrencyMessageForWallet": m36,
+        "warning": m29,
+        "warningCurrencyMessageForWallet": m30,
         "weFoundBlogs": MessageLookupByLibrary.simpleMessage("我们找到了博客"),
-        "weFoundProducts": m37,
+        "weFoundProducts": m31,
         "weNeedCameraAccessTo":
             MessageLookupByLibrary.simpleMessage("我们需要相机访问权限来扫描二维码或条形码。"),
         "weSentAnOTPTo": MessageLookupByLibrary.simpleMessage("验证码已发送至"),
         "weWillSendYouNotification": MessageLookupByLibrary.simpleMessage(
             "当有新产品或优惠可用时，我们会向您发送通知。您可以随时在设置中更改此设置。"),
         "webView": MessageLookupByLibrary.simpleMessage("网页浏览"),
-        "week": m38,
+        "week": m32,
         "welcome": MessageLookupByLibrary.simpleMessage("欢迎"),
-        "welcomeUser": m39,
-        "whichLanguageDoYouPrefer":
-            MessageLookupByLibrary.simpleMessage("你更喜欢哪种语言？"),
-        "wholesaleRegisterMsg":
-            MessageLookupByLibrary.simpleMessage("请联系管理员以批准您的注册。"),
         "womanCollections": MessageLookupByLibrary.simpleMessage("女人系列"),
         "writeComment": MessageLookupByLibrary.simpleMessage("书写您的评论"),
         "writeYourNote": MessageLookupByLibrary.simpleMessage("写你的笔记"),
-        "yearsAgo": m40,
+        "yearsAgo": m33,
         "yes": MessageLookupByLibrary.simpleMessage("是的"),
         "youCanOnlyOrderSingleStore":
             MessageLookupByLibrary.simpleMessage("您只能从一家商店购买。"),
         "youCanOnlyPurchase": MessageLookupByLibrary.simpleMessage("您只能购买"),
-        "youHaveAssignedToOrder": m41,
+        "youHaveAssignedToOrder": m34,
         "youHaveBeenSaveAddressYourLocal":
             MessageLookupByLibrary.simpleMessage("您已将地址保存在本地"),
         "youHavePoints": MessageLookupByLibrary.simpleMessage("你有 \$point 分"),

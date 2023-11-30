@@ -232,8 +232,6 @@ class _ProductCardState extends State<ProductCard> with ActionButtonMixin {
                                         context,
                                         quantity: 1,
                                         product: widget.item,
-                                        enableBottomAddToCart:
-                                            widget.config.enableBottomAddToCart,
                                       );
                                     },
                                     decreaseQuantityFunction: () {

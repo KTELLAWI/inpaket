@@ -6,10 +6,8 @@ mixin CartMixin {
   User? user;
   double taxesTotal = 0;
   List<Tax> taxes = [];
-  bool isIncludingTax = false;
   double rewardTotal = 0;
   double walletAmount = 0;
-  bool enableCheckoutButton = true;
 
   PaymentMethod? paymentMethod;
 
@@ -28,28 +26,6 @@ mixin CartMixin {
 
   // The IDs and meta_data of products currently in the cart for woo commerce
   final Map<String, dynamic> productsMetaDataInCart = {};
-
-  void resetValues() {
-    user = null;
-    taxesTotal = 0;
-    taxes = [];
-    isIncludingTax = false;
-    rewardTotal = 0;
-    walletAmount = 0;
-    enableCheckoutButton = true;
-
-    paymentMethod = null;
-
-    notes = null;
-    currencyCode = null;
-    currencyRates = null;
-
-    item.clear();
-    productVariationInCart.clear();
-    productAddonsOptionsInCart.clear();
-    productsInCart.clear();
-    productsMetaDataInCart.clear();
-  }
 
   void removeItemFromProductId(String productId) {}
 
@@ -148,10 +124,9 @@ mixin CartMixin {
     currencyCode = kAdvanceConfig.defaultCurrency?.currencyCode;
   }
 
-  void setTaxInfo(List<Tax> taxes, double taxesTotal, bool isIncludingTax) {
+  void setTaxInfo(List<Tax> taxes, double taxesTotal) {
     this.taxes = taxes;
     this.taxesTotal = taxesTotal;
-    this.isIncludingTax = isIncludingTax;
   }
 
   double getCODExtraFee() {
@@ -180,50 +155,5 @@ mixin CartMixin {
       }
     }
     return productList;
-  }
-
-  void updateProduct(String productId, Product? product) {
-    item[productId] = product;
-  }
-
-  void updateProductVariant(
-      String productId, ProductVariation? productVariant) {
-    productVariationInCart[productId] = productVariant;
-  }
-
-  void updateStateCheckoutButton() {
-    enableCheckoutButton = true;
-    for (var key in item.keys) {
-      var variation = getProductVariationById(key ?? '');
-      var quantityProductInCart = productsInCart[key];
-      var maxQuantity = kCartDetail['maxAllowQuantity'] ?? 100;
-
-      var inStock =
-          (variation != null ? variation.inStock : item[key]?.inStock) ?? false;
-
-      var totalQuantity = variation != null
-          ? (variation.stockQuantity ?? maxQuantity)
-          : (item[key]?.stockQuantity ?? maxQuantity);
-
-      var limitQuantity =
-          totalQuantity > maxQuantity ? maxQuantity : totalQuantity;
-
-      final isOnBackorder = variation != null
-          ? variation.backordersAllowed ?? false
-          : item[key]?.backordersAllowed ?? false;
-
-      if (isOnBackorder == false) {
-        if (!inStock) {
-          enableCheckoutButton = false;
-          break;
-        }
-        if (inStock &&
-            quantityProductInCart != null &&
-            quantityProductInCart > limitQuantity) {
-          enableCheckoutButton = false;
-          break;
-        }
-      }
-    }
   }
 }

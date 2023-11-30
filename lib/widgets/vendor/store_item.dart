@@ -27,10 +27,10 @@ class StoreItem extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(6.0),
             color: Theme.of(context).colorScheme.background,
-            boxShadow: [
+            boxShadow: const [
               BoxShadow(
-                color: Theme.of(context).colorScheme.primary.withOpacity(0.4),
-                offset: const Offset(0, 1),
+                color: Colors.black12,
+                offset: Offset(0, 1),
                 blurRadius: 3,
               )
             ]),
@@ -73,13 +73,11 @@ class StoreItem extends StatelessWidget {
                               fontWeight: FontWeight.w600,
                               color: Theme.of(context).colorScheme.secondary),
                         ),
-                        if (isNotBlank(store!.address))
-                          const SizedBox(height: 3),
+                        if (isNotBlank(store!.address)) const SizedBox(height: 3),
                         if (isNotBlank(store!.address))
                           Text(
                             store!.address!,
                             maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                               fontSize: 14.0,
                               fontWeight: FontWeight.w500,
@@ -105,10 +103,7 @@ class StoreItem extends StatelessWidget {
                       const SizedBox(height: 10),
                       Text(
                         S.of(context).visitStore,
-                        style: Theme.of(context)
-                            .primaryTextTheme
-                            .titleMedium!
-                            .copyWith(
+                        style: Theme.of(context).primaryTextTheme.titleMedium!.copyWith(
                               color: Colors.blue,
                               fontWeight: FontWeight.w700,
                             ),
@@ -117,54 +112,6 @@ class StoreItem extends StatelessWidget {
                   )
                 ],
               ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class StoreCartItem extends StatelessWidget {
-  final Store? store;
-
-  const StoreCartItem({this.store});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, RouteList.storeDetail,
-            arguments: StoreDetailArgument(store: store));
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
-        child: Row(
-          children: [
-            if (isNotBlank(store!.image))
-              Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16.0),
-                  child: ImageResize(
-                    url: store!.banner,
-                    size: kSize.medium,
-                    isResize: false,
-                    fit: ImageTools.boxFit(
-                      kVendorConfig.bannerFit,
-                      defaultValue: BoxFit.cover,
-                    ),
-                    height: 32,
-                    width: 32,
-                  ),
-                ),
-              ),
-            Text(
-              store!.name!,
-              style: TextStyle(
-                  fontSize: 15.0,
-                  fontWeight: FontWeight.w600,
-                  color: Theme.of(context).colorScheme.primary),
             ),
           ],
         ),
@@ -183,8 +130,7 @@ class StoreStatusWidget extends StatelessWidget {
       children: [
         /// WCFM store condition
         if (store.storeHour != null && store.vacationSettings != null)
-          if (store.vacationSettings!.vacationMode &&
-              store.vacationSettings!.isOpen()) ...[
+          if (store.vacationSettings!.vacationMode && store.vacationSettings!.isOpen()) ...[
             const SizedBox(height: 5.0),
             Row(
               children: [
@@ -197,13 +143,9 @@ class StoreStatusWidget extends StatelessWidget {
                   width: 2.0,
                 ),
                 Text(
-                  store.storeHour!.isOpen()
-                      ? S.of(context).openNow
-                      : S.of(context).closeNow,
+                  store.storeHour!.isOpen() ? S.of(context).openNow : S.of(context).closeNow,
                   style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                      color:
-                          store.storeHour!.isOpen() ? Colors.green : Colors.red,
-                      fontSize: 12.0),
+                      color: store.storeHour!.isOpen() ? Colors.green : Colors.red, fontSize: 12.0),
                 ),
               ],
             ),
@@ -223,20 +165,15 @@ class StoreStatusWidget extends StatelessWidget {
                 width: 2.0,
               ),
               Text(
-                store.storeHour!.isOpen()
-                    ? S.of(context).openNow
-                    : S.of(context).closeNow,
+                store.storeHour!.isOpen() ? S.of(context).openNow : S.of(context).closeNow,
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                    color:
-                        store.storeHour!.isOpen() ? Colors.green : Colors.red,
-                    fontSize: 12.0),
+                    color: store.storeHour!.isOpen() ? Colors.green : Colors.red, fontSize: 12.0),
               ),
             ],
           ),
         ],
         if (store.vacationSettings != null &&
-            (store.vacationSettings!.vacationMode &&
-                !store.vacationSettings!.isOpen())) ...[
+            (store.vacationSettings!.vacationMode && !store.vacationSettings!.isOpen())) ...[
           const SizedBox(height: 5.0),
           Row(
             children: [

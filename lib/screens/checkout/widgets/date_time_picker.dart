@@ -83,7 +83,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
             height: _DateTimePickerConst.defaultPickerSheetHeight,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(6.0),
-              color: Theme.of(context).colorScheme.background,
+              color: Colors.white,
             ),
             child: CupertinoDatePicker(
               onDateTimeChanged: localChange,

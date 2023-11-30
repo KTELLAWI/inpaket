@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import '../common/config.dart';
 import '../common/config/models/index.dart';
 import '../common/constants.dart';
-import '../common/tools/navigate_tools.dart';
 import '../generated/l10n.dart';
 import '../models/index.dart'
     show AppModel, BackDropArguments, Category, CategoryModel, UserModel;
@@ -32,20 +31,9 @@ class MenuBarState extends State<SideBarMenu> {
       Provider.of<AppModel>(context, listen: false).appConfig?.drawer ??
       kDefaultDrawer;
 
-  void pushNavigator({String? name, Widget? screen}) {
+  void pushNavigation(String name) {
     eventBus.fire(const EventCloseNativeDrawer());
-    if (name?.isNotEmpty ?? false) {
-      MainTabControlDelegate.getInstance()
-          .changeTab(name?.replaceFirst('/', ''));
-      return;
-    }
-    if (screen != null) {
-      FluxNavigate.push(MaterialPageRoute(builder: (_) => screen));
-    }
-  }
-
-  void onNavigator() {
-    eventBus.fire(const EventCloseNativeDrawer());
+    MainTabControlDelegate.getInstance().changeTab(name.replaceFirst('/', ''));
   }
 
   @override
@@ -142,7 +130,7 @@ class MenuBarState extends State<SideBarMenu> {
               style: textStyle,
             ),
             onTap: () {
-              pushNavigator(name: RouteList.home);
+              pushNavigation(RouteList.home);
             },
           );
         }
@@ -158,8 +146,8 @@ class MenuBarState extends State<SideBarMenu> {
               S.of(context).categories,
               style: textStyle,
             ),
-            onTap: () => pushNavigator(
-              name: !Provider.of<AppModel>(context, listen: false).isMultivendor
+            onTap: () => pushNavigation(
+              !Provider.of<AppModel>(context, listen: false).isMultivendor
                   ? RouteList.category
                   : RouteList.vendorCategory,
             ),
@@ -181,7 +169,7 @@ class MenuBarState extends State<SideBarMenu> {
               S.of(context).cart,
               style: textStyle,
             ),
-            onTap: () => pushNavigator(name: RouteList.cart),
+            onTap: () => pushNavigation(RouteList.cart),
           );
         }
       case 'profile':
@@ -196,7 +184,7 @@ class MenuBarState extends State<SideBarMenu> {
               S.of(context).settings,
               style: textStyle,
             ),
-            onTap: () => pushNavigator(name: RouteList.profile),
+            onTap: () => pushNavigation(RouteList.profile),
           );
         }
       case 'web':
@@ -212,10 +200,13 @@ class MenuBarState extends State<SideBarMenu> {
               style: textStyle,
             ),
             onTap: () {
-              pushNavigator(
-                screen: WebView(
-                  url: 'https://inspireui.com',
-                  title: S.of(context).webView,
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => WebView(
+                    url: 'https://inspireui.com',
+                    title: S.of(context).webView,
+                  ),
                 ),
               );
             },
@@ -233,7 +224,7 @@ class MenuBarState extends State<SideBarMenu> {
               S.of(context).blog,
               style: textStyle,
             ),
-            onTap: () => pushNavigator(name: RouteList.listBlog),
+            onTap: () => pushNavigation(RouteList.listBlog),
           );
         }
       case 'login':
@@ -251,15 +242,16 @@ class MenuBarState extends State<SideBarMenu> {
                   if (loggedIn) {
                     Provider.of<UserModel>(context, listen: false).logout();
                     if (Services().widget.isRequiredLogin) {
-                      NavigateTools.navigateToLogin(
-                        context,
-                        replacement: true,
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        RouteList.login,
+                        (route) => false,
                       );
                     }
+                    // else {
+                    //   pushNavigation(RouteList.dashboard);
+                    // }
                   } else {
-                    NavigateTools.navigateToLogin(
-                      context,
-                    );
+                    pushNavigation(RouteList.login);
                   }
                 },
               );
@@ -279,7 +271,6 @@ class MenuBarState extends State<SideBarMenu> {
               useTile: true,
               iconColor: iconColor,
               textStyle: textStyle,
-              onNavigator: onNavigator,
             );
           }
           if (value?.contains('post') ?? false) {
@@ -288,17 +279,13 @@ class MenuBarState extends State<SideBarMenu> {
               useTile: true,
               iconColor: iconColor,
               textStyle: textStyle,
-              onNavigator: onNavigator,
             );
           }
           if (value?.contains('title') ?? false) {
             return GeneralTitleWidget(item: item);
           }
           if (value?.contains('button') ?? false) {
-            return GeneralButtonWidget(
-              item: item,
-              onNavigator: onNavigator,
-            );
+            return GeneralButtonWidget(item: item);
           }
           if (value?.contains('product') ?? false) {
             return GeneralProductWidget(
@@ -306,7 +293,6 @@ class MenuBarState extends State<SideBarMenu> {
               useTile: true,
               iconColor: iconColor,
               textStyle: textStyle,
-              onNavigator: onNavigator,
             );
           }
           if (value?.contains('category') ?? false) {
@@ -315,13 +301,11 @@ class MenuBarState extends State<SideBarMenu> {
               useTile: true,
               iconColor: iconColor,
               textStyle: textStyle,
-              onNavigator: onNavigator,
             );
           }
           if (value?.contains('banner') ?? false) {
             return GeneralBannerWidget(
               item: item,
-              onNavigator: onNavigator,
             );
           }
           if (value?.contains('blogCategory') ?? false) {
@@ -330,7 +314,6 @@ class MenuBarState extends State<SideBarMenu> {
               useTile: true,
               iconColor: iconColor,
               textStyle: textStyle,
-              onNavigator: onNavigator,
             );
           }
           if (value?.contains('blog') ?? false) {
@@ -339,16 +322,6 @@ class MenuBarState extends State<SideBarMenu> {
               useTile: true,
               iconColor: iconColor,
               textStyle: textStyle,
-              onNavigator: onNavigator,
-            );
-          }
-          if (value?.contains('screen') ?? false) {
-            return GeneralScreenWidget(
-              item: item,
-              useTile: true,
-              iconColor: iconColor,
-              textStyle: textStyle,
-              onNavigator: onNavigator,
             );
           }
         }

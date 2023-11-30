@@ -9,7 +9,6 @@ class RouteList {
   static const String homeSearch = 'home-search';
   static const String notificationRequest = 'notification-request';
   static const String privacyTerms = 'privacy-terms';
-  static const String multiSiteSelection = 'multi-site-selection';
 
   // User
   static const String profile = 'profile';
@@ -20,7 +19,6 @@ class RouteList {
   static const String language = 'language';
   static const String currencies = 'currencies';
   static const String deleteAccount = 'delete-account';
-  static const String biometrics = 'biometrics';
 
   // Blog
   static const String blog = 'blog';
@@ -62,14 +60,6 @@ class RouteList {
 
   //Audio
   static const String audioPlaylist = 'audio-playlist';
-
-  // FlutterFlow
-  static const String flutterflow = 'flutterflow';
-
-  // openAI
-  static const String openai = 'openai';
-
-  static const String videos = 'videos';
 
   // ----------------------------- Vendor ----------------------------
   // Store
@@ -149,7 +139,4 @@ class RouteList {
   static const String tabMenu = 'tabMenu';
   static const String scrollable = 'scrollable';
   static const String pageTab = 'pageTab';
-
-  /// Wholesale
-  static const String wholesaleSignUp = 'wholesaleSignUp';
 }

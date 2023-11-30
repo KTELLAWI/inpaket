@@ -22,16 +22,12 @@ class DigitsMobileVerifyArgs {
       this.email,
       this.countryCode,
       this.mobile,
-      this.firstName,
-      this.lastName,
       required this.isRegister});
 
   final String? username;
   final String? email;
   final String? countryCode;
   final String? mobile;
-  final String? firstName;
-  final String? lastName;
   final bool isRegister;
 }
 
@@ -121,7 +117,7 @@ class _DigitsMobileVerifyScreenState extends State<DigitsMobileVerifyScreen>
     /// Ability so close message
     // var _message = message;
     // if (kReleaseMode) {
-    //   _message = S.of(context).userNameInCorrect;
+    //   _message = S.of(context).UserNameInCorrect;
     // }
 
     final snackBar = SnackBar(
@@ -311,8 +307,6 @@ class _DigitsMobileVerifyScreenState extends State<DigitsMobileVerifyScreen>
               email: widget.args?.email ?? '',
               countryCode: widget.args?.countryCode ?? '',
               mobile: widget.args?.mobile ?? '',
-              firstName: widget.args?.firstName ?? '',
-              lastName: widget.args?.lastName ?? '',
               otp: smsCode)
           : await _services.login(
               countryCode: widget.args?.countryCode ?? '',

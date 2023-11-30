@@ -53,7 +53,6 @@ class StaggerAnimation extends StatelessWidget {
           color: Theme.of(context).primaryColor,
           borderRadius: const BorderRadius.all(Radius.circular(25.0)),
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 8),
         child: buttonSqueezeanimation.value > 75.0
             ? Text(
                 titleButton ?? S.of(context).signIn,
@@ -63,8 +62,6 @@ class StaggerAnimation extends StatelessWidget {
                   fontWeight: FontWeight.w300,
                   letterSpacing: 0.3,
                 ),
-                softWrap: true,
-                textAlign: TextAlign.center,
               )
             : const CircularProgressIndicator(
                 value: null,

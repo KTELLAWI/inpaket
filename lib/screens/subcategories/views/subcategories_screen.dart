@@ -94,10 +94,7 @@ class _SubcategoryScreenState extends State<SubcategoryScreen> {
                   final categoryName = widget.categoryName ??
                       subcategoryModel.parentCategory?.name;
                   if (categoryName != null) {
-                    title = Text(
-                      categoryName,
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    );
+                    title = Text(categoryName);
                   }
 
                   return CupertinoSliverNavigationBar(largeTitle: title);

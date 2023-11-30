@@ -50,14 +50,12 @@ String? indicatorStyleToString(IndicatorStyle? value) =>
 
 class TabBarConfig {
   bool enable = true;
-  bool showMinimize = false;
   bool? alwaysShowTabBar;
 
   bool isSafeArea = true;
   bool showFloating = false;
   bool showFloatingClip = true;
   bool enableOnTop = false;
-  bool enableDivider = true;
 
   double radiusTopLeft = 0.0;
   double radiusTopRight = 0.0;
@@ -86,12 +84,10 @@ class TabBarConfig {
 
   TabBarConfig({
     this.enable = true,
-    this.showMinimize = false,
     this.isSafeArea = true,
     this.showFloating = false,
     this.showFloatingClip = true,
     this.enableOnTop = false,
-    this.enableDivider = true,
     this.alwaysShowTabBar,
     this.color,
     this.colorCart,
@@ -118,13 +114,11 @@ class TabBarConfig {
 
   TabBarConfig.fromJson(dynamic json) {
     enable = json['enable'] ?? true;
-    showMinimize = json['showMinimize'] ?? false;
 
     isSafeArea = json['isSafeArea'] ?? true;
     showFloating = json['showFloating'] ?? false;
     showFloatingClip = json['showFloatingClip'] ?? true;
     enableOnTop = json['enableOnTop'] ?? false;
-    enableDivider = json['enableDivider'] ?? true;
 
     indicatorStyle = stringToIndicatorStyle(json['indicatorStyle']);
     if (json['color'] != null) {
@@ -178,7 +172,6 @@ class TabBarConfig {
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     map['enable'] = enable;
-    map['showMinimize'] = showMinimize;
     map['isSafeArea'] = isSafeArea;
     map['color'] = color?.value.toRadixString(16);
     map['colorCart'] = colorCart?.value.toRadixString(16);
@@ -189,7 +182,6 @@ class TabBarConfig {
     map['showFloatingClip'] = showFloatingClip;
     map['showFloating'] = showFloating;
     map['enableOnTop'] = enableOnTop;
-    map['enableDivider'] = enableDivider;
     map['radiusTopLeft'] = radiusTopLeft;
     map['radiusTopRight'] = radiusTopRight;
     map['radiusBottomLeft'] = radiusBottomLeft;
@@ -217,7 +209,6 @@ class TabBarConfig {
   String toString() {
     return '♻️ TabBarConfig:: '
         'enable:$enable, '
-        'showMinimize:$showMinimize, '
         'isSafeArea:$isSafeArea, '
         'color:$color, '
         'radiusTopLeft:$radiusTopLeft, '

@@ -9,6 +9,7 @@ enum StatusOrder {
   failed,
   cancelled,
   processing,
+  shipped,
   completed,
   refunded
 }
@@ -35,6 +36,7 @@ class _TimelineTrackingState extends State<TimelineTracking> {
     StatusOrder.pendding,
     StatusOrder.onHold,
     StatusOrder.processing,
+    StatusOrder.shipped,
     StatusOrder.completed
   ];
 
@@ -42,6 +44,7 @@ class _TimelineTrackingState extends State<TimelineTracking> {
     StatusOrder.pendding,
     StatusOrder.failed,
     StatusOrder.processing,
+    StatusOrder.shipped,
     StatusOrder.completed
   ];
 
@@ -49,6 +52,7 @@ class _TimelineTrackingState extends State<TimelineTracking> {
     StatusOrder.pendding,
     StatusOrder.onHold,
     StatusOrder.processing,
+    StatusOrder.shipped,
     StatusOrder.completed,
     StatusOrder.refunded
   ];
@@ -214,7 +218,6 @@ class _TimelineTrackingState extends State<TimelineTracking> {
 
     switch (status) {
       case 'on-hold': //Thể hiện timeline : Pendding(active) -> On-Hold(active) -> Processing -> Completed
-      case 'onHold':
         statusOrder = StatusOrder.onHold;
         flowHandleStatus = statusOrderSuccessNotFail;
         break;
@@ -224,6 +227,10 @@ class _TimelineTrackingState extends State<TimelineTracking> {
         break;
       case 'processing': //Thể hiện timeline : Pendding(active) -> On-Hold(active) -> Processing(active) -> Completed
         statusOrder = StatusOrder.processing;
+        flowHandleStatus = statusOrderSuccessNotFail;
+        break;
+      case 'shipped': //Thể hiện timeline : Pendding(active) -> On-Hold(active) -> Processing(active) -> Completed
+        statusOrder = StatusOrder.shipped;
         flowHandleStatus = statusOrderSuccessNotFail;
         break;
       case 'cancelled': //Thể hiện timeline : Pendding(active) -> Failed(active) -> Cancelled(active)
@@ -294,6 +301,9 @@ class _TimelineTrackingState extends State<TimelineTracking> {
         return S.of(context).orderStatusOnHold;
       case StatusOrder.pendding:
         return S.of(context).orderStatusPendingPayment;
+
+      case StatusOrder.shipped:
+        return S.of(context).orderStatusShipped;
       case StatusOrder.failed:
         return S.of(context).orderStatusFailed;
       case StatusOrder.processing:

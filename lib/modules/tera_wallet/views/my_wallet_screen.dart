@@ -43,10 +43,7 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
         physics: const RefreshScrollPhysics(),
         slivers: [
           CupertinoSliverNavigationBar(
-            largeTitle: Text(
-              S.of(context).myWallet,
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
+            largeTitle: Text(S.of(context).myWallet),
           ),
           CupertinoSliverRefreshControl(
             onRefresh: () async {
@@ -217,11 +214,8 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
                 child: Text(
                   'TeraWallet',
                   textAlign: TextAlign.end,
-                  style: Theme.of(context)
-                      .primaryTextTheme
-                      .headlineSmall!
-                      .copyWith(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                  style: Theme.of(context).primaryTextTheme.headlineSmall!.copyWith(
+                      color: Colors.white, fontWeight: FontWeight.bold),
                 ),
               )
             ],

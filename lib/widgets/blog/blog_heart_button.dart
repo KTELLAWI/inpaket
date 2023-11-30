@@ -75,10 +75,7 @@ class _BlogHeartButtonState extends State<BlogHeartButton> {
                         ? widget.size + 17
                         : widget.size + 10,
                     decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .background
-                          .withOpacity(0.5),
+                      color: Theme.of(context).colorScheme.background.withOpacity(0.5),
                       borderRadius: widget.isTransparent
                           ? const BorderRadius.all(
                               Radius.circular(25),

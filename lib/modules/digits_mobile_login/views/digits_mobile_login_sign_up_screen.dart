@@ -6,14 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common/config.dart';
-import '../../../common/constants.dart';
 import '../../../common/tools.dart';
 import '../../../generated/l10n.dart';
 import '../../../models/entities/user.dart';
 import '../../../models/index.dart' show AppModel, UserModel;
 import '../../../screens/home/privacy_term_screen.dart';
 import '../../../screens/login_sms/verify.dart';
-import '../../../services/service_config.dart';
 import '../../../services/services.dart';
 import '../../../widgets/common/custom_text_field.dart';
 import '../../../widgets/common/flux_image.dart';
@@ -32,14 +30,12 @@ class _RegistrationScreenState extends State<DigitsMobileLoginSignUpScreen> {
   final _scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
   final _services = DigitsMobileLoginServices();
 
-  String? firstName, lastName, email, username, mobile, fToken;
+  String? email, username, mobile, fToken;
   CountryCode? countryCode;
 
   bool isChecked = false;
   bool isLoading = false;
 
-  final firstNameNode = FocusNode();
-  final lastNameNode = FocusNode();
   final mobileNode = FocusNode();
   final usernameNode = FocusNode();
   final emailNode = FocusNode();
@@ -73,8 +69,6 @@ class _RegistrationScreenState extends State<DigitsMobileLoginSignUpScreen> {
     mobileNode.dispose();
     emailNode.dispose();
     usernameNode.dispose();
-    firstNameNode.dispose();
-    lastNameNode.dispose();
     super.dispose();
   }
 
@@ -126,8 +120,7 @@ class _RegistrationScreenState extends State<DigitsMobileLoginSignUpScreen> {
             countryCode: countryCode?.dialCode,
             mobile: mobile);
 
-        if (kAdvanceConfig.enableDigitsMobileFirebase &&
-            !kAdvanceConfig.enableDigitsMobileWhatsApp) {
+        if (kAdvanceConfig.enableDigitsMobileFirebase) {
           Future? autoRetrieve(String verId) {
             setState(() {
               isLoading = false;
@@ -186,8 +179,6 @@ class _RegistrationScreenState extends State<DigitsMobileLoginSignUpScreen> {
                       email: email,
                       countryCode: countryCode?.dialCode,
                       mobile: mobile,
-                      firstName: firstName,
-                      lastName: lastName,
                       isRegister: true),
                 ),
               ),
@@ -211,8 +202,6 @@ class _RegistrationScreenState extends State<DigitsMobileLoginSignUpScreen> {
       fToken = await user.getIdToken();
       final loggedInUser = await _services.signUp(
           username: username!,
-          firstName: firstName,
-          lastName: lastName,
           email: email!,
           countryCode: countryCode?.dialCode,
           mobile: mobile,
@@ -269,32 +258,6 @@ class _RegistrationScreenState extends State<DigitsMobileLoginSignUpScreen> {
                       const SizedBox(
                         height: 30.0,
                       ),
-                      CustomTextField(
-                        key: const Key('registerFirstNameField'),
-                        focusNode: firstNameNode,
-                        nextNode: lastNameNode,
-                        showCancelIcon: true,
-                        onChanged: (value) => firstName = value,
-                        onCancel: () {
-                          firstName = '';
-                        },
-                        decoration:
-                            InputDecoration(labelText: S.of(context).firstName),
-                      ),
-                      const SizedBox(height: 20.0),
-                      CustomTextField(
-                        key: const Key('registerLastNameField'),
-                        focusNode: lastNameNode,
-                        nextNode: usernameNode,
-                        showCancelIcon: true,
-                        onChanged: (value) => lastName = value,
-                        onCancel: () {
-                          lastName = '';
-                        },
-                        decoration:
-                            InputDecoration(labelText: S.of(context).lastName),
-                      ),
-                      const SizedBox(height: 20.0),
                       CustomTextField(
                         key: const Key('registerUsernameField'),
                         autofillHints: const [AutofillHints.familyName],
@@ -423,8 +386,7 @@ class _RegistrationScreenState extends State<DigitsMobileLoginSignUpScreen> {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    const PrivacyTermScreen(
-                                                        showAgreeButton: false),
+                                                    const PrivacyTermScreen(),
                                               ),
                                             ),
                                     ),
@@ -464,20 +426,6 @@ class _RegistrationScreenState extends State<DigitsMobileLoginSignUpScreen> {
                           ),
                         ),
                       ),
-                      if (kVendorConfig.vendorRegister &&
-                          ServerConfig().typeName.isMultiVendor)
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context)
-                                .pushReplacementNamed(RouteList.register);
-                          },
-                          child: Text(
-                            S.of(context).becomeAVendor,
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                decoration: TextDecoration.underline),
-                          ),
-                        ),
                     ],
                   ),
                 ),

@@ -75,17 +75,17 @@ class TabBarIndicatorConfig {
     if (json['color'] != null) {
       color = HexColor(json['color']);
     }
-    height = Helper.formatDouble(json['height']) ?? 0.0;
+    height = Helper.formatDouble(json['height'], 0.0);
     tabPosition = stringToTabPosition(json['tabPosition']);
-    topRightRadius = Helper.formatDouble(json['topRightRadius']) ?? 0.0;
-    topLeftRadius = Helper.formatDouble(json['topLeftRadius']) ?? 0.0;
-    bottomRightRadius = Helper.formatDouble(json['bottomRightRadius']) ?? 0.0;
-    bottomLeftRadius = Helper.formatDouble(json['bottomLeftRadius']) ?? 0.0;
-    horizontalPadding = Helper.formatDouble(json['horizontalPadding']) ?? 0.0;
-    verticalPadding = Helper.formatDouble(json['verticalPadding']) ?? 0.0;
-    strokeWidth = Helper.formatDouble(json['strokeWidth']) ?? 0.0;
-    radius = Helper.formatDouble(json['radius']) ?? 0.0;
-    distanceFromCenter = Helper.formatDouble(json['distanceFromCenter']) ?? 0.0;
+    topRightRadius = Helper.formatDouble(json['topRightRadius'], 0.0);
+    topLeftRadius = Helper.formatDouble(json['topLeftRadius'], 0.0);
+    bottomRightRadius = Helper.formatDouble(json['bottomRightRadius'], 0.0);
+    bottomLeftRadius = Helper.formatDouble(json['bottomLeftRadius'], 0.0);
+    horizontalPadding = Helper.formatDouble(json['horizontalPadding'], 0.0);
+    verticalPadding = Helper.formatDouble(json['verticalPadding'], 0.0);
+    strokeWidth = Helper.formatDouble(json['strokeWidth'], 0.0);
+    radius = Helper.formatDouble(json['radius'], 0.0);
+    distanceFromCenter = Helper.formatDouble(json['distanceFromCenter'], 0.0);
     paintingStyle = stringToPaintingStyle(json['paintingStyle']);
   }
 

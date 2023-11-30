@@ -14,9 +14,9 @@ import '../../models/index.dart'
 import '../../modules/dynamic_layout/helper/helper.dart';
 import '../../modules/dynamic_layout/index.dart';
 import '../../routes/flux_navigate.dart';
-import '../../screens/blog/views/blog_list_category.dart';
 import '../../screens/index.dart';
 import '../../services/index.dart';
+import '../../widgets/blog/banner/blog_list_view.dart';
 import '../../widgets/common/webview.dart';
 import '../config.dart';
 import '../constants.dart';
@@ -72,39 +72,12 @@ class NavigateTools {
       final index = (Helper.formatInt(config['tab_number'], 1) ?? 1) - 1;
       if (context != null) {
         var appModel = Provider.of<AppModel>(context, listen: false);
-        final userModel = Provider.of<UserModel>(context, listen: false);
         var tabData = appModel.appConfig?.tabBar[index];
-
-        if (tabData != null) {
-          var routeData;
-          if (['chat-gpt', 'image-generate', 'text-generate']
-              .contains(tabData.layout)) {
-            routeData = {
-              'identifier': userModel.user?.email,
-              'loginCallback': () async {
-                await FluxNavigate.pushNamed(
-                  RouteList.login,
-                  forceRootNavigator: true,
-                );
-                final userModel =
-                    Provider.of<UserModel>(context, listen: false);
-                return userModel.user?.email;
-              },
-            };
-          }
-          if (!tabData.visible) {
-            return FluxNavigate.pushNamed(
-              RouteList.pageTab,
-              arguments: routeData ?? tabData,
-            );
-          }
-          if (tabData.isFullscreen) {
-            return FluxNavigate.pushNamed(
-              tabData.layout.toString(),
-              arguments: routeData ?? tabData,
-              forceRootNavigator: true,
-            );
-          }
+        if (tabData != null && !tabData.visible) {
+          return FluxNavigate.pushNamed(
+            RouteList.pageTab,
+            arguments: tabData,
+          );
         }
       }
       return MainTabControlDelegate.getInstance().tabAnimateTo(
@@ -114,41 +87,13 @@ class NavigateTools {
     if (config['screen'] != null) {
       var tabData = TabBarMenuConfig(jsonData: {});
       var screen = config['screen'];
-      var routeData;
       if (context != null) {
         var appModel = Provider.of<AppModel>(context, listen: false);
         tabData = appModel.appConfig?.tabBar
                 .firstWhereOrNull((element) => element.layout == screen) ??
             tabData;
-        final userModel = Provider.of<UserModel>(context, listen: false);
-
-        if (['chat-gpt', 'image-generate', 'text-generate']
-            .contains(tabData.layout)) {
-          routeData = {
-            'identifier': userModel.user?.email,
-            'loginCallback': () async {
-              await FluxNavigate.pushNamed(
-                RouteList.login,
-                forceRootNavigator: true,
-              );
-              final userModel = Provider.of<UserModel>(context, listen: false);
-              return userModel.user?.email;
-            },
-          };
-        }
       }
-
-      if (config['fullscreen'] ?? false) {
-        return FluxNavigate.pushNamed(
-          screen,
-          arguments: routeData ?? tabData,
-        );
-      }
-
-      return Navigator.of(context!).pushNamed(
-        screen,
-        arguments: routeData ?? tabData,
-      );
+      return Navigator.of(context!).pushNamed(screen, arguments: tabData);
     }
 
     /// Launch the URL from external
@@ -175,7 +120,7 @@ class NavigateTools {
         context!,
         MaterialPageRoute<void>(
           builder: (BuildContext context) =>
-              BlogListCategory(id: config['blog_category'].toString()),
+              BlogListView(id: config['blog_category'].toString()),
           fullscreenDialog: true,
         ),
       );
@@ -282,28 +227,27 @@ class NavigateTools {
     MainTabControlDelegate.getInstance().changeTab(name);
   }
 
-  static Future<void> navigateToLogin(context,
-      {bool replacement = false}) async {
+  static void navigateToLogin(context, {bool replacement = false}) {
     if (kLoginSetting.smsLoginAsDefault) {
-      await navigateToLoginSms(context, replacement: replacement);
+      navigateToLoginSms(context, replacement: replacement);
       return;
     }
-    await _getFluxNavigate(
+    _getFluxNavigate(
       routeName: RouteList.login,
       replacement: replacement,
     );
   }
 
-  static Future<void> navigateToLoginSms(BuildContext context,
-      {bool replacement = false}) async {
+  static void navigateToLoginSms(BuildContext context,
+      {bool replacement = false}) {
     if (kAdvanceConfig.enableDigitsMobileLogin) {
-      await _getFluxNavigate(
+      _getFluxNavigate(
         routeName: RouteList.digitsMobileLogin,
         replacement: replacement,
       );
       return;
     }
-    await _getFluxNavigate(
+    _getFluxNavigate(
       routeName: RouteList.loginSMS,
       replacement: replacement,
     );
@@ -354,9 +298,6 @@ class NavigateTools {
   static void navigateRegister(context, {bool replacement = false}) {
     if (kAdvanceConfig.enableMembershipUltimate) {
       Navigator.of(context).pushNamed(RouteList.memberShipUltimatePlans);
-    } else if (kAdvanceConfig.enableWooCommerceWholesalePrices &&
-        ServerConfig().isWooPluginSupported) {
-      Navigator.of(context).pushNamed(RouteList.wholesaleSignUp);
     } else if (kAdvanceConfig.enablePaidMembershipPro) {
       Navigator.of(context).pushNamed(RouteList.paidMemberShipProPlans);
     } else if (kAdvanceConfig.enableDigitsMobileLogin) {
@@ -367,23 +308,6 @@ class NavigateTools {
         return;
       }
       Navigator.of(context).pushNamed(RouteList.register);
-    }
-  }
-
-  static void goBackLogin(BuildContext context) {
-    var routeFound = false;
-    var routeNames = [RouteList.login];
-
-    Navigator.popUntil(context, (route) {
-      if (routeNames
-          .any((element) => route.settings.name?.contains(element) ?? false)) {
-        routeFound = true;
-      }
-      return routeFound || route.isFirst;
-    });
-
-    if (!routeFound) {
-      Navigator.of(context).pushReplacementNamed(RouteList.login);
     }
   }
 }

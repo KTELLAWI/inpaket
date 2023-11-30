@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../common/tools.dart';
+import '../../generated/l10n.dart';
 import '../../models/entities/blog.dart';
 import 'detailed_blog_mixin.dart';
 
@@ -35,8 +36,7 @@ class HalfImageType extends StatelessWidget with DetailedBlogMixin {
               child: Container(
                 margin: const EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
-                  color:
-                      Theme.of(context).colorScheme.background.withOpacity(0.3),
+                  color: Theme.of(context).colorScheme.background.withOpacity(0.3),
                   borderRadius: BorderRadius.circular(30.0),
                 ),
                 padding: const EdgeInsets.only(left: 5),
@@ -83,7 +83,58 @@ class HalfImageType extends StatelessWidget with DetailedBlogMixin {
                         ),
                       ),
                     ),
-                    renderAuthorInfo(blogData, context),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColorLight,
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                          child: Container(
+                            margin: const EdgeInsets.all(5.0),
+                            child: const Icon(
+                              Icons.person,
+                              size: 30.0,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10.0,
+                        ),
+                        Flexible(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                blogData.author.isNotEmpty
+                                    ? 'by ${blogData.author} '
+                                    : S.of(context).loading,
+                                softWrap: false,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                blogData.date,
+                                softWrap: true,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                     const SizedBox(height: 10),
                     renderAudioWidget(blogData, context),
                     renderBlogContentWithTextEnhancement(blogData),

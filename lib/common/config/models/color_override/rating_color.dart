@@ -18,7 +18,8 @@ class RatingColor {
   factory RatingColor.fromJson(Map<String, dynamic> json) {
     return RatingColor(
       primaryStar: HexColor(json['primaryStar'] ?? 'f39c12'),
-      borderStar: HexColor(json['borderStar'] ?? '3fc1be'),
+      borderStar: HexColor(
+          json['borderStar'] ?? '3fc1be'),
       primaryLinearProgress:
           HexColor(json['primaryLinearProgress'] ?? 'f39c12'),
       backgroundLinearProgress:

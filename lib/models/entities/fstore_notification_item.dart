@@ -35,7 +35,6 @@ class FStoreNotificationItem {
       id: json['id'],
       title: json['title'],
       body: json['body'],
-      seen: json['seen'],
       additionalData: json['additionalData'],
       date: DateTime.tryParse(json['date']),
     );

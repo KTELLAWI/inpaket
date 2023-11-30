@@ -14,27 +14,21 @@ class VendorShippingMethodModel extends ChangeNotifier {
   String? message;
 
   final Map<int?, List<OrderDeliveryDate>> _deliveryDatesMV = {};
-
   Map<int?, List<OrderDeliveryDate>>? get deliveryDatesMV => _deliveryDatesMV;
 
   List<OrderDeliveryDate>? _deliveryDates;
-
   List<OrderDeliveryDate>? get deliveryDates => _deliveryDates;
 
   Future<void> getShippingMethods(
-      {CartModel? cartModel,
-      required List<Store?> stores,
-      String? langCode}) async {
+      {CartModel? cartModel, required List<Store?> stores, String? langCode}) async {
     try {
       isLoading = true;
       list = [];
       notifyListeners();
       for (var i = 0; i < stores.length; i++) {
         final store = stores[i];
-        var items = await _service.api.getShippingMethods(
-          cartModel: cartModel,
-          store: store,
-        )!;
+        var items = await _service.api
+            .getShippingMethods(cartModel: cartModel, store: store, langCode: langCode)!;
         if (items.isNotEmpty) {
           list.add(VendorShippingMethod(store, items));
         }
@@ -44,12 +38,7 @@ class VendorShippingMethodModel extends ChangeNotifier {
         for (var i = 0; i < stores.length; i++) {
           final store = stores[i];
           if (store != null) {
-            try {
-              var dates = await getDelivery(storeId: store.id);
-              if (dates.isNotEmpty) {
-                _deliveryDatesMV[store.id] = dates;
-              }
-            } catch (_) {}
+            _deliveryDatesMV[store.id] = await getDelivery(storeId: store.id);
           }
         }
       }

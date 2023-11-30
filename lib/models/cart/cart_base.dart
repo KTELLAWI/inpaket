@@ -65,5 +65,5 @@ abstract class CartModel
   bool isWalletCart();
 
   @override
-  void setTaxInfo(List<Tax> taxes, double taxesTotal, bool isIncludingTax);
+  void setTaxInfo(List<Tax> taxes, double taxesTotal);
 }

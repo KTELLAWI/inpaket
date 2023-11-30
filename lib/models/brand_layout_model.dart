@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../common/enums/load_state.dart';
@@ -24,18 +23,12 @@ class BrandLayoutModel extends ChangeNotifier {
     }
   }
 
-  Brand? getbrandById(String brandId) {
-    return _brands.firstWhereOrNull((element) => element.id == brandId);
-  }
-
   Future<List<Brand>> getBrands(String lang) async {
     _updateState(FSLoadState.loading);
     _page = 1;
     _brands.clear();
-    final list = await _services.api.getBrands(
-          page: _page,
-          perPage: _perPage,
-        ) ??
+    final list = await _services.api
+            .getBrands(page: _page, perPage: _perPage, lang: lang) ??
         [];
     if (list.isNotEmpty) {
       _brands.addAll(list);
@@ -52,8 +45,9 @@ class BrandLayoutModel extends ChangeNotifier {
       return [];
     }
     _page++;
-    final list =
-        await _services.api.getBrands(page: _page, perPage: _perPage) ?? [];
+    final list = await _services.api
+            .getBrands(page: _page, perPage: _perPage, lang: lang) ??
+        [];
     if (list.isNotEmpty) {
       _brands.addAll(list);
       _updateState(FSLoadState.loaded);

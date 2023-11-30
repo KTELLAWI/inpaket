@@ -15,7 +15,6 @@ class SmoothStarRating extends StatelessWidget {
   final bool allowHalfRating;
   final double spacing;
   final Widget? label;
-  final MainAxisAlignment mainAxisAlignment;
 
   SmoothStarRating({
     this.starCount = 5,
@@ -27,7 +26,6 @@ class SmoothStarRating extends StatelessWidget {
     this.spacing = 0.0,
     this.label,
     this.allowHalfRating = true,
-    this.mainAxisAlignment = MainAxisAlignment.start,
   }) {
     assert(rating != null);
   }
@@ -104,7 +102,6 @@ class SmoothStarRating extends StatelessWidget {
     }
 
     return Row(
-      mainAxisAlignment: mainAxisAlignment,
       children: <Widget>[
         Wrap(
           alignment: WrapAlignment.start,

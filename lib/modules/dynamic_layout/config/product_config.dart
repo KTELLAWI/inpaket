@@ -10,46 +10,7 @@ import 'box_shadow_config.dart';
 /// layout : 'threeColumn'
 /// isSnapping : true
 
-enum CardDesign {
-  card,
-  glass,
-  horizontal,
-  simpleCard,
-  quiltedCard,
-  flat,
-  ;
-
-  bool get isGlass => this == CardDesign.glass;
-  bool get isCard => this == CardDesign.card;
-  bool get isHorizontal => this == CardDesign.horizontal;
-  bool get isSimpleCard => this == CardDesign.simpleCard;
-  bool get isFlat => this == CardDesign.flat;
-  bool get isQuiltedCard => this == CardDesign.quiltedCard;
-
-  factory CardDesign.fromString(String? cardDesign) {
-    if (cardDesign == glass.name) {
-      return CardDesign.glass;
-    }
-
-    if (cardDesign == horizontal.name) {
-      return CardDesign.horizontal;
-    }
-
-    if (cardDesign == simpleCard.name) {
-      return CardDesign.simpleCard;
-    }
-
-    if (cardDesign == flat.name) {
-      return CardDesign.flat;
-    }
-
-    if (cardDesign == quiltedCard.name) {
-      return CardDesign.quiltedCard;
-    }
-
-    return CardDesign.card;
-  }
-}
+enum CardDesign { card, glass }
 
 class ProductConfig {
   String? category;
@@ -90,7 +51,6 @@ class ProductConfig {
   List? include;
 
   /// load special products
-  Map<String, dynamic>? advancedParams;
 
   Color? backgroundColor;
   double backgroundRadius = 10;
@@ -121,9 +81,6 @@ class ProductConfig {
   double parallaxImageRatio = 1.2;
   bool hideEmptyProductLayout = false;
   double productListItemHeight = 125.0;
-  bool enableAutoSliding = false;
-  int? durationAutoSliding;
-  bool showSeeAll = true;
 
   ProductConfig({
     this.category,
@@ -163,19 +120,9 @@ class ProductConfig {
     this.enableParallax = false,
     this.parallaxImageRatio = 1.2,
     this.titleLine,
-    this.order,
     this.orderby,
     this.limit,
     this.hideEmptyProductLayout = false,
-    this.advancedParams,
-    this.enableAutoSliding = false,
-    this.durationAutoSliding,
-    this.tag,
-    this.cardDesign = CardDesign.card,
-    this.include,
-    this.backgroundColor,
-    this.backgroundRadius = 10,
-    this.showSeeAll = true,
     required this.rows,
     required this.columns,
     required this.imageRatio,
@@ -222,7 +169,8 @@ class ProductConfig {
     if (kProductCard.boxShadow != null) {
       boxShadow = BoxShadowConfig.fromJson(kProductCard.boxShadow);
     }
-    cardDesign = CardDesign.fromString(kProductCard.cardDesign);
+    cardDesign =
+        kProductCard.cardDesign == 'glass' ? CardDesign.glass : CardDesign.card;
     productListItemHeight = kProductDetail.productListItemHeight;
   }
 
@@ -230,7 +178,8 @@ class ProductConfig {
     /// init default values
     var env = ProductConfig.empty();
     if (json['cardDesign'] != null) {
-      cardDesign = CardDesign.fromString(json['cardDesign']);
+      cardDesign =
+          json['cardDesign'] == 'glass' ? CardDesign.glass : CardDesign.card;
     } else {
       cardDesign = env.cardDesign;
     }
@@ -300,7 +249,7 @@ class ProductConfig {
 
     /// only show count down for Sale off product
     showCountDown = (json['showCountDown'] ?? env.showCountDown) &&
-        (layout == Layout.saleOff || layout == Layout.pinterest);
+        layout == Layout.saleOff;
 
     rows = Helper.formatInt(json['rows']) ?? env.rows;
     showQuantity = json['showQuantity'] ?? env.showQuantity;
@@ -318,7 +267,6 @@ class ProductConfig {
     showCartButtonWithQuantity = json['showCartButtonWithQuantity'] ?? false;
     limit = Helper.formatInt(json['limit']);
     include = json['include'];
-    advancedParams = json['advancedParams'];
 
     enableParallax = json['parallax'] ?? false;
     parallaxImageRatio = Helper.formatDouble(json['parallaxImageRatio']) ?? 1.2;
@@ -326,11 +274,6 @@ class ProductConfig {
     productListItemHeight =
         Helper.formatDouble(json['productListItemHeight']) ??
             env.productListItemHeight;
-
-    enableAutoSliding = json['enableAutoSliding'] ?? env.enableAutoSliding;
-    durationAutoSliding = Helper.formatInt(json['durationAutoSliding']) ??
-        env.durationAutoSliding;
-    showSeeAll = json['showSeeAll'] ?? env.showSeeAll;
   }
 
   Map<String, dynamic> toJson() {
@@ -380,7 +323,6 @@ class ProductConfig {
     map['orderby'] = orderby;
     map['limit'] = limit;
     map['include'] = include;
-    map['advancedParams'] = advancedParams;
     map['backgroundColor'] = backgroundColor?.value.toRadixString(16);
     map['backgroundRadius'] = backgroundRadius;
     map['showCountDown'] = showCountDown;
@@ -409,8 +351,6 @@ class ProductConfig {
     map['parallaxImageRatio'] = parallaxImageRatio;
     map['hideEmptyProductLayout'] = hideEmptyProductLayout;
     map['productListItemHeight'] = productListItemHeight;
-    map['enableAutoSliding'] = enableAutoSliding;
-    map['durationAutoSliding'] = durationAutoSliding;
     map.removeWhere((key, value) => value == null);
     return map;
   }
@@ -423,137 +363,6 @@ class ProductConfig {
         'name:$name, '
         'layout:$layout, '
         'showCountDown:$showCountDown, '
-        'onSale:$onSale, '
-        'advancedParams:$advancedParams, ';
-  }
-
-  // write copyWith function
-  ProductConfig copyWith({
-    String? category,
-    String? name,
-    String? layout,
-    bool? isSnapping,
-    String? tag,
-    String? image,
-    double? height,
-    double? imageWidth,
-    double? borderRadius,
-    double? hMargin,
-    double? vMargin,
-    double? hPadding,
-    double? vPadding,
-    BoxShadowConfig? boxShadow,
-    String? backgroundImage,
-    double? spaceWidth,
-    EdgeInsets? paddingBGP,
-    EdgeInsets? marginBGP,
-    double? backgroundHeight,
-    double? backgroundWidth,
-    BoxFit? backgroundBoxFit,
-    CardDesign? cardDesign,
-    int? titleLine,
-    String? order,
-    String? orderby,
-    int? limit,
-    List? include,
-    dynamic advancedParams,
-    Color? backgroundColor,
-    double? backgroundRadius,
-    bool? showCountDown,
-    bool? onSale,
-    int? rows,
-    int? columns,
-    double? imageRatio,
-    BoxFit? imageBoxfit,
-    bool? hidePrice,
-    bool? hideStore,
-    bool? hideTitle,
-    bool? featured,
-    bool? enableRating,
-    bool? showStockStatus,
-    bool? hideEmptyProductListRating,
-    bool? showHeart,
-    bool? showCartButton,
-    bool? showCartIcon,
-    bool? showCartIconColor,
-    double? cartIconRadius,
-    bool? showQuantity,
-    bool? enableBottomAddToCart,
-    bool? showOnlyImage,
-    bool? showCartButtonWithQuantity,
-    bool? enableParallax,
-    double? parallaxImageRatio,
-    bool? hideEmptyProductLayout,
-    double? productListItemHeight,
-    bool? enableAutoSliding,
-    int? durationAutoSliding,
-    bool? backgroundWidthMode,
-  }) {
-    return ProductConfig(
-      category: category ?? this.category,
-      name: name ?? this.name,
-      layout: layout ?? this.layout,
-      isSnapping: isSnapping ?? this.isSnapping,
-      tag: tag ?? this.tag,
-      image: image ?? this.image,
-      height: height ?? this.height,
-      imageWidth: imageWidth ?? this.imageWidth,
-      borderRadius: borderRadius ?? this.borderRadius,
-      hMargin: hMargin ?? this.hMargin,
-      vMargin: vMargin ?? this.vMargin,
-      hPadding: hPadding ?? this.hPadding,
-      vPadding: vPadding ?? this.vPadding,
-      boxShadow: boxShadow ?? this.boxShadow,
-      backgroundImage: backgroundImage ?? this.backgroundImage,
-      spaceWidth: spaceWidth ?? this.spaceWidth,
-      paddingBGP: paddingBGP ?? this.paddingBGP,
-      marginBGP: marginBGP ?? this.marginBGP,
-      backgroundHeight: backgroundHeight ?? this.backgroundHeight,
-      backgroundWidth: backgroundWidth ?? this.backgroundWidth,
-      backgroundBoxFit: backgroundBoxFit?.name ?? this.backgroundBoxFit,
-      backgroundWidthMode: backgroundWidthMode ?? backgroundWidthMode,
-      cardDesign: cardDesign ?? this.cardDesign,
-      titleLine: titleLine ?? this.titleLine,
-      order: order ?? this.order,
-      orderby: orderby ?? this.orderby,
-      limit: limit ?? this.limit,
-      include: include?.toList() ?? this.include?.toList(),
-      advancedParams: advancedParams ?? this.advancedParams,
-      backgroundColor: backgroundColor ?? this.backgroundColor,
-      backgroundRadius: backgroundRadius ?? this.backgroundRadius,
-      showCountDown: showCountDown ?? this.showCountDown,
-      onSale: onSale ?? this.onSale,
-      rows: rows ?? this.rows,
-      columns: columns ?? this.columns,
-      imageRatio: imageRatio ?? this.imageRatio,
-      imageBoxfit: imageBoxfit?.name ?? this.imageBoxfit,
-      hidePrice: hidePrice ?? this.hidePrice,
-      hideStore: hideStore ?? this.hideStore,
-      hideTitle: hideTitle ?? this.hideTitle,
-      featured: featured ?? this.featured,
-      enableRating: enableRating ?? this.enableRating,
-      showStockStatus: showStockStatus ?? this.showStockStatus,
-      hideEmptyProductListRating:
-          hideEmptyProductListRating ?? this.hideEmptyProductListRating,
-      showHeart: showHeart ?? this.showHeart,
-      showCartButton: showCartButton ?? this.showCartButton,
-      showCartIcon: showCartIcon ?? this.showCartIcon,
-      showCartIconColor: showCartIconColor ?? this.showCartIconColor,
-      cartIconRadius: cartIconRadius ?? this.cartIconRadius,
-      showQuantity: showQuantity ?? this.showQuantity,
-      enableBottomAddToCart:
-          enableBottomAddToCart ?? this.enableBottomAddToCart,
-      showOnlyImage: showOnlyImage ?? this.showOnlyImage,
-      showCartButtonWithQuantity:
-          showCartButtonWithQuantity ?? this.showCartButtonWithQuantity,
-      enableParallax: enableParallax ?? this.enableParallax,
-      parallaxImageRatio: parallaxImageRatio ?? this.parallaxImageRatio,
-      hideEmptyProductLayout:
-          hideEmptyProductLayout ?? this.hideEmptyProductLayout,
-      productListItemHeight:
-          productListItemHeight ?? this.productListItemHeight,
-      enableAutoSliding: enableAutoSliding ?? this.enableAutoSliding,
-      durationAutoSliding: durationAutoSliding ?? this.durationAutoSliding,
-    );
+        'onSale:$onSale, ';
   }
 }

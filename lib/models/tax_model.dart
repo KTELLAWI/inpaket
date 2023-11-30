@@ -10,18 +10,16 @@ class TaxModel extends ChangeNotifier {
   final Services _service = Services();
   List<Tax>? taxes = [];
   double taxesTotal = 0;
-  bool isIncludingTax = false;
 
-  Future<void> getTaxes(CartModel cartModel, String? token, onSuccess,
+  Future<void> getTaxes(CartModel cartModel, onSuccess,
       {Function? onError}) async {
     try {
-      var res = await _service.api.getTaxes(cartModel, token);
+      var res = await _service.api.getTaxes(cartModel);
       if (res != null) {
-        taxes = res.items;
-        taxesTotal = res.total ?? 0;
-        isIncludingTax = res.isIncludingTax ?? false;
+        taxes = res['items'];
+        taxesTotal = double.parse(res['total']);
       }
-      onSuccess(taxesTotal, taxes, isIncludingTax);
+      onSuccess(taxesTotal, taxes);
     } catch (err) {
       if (onError != null) {
         onError(err);

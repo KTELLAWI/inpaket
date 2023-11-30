@@ -67,15 +67,14 @@ class StateFetchProductLayout extends State<FetchProductLayout> {
         });
         return;
       }
-      var subCats = <Category>[];
+      var subCats= <Category>[];
       for (var item in subCategories) {
         completer = CancelableCompleter<List<Product>?>();
         completer?.complete(_service.api.fetchProductsByCategory(
+          lang: appModel.langCode,
           categoryId: item.id,
           page: page + 1,
           userId: userModel.user?.id,
-          order: kProductCard.order,
-          orderBy: kProductCard.orderby,
         ));
         var values = await completer?.operation.valueOrCancellation();
         if ((values?.length ?? 0) > 2) {
@@ -94,11 +93,10 @@ class StateFetchProductLayout extends State<FetchProductLayout> {
       completer = CancelableCompleter<List<Product>?>();
       completer?.complete(
         _service.api.fetchProductsByCategory(
+          lang: appModel.langCode,
           categoryId: widget.category?.id,
           page: page + 1,
           userId: userModel.user?.id,
-          order: kProductCard.order,
-          orderBy: kProductCard.orderby,
         ),
       );
       var values = await completer?.operation.valueOrCancellation();
@@ -131,11 +129,7 @@ class StateFetchProductLayout extends State<FetchProductLayout> {
           completer = CancelableCompleter<List<Product>?>();
 
           completer?.complete(_service.api.fetchProductsByCategory(
-            categoryId: item.id,
-            page: 1,
-            order: kProductCard.order,
-            orderBy: kProductCard.orderby,
-          ));
+              lang: appModel.langCode, categoryId: item.id, page: 1));
           var values = await completer?.operation.valueOrCancellation();
           if (mounted) {
             setState(() {
@@ -150,11 +144,10 @@ class StateFetchProductLayout extends State<FetchProductLayout> {
         completer = CancelableCompleter<List<Product>?>();
 
         completer?.complete(_service.api.fetchProductsByCategory(
+          lang: appModel.langCode,
           categoryId: widget.category?.id,
           page: 1,
           userId: userModel.user?.id,
-          order: kProductCard.order,
-          orderBy: kProductCard.orderby,
         ));
         var values = await completer?.operation.valueOrCancellation();
         if (mounted) {

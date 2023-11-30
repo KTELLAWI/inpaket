@@ -78,14 +78,4 @@ class PaymentMethod {
       printLog('Error on Payment Models Strapi: $e trace: ${trace.toString()}');
     }
   }
-
-  static String stripeGooglePay = 'stripe_v2_google_pay';
-  static String stripeApplePay = 'stripe_v2_apple_pay';
-  static String stripeCard = 'stripe_card';
-
-  bool get isStripeGooglePay => id == stripeGooglePay;
-
-  bool get isStripeApplePay => id == stripeApplePay;
-
-  bool get isStripeCard => id == stripeCard;
 }

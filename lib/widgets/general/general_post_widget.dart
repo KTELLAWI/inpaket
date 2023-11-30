@@ -5,24 +5,19 @@ import '../../common/config/models/general_setting_item.dart';
 import '../../common/constants.dart';
 import '../../generated/l10n.dart';
 import '../../screens/posts/post_screen.dart';
-import '../../screens/settings/widgets/setting_item/setting_item_widget.dart';
-import 'general_widget.dart';
 
-class GeneralPostWidget extends GeneralWidget {
+class GeneralPostWidget extends StatelessWidget {
+  final bool useTile;
+  final Color? iconColor;
+  final TextStyle? textStyle;
+  final GeneralSettingItem? item;
+
   const GeneralPostWidget({
-    required GeneralSettingItem? item,
-    Color? iconColor,
-    TextStyle? textStyle,
-    bool useTile = false,
-    Function()? onNavigator,
-    super.cardStyle,
-  }) : super(
-          item: item,
-          iconColor: iconColor,
-          textStyle: textStyle,
-          useTile: useTile,
-          onNavigator: onNavigator,
-        );
+    required this.item,
+    this.iconColor,
+    this.textStyle,
+    this.useTile = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,19 +30,55 @@ class GeneralPostWidget extends GeneralWidget {
     if (item != null) {
       icon = iconPicker(item!.icon, item!.iconFontFamily) ?? Icons.error;
       onTap = () {
-        onPushScreen(PostScreen(pageId: item!.pageId, pageTitle: title));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                PostScreen(pageId: item!.pageId, pageTitle: title),
+          ),
+        );
       };
     }
+    if (useTile) {
+      return ListTile(
+        leading: Icon(
+          icon,
+          color: iconColor,
+        ),
+        title: Text(
+          title,
+          style: textStyle,
+        ),
+        onTap: onTap,
+      );
+    }
 
-    return SettingItemWidget(
-      cardStyle: cardStyle,
-      icon: icon,
-      title: title,
-      onTap: onTap,
-      trailing: trailing,
-      useTile: useTile,
-      iconColorTile: iconColor,
-      textStyleTile: textStyle,
+    return Column(
+      children: [
+        Card(
+          margin: const EdgeInsets.only(bottom: 2.0),
+          elevation: 0,
+          child: ListTile(
+            leading: Icon(
+              icon,
+              color: Theme.of(context).colorScheme.secondary,
+              size: 24,
+            ),
+            title: Text(
+              title,
+              style: const TextStyle(fontSize: 16),
+            ),
+            trailing: trailing,
+            onTap: onTap,
+          ),
+        ),
+        const Divider(
+          color: Colors.black12,
+          height: 1.0,
+          indent: 75,
+          //endIndent: 20,
+        ),
+      ],
     );
   }
 }

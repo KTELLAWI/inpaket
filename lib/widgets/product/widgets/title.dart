@@ -9,14 +9,12 @@ class ProductTitle extends StatelessWidget {
   final bool hide;
   final TextStyle? style;
   final int? maxLines;
-  final bool textCenter;
 
   const ProductTitle({
     Key? key,
     required this.product,
     this.style,
     required this.hide,
-    this.textCenter = false,
     this.maxLines = 2,
   }) : super(key: key);
 
@@ -42,7 +40,6 @@ class ProductTitle extends StatelessWidget {
     }
 
     return Text.rich(
-      textAlign: textCenter ? TextAlign.center : null,
       TextSpan(
         children: [
           if (pinnedTag.isNotEmpty)

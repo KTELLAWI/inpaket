@@ -6,7 +6,6 @@ import '../../../common/config.dart';
 import '../../../common/constants.dart';
 import '../../../common/tools.dart';
 import '../../../generated/l10n.dart';
-import '../../../models/entities/review_payload.dart';
 import '../../../models/index.dart' show Review, UserModel;
 import '../../../services/index.dart';
 import '../../../widgets/common/start_rating.dart';
@@ -35,8 +34,6 @@ class _StateReviews extends BaseScreen<Reviews> {
   List<Review>? reviews;
   bool _isSending = false;
   List<dynamic> _images = [];
-
-  bool get _allowImageReview => kReviewConfig.enableReviewImage;
 
   @override
   void afterFirstLayout(BuildContext context) {
@@ -67,7 +64,7 @@ class _StateReviews extends BaseScreen<Reviews> {
     });
   }
 
-  Future<void> sendReview() async {
+  void sendReview() async {
     if (rating == 0.0) {
       Tools.showSnackBar(
           ScaffoldMessenger.of(context), S.of(context).ratingFirst);
@@ -78,59 +75,51 @@ class _StateReviews extends BaseScreen<Reviews> {
           ScaffoldMessenger.of(context), S.of(context).commentFirst);
       return;
     }
-    final user = Provider.of<UserModel>(context, listen: false).user!;
+    final user = Provider.of<UserModel>(context, listen: false);
     _isSending = true;
     setState(() {});
-    // var data = {
-    //   'review': comment.text,
-    //   'reviewer': user.user!.name,
-    //   'reviewer_email': user.user!.email,
-    //   'rating': rating,
-    //   'status': kAdvanceConfig.enableApprovedReview ? 'approved' : 'hold'
-    // };
-    String? image;
+    var data = {
+      'review': comment.text,
+      'reviewer': user.user!.name,
+      'reviewer_email': user.user!.email,
+      'rating': rating,
+      'status': kAdvanceConfig.enableApprovedReview ? 'approved' : 'hold'
+    };
     if (_images.isNotEmpty) {
       var preparedImages =
           await ImageTools.compressAndConvertImagesForUploading(_images);
-      image = preparedImages;
+      data['images'] = preparedImages;
     }
-    final reviewPayload = ReviewPayload(
-      productId: widget.productId!,
-      reviewerName: user.fullName,
-      review: comment.text,
-      reviewerEmail: user.email,
-      rating: rating.toInt(),
-      status: kAdvanceConfig.enableApprovedReview ? 'approved' : 'hold',
-      image: image,
-      shopDomain: kReviewConfig.judgeConfig.domain,
-      token: user.cookie,
-    );
-    try {
-      await services.api.createReview(reviewPayload);
-
-      Tools.showSnackBar(
-          ScaffoldMessenger.of(context),
-          (kAdvanceConfig.enableApprovedReview)
-              ? S.of(context).reviewSent
-              : S.of(context).reviewPendingApproval);
-      getListReviews(context);
+    await services.api
+        .createReview(
+            productId: widget.productId, data: data, token: user.user!.cookie)!
+        .catchError((e) {
+      Tools.showSnackBar(ScaffoldMessenger.of(context), e.toString());
+    }).then((onValue) {
+      if (onValue != null) {
+        Tools.showSnackBar(
+            ScaffoldMessenger.of(context),
+            (kAdvanceConfig.enableApprovedReview)
+                ? S.of(context).reviewSent
+                : S.of(context).reviewPendingApproval);
+        getListReviews(context);
+      }
       setState(() {
         rating = 0.0;
         comment.text = '';
         _isSending = false;
         _images.clear();
       });
-    } catch (e) {
-      Tools.showSnackBar(ScaffoldMessenger.of(context), e.toString());
-    }
+    });
   }
 
   void getListReviews(BuildContext context) {
     final userModel = Provider.of<UserModel>(context, listen: false);
-    final productId = widget.productId;
-    if (productId == null) return;
-
-    services.api.getReviews(productId).then((onValue) {
+    services.api
+        .getReviews(
+      widget.productId,
+    )!
+        .then((onValue) {
       final reviewList = onValue.data;
 
       if (userModel.loggedIn && widget.showYourRatingOnly) {
@@ -139,7 +128,7 @@ class _StateReviews extends BaseScreen<Reviews> {
       }
       if (mounted) {
         setState(() {
-          reviews = reviewList ?? [];
+          reviews = reviewList;
         });
       }
     });
@@ -147,9 +136,8 @@ class _StateReviews extends BaseScreen<Reviews> {
 
   @override
   Widget build(BuildContext context) {
-    final isRatingAllowed = (Provider.of<UserModel>(context).loggedIn) &&
-        (widget.allowRating) &&
-        (reviews?.isEmpty ?? false);
+    final isRatingAllowed =
+        (Provider.of<UserModel>(context).loggedIn) && (widget.allowRating);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,19 +176,16 @@ class _StateReviews extends BaseScreen<Reviews> {
                 Flexible(
                   child: Align(
                     alignment: Alignment.bottomRight,
-                    child: IgnorePointer(
-                      ignoring: _isSending,
-                      child: SmoothStarRating(
-                        label: const Text(''),
-                        allowHalfRating: true,
-                        onRatingChanged: updateRating,
-                        starCount: 5,
-                        rating: rating,
-                        size: 28.0,
-                        color: Theme.of(context).primaryColor,
-                        borderColor: Theme.of(context).primaryColor,
-                        spacing: 0.0,
-                      ),
+                    child: SmoothStarRating(
+                      label: const Text(''),
+                      allowHalfRating: true,
+                      onRatingChanged: updateRating,
+                      starCount: 5,
+                      rating: rating,
+                      size: 28.0,
+                      color: Theme.of(context).primaryColor,
+                      borderColor: Theme.of(context).primaryColor,
+                      spacing: 0.0,
                     ),
                   ),
                 ),
@@ -254,18 +239,17 @@ class _StateReviews extends BaseScreen<Reviews> {
                     ),
                   ),
                 Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      if (_allowImageReview)
-                        IconButton(
-                          icon: const Icon(Icons.camera_alt),
-                          onPressed: _isSending ? null : _chooseImages,
-                        ),
+                      IconButton(
+                        icon: const Icon(Icons.camera_alt),
+                        onPressed: _chooseImages,
+                      ),
                       Container(
-                        height: 32.0,
-                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                        height: 30.0,
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         decoration: BoxDecoration(
                             color: Theme.of(context).primaryColor,
                             borderRadius: BorderRadius.circular(6.0)),
@@ -323,15 +307,14 @@ class _StateReviews extends BaseScreen<Reviews> {
                       style: const TextStyle(
                           fontSize: 12, fontWeight: FontWeight.bold)),
                   SmoothStarRating(
-                    label: const Text(''),
-                    allowHalfRating: false,
-                    starCount: 5,
-                    rating: review.rating,
-                    size: 12.0,
-                    color: theme.primaryColor,
-                    borderColor: theme.primaryColor,
-                    spacing: 0.0,
-                  ),
+                      label: const Text(''),
+                      allowHalfRating: true,
+                      starCount: 5,
+                      rating: review.rating,
+                      size: 12.0,
+                      color: theme.primaryColor,
+                      borderColor: theme.primaryColor,
+                      spacing: 0.0),
                 ],
               ),
             const SizedBox(height: 10),

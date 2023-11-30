@@ -11,7 +11,8 @@ class VendorNotification {
   String? messageType;
   DateTime? created;
 
-  factory VendorNotification.fromMap(Map json) => VendorNotification(
+  factory VendorNotification.fromMap(Map json) =>
+      VendorNotification(
         id: json['ID'],
         message: json['message'],
         messageType: json['message_type'],

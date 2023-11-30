@@ -1,9 +1,10 @@
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common/config.dart';
 import '../../../generated/l10n.dart';
-import '../../../models/index.dart' show Product;
+import '../../../models/index.dart' show AppModel, Product;
 import '../../../modules/dynamic_layout/config/product_config.dart';
 import '../../../services/index.dart';
 import '../../../widgets/product/product_card_view.dart';
@@ -28,10 +29,10 @@ class _RelatedProductState extends State<RelatedProduct> {
 
   Future<List<Product>?> getRelativeProducts(context) => _memoizer.runOnce(() {
         return services.api.fetchProductsByCategory(
-          page: 1,
-          categoryId: widget.product!.categoryId,
-          include: widget.product?.relatedIds,
-        );
+            page: 1,
+            categoryId: widget.product!.categoryId,
+            include: widget.product?.relatedIds,
+            lang: Provider.of<AppModel>(context).langCode);
       });
 
   @override
@@ -54,9 +55,16 @@ class _RelatedProductState extends State<RelatedProduct> {
                   );
                 case ConnectionState.done:
                   if (snapshot.hasError) {
-                    return const SizedBox();
-                  } else if (snapshot.data == null || snapshot.data!.isEmpty) {
-                    return const SizedBox();
+                    return SizedBox(
+                      height: 100,
+                      child: Center(
+                        child: Text(
+                          S.of(context).error(snapshot.error!),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary),
+                        ),
+                      ),
+                    );
                   } else {
                     snapshot.data!.removeWhere(
                         (element) => element.id == widget.product!.id);

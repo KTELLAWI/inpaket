@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../../../common/config.dart';
 import '../../../generated/l10n.dart';
-import '../../../models/index.dart' show Category, CategoryModel;
+import '../../../models/index.dart'
+    show Category, CategoryModel;
 import '../../../modules/dynamic_layout/index.dart';
 import '../../../widgets/common/paging_list.dart';
 import '../widgets/fetch_product_layout.dart';
@@ -52,10 +53,6 @@ class SideMenuCategoriesState extends State<SideMenuCategories> {
           );
         }
 
-        if (categories.length <= selectedIndex.value) {
-          selectedIndex.value = categories.length - 1;
-        }
-
         return Row(
           children: <Widget>[
             Expanded(
@@ -82,11 +79,14 @@ class SideMenuCategoriesState extends State<SideMenuCategories> {
               child: ValueListenableBuilder<int>(
                 valueListenable: selectedIndex,
                 builder: (context, index, child) {
-                  var category = categories[index];
+                   var category =
+                    categories.length > index
+                        ? categories[index]
+                        : null;
                   return FetchProductLayout(
                     key: ValueKey(category.toString()),
                     category: category,
-                    subCategories: getSubCategories(category.id),
+                    subCategories: getSubCategories(category?.id),
                     padding: 4.0,
                     layout: 'list',
                     ratioProductImage: ProductConfig.empty().imageRatio,

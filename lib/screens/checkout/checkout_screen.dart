@@ -383,11 +383,11 @@ class _CheckoutState extends BaseScreen<Checkout> {
                       data: productList,
                     ));
 
+                cartModel.clearCart();
+                unawaited(context.read<WalletModel>().refreshWallet());
                 await Services()
                     .widget
                     .updateOrderAfterCheckout(context, order);
-                cartModel.clearCart();
-                unawaited(context.read<WalletModel>().refreshWallet());
               },
               onLoading: setLoading),
         );

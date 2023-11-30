@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '../../../models/index.dart' show Product;
-import '../../../widgets/common/auto_silde_show.dart';
 import '../../../widgets/product/product_card_view.dart';
 import '../config/product_config.dart';
 
@@ -42,24 +41,20 @@ var _staggeredTiles = const [
 class ProductStaggered extends StatelessWidget {
   final List<Product>? products;
   final double width;
-  final ProductConfig config;
 
-  ProductStaggered(
-      {Key? key, this.products, required this.width, required this.config})
+  const ProductStaggered({Key? key, this.products, required this.width})
       : super(key: key);
-  final _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     double? size = width / 3;
     final screenSize = MediaQuery.of(context).size;
 
-    final body = Container(
+    return Container(
       padding: const EdgeInsets.only(left: 15.0),
       height: screenSize.height * 0.8 / (screenSize.height / width),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        controller: _scrollController,
         child: StaggeredGrid.count(
           crossAxisCount: 3,
           crossAxisSpacing: 4,
@@ -73,20 +68,12 @@ class ProductStaggered extends StatelessWidget {
                   width: size * _staggeredTiles[i % 6].mainAxisCellCount!,
                   item: products![i],
                   hideDetail: true,
-                  config: config,
+                  config: ProductConfig.empty(),
                 ),
               ),
           ],
         ),
       ),
-    );
-
-    return HandleAutoSlide.list(
-      enable: config.enableAutoSliding,
-      durationAutoSliding: config.durationAutoSliding,
-      numberOfItems: products!.length,
-      controller: _scrollController,
-      child: body,
     );
   }
 }

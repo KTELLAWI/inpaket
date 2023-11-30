@@ -16,7 +16,4 @@ mixin CurrencyMixin on CartMixin {
   void changeCurrencyRates(value) {
     currencyRates = value;
   }
-
-  /// Update price when currency code (all platforms) or country code (Shopify) is changed
-  void updatePriceWhenCurrencyChanged() {}
 }

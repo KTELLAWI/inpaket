@@ -27,7 +27,7 @@ class GeoSearchScreen extends StatefulWidget {
   State<GeoSearchScreen> createState() => _GeoSearchScreenState();
 }
 
-class _GeoSearchScreenState extends State<GeoSearchScreen> with AppBarMixin {
+class _GeoSearchScreenState extends State<GeoSearchScreen> with AppBarMixin{
   final _searchController = TextEditingController();
   final _controller = RefreshController();
 

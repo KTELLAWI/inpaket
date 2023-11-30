@@ -9,6 +9,7 @@ import 'package:path/path.dart';
 
 import '../../common/constants.dart';
 
+
 // class QueryString {
 //   static Map parse(String query) {
 //     var search = RegExp('([^&=]+)=?([^&]*)');
@@ -26,7 +27,7 @@ import '../../common/constants.dart';
 
 class BlogNewsApi {
   final String url;
-  final bool isRoot;
+  final bool isRoot; 
 
   BlogNewsApi(this.url, {this.isRoot = true});
 

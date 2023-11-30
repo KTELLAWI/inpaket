@@ -11,7 +11,7 @@ import '../../models/app_model.dart';
 import '../../models/brand_model.dart';
 import '../../models/entities/filter_sorty_by.dart';
 import '../../models/entities/product.dart';
-import '../../services/firebase_service.dart';
+import '../../modules/firebase/firebase_service.dart';
 import '../../services/services.dart';
 import '../../widgets/backdrop/backdrop.dart';
 import '../../widgets/backdrop/backdrop_menu.dart';
@@ -72,7 +72,6 @@ class _BrandPageState extends State<BrandPage>
     dynamic listingLocationId,
     String? orderBy,
     String? order,
-    bool? isSearch,
     FilterSortBy? sortBy,
   }) {
     _controller.forward();

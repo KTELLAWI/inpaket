@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:collection/collection.dart';
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:flutter/material.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:quiver/strings.dart';
@@ -8,10 +8,7 @@ import 'package:quiver/strings.dart';
 import '../../common/config.dart';
 import '../../common/constants.dart';
 import '../../common/tools.dart';
-import '../../data/boxes.dart';
-import '../../modules/dynamic_layout/helper/helper.dart';
 import '../../services/service_config.dart';
-import '../../services/services.dart';
 import '../booking/booking_model.dart';
 import '../serializers/product.dart';
 import '../vendor/store_model.dart';
@@ -26,7 +23,6 @@ import 'tag.dart';
 import 'vendor_admin_variation.dart';
 
 const _defaultId = '0';
-const _videoType = 'video';
 
 class Product {
   String id;
@@ -40,7 +36,6 @@ class Product {
   String? price;
   String? regularPrice;
   String? salePrice;
-  String? wholesalePrice;
   String? maxPrice;
   String? minPrice;
   bool? onSale;
@@ -59,7 +54,6 @@ class Product {
   String? categoryId;
   String? videoUrl;
   List<dynamic>? groupedProducts;
-  List<String?>? fileNames;
   List<String?>? files;
   int? stockQuantity;
   int? minQuantity;
@@ -106,7 +100,7 @@ class Product {
 
   ///----VENDOR ADMIN----///
 
-  ///----khadrah LISTING----///
+  ///----FLUXSTORE LISTING----///
 
   String? distance;
   Map? pureTaxonomies;
@@ -129,9 +123,6 @@ class Product {
   String? instagram;
   String? eventDate;
 
-  // Determine the product or listing type
-  bool listingType = false;
-
   // String? rating;
   int? totalReview = 0;
   double? lat;
@@ -140,11 +131,7 @@ class Product {
   ListingSlots? slots;
   bool? listingBookingStatus;
 
-  String? mVideoUrl;
-  String? mVideoTitle;
-  String? mVideoDesc;
-
-  ///----khadrah LISTING----///
+  ///----FLUXSTORE LISTING----///
   Product({
     this.id = _defaultId,
     String? sku,
@@ -157,7 +144,6 @@ class Product {
     String? price,
     String? regularPrice,
     String? salePrice,
-    String? wholesalePrice,
     String? maxPrice,
     String? minPrice,
     bool? onSale,
@@ -175,7 +161,6 @@ class Product {
     String? categoryId,
     String? videoUrl,
     List<dynamic>? groupedProducts,
-    List<String>? fileNames,
     List<String?>? files,
     int? stockQuantity,
     int? minQuantity,
@@ -249,27 +234,23 @@ class Product {
   }
 
   bool canBeAddedToCartFromList({bool? enableBottomAddToCart}) {
-    final isEnableBottomCard =
-        enableBottomAddToCart ?? kAdvanceConfig.enableBottomAddToCart;
-
-    final isPassedType = [
-          'external',
-          'booking',
-          'grouped',
-          if (isEnableBottomCard == false) ...[
-            'variable',
-            'appointment',
-          ],
-        ].contains(type) ==
-        false;
-
-    final isCanAdd = !isEmptyProduct() &&
-        ((inStock != null && inStock!) || backordersAllowed) &&
-        isPassedType &&
-        (addOns?.isEmpty ?? true) &&
-        (options?.isEmpty ?? true);
-
-    return isCanAdd;
+    if (enableBottomAddToCart ?? kAdvanceConfig.enableBottomAddToCart) {
+      return !isEmptyProduct() &&
+          ((inStock != null && inStock!) || backordersAllowed) &&
+          type != 'external' &&
+          type != 'booking' &&
+          type != 'grouped' &&
+          (addOns?.isEmpty ?? true);
+    } else {
+      return !isEmptyProduct() &&
+          ((inStock != null && inStock!) || backordersAllowed) &&
+          type != 'variable' &&
+          type != 'appointment' &&
+          type != 'external' &&
+          type != 'booking' &&
+          type != 'grouped' &&
+          (addOns?.isEmpty ?? true);
+    }
   }
 
   bool get isVariableProduct => type == 'variable';
@@ -300,7 +281,6 @@ class Product {
     price = p.price;
     regularPrice = p.regularPrice;
     salePrice = p.salePrice;
-    wholesalePrice = p.wholesalePrice;
     onSale = p.onSale;
     inStock = p.inStock;
     averageRating = p.averageRating;
@@ -315,7 +295,6 @@ class Product {
     categoryId = p.categoryId;
     videoUrl = p.videoUrl;
     groupedProducts = p.groupedProducts?.toList();
-    fileNames = p.fileNames?.toList();
     files = p.files?.toList();
     stockQuantity = p.stockQuantity;
     minQuantity = p.minQuantity;
@@ -350,7 +329,6 @@ class Product {
   Product.fromJson(Map parsedJson) : id = parsedJson['id'].toString() {
     try {
       id = parsedJson['id'].toString();
-      listingType = false;
       sku = parsedJson['sku'];
       status = parsedJson['status'];
       name = HtmlUnescape().convert(parsedJson['name']);
@@ -389,10 +367,7 @@ class Product {
       inStock =
           parsedJson['in_stock'] ?? parsedJson['stock_status'] == 'instock';
       if (inStock == true && manageStock) {
-        inStock =
-            (int.tryParse(parsedJson['stock_quantity']?.toString() ?? '0') ??
-                    0) >
-                0;
+        inStock = (parsedJson['stock_quantity'] ?? 0) > 0;
       }
       backOrdered = parsedJson['backordered'] ?? false;
       backordersAllowed = (parsedJson['backorders_allowed'] ?? false) ||
@@ -436,8 +411,7 @@ class Product {
       isDownloadable = parsedJson['downloadable'];
       // add stock limit
       if (parsedJson['manage_stock'] == true) {
-        stockQuantity =
-            int.tryParse(parsedJson['stock_quantity']?.toString() ?? '0');
+        stockQuantity = parsedJson['stock_quantity'];
       }
 
       //minQuantity = parsedJson['meta_data']['']
@@ -615,44 +589,6 @@ class Product {
         // ignore
       }
 
-      if (kAdvanceConfig.enableWooCommerceWholesalePrices &&
-          ServerConfig().isWooPluginSupported) {
-        var loggedInUser = UserBox().userInfo;
-        if (loggedInUser != null) {
-          var haveWholesalePriceKey =
-              '${loggedInUser.role ?? ''}_have_wholesale_price';
-          var wholesalePriceKey = '${loggedInUser.role ?? ''}_wholesale_price';
-
-          var haveWholesalePriceMeta = metaData.firstWhere(
-            (item) => item['key'] == haveWholesalePriceKey,
-            orElse: () => {},
-          );
-          if (haveWholesalePriceMeta.isNotEmpty &&
-              haveWholesalePriceMeta['value'] == 'yes') {
-            var wholesalePriceMeta = metaData.firstWhere(
-              (item) => item['key'] == wholesalePriceKey,
-              orElse: () => {},
-            );
-            if (wholesalePriceMeta.isNotEmpty &&
-                wholesalePriceMeta['value'] != null) {
-              price = wholesalePriceMeta['value'];
-              wholesalePrice = price;
-            }
-          }
-        }
-
-        var filterMetas = metaData
-            .where((item) =>
-                item['key'] == 'wwpp_product_wholesale_visibility_filter')
-            .toList();
-        if (filterMetas.isNotEmpty &&
-            filterMetas.firstWhereOrNull((e) => e['value'] == 'all') == null) {
-          isRestricted = filterMetas.firstWhereOrNull(
-                  (e) => e['value'] == (loggedInUser?.role ?? '')) ==
-              null;
-        }
-      }
-
       ///------For Vendor Admin------///
       if (parsedJson['featured_image'] != null) {
         vendorAdminImageFeature = parsedJson['featured_image'];
@@ -691,31 +627,6 @@ class Product {
             : video['value']['url'] ?? '';
       }
 
-      /// get mstore video setting to support for videos list layout
-      var mVideoUrlMeta = metaData.firstWhere(
-        (item) => item['key'] == '_mstore_video_url',
-        orElse: () => {},
-      );
-      if (mVideoUrlMeta.isNotEmpty && mVideoUrlMeta['value'] != null) {
-        mVideoUrl = mVideoUrlMeta['value'];
-      }
-
-      var mVideoTitleMeta = metaData.firstWhere(
-        (item) => item['key'] == '_mstore_video_title',
-        orElse: () => {},
-      );
-      if (mVideoTitleMeta.isNotEmpty && mVideoTitleMeta['value'] != null) {
-        mVideoTitle = mVideoTitleMeta['value'];
-      }
-
-      var mVideoDescMeta = metaData.firstWhere(
-        (item) => item['key'] == '_mstore_video_description',
-        orElse: () => {},
-      );
-      if (mVideoDescMeta.isNotEmpty && mVideoDescMeta['value'] != null) {
-        mVideoDesc = mVideoDescMeta['value'];
-      }
-
       affiliateUrl = parsedJson['external_url'];
 
       var groupedProductList = <int>[];
@@ -723,30 +634,23 @@ class Product {
         groupedProductList.add(item);
       });
       groupedProducts = groupedProductList;
-
-      var fileNames = <String?>[];
       var files = <String?>[];
-
-      final rawDownloads = parsedJson['downloads'];
-      if (rawDownloads is List) {
+      final rawFiles = parsedJson['downloads'];
+      if (rawFiles is List) {
         for (var item in List.from(parsedJson['downloads'] ?? [])) {
-          fileNames.add(item['name']);
           files.add(item['file']);
         }
-      } else if (rawDownloads is Map) {
+      } else if (rawFiles is Map) {
         for (var item in Map.from(parsedJson['downloads'] ?? {}).values) {
-          fileNames.add(item['name']);
           files.add(item['file']);
         }
       }
-
-      this.fileNames = fileNames;
       this.files = files;
 
       if (parsedJson['meta_data'] != null) {
         for (var item in parsedJson['meta_data']) {
           try {
-            if (item['key'] == '_wc_min_max_quantities_max_qty') {
+            if (item['key'] == '_minmax_product_max_quantity') {
               var quantity = int.parse(item['value']);
               quantity == 0 ? maxQuantity = null : maxQuantity = quantity;
             }
@@ -755,7 +659,7 @@ class Product {
           }
 
           try {
-            if (item['key'] == '_wc_min_max_quantities_min_qty') {
+            if (item['key'] == '_minmax_product_min_quantity') {
               var quantity = int.parse(item['value']);
               quantity == 0 ? minQuantity = null : minQuantity = quantity;
             }
@@ -774,10 +678,8 @@ class Product {
 
               for (var value in values) {
                 /// Customer Defined Price (custom_price) doesn't have any options.
-                if ((value['options'] != null ||
-                        value['type'] == 'custom_text' ||
-                        value['type'] == 'custom_price') &&
-                    value['field_name'] != null) {
+                if (value['options'] != null ||
+                    value['type'] == 'custom_price') {
                   final item = ProductAddons.fromJson(value);
                   if (item.name != null && !addOnNames.contains(item.name)) {
                     defaultAddonsOptions[item.name!] = item.defaultOptions;
@@ -791,15 +693,13 @@ class Product {
             printLog('_product_addons $e');
           }
 
-          if (Services().widget.enableMembershipUltimate) {
-            try {
-              if (item['key'] == 'ihc_mb_who') {
-                isRestricted = !item['value'].toString().contains('all') &&
-                    item['value'].toString().isNotEmpty;
-              }
-            } catch (e) {
-              printLog('maxQuantity $e');
+          try {
+            if (item['key'] == 'ihc_mb_who') {
+              isRestricted = !item['value'].toString().contains('all') &&
+                  item['value'].toString().isNotEmpty;
             }
+          } catch (e) {
+            printLog('maxQuantity $e');
           }
         }
       }
@@ -926,6 +826,7 @@ class Product {
       permalink = json['onlineStoreUrl'];
 
       var imgs = <String>[];
+
       if (json['images']['edges'] != null) {
         for (var item in json['images']['edges']) {
           imgs.add(item['node']['url']);
@@ -934,42 +835,6 @@ class Product {
 
       images = imgs;
       imageFeature = json['featuredImage']?['url'];
-          //////metafield
-        metaData =[{"ddd":"dddddd"}] ;//List<Map>.from(collections);  
-        // final rawMetaData = json['metafields']!= null ?  json['metafields']['edges']: null;// [0]['node']['value'];
-        // //description=rawMetaData[0]['node'];
-        // if (rawMetaData is List) {
-        // for (var item in rawMetaData) {
-        //  metaData.add(item['node']);
-        // }
-        // }
-      // if (rawMetaData is List) {
-      //   metaData = List<Map>.from(rawMetaData);
-      // } else {
-      //   metaData = <Map>[];
-      // }
-
-      if (json['media']['edges'] != null) {
-        var edges = json['media']['edges'];
-        for (var item in edges) {
-          var node = item['node'];
-          if (node['__typename'].toString().toLowerCase() == _videoType &&
-              node['sources'] is List) {
-            final listVideoResponse = node['sources'] as List;
-            Map mVideo = listVideoResponse.firstWhere(
-              (item) =>
-                  kProductVideoSupportTypes.contains(item['format'].toString()),
-              orElse: () => {},
-            );
-            if (mVideo.isNotEmpty && mVideo['url'] != null) {
-              mVideoUrl = mVideo['url'].toString();
-              mVideoDesc = json['description'];
-              mVideoTitle = name;
-              break;
-            }
-          }
-        }
-      }
 
       var attrs = <ProductAttribute>[];
 
@@ -989,8 +854,6 @@ class Product {
       }
 
       variations = variants;
-  
-
     } catch (e, trace) {
       printLog(e.toString());
       printLog(trace.toString());
@@ -1008,9 +871,6 @@ class Product {
           : '$productName';
       description =
           parsedJson['description'] is String ? parsedJson['description'] : '';
-      shortDescription = parsedJson['description_short'] is String
-          ? parsedJson['description_short']
-          : '';
       var linkRewrite = parsedJson['link_rewrite'];
       permalink = (linkRewrite is List && linkRewrite.isNotEmpty)
           ? '${linkRewrite[0]?['value']}'
@@ -1160,7 +1020,6 @@ class Product {
 
   Map<String, dynamic> toJson() {
     return {
-      'listingType': listingType,
       'id': id,
       'sku': sku,
       'name': name,
@@ -1188,7 +1047,7 @@ class Product {
       'variations': variations?.map((e) => e.toJson()).toList(),
       'infors': infors.map((e) => e.toJson()).toList(),
 
-      ///----khadrah Listing----///
+      ///----FluxStore Listing----///
       'distance': distance,
       'pureTaxonomies': pureTaxonomies,
       'reviews': reviews,
@@ -1230,7 +1089,6 @@ class Product {
 
   Product.fromLocalJson(Map json) : id = json['id'].toString() {
     try {
-      listingType = json['listingType'] == true;
       sku = json['sku'];
       name = json['name'];
       description = json['description'];
@@ -1272,9 +1130,7 @@ class Product {
       if (json['addOns'] != null) {
         var addOnsData = <ProductAddons>[];
         for (var item in json['addOns']) {
-          if (item['field_name'] != null) {
-            addOnsData.add(ProductAddons.fromJson(item));
-          }
+          addOnsData.add(ProductAddons.fromJson(item));
         }
         addOns = addOnsData;
       }
@@ -1300,7 +1156,7 @@ class Product {
       }).toList();
       type = json['type'];
 
-      ///----khadrah Listing----///
+      ///----FluxStore Listing----///
 
       distance = json['distance'];
       pureTaxonomies = json['pureTaxonomies'];
@@ -1434,7 +1290,7 @@ class Product {
       inStock = json['availability'] == 'available';
       images = <String>[];
       if (id.isNotEmpty) {
-        permalink = 'https://khadrah/product/$id';
+        permalink = 'https://fluxstore/product/$id';
       }
 
       if (json['images'] != null &&
@@ -1508,7 +1364,7 @@ class Product {
   }
 
   @override
-  String toString() => 'Product { id: $id name: $name type: $type metaData:$metaData }';
+  String toString() => 'Product { id: $id name: $name type: $type }';
 
   /// Get productID from mix String productID-ProductVariantID+productAddonOptions
   static String cleanProductID(productString) {
@@ -1543,12 +1399,11 @@ class Product {
     return price;
   }
 
-  ///----khadrah LISTING----////
+  ///----FLUXSTORE LISTING----////
   Product.fromListingJson(Map<String, dynamic> json)
       : id = Tools.getValueByKey(json, DataMapping().kProductDataMapping['id'])
             .toString() {
     try {
-      listingType = true;
       name = HtmlUnescape().convert(Tools.getValueByKey(
           json, DataMapping().kProductDataMapping['title']));
       description = Tools.getValueByKey(
@@ -1598,8 +1453,8 @@ class Product {
           Tools.getValueByKey(json, DataMapping().kProductDataMapping['lat']);
       final lo =
           Tools.getValueByKey(json, DataMapping().kProductDataMapping['lng']);
-      lat = Helper.formatDouble(la);
-      long = Helper.formatDouble(lo);
+      lat = la != null && la.isNotEmpty ? double.parse(la.toString()) : null;
+      long = lo != null && lo.isNotEmpty ? double.parse(lo.toString()) : null;
 
       phone =
           Tools.getValueByKey(json, DataMapping().kProductDataMapping['phone']);
@@ -1707,12 +1562,13 @@ class Product {
       }
 
       ///Set other attributes that not relate to Listing to be unusable
+
     } catch (err, trace) {
       printLog('err when parsed json Listing $trace');
     }
   }
 
-  ///----khadrah LISTING----////
+  ///----FLUXSTORE LISTING----////
 
   Product copyWith(
       {String? id,
@@ -1883,15 +1739,5 @@ class Product {
         listingMenu: listingMenu ?? this.listingMenu,
         slots: slots ?? this.slots,
         isRestricted: isRestricted ?? this.isRestricted);
-  }
-
-  factory Product.jsonParser(item) {
-    var product = Product.fromJson(item);
-    if (item['store'] != null) {
-      if (item['store']['errors'] == null) {
-        product = Services().widget.updateProductObject(product, item);
-      }
-    }
-    return product;
   }
 }

@@ -46,26 +46,6 @@ class FluxNavigate {
       arguments: arguments,
     );
   }
-  static Future<T?> pushNamedd<T extends Object?>(
-    String routeName, {
-    Object? arguments,
-    bool forceRootNavigator = false,
-  }) {
-    /// Override the routeName with new Uri format, support Web param
-    routeName = generateUri(arguments, routeName);
-
-    //if (forceRootNavigator) {
-      return _rootNavigator.pushNamed<T?>(
-        routeName,
-        arguments: arguments,
-      );
-    //}
-
-  //   return _navigator.pushNamed<T?>(
-  //     routeName,
-  //     arguments: arguments,
-  //   );
-   }
 
   static Future pushReplacementNamed(
     String routeName, {
@@ -73,15 +53,9 @@ class FluxNavigate {
     bool forceRootNavigator = false,
   }) {
     if (forceRootNavigator) {
-      return _rootNavigator.pushReplacementNamed(
-        routeName,
-        arguments: arguments,
-      );
+      return _rootNavigator.pushReplacementNamed(routeName);
     }
-    return _navigator.pushReplacementNamed(
-      routeName,
-      arguments: arguments,
-    );
+    return _navigator.pushReplacementNamed(routeName);
   }
 
   static Future pushNamedAndRemoveUntil(

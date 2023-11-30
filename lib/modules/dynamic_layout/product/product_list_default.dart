@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../../../common/tools.dart';
 import '../../../models/index.dart' show AppModel;
 import '../../../services/index.dart';
-import '../../../widgets/common/auto_silde_show.dart';
 import '../../../widgets/common/index.dart';
 import '../../../widgets/common/parallax_image.dart';
 import '../config/product_config.dart';
@@ -62,14 +61,9 @@ class ProductListDefault extends StatelessWidget {
 
   Widget renderHorizontal(BuildContext context,
       {bool enableBackground = false}) {
-    final padding = enableBackground ||
-            config.cardDesign.isSimpleCard ||
-            config.cardDesign.isFlat
-        ? 0.0
-        : 12.0;
+    final padding = enableBackground ? 0.0 : 12.0;
     var horizontalWidth = maxWidth - padding;
     var layout = config.layout ?? Layout.threeColumn;
-    var scrollController = ScrollController();
 
     /// wrap the product for Desktop mode
     if (Layout.isDisplayDesktop(context) && products.length > 5) {
@@ -81,10 +75,9 @@ class ProductListDefault extends StatelessWidget {
       );
     }
 
-    final body = Container(
+    return Container(
       color: Theme.of(context)
-          .colorScheme
-          .background
+          .colorScheme.background
           .withOpacity(enableBackground ? 0.0 : 1.0),
       padding: EdgeInsets.only(left: padding),
       constraints: BoxConstraints(
@@ -92,7 +85,6 @@ class ProductListDefault extends StatelessWidget {
       ),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        controller: scrollController,
         physics: config.isSnapping ?? false
             ? CustomScrollPhysic(
                 width: Layout.buildProductWidth(
@@ -103,14 +95,6 @@ class ProductListDefault extends StatelessWidget {
           children: renderProduct(context, enableBackground: enableBackground),
         ),
       ),
-    );
-
-    return HandleAutoSlide.list(
-      enable: config.enableAutoSliding,
-      durationAutoSliding: config.durationAutoSliding,
-      numberOfItems: products.length,
-      controller: scrollController,
-      child: body,
     );
   }
 

@@ -45,41 +45,37 @@ mixin AddressMixin on CartMixin {
           }
 
           return Address(
-            firstName:
-                user.billing != null && user.billing!.firstName!.isNotEmpty
-                    ? user.billing!.firstName
-                    : user.firstName,
-            lastName: user.billing != null && user.billing!.lastName!.isNotEmpty
-                ? user.billing!.lastName
-                : user.lastName,
-            email: user.billing != null && user.billing!.email!.isNotEmpty
-                ? user.billing!.email
-                : user.email,
-            street: user.billing != null && user.billing!.address1!.isNotEmpty
-                ? user.billing!.address1
-                : '',
-            country: user.billing != null && isNotBlank(user.billing!.country)
-                ? user.billing!.country
-                : kPaymentConfig.defaultCountryISOCode,
-            state: user.billing != null && user.billing!.state!.isNotEmpty
-                ? user.billing!.state
-                : kPaymentConfig.defaultStateISOCode,
-            phoneNumber: user.billing != null && user.billing!.phone!.isNotEmpty
-                ? user.billing!.phone
-                : '',
-            city: user.billing != null && user.billing!.city!.isNotEmpty
-                ? user.billing!.city
-                : '',
-            zipCode: user.billing != null && user.billing!.postCode!.isNotEmpty
-                ? user.billing!.postCode
-                : '',
-            apartment: user.billing != null && user.billing!.company!.isNotEmpty
-                ? user.billing!.company
-                : '',
-            block: user.billing != null && user.billing!.address2!.isNotEmpty
-                ? user.billing!.address2
-                : '',
-          );
+              firstName:
+                  user.billing != null && user.billing!.firstName!.isNotEmpty
+                      ? user.billing!.firstName
+                      : user.firstName,
+              lastName:
+                  user.billing != null && user.billing!.lastName!.isNotEmpty
+                      ? user.billing!.lastName
+                      : user.lastName,
+              email: user.billing != null && user.billing!.email!.isNotEmpty
+                  ? user.billing!.email
+                  : user.email,
+              street: user.billing != null && user.billing!.address1!.isNotEmpty
+                  ? user.billing!.address1
+                  : '',
+              country: user.billing != null && isNotBlank(user.billing!.country)
+                  ? user.billing!.country
+                  : kPaymentConfig.defaultCountryISOCode,
+              state: user.billing != null && user.billing!.state!.isNotEmpty
+                  ? user.billing!.state
+                  : kPaymentConfig.defaultStateISOCode,
+              phoneNumber:
+                  user.billing != null && user.billing!.phone!.isNotEmpty
+                      ? user.billing!.phone
+                      : '',
+              city: user.billing != null && user.billing!.city!.isNotEmpty
+                  ? user.billing!.city
+                  : '',
+              zipCode:
+                  user.billing != null && user.billing!.postCode!.isNotEmpty
+                      ? user.billing!.postCode
+                      : '');
         }
       }
       return null;
@@ -102,10 +98,9 @@ mixin AddressMixin on CartMixin {
     return address;
   }
 
-  double? getShippingCost({bool includeTax = false}) {
+  double? getShippingCost() {
     if (shippingMethod != null && shippingMethod!.cost! > 0) {
-      return (shippingMethod!.cost ?? 0) +
-          (includeTax ? (shippingMethod!.shippingTax ?? 0) : 0);
+      return shippingMethod!.cost;
     }
     if (shippingMethod != null && isNotBlank(shippingMethod!.classCost)) {
       List items = shippingMethod!.classCost!.split('*');
@@ -122,7 +117,7 @@ mixin AddressMixin on CartMixin {
     return 0.0;
   }
 
-  Future<void> setShippingMethod(ShippingMethod data) async {
+  void setShippingMethod(data) {
     shippingMethod = data;
   }
 }

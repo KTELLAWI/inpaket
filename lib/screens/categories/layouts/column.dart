@@ -40,8 +40,7 @@ class _ColumnCategoriesState extends State<ColumnCategories> with PagingMixin {
       Provider.of<CategoryModel>(context, listen: false);
 
   @override
-  late final ScrollController scrollController =
-      widget.scrollController ?? ScrollController();
+  late final ScrollController scrollController = widget.scrollController ?? ScrollController();
 
   @override
   Future<void> getData() {

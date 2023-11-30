@@ -7,7 +7,7 @@ abstract class BasePageRepository<T> {
     initCursor();
   }
 
-  Future<List<T>?> getData();
+  Future<List<T?>?> getData();
 
   dynamic cursor;
 
@@ -43,5 +43,5 @@ abstract class BasePageRepository<T> {
 
 // T parseJson(Map<String, dynamic> json);
 
-  Future<void> cancelCompleter() async {}
+  Future<void> cancelCompleter() async{}
 }

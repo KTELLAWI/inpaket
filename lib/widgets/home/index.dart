@@ -45,7 +45,6 @@ class HomeLayout extends StatefulWidget {
 class _HomeLayoutState extends State<HomeLayout> with AppBarMixin {
   late List widgetData;
   dynamic verticalWidgetData;
-  var _useNestedScrollView = true;
 
   bool isPreviewingAppBar = false;
 
@@ -211,9 +210,6 @@ class _HomeLayoutState extends State<HomeLayout> with AppBarMixin {
         ),
       );
     };
-    if (horizontalLayouts.length == 1 && widget.enableRefresh) {
-      _useNestedScrollView = false;
-    }
 
     return SafeArea(
       bottom: false,
@@ -224,7 +220,7 @@ class _HomeLayoutState extends State<HomeLayout> with AppBarMixin {
               controller: widget.scrollController,
               physics: const BouncingScrollPhysics(),
             )
-          : horizontalLayouts.isNotEmpty && _useNestedScrollView
+          : horizontalLayouts.isNotEmpty
               ? NestedScrollView(
                   controller: widget.scrollController,
                   headerSliverBuilder: (context, _) {
@@ -236,15 +232,15 @@ class _HomeLayoutState extends State<HomeLayout> with AppBarMixin {
     );
   }
 
-  List<Widget> get horizontalLayouts => <Widget>[
-        if (widget.showNewAppBar) sliverAppBarWidget,
-        if (widget.isShowAppbar && !widget.showNewAppBar) renderAppBar(),
-        if (widget.enableRefresh)
-          CupertinoSliverRefreshControl(
-            onRefresh: onRefresh,
-            refreshTriggerPullDistance: 175,
-          ),
-        if (widgetData.isNotEmpty)
+  List<Widget> get horizontalLayouts => widgetData.isNotEmpty
+      ? <Widget>[
+          if (widget.showNewAppBar) sliverAppBarWidget,
+          if (widget.isShowAppbar && !widget.showNewAppBar) renderAppBar(),
+          if (widget.enableRefresh)
+            CupertinoSliverRefreshControl(
+              onRefresh: onRefresh,
+              refreshTriggerPullDistance: 175,
+            ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
@@ -281,19 +277,16 @@ class _HomeLayoutState extends State<HomeLayout> with AppBarMixin {
               childCount: widgetData.length,
             ),
           ),
-      ];
+        ]
+      : [];
 
   Widget get verticalLayout => PreviewOverlay(
         index: widgetData.length,
         config: verticalWidgetData,
         builder: (value) {
-          return Services().widget.renderVerticalLayout(
-                value,
-                horizontalLayouts.isEmpty || _useNestedScrollView == false,
-                onRefresh: widget.enableRefresh && _useNestedScrollView == false
-                    ? onRefresh
-                    : null,
-              );
+          return Services()
+              .widget
+              .renderVerticalLayout(value, horizontalLayouts.isEmpty);
         },
       );
 }

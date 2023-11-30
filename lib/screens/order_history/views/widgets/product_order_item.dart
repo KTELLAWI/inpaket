@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:inspireui/inspireui.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../common/config.dart';
 import '../../../../common/constants.dart';
@@ -49,9 +48,7 @@ class _StateProductOrderItem extends BaseScreen<ProductOrderItem> {
     super.afterFirstLayout(context);
 
     if (widget.product.featuredImage == null) {
-      // Try to load product because listing app will load listing product
-      // instead of WooComerce product. And order history item cannot be listing
-      var productObj = await Services().api.overrideGetProduct(
+      var productObj = await Services().api.getProduct(
             widget.product.productId,
           );
       if (productObj != null) {
@@ -72,10 +69,8 @@ class _StateProductOrderItem extends BaseScreen<ProductOrderItem> {
 
   void navigateToProductDetail() async {
     if (product == null) {
-      // Try to load product because listing app will load listing product
-      // instead of WooComerce product. And order history item cannot be listing
       final productVal =
-          await Services().api.overrideGetProduct(widget.product.productId);
+          await Services().api.getProduct(widget.product.productId);
       setState(() {
         product = productVal;
       });
@@ -274,103 +269,41 @@ class DownloadButton extends StatefulWidget {
 class _DownloadButtonState extends State<DownloadButton> {
   bool isLoading = false;
 
-  void _handleDownloadAction(String file) async {
-    try {
-      Navigator.pop(context);
-      setState(() => isLoading = true);
-
-      await Tools.launchURL(
-        file,
-        mode: LaunchMode.externalApplication,
-      );
-
-      await Future.delayed(const Duration(milliseconds: 200));
-
-      setState(() => isLoading = false);
-    } catch (err) {
-      Tools.showSnackBar(ScaffoldMessenger.of(context), '$err');
-    }
-  }
-
-  void _showDownloadableFiles(BuildContext context) async {
-    try {
-      setState(() => isLoading = true);
-
-      var product = await Services().api.overrideGetProduct(widget.id);
-
-      setState(() => isLoading = false);
-
-      if (product?.files?.isEmpty ?? true) {
-        throw (S.of(context).noFileToDownload);
-      }
-
-      var files = product!.files!;
-
-      if (files.length == 1) {
-        final file = files[0];
-        if (file != null) {
-          _handleDownloadAction(file);
-        }
-      } else {
-        await showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Expanded(
-                  child: ListView.separated(
-                    itemCount: files.length,
-                    separatorBuilder: (context, index) => const Divider(),
-                    itemBuilder: (context, index) {
-                      final file = files[index];
-                      final fileNames =
-                          product.fileNames?[index] ?? S.of(context).files;
-
-                      return ListTile(
-                        title: Text(fileNames),
-                        trailing: ElevatedButton(
-                          onPressed: () async {
-                            if (file != null) {
-                              _handleDownloadAction(file);
-                            }
-                          },
-                          child: Text(
-                            S.of(context).download,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                Container(
-                  height: 1,
-                  decoration: const BoxDecoration(color: kGrey200),
-                ),
-                ListTile(
-                  title: Text(
-                    S.of(context).selectTheFile,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ],
-            );
-          },
-        );
-      }
-    } catch (err) {
-      Tools.showSnackBar(ScaffoldMessenger.of(context), '$err');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final services = Services();
     return TextButton.icon(
       style: TextButton.styleFrom(
         backgroundColor: Theme.of(context).primaryColor.withOpacity(0.2),
       ),
-      onPressed: isLoading ? null : () => _showDownloadableFiles(context),
+      onPressed: isLoading
+          ? null
+          : () async {
+              try {
+                setState(() {
+                  isLoading = true;
+                });
+
+                var product = await services.api.getProduct(widget.id);
+                setState(() {
+                  isLoading = false;
+                });
+
+                if (product?.files?.isEmpty ?? true) {
+                  throw Exception(S.of(context).noFileToDownload);
+                }
+
+                await Tools.launchURL(product!.files!.first!);
+              } catch (err) {
+                Tools.showSnackBar(ScaffoldMessenger.of(context), '$err');
+              } finally {
+                if (isLoading) {
+                  setState(() {
+                    isLoading = false;
+                  });
+                }
+              }
+            },
       icon: isLoading
           ? const SizedBox(
               width: 24,

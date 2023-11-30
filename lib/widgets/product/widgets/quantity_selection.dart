@@ -56,9 +56,7 @@ class _QuantitySelectionState extends State<QuantitySelection> {
   void didUpdateWidget(covariant QuantitySelection oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.limitSelectQuantity != widget.limitSelectQuantity) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        changeQuantity(widget.value ?? 1, forceUpdate: true);
-      });
+      changeQuantity(widget.value ?? 1, forceUpdate: true);
     }
     if (oldWidget.value != null &&
         widget.value.toString() != _textController.text &&
@@ -155,7 +153,7 @@ class _QuantitySelectionState extends State<QuantitySelection> {
         width: widget.expanded == true ? null : widget.width,
         decoration: BoxDecoration(
           border: Border.all(width: 1.0, color: kGrey200),
-          borderRadius: BorderRadius.circular(6),
+          borderRadius: BorderRadius.circular(3),
         ),
         alignment: Alignment.center,
         child: TextField(
@@ -186,8 +184,11 @@ class _QuantitySelectionState extends State<QuantitySelection> {
                   height: widget.height,
                   width: widget.height,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(6.0),
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(3.0),
+                    border: Border.all(
+                      color: kGrey200,
+                    ),
                   ),
                   child: IconButton(
                     padding: iconPadding,
@@ -197,10 +198,10 @@ class _QuantitySelectionState extends State<QuantitySelection> {
                       }
                       changeQuantity(currentQuantity - 1);
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.remove,
-                      size: 18,
-                      color: Theme.of(context).primaryColor,
+                      size: 20,
+                      color: Colors.white,
                     ),
                   ),
                 )
@@ -215,8 +216,11 @@ class _QuantitySelectionState extends State<QuantitySelection> {
                   height: widget.height,
                   width: widget.height,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(6.0),
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(3.0),
+                    border: Border.all(
+                      color: kGrey200,
+                    ),
                   ),
                   child: IconButton(
                     padding: iconPadding,
@@ -226,10 +230,10 @@ class _QuantitySelectionState extends State<QuantitySelection> {
                       }
                       changeQuantity(currentQuantity + 1);
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.add,
-                      size: 18,
-                      color: Theme.of(context).primaryColor,
+                      size: 20,
+                      color: Colors.white,
                     ),
                   ),
                 )

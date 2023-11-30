@@ -59,7 +59,7 @@ class RecentSearchesCustom extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                S.of(context).history,
+                S.of(context).recentSearches,
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.w600,

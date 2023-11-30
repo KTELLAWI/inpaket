@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../common/config.dart';
 import '../../../../common/constants.dart';
 import '../../../../common/tools.dart';
 import '../../../../generated/l10n.dart';
@@ -25,7 +24,6 @@ class OrderListItem extends StatelessWidget {
               RouteList.orderDetail,
               arguments: OrderDetailArguments(
                 model: model,
-                disableReview: !kAdvanceConfig.enableRating,
               ),
             );
           },

@@ -11,7 +11,6 @@ import '../../../widgets/common/flux_image.dart';
 import '../../../widgets/common/paging_list.dart';
 
 class SideMenuSubCategories extends StatefulWidget {
-  /// Not support enableLargeCategory
   static const String type = 'sideMenuWithSub';
 
   final Map<String, dynamic>? icons;
@@ -70,10 +69,6 @@ class SideMenuSubCategoriesState extends State<SideMenuSubCategories> {
           return Center(
             child: Text(S.of(context).noData),
           );
-        }
-
-        if (categories.length <= selectedIndex) {
-          selectedIndex = categories.length - 1;
         }
 
         var icons = getListIcons(categories);
@@ -138,14 +133,15 @@ class SideMenuSubCategoriesState extends State<SideMenuSubCategories> {
               flex: 7,
               child: Builder(
                 builder: (context) {
-                  var category = categories[selectedIndex];
+                  var category = categories.length > selectedIndex
+                      ? categories[selectedIndex]
+                      : null;
                   return GridSubCategory(
                     key: Key(category.toString()),
-                    getSubCategories(category.id),
+                    getSubCategories(category?.id),
                     parentCategory: category,
-                    parentCategoryImage:
-                        kGridIconsCategories[category.id ?? ''] ??
-                            icons[category.id],
+                    parentCategoryImage: kGridIconsCategories[category?.id ?? ''] ??
+                        icons[category?.id],
                     icons: icons,
                   );
                 },

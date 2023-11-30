@@ -11,7 +11,6 @@ import '../../../services/services.dart';
 import '../../../widgets/common/paging_list.dart';
 
 class SideMenuGroupCategories extends StatefulWidget {
-  /// Not support enableLargeCategory
   static const String type = 'sideMenuWithGroup';
 
   final Map<String, dynamic>? icons;
@@ -63,10 +62,6 @@ class SideMenuGroupCategoriesState extends State<SideMenuGroupCategories> {
         }
 
         var icons = getListIcons(categories);
-
-        if (categories.length <= selectedIndex) {
-          selectedIndex = categories.length - 1;
-        }
 
         return Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -126,14 +121,16 @@ class SideMenuGroupCategoriesState extends State<SideMenuGroupCategories> {
             Expanded(
               flex: 7,
               child: Builder(builder: (context) {
-                var category = categories[selectedIndex];
+                var category = categories.length > selectedIndex
+                    ? categories[selectedIndex]
+                    : null;
                 return GridSubCategory(
-                  getSubCategories(category.id),
-                  key: Key(category.toString()),
+                  getSubCategories(category?.id),
+                  key: Key('${category?.toString()}'),
                   parentCategory: category,
                   parentCategoryImage:
-                      kGridIconsCategories[category.id ?? ''] ??
-                          icons[category.id],
+                      kGridIconsCategories[category?.id ?? ''] ??
+                          icons[category?.id],
                   icons: icons,
                 );
               }),
@@ -187,8 +184,6 @@ class _StateGridSubCategory extends State<GridSubCategory> {
           'category': widget.parentCategory!.id,
           'name': widget.parentCategory!.name,
           'rows': 2,
-          'order': kProductCard.order,
-          'orderby': kProductCard.orderby,
         }),
       );
     }
@@ -214,8 +209,6 @@ class _StateGridSubCategory extends State<GridSubCategory> {
                       'category': categories[i].id,
                       'name': categories[i].name,
                       'rows': 2,
-                      'order': kProductCard.order,
-                      'orderby': kProductCard.orderby,
                     }),
                   );
                 },

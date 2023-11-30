@@ -50,11 +50,8 @@ class _SMSVerifyWidgetState extends State<SMSVerifyWidget> {
               child: isInvalid
                   ? Text(
                       '1',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineMedium!
-                          .copyWith(
-                              color: Colors.transparent, fontFamily: 'Roboto'),
+                      style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                          color: Colors.transparent, fontFamily: 'Roboto'),
                     )
                   : Text(
                       smsCode[index],

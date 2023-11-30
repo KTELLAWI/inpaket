@@ -2,10 +2,8 @@ import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
 import 'package:inspireui/inspireui.dart' show AutoHideKeyboard;
 import 'package:provider/provider.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../common/constants.dart';
-import '../../common/tools/tools.dart';
 import '../../models/app_model.dart';
 import '../../models/category/category_model.dart';
 import '../../models/filter_attribute_model.dart';
@@ -25,7 +23,7 @@ class ProductSearchView extends StatefulWidget {
   final Function onSearch;
   final bool enableSearchHistory;
   final bool autoFocusSearch;
-  final TextEditingController searchFieldController;
+
   const ProductSearchView({
     required this.builder,
     required this.onSearch,
@@ -37,7 +35,6 @@ class ProductSearchView extends StatefulWidget {
     this.autoFocusSearch = true,
     this.hasAppBar = false,
     Key? key,
-    required this.searchFieldController,
   }) : super(key: key);
 
   @override
@@ -50,12 +47,13 @@ class _ProductSearchViewState extends State<ProductSearchView>
   bool get wantKeepAlive => true;
 
   final _searchFieldNode = FocusNode();
+  final _searchFieldController = TextEditingController();
 
   // bool isVisibleSearch = false;
   bool _showResult = false;
   List<String>? _suggestSearch;
 
-  String get _searchKeyword => widget.searchFieldController.text.trim();
+  String get _searchKeyword => _searchFieldController.text;
 
   List<String> get suggestSearch =>
       _suggestSearch
@@ -91,28 +89,22 @@ class _ProductSearchViewState extends State<ProductSearchView>
   void dispose() {
     printLog('[SearchScreen] dispose');
     _searchFieldNode.dispose();
+    _searchFieldController.dispose();
     super.dispose();
   }
 
   void _onSearchTextChange(String value) {
-    // Fix isssue: Fail to search keyword by category
-    //https://github.com/khadrah/khadrah-core/pull/1192
-
-    // if (value.isEmpty) {
-    //   _showResult = false;
-    //   setState(() {});
-    //   return;
-    // }
-
-    final searchString = value.trim();
+    if (value.isEmpty) {
+      _showResult = false;
+      setState(() {});
+      return;
+    }
     if (_searchFieldNode.hasFocus) {
       if (suggestSearch.isEmpty) {
         setState(() {
           _showResult = true;
-          EasyDebounce.debounce(
-              'searchCategory',
-              const Duration(milliseconds: 200),
-              () => widget.onSearch(searchString));
+          EasyDebounce.debounce('searchCategory',
+              const Duration(milliseconds: 200), () => widget.onSearch(value));
         });
       } else {
         setState(() {
@@ -122,16 +114,15 @@ class _ProductSearchViewState extends State<ProductSearchView>
     }
   }
 
-  void _onClearText() {
-    setState(() {
-      _showResult = false;
-    });
-  }
-
   Color get labelColor => Colors.black;
 
   bool get isLoggedIn =>
       Provider.of<UserModel>(context, listen: false).loggedIn;
+
+  void onSearch(String value) {
+    EasyDebounce.debounce('searchCategory', const Duration(milliseconds: 200),
+        () => widget.onSearch(value));
+  }
 
   Material buildResult() {
     return Material(
@@ -139,9 +130,7 @@ class _ProductSearchViewState extends State<ProductSearchView>
         children: [
           widget.builder,
           Align(
-            alignment: Tools.isRTL(context)
-                ? Alignment.bottomLeft
-                : Alignment.bottomRight,
+            alignment: Alignment.bottomRight,
             child: widget.bottomSheet,
           )
         ],
@@ -167,22 +156,18 @@ class _ProductSearchViewState extends State<ProductSearchView>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             // _renderHeader(),
-            VisibilityDetector(
-              onVisibilityChanged: (VisibilityInfo info) {
-                if (info.visibleFraction == 0) {
-                  _searchFieldNode.unfocus();
-                }
+            SearchBox(
+              // width: widthSearchBox,
+              autoFocus: widget.autoFocusSearch,
+              controller: _searchFieldController,
+              focusNode: _searchFieldNode,
+              onChanged: _onSearchTextChange,
+              onSubmitted: _onSubmit,
+              onCancel: () {
+                // setState(() {
+                //   isVisibleSearch = false;
+                // });
               },
-              key: const Key('search-box-visibility'),
-              child: SearchBox(
-                // width: widthSearchBox,
-                autoFocus: widget.autoFocusSearch,
-                controller: widget.searchFieldController,
-                focusNode: _searchFieldNode,
-                onChanged: _onSearchTextChange,
-                onSubmitted: _onSubmit,
-                onCancel: _onClearText,
-              ),
             ),
             Expanded(
               child: AutoHideKeyboard(
@@ -279,19 +264,14 @@ class _ProductSearchViewState extends State<ProductSearchView>
   }
 
   void _onSubmit(String name) {
-    final searchString = name.trim();
-    if (searchString.isEmpty) {
-      return;
-    }
-
-    widget.searchFieldController.text = searchString;
+    _searchFieldController.text = name;
     // final userId = Provider.of<UserModel>(context, listen: false).user?.id;
     setState(() {
       _showResult = true;
       // _searchModel.loadProduct(name: name, userId: userId);
 
       EasyDebounce.debounce('searchCategory', const Duration(milliseconds: 200),
-          () => widget.onSearch(searchString));
+          () => widget.onSearch(name));
     });
     var currentFocus = FocusScope.of(context);
     if (!currentFocus.hasPrimaryFocus) {

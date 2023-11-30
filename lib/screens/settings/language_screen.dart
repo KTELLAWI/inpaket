@@ -27,7 +27,8 @@ class _LanguageScreenState extends State<LanguageScreen> with AppBarMixin {
 
     for (var i = 0; i < languages.length; i++) {
       if (ServerConfig().isVendorManagerType()) {
-        if (unsupportedLanguages.contains(languages[i]['code'])) {
+        if (unsupportedLanguages
+            .contains(languages[i]['code'])) {
           continue;
         }
       }
@@ -96,24 +97,24 @@ class _LanguageScreenState extends State<LanguageScreen> with AppBarMixin {
         backgroundColor: Theme.of(context).primaryColor,
         leading: isUpdating
             ? const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: SizedBox.square(
-                  dimension: 24.0,
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                    strokeWidth: 2.0,
-                  ),
-                ),
-              )
+          padding: EdgeInsets.all(16.0),
+          child: SizedBox.square(
+            dimension: 24.0,
+            child: CircularProgressIndicator(
+              color: Colors.white,
+              strokeWidth: 2.0,
+            ),
+          ),
+        )
             : Center(
-                child: GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: const Icon(
-                    Icons.arrow_back_ios,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+          child: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+            ),
+          ),
+        ),
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
       child: SingleChildScrollView(

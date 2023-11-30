@@ -13,7 +13,6 @@ class ShippingMethodModel extends ChangeNotifier {
   String? message;
 
   List<OrderDeliveryDate>? _deliveryDates;
-
   List<OrderDeliveryDate>? get deliveryDates => _deliveryDates;
 
   Future<void> getShippingMethods(
@@ -23,15 +22,12 @@ class ShippingMethodModel extends ChangeNotifier {
       required String langCode}) async {
     try {
       isLoading = true;
-      if (ServerConfig().isOpencart && (shippingMethods?.isNotEmpty ?? false)) {
-        shippingMethods = [];
-      }
       notifyListeners();
       shippingMethods = await _service.api.getShippingMethods(
-        cartModel: cartModel,
-        token: token,
-        checkoutId: checkoutId,
-      );
+          cartModel: cartModel,
+          token: token,
+          checkoutId: checkoutId,
+          langCode: langCode);
       if (kAdvanceConfig.enableDeliveryDateOnCheckout) {
         _deliveryDates = await getDelivery();
       }

@@ -35,8 +35,8 @@ class _ShoppingCartSummaryState extends State<ShoppingCartSummary> {
 
   final couponController = TextEditingController();
 
-  final bool _showCouponList =
-      kAdvanceConfig.showCouponList && ServerConfig().isSupportCouponList;
+  final bool _showCouponList = kAdvanceConfig.showCouponList &&
+      ServerConfig().type != ConfigType.magento;
 
   @override
   void initState() {
@@ -195,8 +195,7 @@ class _ShoppingCartSummaryState extends State<ShoppingCartSummary> {
                           padding: const EdgeInsets.symmetric(vertical: 2),
                           decoration: !isApplyCouponSuccess
                               ? BoxDecoration(
-                                  color:
-                                      Theme.of(context).colorScheme.background)
+                                  color: Theme.of(context).colorScheme.background)
                               : BoxDecoration(
                                   color: Theme.of(context).primaryColorLight),
                           child: GestureDetector(

@@ -23,19 +23,16 @@ class GeneralSettingItem {
   bool webViewMode = false;
   bool enableForward = false;
   bool enableBackward = true;
-  bool useTabScreen = false;
   String? script;
   bool enableClose = false;
   String buttonAlignment = 'centerLeft';
   List<GeneralButton> buttons = [];
   String? product;
   String? category;
-  String? tag;
   String? banner;
   num bannerHeight = 15.0;
   String? blog;
   String? blogCategory;
-  String? screen;
 
   GeneralSettingItem({
     this.id = defaultId,
@@ -59,13 +56,10 @@ class GeneralSettingItem {
     this.buttons = const [],
     this.product,
     this.category,
-    this.tag,
     this.banner,
     this.bannerHeight = 15.0,
     this.blog,
     this.blogCategory,
-    this.screen,
-    this.useTabScreen = false,
   });
 
   GeneralSettingItem.fromJson(Map json) {
@@ -97,13 +91,10 @@ class GeneralSettingItem {
     }
     product = json['product']?.toString();
     category = json['category']?.toString();
-    tag = json['tag']?.toString();
     banner = json['banner']?.toString();
     bannerHeight = json['bannerHeight'] ?? 15.0;
     blog = json['blog'];
     blogCategory = json['blogCategory'];
-    screen = json['screen']?.toString();
-    useTabScreen = json['useTabScreen'] ?? false;
   }
 
   Map<String, dynamic> toJson() {
@@ -134,13 +125,10 @@ class GeneralSettingItem {
     json['buttons'] = jsonButtons;
     json['product'] = product;
     json['category'] = category;
-    json['tag'] = tag;
     json['banner'] = banner;
     json['bannerHeight'] = bannerHeight;
     json['blog'] = blog;
     json['blogCategory'] = blogCategory;
-    json['screen'] = screen;
-    json['useTabScreen'] = useTabScreen;
     json.removeWhere((key, value) => value == null);
     return json;
   }

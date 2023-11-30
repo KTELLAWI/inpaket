@@ -220,11 +220,11 @@ class S {
     );
   }
 
-  /// `Select the file`
-  String get selectTheFile {
+  /// `Resend the OTP`
+  String get resendtheOTP {
     return Intl.message(
-      'Select the file',
-      name: 'selectTheFile',
+      'Resend the OTP',
+      name: 'resendtheOTP',
       desc: '',
       args: [],
     );
@@ -255,6 +255,16 @@ class S {
     return Intl.message(
       'My Cart',
       name: 'myCart',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `A message will be sent to a number to verify that the number is valid`
+  String get sendCodeToYourPhoneNumber {
+    return Intl.message(
+      'A message will be sent to a number to verify that the number is valid',
+      name: 'sendCodeToYourPhoneNumber',
       desc: '',
       args: [],
     );
@@ -350,10 +360,10 @@ class S {
     );
   }
 
-  /// `No favorites yet.`
+  /// `No favourites yet.`
   String get noFavoritesYet {
     return Intl.message(
-      'No favorites yet.',
+      'No favourites yet.',
       name: 'noFavoritesYet',
       desc: '',
       args: [],
@@ -840,10 +850,10 @@ class S {
     );
   }
 
-  /// `Recent search results`
+  /// `History`
   String get recentSearches {
     return Intl.message(
-      'Recent search results',
+      'History',
       name: 'recentSearches',
       desc: '',
       args: [],
@@ -920,20 +930,20 @@ class S {
     );
   }
 
-  /// `Get Notifications`
+  /// `Get Notification`
   String get getNotification {
     return Intl.message(
-      'Get Notifications',
+      'Get Notification',
       name: 'getNotification',
       desc: '',
       args: [],
     );
   }
 
-  /// `Notification Messages`
+  /// `Notify Messages`
   String get listMessages {
     return Intl.message(
-      'Notification Messages',
+      'Notify Messages',
       name: 'listMessages',
       desc: '',
       args: [],
@@ -1120,20 +1130,20 @@ class S {
     );
   }
 
-  /// `Please fill in the required fields`
+  /// `Please input fill in all fields`
   String get pleaseInput {
     return Intl.message(
-      'Please fill in the required fields',
+      'Please input fill in all fields',
       name: 'pleaseInput',
       desc: '',
       args: [],
     );
   }
 
-  /// `Search Address`
+  /// `Searching Address`
   String get searchingAddress {
     return Intl.message(
-      'Search Address',
+      'Searching Address',
       name: 'searchingAddress',
       desc: '',
       args: [],
@@ -1580,10 +1590,10 @@ class S {
     );
   }
 
-  /// `Save address successfully`
+  /// `Your address is exist in your local`
   String get saveAddressSuccess {
     return Intl.message(
-      'Save address successfully',
+      'Your address is exist in your local',
       name: 'saveAddressSuccess',
       desc: '',
       args: [],
@@ -2370,10 +2380,10 @@ class S {
     );
   }
 
-  /// `Do you want to exit the App`
+  /// `Do you want to exit an App`
   String get doYouWantToExitApp {
     return Intl.message(
-      'Do you want to exit the App',
+      'Do you want to exit an App',
       name: 'doYouWantToExitApp',
       desc: '',
       args: [],
@@ -2950,10 +2960,10 @@ class S {
     );
   }
 
-  /// `The login is cancelled`
+  /// `The login is cancel`
   String get loginCanceled {
     return Intl.message(
-      'The login is cancelled',
+      'The login is cancel',
       name: 'loginCanceled',
       desc: '',
       args: [],
@@ -3400,6 +3410,16 @@ class S {
     );
   }
 
+  /// `Register as Vendor user`
+  String get registerAsVendor {
+    return Intl.message(
+      'Register as Vendor user',
+      name: 'registerAsVendor',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Add Listing`
   String get addListing {
     return Intl.message(
@@ -3730,6 +3750,16 @@ class S {
     );
   }
 
+  /// `The username or password is incorrect`
+  String get UserNameInCorrect {
+    return Intl.message(
+      'The username or password is incorrect',
+      name: 'UserNameInCorrect',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `qty`
   String get qty {
     return Intl.message(
@@ -3850,10 +3880,10 @@ class S {
     );
   }
 
-  /// `Detail`
+  /// `Show Details`
   String get showDetails {
     return Intl.message(
-      'Detail',
+      'Show Details',
       name: 'showDetails',
       desc: '',
       args: [],
@@ -5700,10 +5730,10 @@ class S {
     );
   }
 
-  /// `Related blogs`
+  /// `Things You Might Love`
   String get relatedLayoutTitle {
     return Intl.message(
-      'Related blogs',
+      'Things You Might Love',
       name: 'relatedLayoutTitle',
       desc: '',
       args: [],
@@ -6530,13 +6560,13 @@ class S {
     );
   }
 
-  /// `The currently selected currency is not available for the Wallet feature, please change it to {defaultCurrency}`
-  String warningCurrencyMessageForWallet(Object defaultCurrency) {
+  /// `The currently selected currency is not available for the Wallet feature, please change it to {default_currency}`
+  String warningCurrencyMessageForWallet(Object default_currency) {
     return Intl.message(
-      'The currently selected currency is not available for the Wallet feature, please change it to $defaultCurrency',
+      'The currently selected currency is not available for the Wallet feature, please change it to $default_currency',
       name: 'warningCurrencyMessageForWallet',
       desc: '',
-      args: [defaultCurrency],
+      args: [default_currency],
     );
   }
 
@@ -7630,10 +7660,10 @@ class S {
     );
   }
 
-  /// `Please select at least 1 variation attribute for each active attribute`
+  /// `Please select at least 1 option for each active attribute`
   String get pleaseSelectAttr {
     return Intl.message(
-      'Please select at least 1 variation attribute for each active attribute',
+      'Please select at least 1 option for each active attribute',
       name: 'pleaseSelectAttr',
       desc: '',
       args: [],
@@ -8570,10 +8600,10 @@ class S {
     );
   }
 
-  /// `Apple Pay is not available on this device!`
+  /// `ApplePay is not supported. Please check your wallet and card`
   String get doesNotSupportApplePay {
     return Intl.message(
-      'Apple Pay is not available on this device!',
+      'ApplePay is not supported. Please check your wallet and card',
       name: 'doesNotSupportApplePay',
       desc: '',
       args: [],
@@ -8639,567 +8669,6 @@ class S {
       args: [],
     );
   }
-
-  /// `Order tracking`
-  String get orderTracking {
-    return Intl.message(
-      'Order tracking',
-      name: 'orderTracking',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Lock screen and security`
-  String get lockScreenAndSecurity {
-    return Intl.message(
-      'Lock screen and security',
-      name: 'lockScreenAndSecurity',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Fingerprints, Touch ID`
-  String get fingerprintsTouchID {
-    return Intl.message(
-      'Fingerprints, Touch ID',
-      name: 'fingerprintsTouchID',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Enable for Checkout`
-  String get enableForCheckout {
-    return Intl.message(
-      'Enable for Checkout',
-      name: 'enableForCheckout',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Enable for Wallet`
-  String get enableForWallet {
-    return Intl.message(
-      'Enable for Wallet',
-      name: 'enableForWallet',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Enable for Login`
-  String get enableForLogin {
-    return Intl.message(
-      'Enable for Login',
-      name: 'enableForLogin',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Our bank details`
-  String get ourBankDetails {
-    return Intl.message(
-      'Our bank details',
-      name: 'ourBankDetails',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Bank`
-  String get bank {
-    return Intl.message(
-      'Bank',
-      name: 'bank',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Account Number`
-  String get accountNumber {
-    return Intl.message(
-      'Account Number',
-      name: 'accountNumber',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Sort Code`
-  String get sortCode {
-    return Intl.message(
-      'Sort Code',
-      name: 'sortCode',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Register as`
-  String get registerAs {
-    return Intl.message(
-      'Register as',
-      name: 'registerAs',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Vendor`
-  String get vendor {
-    return Intl.message(
-      'Vendor',
-      name: 'vendor',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Customer`
-  String get customer {
-    return Intl.message(
-      'Customer',
-      name: 'customer',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Chat GPT`
-  String get chatGPT {
-    return Intl.message(
-      'Chat GPT',
-      name: 'chatGPT',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Regenerate response`
-  String get regenerateResponse {
-    return Intl.message(
-      'Regenerate response',
-      name: 'regenerateResponse',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Clear conversation`
-  String get clearConversation {
-    return Intl.message(
-      'Clear conversation',
-      name: 'clearConversation',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Listening...`
-  String get listening {
-    return Intl.message(
-      'Listening...',
-      name: 'listening',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Type a message...`
-  String get typeAMessage {
-    return Intl.message(
-      'Type a message...',
-      name: 'typeAMessage',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Speech not available`
-  String get speechNotAvailable {
-    return Intl.message(
-      'Speech not available',
-      name: 'speechNotAvailable',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Tap the mic to talk`
-  String get tapTheMicToTalk {
-    return Intl.message(
-      'Tap the mic to talk',
-      name: 'tapTheMicToTalk',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Chat with Bot`
-  String get chatWithBot {
-    return Intl.message(
-      'Chat with Bot',
-      name: 'chatWithBot',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Image generate`
-  String get imageGenerate {
-    return Intl.message(
-      'Image generate',
-      name: 'imageGenerate',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Are you sure you want to delete this? This action cannot be undone.`
-  String get confirmDelete {
-    return Intl.message(
-      'Are you sure you want to delete this? This action cannot be undone.',
-      name: 'confirmDelete',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Copy`
-  String get copy {
-    return Intl.message(
-      'Copy',
-      name: 'copy',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Copied`
-  String get copied {
-    return Intl.message(
-      'Copied',
-      name: 'copied',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Show More`
-  String get showMore {
-    return Intl.message(
-      'Show More',
-      name: 'showMore',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Show Less`
-  String get showLess {
-    return Intl.message(
-      'Show Less',
-      name: 'showLess',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Register As Vendor`
-  String get registerAsVendor {
-    return Intl.message(
-      'Register As Vendor',
-      name: 'registerAsVendor',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Select Role`
-  String get selectRole {
-    return Intl.message(
-      'Select Role',
-      name: 'selectRole',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Change language`
-  String get changeLanguage {
-    return Intl.message(
-      'Change language',
-      name: 'changeLanguage',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Which language do you prefer?`
-  String get whichLanguageDoYouPrefer {
-    return Intl.message(
-      'Which language do you prefer?',
-      name: 'whichLanguageDoYouPrefer',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Call to Store Owner`
-  String get callToVendor {
-    return Intl.message(
-      'Call to Store Owner',
-      name: 'callToVendor',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Send SMS to Store Owner`
-  String get sendSMStoVendor {
-    return Intl.message(
-      'Send SMS to Store Owner',
-      name: 'sendSMStoVendor',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `This payment method is not supported`
-  String get paymentMethodIsNotSupported {
-    return Intl.message(
-      'This payment method is not supported',
-      name: 'paymentMethodIsNotSupported',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Welcome {name}`
-  String welcomeUser(Object name) {
-    return Intl.message(
-      'Welcome $name',
-      name: 'welcomeUser',
-      desc: '',
-      args: [name],
-    );
-  }
-
-  /// `The minimum amount for using this payment is {currency} {amount}`
-  String minAmountForPayment(Object currency, Object amount) {
-    return Intl.message(
-      'The minimum amount for using this payment is $currency $amount',
-      name: 'minAmountForPayment',
-      desc: '',
-      args: [currency, amount],
-    );
-  }
-
-  /// `The maximum amount for using this payment is {currency} {amount}`
-  String maxAmountForPayment(Object currency, Object amount) {
-    return Intl.message(
-      'The maximum amount for using this payment is $currency $amount',
-      name: 'maxAmountForPayment',
-      desc: '',
-      args: [currency, amount],
-    );
-  }
-
-  /// `There is a product out of stock`
-  String get productOutOfStock {
-    return Intl.message(
-      'There is a product out of stock',
-      name: 'productOutOfStock',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `The current quantity is more than the quantity in stock`
-  String get quantityProductExceedInStock {
-    return Intl.message(
-      'The current quantity is more than the quantity in stock',
-      name: 'quantityProductExceedInStock',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Manage API Key`
-  String get manageApiKey {
-    return Intl.message(
-      'Manage API Key',
-      name: 'manageApiKey',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Select Store`
-  String get selectStore {
-    return Intl.message(
-      'Select Store',
-      name: 'selectStore',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `{priceRate} = {pointRate} Points`
-  String convertPoint(Object priceRate, Object pointRate) {
-    return Intl.message(
-      '$priceRate = $pointRate Points',
-      name: 'convertPoint',
-      desc: '',
-      args: [priceRate, pointRate],
-    );
-  }
-
-  /// `Use maximum {maxPointDiscount} Points for a {maxPriceDiscount} discount on this order!`
-  String useMaximumPointDiscount(
-      Object maxPointDiscount, Object maxPriceDiscount) {
-    return Intl.message(
-      'Use maximum $maxPointDiscount Points for a $maxPriceDiscount discount on this order!',
-      name: 'useMaximumPointDiscount',
-      desc: '',
-      args: [maxPointDiscount, maxPriceDiscount],
-    );
-  }
-
-  /// `This product is available for users with specific roles. Please log in with the appropriate credentials to access this product or contact us for more information.`
-  String get noPermissionToViewProduct {
-    return Intl.message(
-      'This product is available for users with specific roles. Please log in with the appropriate credentials to access this product or contact us for more information.',
-      name: 'noPermissionToViewProduct',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Feature not available`
-  String get featureNotAvailable {
-    return Intl.message(
-      'Feature not available',
-      name: 'featureNotAvailable',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Please reach out to the administrator to approve your registration.`
-  String get wholesaleRegisterMsg {
-    return Intl.message(
-      'Please reach out to the administrator to approve your registration.',
-      name: 'wholesaleRegisterMsg',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Sorry, we couldn't find any results.`
-  String get notFindResult {
-    return Intl.message(
-      'Sorry, we couldn\'t find any results.',
-      name: 'notFindResult',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Sorry, this video cannot be played.`
-  String get canNotPlayVideo {
-    return Intl.message(
-      'Sorry, this video cannot be played.',
-      name: 'canNotPlayVideo',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Become a Vendor`
-  String get becomeAVendor {
-    return Intl.message(
-      'Become a Vendor',
-      name: 'becomeAVendor',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `{country} country is not supported`
-  String countryIsNotSupported(Object country) {
-    return Intl.message(
-      '$country country is not supported',
-      name: 'countryIsNotSupported',
-      desc: '',
-      args: [country],
-    );
-  }
-
-  /// `Pay {amount}`
-  String payWithAmount(Object amount) {
-    return Intl.message(
-      'Pay $amount',
-      name: 'payWithAmount',
-      desc: '',
-      args: [amount],
-    );
-  }
-
-  /// `Name On Card`
-  String get nameOnCard {
-    return Intl.message(
-      'Name On Card',
-      name: 'nameOnCard',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Set up`
-  String get setup {
-    return Intl.message(
-      'Set up',
-      name: 'setup',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `This is customer role`
-  String get thisIsCustomerRole {
-    return Intl.message(
-      'This is customer role',
-      name: 'thisIsCustomerRole',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `This is vendor role`
-  String get thisIsVendorRole {
-    return Intl.message(
-      'This is vendor role',
-      name: 'thisIsVendorRole',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `by`
-  String get by {
-    return Intl.message(
-      'by',
-      name: 'by',
-      desc: '',
-      args: [],
-    );
-  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -9226,20 +8695,17 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
       Locale.fromSubtags(languageCode: 'id'),
       Locale.fromSubtags(languageCode: 'it'),
       Locale.fromSubtags(languageCode: 'ja'),
-      Locale.fromSubtags(languageCode: 'kk'),
       Locale.fromSubtags(languageCode: 'km'),
       Locale.fromSubtags(languageCode: 'kn'),
       Locale.fromSubtags(languageCode: 'ko'),
       Locale.fromSubtags(languageCode: 'ku'),
       Locale.fromSubtags(languageCode: 'lo'),
-      Locale.fromSubtags(languageCode: 'lt'),
       Locale.fromSubtags(languageCode: 'mr'),
       Locale.fromSubtags(languageCode: 'ms'),
       Locale.fromSubtags(languageCode: 'my'),
       Locale.fromSubtags(languageCode: 'nl'),
       Locale.fromSubtags(languageCode: 'pl'),
-      Locale.fromSubtags(languageCode: 'pt', countryCode: 'BR'),
-      Locale.fromSubtags(languageCode: 'pt', countryCode: 'PT'),
+      Locale.fromSubtags(languageCode: 'pt'),
       Locale.fromSubtags(languageCode: 'ro'),
       Locale.fromSubtags(languageCode: 'ru'),
       Locale.fromSubtags(languageCode: 'sk'),

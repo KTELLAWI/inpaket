@@ -1,5 +1,3 @@
-import 'apple_login_config.dart';
-
 class LoginConfig {
   bool isRequiredLogin = false;
   bool showAppleLogin = false;
@@ -13,22 +11,21 @@ class LoginConfig {
   String facebookLoginProtocolScheme = '';
   String facebookClientToken = '';
   bool smsLoginAsDefault = false;
-  AppleLoginConfig? appleLoginSetting;
 
-  LoginConfig(
-      {this.isRequiredLogin = false,
-      this.showAppleLogin = false,
-      this.showFacebook = false,
-      this.showSMSLogin = false,
-      this.showGoogleLogin = false,
-      this.showPhoneNumberWhenRegister = false,
-      this.requirePhoneNumberWhenRegister = false,
-      this.isResetPasswordSupported = false,
-      this.facebookAppId = '',
-      this.facebookLoginProtocolScheme = '',
-      this.facebookClientToken = '',
-      this.smsLoginAsDefault = false,
-      this.appleLoginSetting});
+  LoginConfig({
+    this.isRequiredLogin = false,
+    this.showAppleLogin = false,
+    this.showFacebook = false,
+    this.showSMSLogin = false,
+    this.showGoogleLogin = false,
+    this.showPhoneNumberWhenRegister = false,
+    this.requirePhoneNumberWhenRegister = false,
+    this.isResetPasswordSupported = false,
+    this.facebookAppId = '',
+    this.facebookLoginProtocolScheme = '',
+    this.facebookClientToken = '',
+    this.smsLoginAsDefault = false,
+  });
 
   LoginConfig.fromJson(dynamic json) {
     isRequiredLogin = json['IsRequiredLogin'] ?? false;
@@ -44,25 +41,22 @@ class LoginConfig {
     facebookLoginProtocolScheme = json['facebookLoginProtocolScheme'] ?? '';
     facebookClientToken = json['facebookClientToken'] ?? '';
     smsLoginAsDefault = json['smsLoginAsDefault'] ?? false;
-    appleLoginSetting = json['appleLoginSetting'] != null
-        ? AppleLoginConfig.fromJson(json['appleLoginSetting'])
-        : null;
   }
 
-  LoginConfig copyWith(
-      {bool? isRequiredLogin,
-      bool? showAppleLogin,
-      bool? showFacebook,
-      bool? showSMSLogin,
-      bool? showGoogleLogin,
-      bool? showPhoneNumberWhenRegister,
-      bool? requirePhoneNumberWhenRegister,
-      bool? isResetPasswordSupported,
-      String? facebookAppId,
-      String? facebookLoginProtocolScheme,
-      String? facebookClientToken,
-      bool? smsLoginAsDefault,
-      AppleLoginConfig? appleLoginSetting}) {
+  LoginConfig copyWith({
+    bool? isRequiredLogin,
+    bool? showAppleLogin,
+    bool? showFacebook,
+    bool? showSMSLogin,
+    bool? showGoogleLogin,
+    bool? showPhoneNumberWhenRegister,
+    bool? requirePhoneNumberWhenRegister,
+    bool? isResetPasswordSupported,
+    String? facebookAppId,
+    String? facebookLoginProtocolScheme,
+    String? facebookClientToken,
+    bool? smsLoginAsDefault,
+  }) {
     return LoginConfig(
       isRequiredLogin: isRequiredLogin ?? this.isRequiredLogin,
       showAppleLogin: showAppleLogin ?? this.showAppleLogin,
@@ -80,7 +74,6 @@ class LoginConfig {
           facebookLoginProtocolScheme ?? this.facebookLoginProtocolScheme,
       facebookClientToken: facebookClientToken ?? this.facebookClientToken,
       smsLoginAsDefault: smsLoginAsDefault ?? this.smsLoginAsDefault,
-      appleLoginSetting: appleLoginSetting ?? this.appleLoginSetting,
     );
   }
 
@@ -98,7 +91,6 @@ class LoginConfig {
     map['facebookLoginProtocolScheme'] = facebookLoginProtocolScheme;
     map['facebookClientToken'] = facebookClientToken;
     map['smsLoginAsDefault'] = smsLoginAsDefault;
-    map['appleLoginSetting'] = appleLoginSetting?.toJson();
     return map;
   }
 }

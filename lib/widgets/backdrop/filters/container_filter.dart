@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../services/index.dart';
+import '../../../common/config.dart';
 
 class ContainerFilter extends StatelessWidget {
   final String? text;
@@ -22,7 +22,7 @@ class ContainerFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var primaryBackground = Services().widget.enableProductBackdrop
+    var primaryBackground = kAdvanceConfig.enableProductBackdrop
         ? Colors.white
         : Theme.of(context).primaryColor.withOpacity(0.2);
     var primaryText = Theme.of(context).primaryColor;

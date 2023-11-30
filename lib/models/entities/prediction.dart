@@ -1,5 +1,3 @@
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 class Prediction {
   String? description;
   String? placeId;
@@ -10,9 +8,4 @@ class Prediction {
     placeId = json['place_id'];
   }
   Prediction();
-
-  LatLng get latLng => LatLng(
-        double.tryParse(lat ?? '') ?? 0,
-        double.tryParse(long ?? '') ?? 0,
-      );
 }

@@ -9,7 +9,6 @@ import '../../common/tools/flash.dart';
 import '../../generated/l10n.dart';
 import '../../models/index.dart'
     show AppModel, Product, ProductWishListModel, UserModel;
-import '../../models/product_variant_model.dart';
 import '../../routes/flux_navigate.dart';
 import '../../services/index.dart';
 import '../base_screen.dart';
@@ -83,7 +82,6 @@ class ProductDetailScreen extends StatefulWidget {
                 title:
                     Text(S.of(modalContext).share, textAlign: TextAlign.center),
                 onTap: () {
-                  Navigator.of(context).pop();
                   var url = product?.permalink;
                   if (url?.isNotEmpty ?? false) {
                     unawaited(
@@ -192,16 +190,7 @@ class _ProductDetailPageState extends BaseScreen<ProductDetailScreen>
         });
         return false;
       }
-    }
-    // if (Services().widget.enableWooCommerceWholesalePrices &&
-    //     (p?.isRestricted ?? false)) {
-    //   setState(() {
-    //     _isChecking = false;
-    //     _checkingErrorMessage = S.current.noPermissionToViewProduct;
-    //   });
-    //   return false;
-    // } 
-    else {
+    } else {
       setState(() {
         _isChecking = false;
       });
@@ -232,17 +221,13 @@ class _ProductDetailPageState extends BaseScreen<ProductDetailScreen>
           backgroundColor: Colors.transparent,
           elevation: 0.0,
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Center(
-              child: (_checkingErrorMessage?.isNotEmpty ?? false)
-                  ? Text(
-                      _checkingErrorMessage!,
-                      style:
-                          TextStyle(color: Theme.of(context).colorScheme.error),
-                    )
-                  : kLoadingWidget(context)),
-        ),
+        body: Center(
+            child: (_checkingErrorMessage?.isNotEmpty ?? false)
+                ? Text(
+                    _checkingErrorMessage!,
+                    style: TextStyle(color: Theme.of(context).colorScheme.error),
+                  )
+                : kLoadingWidget(context)),
       );
     }
     return _renderContent();
@@ -266,9 +251,7 @@ class _ProductDetailPageState extends BaseScreen<ProductDetailScreen>
           Expanded(
             child: MediaQuery(
               data: MediaQuery.of(context).copyWith(
-                padding: showAppBar(RouteList.productDetail)
-                    ? EdgeInsets.zero
-                    : null,
+                padding: showAppBar(RouteList.productDetail) ? EdgeInsets.zero : null,
               ),
               child: layout,
             ),
@@ -284,10 +267,7 @@ class _ProductDetailPageState extends BaseScreen<ProductDetailScreen>
           currentFocus.unfocus();
         }
       },
-      child: ChangeNotifierProvider(
-        create: (_) => ProductVariantModel()..initWithProduct(product!),
-        child: layout,
-      ),
+      child: layout,
     );
   }
 }

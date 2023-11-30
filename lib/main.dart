@@ -1,11 +1,14 @@
 import 'dart:async';
 import 'dart:io' show HttpClient, SecurityContext;
 
+// Import the firebase_app_check plugin
+import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flux_firebase/index.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:universal_platform/universal_platform.dart';
@@ -14,7 +17,6 @@ import 'app.dart';
 import 'common/config.dart';
 import 'common/constants.dart';
 import 'common/tools.dart';
-import 'common/tools/biometrics_tools.dart';
 import 'data/boxes.dart';
 import 'env.dart';
 import 'modules/webview/index.dart';
@@ -22,12 +24,32 @@ import 'services/dependency_injection.dart';
 import 'services/locale_service.dart';
 import 'services/services.dart';
 
-Future<void> _firebaseMessagingBackgroundHandler(dynamic message) async {
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
+
+  await FirebaseAppCheck.instance.activate(
+    webRecaptchaSiteKey: 'recaptcha-v3-site-key',
+    // Default provider for Android is the Play Integrity provider. You can use the "AndroidProvider" enum to choose
+    // your preferred provider. Choose from:
+    // 1. Debug provider
+    // 2. Safety Net provider
+    // 3. Play Integrity provider
+    androidProvider: AndroidProvider.debug,
+    // Default provider for iOS/macOS is the Device Check provider. You can use the "AppleProvider" enum to choose
+    // your preferred provider. Choose from:
+    // 1. Debug provider
+    // 2. Device Check provider
+    // 3. App Attest provider
+    // 4. App Attest provider with fallback to Device Check provider (App Attest provider is only available on iOS 14.0+, macOS 14.0+)
+    // appleProvider: AppleProvider.appAttest,
+  );
+
   printLog('Handling a background message ${message.messageId}');
 }
 
-void _setupApplication() {
+void main() async {
+  printLog('[main] ===== START main.dart =======');
+  WidgetsFlutterBinding.ensureInitialized();
   Configurations().setConfigurationValues(environment);
 
   /// Fix issue android sdk version 22 can not run the app.
@@ -41,30 +63,17 @@ void _setupApplication() {
   registerWebViewWebImplementation();
 
   /// Hide status bar for splash screen
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
-
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.leanBack);
   Provider.debugCheckInvalidValueType = null;
+  var languageCode = kAdvanceConfig.defaultLanguage;
 
   LicenseRegistry.addLicense(() async* {
     final license = await rootBundle.loadString('google_fonts/OFL.txt');
     yield LicenseEntryWithLineBreaks(['google_fonts'], license);
   });
-
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-}
 
-void main() {
-  printLog('[main] ===== START main.dart =======');
-
-  runZonedGuarded(() async {
-    WidgetsFlutterBinding.ensureInitialized();
-
-    /// Call the setup for the application.
-    _setupApplication();
-
-    /// get language code default
-    var languageCode = kAdvanceConfig.defaultLanguage;
-
+  await runZonedGuarded(() async {
     /// Init Hive boxes.
     await initBoxes();
 
@@ -85,7 +94,6 @@ void main() {
         /// Use await to prevent any usage until the initialization is completed.
         await Services().firebase.init();
         await Configurations().loadRemoteConfig();
-        await BiometricsTools.instance.init();
       }
     } catch (e) {
       printLog(e);

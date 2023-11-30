@@ -1,5 +1,3 @@
-import 'package:country_pickers/utils/utils.dart';
-
 import '../../common/constants.dart';
 
 class Address {
@@ -221,11 +219,12 @@ class Address {
       block = json['address2'];
       apartment = json['company'];
       city = json['city'];
-      state = json['province'];
+      state = json['pronvice'];
       country = json['country'];
       email = json['email'];
       phoneNumber = json['phone'];
       zipCode = json['zip'];
+      mapUrl = json['mapUrl'];
     } catch (e) {
       printLog(e.toString());
     }
@@ -329,44 +328,6 @@ class Address {
         zipCode ?? '',
         country ?? '',
       ].join(' ').trim();
-
-  String get fullInfoAddress {
-    var info = [];
-    if (street?.isNotEmpty ?? false) {
-      info.add(street);
-    }
-
-    if (block?.isNotEmpty ?? false) {
-      info.add(block);
-    }
-
-    if (apartment?.isNotEmpty ?? false) {
-      info.add(apartment);
-    }
-
-    if (city?.isNotEmpty ?? false) {
-      info.add(city);
-    }
-
-    if (country?.isNotEmpty ?? false) {
-      info.add(_getCountryName(country));
-    }
-
-    var address = info.join(', ');
-    if (zipCode?.isNotEmpty ?? false) {
-      address = '$address - $zipCode';
-    }
-
-    return address;
-  }
-
-  String _getCountryName(country) {
-    try {
-      return CountryPickerUtils.getCountryByIsoCode(country).name;
-    } catch (err) {
-      return country;
-    }
-  }
 }
 
 class ListAddress {

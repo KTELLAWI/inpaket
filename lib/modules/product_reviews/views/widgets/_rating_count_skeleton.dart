@@ -33,10 +33,10 @@ class RatingCountSkeleton extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 8),
-                const Wrap(
+                Wrap(
                   alignment: WrapAlignment.center,
                   crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
+                  children: const [
                     Skeleton(
                       width: 50,
                       height: 12,

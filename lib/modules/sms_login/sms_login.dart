@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -5,6 +7,7 @@ import '../../../../common/error_codes/error_codes.dart';
 import '../../../../generated/l10n.dart';
 import '../../../../models/entities/user.dart';
 import '../../models/entities/firebase_error_exception.dart';
+import '../../screens/checkout/widgets/otp.dart';
 import '../../widgets/common/loading_body.dart';
 import 'sms_info.dart';
 import 'sms_model.dart';
@@ -16,9 +19,12 @@ const _inputPhonePage = 0;
 // const _completeInfoPage = 2;
 
 class SMSLoginScreen extends StatelessWidget {
+  bool isCheckOutScreen;
   final Function(User user) onSuccess;
 
-  const SMSLoginScreen({Key? key, required this.onSuccess}) : super(key: key);
+  SMSLoginScreen(
+      {Key? key, required this.onSuccess, this.isCheckOutScreen = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,14 +33,18 @@ class SMSLoginScreen extends StatelessWidget {
         lazy: false,
         child: SMSIndex(
           onSuccess: onSuccess,
+          isCheckOutScreen: isCheckOutScreen,
         ));
   }
 }
 
 class SMSIndex extends StatefulWidget {
+  bool isCheckOutScreen;
+
   final Function(User user) onSuccess;
 
-  const SMSIndex({Key? key, required this.onSuccess}) : super(key: key);
+  SMSIndex({Key? key, required this.onSuccess, this.isCheckOutScreen = false})
+      : super(key: key);
 
   @override
   State<SMSIndex> createState() => _SMSIndexState();
@@ -131,6 +141,22 @@ class _SMSIndexState extends State<SMSIndex> {
     }
   }
 
+  Future<void> verifyUserForCheckOut() async {
+    final model = Provider.of<SMSModel>(context, listen: false);
+    final isVerified = await model.smsVerify(_showMessage, onlyForCheck: true);
+    if (isVerified) {
+      log('model.smsVerify $isVerified');
+
+      VerifyPhoneNumberScreen.verifyPhoneNumberValue = true;
+      Navigator.of(context).pop();
+
+      /// Go to info page
+      // _goToPage(2);
+    } else {
+      VerifyPhoneNumberScreen.verifyPhoneNumberValue = false;
+    }
+  }
+
   Future<void> createAndLogin(data) async {
     final model = Provider.of<SMSModel>(context, listen: false);
     try {
@@ -205,29 +231,38 @@ class _SMSIndexState extends State<SMSIndex> {
             controller: _pageController,
             children: [
               SMSInputPhoneV2(
+                isCheckOutScreen: widget.isCheckOutScreen,
                 onCallBack: () {
                   model.sendOTP(
                     onPageChanged: () => _goToPage(1),
                     onMessage: _showMessage,
-                    onVerify: verifyUser,
+                    onVerify: widget.isCheckOutScreen
+                        ? verifyUserForCheckOut
+                        : verifyUser,
                   );
                 },
               ),
               SMSVerifyV2(
-                onCallBack: verifyUser,
+                onCallBack: widget.isCheckOutScreen
+                    ? verifyUserForCheckOut
+                    : verifyUser,
+                isCheckOutScreen: widget.isCheckOutScreen,
                 onResend: (startTimer) {
                   model.sendOTP(
                     onMessage: _showMessage,
                     onPageChanged: startTimer,
-                    onVerify: verifyUser,
+                    onVerify: widget.isCheckOutScreen
+                        ? verifyUserForCheckOut
+                        : verifyUser,
                   );
                 },
               ),
-              SMSInfo(
-                onSuccess: (data) {
-                  createAndLogin(data);
-                },
-              ),
+              if (widget.isCheckOutScreen == false)
+                SMSInfo(
+                  onSuccess: (data) {
+                    createAndLogin(data);
+                  },
+                ),
             ],
           ),
         ),

@@ -50,16 +50,10 @@ class ProductGallery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // If the product has only 1 image and it is a mobile app, the gallery will
-    // not be displayed to show image in ProductImageSlider or ProductImageList.
-    // If there is a web version, because the ProductImageList and
-    // ProductImageSlider is hidden, the gallery will still be visible even if
-    // only 1 image.
-    var isHidden = (product!.images.length) <= (kIsWeb ? 0 : 1) &&
-        product!.videoUrl == null;
+    var isEmpty = (product!.images.length) <= 1 && product!.videoUrl == null;
 
     if ((product!.images.length) < kProductDetail.showThumbnailAtLeast ||
-        isHidden) {
+        isEmpty) {
       return const SizedBox();
     }
 

@@ -1,14 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:inspireui/icons/icon_picker.dart' deferred as defer_icon;
 import 'package:inspireui/inspireui.dart' show DeferredWidget;
-import 'package:provider/provider.dart';
 
-import '../../../common/config.dart';
-import '../../../models/app_model.dart';
 import '../../../widgets/common/flux_image.dart';
-import '../../../widgets/multi_site/multi_site_mixin.dart';
 import '../config/logo_config.dart';
+
+const double kSizeLogo = 50;
 
 class LogoIcon extends StatelessWidget {
   final LogoConfig config;
@@ -40,10 +37,7 @@ class LogoIcon extends StatelessWidget {
       splashColor: Colors.transparent,
       fillColor: config.iconBackground != null
           ? config.iconBackground!.withOpacity(config.iconOpacity)
-          : Theme.of(context)
-              .colorScheme
-              .background
-              .withOpacity(config.iconOpacity),
+          : Theme.of(context).colorScheme.background.withOpacity(config.iconOpacity),
       padding: const EdgeInsets.symmetric(
         horizontal: 6,
         vertical: 6,
@@ -72,11 +66,11 @@ class LogoIcon extends StatelessWidget {
   }
 }
 
-class Logo extends StatelessWidget with MultiSiteMixin {
-  final Function() onSearch;
-  final Function() onCheckout;
-  final Function() onTapDrawerMenu;
-  final Function() onTapNotifications;
+class Logo extends StatelessWidget {
+  final onSearch;
+  final onCheckout;
+  final onTapDrawerMenu;
+  final onTapNotifications;
   final String? logo;
   final LogoConfig config;
   final int totalCart;
@@ -95,28 +89,26 @@ class Logo extends StatelessWidget with MultiSiteMixin {
   }) : super(key: key);
 
   Widget renderLogo() {
-    final logoSize = config.logoSize;
-
     if (config.image != null) {
       if (config.image!.contains('http')) {
         return SizedBox(
-          height: logoSize - 10,
+          height: kSizeLogo - 10,
           child: FluxImage(
             imageUrl: config.image!,
-            height: logoSize,
+            height: kSizeLogo,
             fit: BoxFit.contain,
           ),
         );
       }
       return Image.asset(
         config.image!,
-        height: logoSize,
+        height: kSizeLogo,
       );
     }
 
     /// render from config to support dark/light theme
     if (logo != null) {
-      return FluxImage(imageUrl: logo!, height: logoSize);
+      return FluxImage(imageUrl: logo!, height: kSizeLogo);
     }
 
     return const SizedBox();
@@ -124,12 +116,7 @@ class Logo extends StatelessWidget with MultiSiteMixin {
 
   @override
   Widget build(BuildContext context) {
-    var enableMultiSite = Configurations.multiSiteConfigs?.isNotEmpty ?? false;
-    var multiSiteIcon = Provider.of<AppModel>(context).multiSiteConfig?.icon;
-
-    final textConfig = config.textConfig;
-    return 
-    Builder(
+    return Builder(
       builder: (context) {
         return Container(
           constraints: const BoxConstraints(minHeight: 40.0),
@@ -155,21 +142,14 @@ class Logo extends StatelessWidget with MultiSiteMixin {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         if (config.showLogo) Center(child: renderLogo()),
-                        if (textConfig != null) ...[
+                        if (config.name?.isNotEmpty ?? false) ...[
                           const SizedBox(width: 5),
-                          Expanded(
-                            child: Align(
-                              alignment: textConfig.alignment,
-                              child: Text(
-                                textConfig.text,
-                                style: TextStyle(
-                                  fontSize: textConfig.fontSize,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onBackground,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                          Text(
+                            config.name!,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Theme.of(context).colorScheme.onBackground,
+                              fontWeight: FontWeight.bold,
                             ),
                           )
                         ],
@@ -184,29 +164,6 @@ class Logo extends StatelessWidget with MultiSiteMixin {
                     menuIcon: config.searchIcon ?? MenuIcon(name: 'search'),
                     onTap: onSearch,
                     config: config,
-                  ),
-                ),
-              if (config.showBadgeCart)
-                GestureDetector(
-                  onTap: onCheckout,
-                  behavior: HitTestBehavior.translucent,
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                    padding: const EdgeInsets.all(8),
-                    decoration: const BoxDecoration(
-                      color: Colors.red,
-                      shape: BoxShape.circle,
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      totalCart.toString(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        height: 1.2,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
                   ),
                 ),
               if (config.showCart)
@@ -284,26 +241,8 @@ class Logo extends StatelessWidget with MultiSiteMixin {
                     ],
                   ),
                 ),
-              if (enableMultiSite)
-                Expanded(
-                    child: Padding(
-                  padding: const EdgeInsets.only(left: 10),
-                  child: GestureDetector(
-                    onTap: () => showMultiSiteSelection(context),
-                    child: multiSiteIcon?.isEmpty ?? true
-                        ? const Icon(CupertinoIcons.globe)
-                        : FluxImage(
-                            imageUrl: multiSiteIcon!,
-                            width: 25,
-                            height: 20,
-                            fit: BoxFit.cover,
-                          ),
-                  ),
-                )),
-              if (!enableMultiSite &&
-                  !config.showSearch &&
+              if (!config.showSearch &&
                   !config.showCart &&
-                  !config.showBadgeCart &&
                   !config.showNotification)
                 const Spacer(),
             ],

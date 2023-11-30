@@ -1,6 +1,7 @@
 part of '../config.dart';
 
 /// the welcome screen data
-OnBoardingConfig get kOnBoardingConfig =>
-    OnBoardingConfig.fromJson(Configurations.onBoardingConfig);
+List get onBoardingData => Configurations.onBoardingData;
 List get vendorOnBoarding => Configurations.vendorOnBoardingData;
+
+bool get kEnableOnBoarding => Configurations.enableOnBoarding && onBoardingData.isNotEmpty;

@@ -406,13 +406,10 @@ class _BackdropState extends State<Backdrop>
         if (!ServerConfig().isListingType && widget.appbarCategory != null)
           Theme(
             data: Theme.of(context).copyWith(
-              colorScheme: Theme.of(context)
-                  .colorScheme
-                  .copyWith(
+              colorScheme: Theme.of(context).colorScheme.copyWith(
                     secondary: labelColor,
                     background: backgroundColor,
-                  )
-                  .copyWith(background: backgroundColor),
+                  ).copyWith(background: backgroundColor),
             ),
             child: widget.appbarCategory!,
           ),

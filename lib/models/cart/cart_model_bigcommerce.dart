@@ -33,8 +33,7 @@ class CartModelBigCommerce
 
   @override
   Future<void> initData() async {
-    resetValues();
-    await getAddress();
+    await getShippingAddress();
     getCartInLocal();
     getCurrency();
   }
@@ -242,7 +241,6 @@ class CartModelBigCommerce
     rewardTotal = 0;
     walletAmount = 0;
     taxesTotal = 0;
-    isIncludingTax = false;
     taxes = [];
     notifyListeners();
 
@@ -448,24 +446,19 @@ class CartModelBigCommerce
     notifyListeners();
   }
 
-  double getShippingVendorCost({bool includeTax = false}) {
+  double getShippingVendorCost() {
     var sum = 0.0;
 
     for (var element in selectedShippingMethods) {
       sum += element.shippingMethods[0].cost ?? 0.0;
-      if (includeTax) {
-        sum += element.shippingMethods[0].shippingTax ?? 0.0;
-      }
     }
     return sum;
   }
 
   @override
-  double? getShippingCost({bool includeTax = false}) {
+  double? getShippingCost() {
     var isMultiVendor = ServerConfig().typeName.isMultiVendor;
-    return isMultiVendor
-        ? getShippingVendorCost(includeTax: includeTax)
-        : super.getShippingCost(includeTax: includeTax);
+    return isMultiVendor ? getShippingVendorCost() : super.getShippingCost();
   }
 
   @override
@@ -497,24 +490,5 @@ class CartModelBigCommerce
     }
 
     return isWallet;
-  }
-
-  @override
-  void updateProduct(String productId, Product? product) {
-    super.updateProduct(productId, product);
-    notifyListeners();
-  }
-
-  @override
-  void updateProductVariant(
-      String productId, ProductVariation? productVariant) {
-    super.updateProductVariant(productId, productVariant);
-    notifyListeners();
-  }
-
-  @override
-  void updateStateCheckoutButton() {
-    super.updateStateCheckoutButton();
-    notifyListeners();
   }
 }

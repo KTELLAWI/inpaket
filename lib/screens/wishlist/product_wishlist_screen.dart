@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../common/constants.dart';
 import '../../common/tools.dart';
@@ -87,8 +86,7 @@ class _WishListState extends State<ProductWishListScreen> with AppBarMixin {
                           onAddToCart: () {
                             if (model.products[index].isPurchased &&
                                 model.products[index].isDownloadable!) {
-                              Tools.launchURL(model.products[index].files![0]!,
-                                  mode: LaunchMode.externalApplication);
+                              Tools.launchURL(model.products[index].files![0]!);
                               return;
                             }
                             var msg =

@@ -12,7 +12,6 @@ class TabBarIcon extends StatelessWidget {
   final int totalCart;
   final bool isEmptySpace;
   final bool isActive;
-  final bool isHorizontal;
   final TabBarConfig config;
 
   const TabBarIcon({
@@ -22,7 +21,6 @@ class TabBarIcon extends StatelessWidget {
     required this.isEmptySpace,
     required this.isActive,
     required this.config,
-    this.isHorizontal = false,
   }) : super(key: key);
 
   @override
@@ -68,23 +66,6 @@ class TabBarIcon extends StatelessWidget {
       icon = IconCart(icon: icon, totalCart: totalCart, config: config);
     }
 
-    if (isHorizontal) {
-      return Row(
-        children: [
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(8, 0, 12, 0),
-            child: icon,
-          ),
-          Text(
-            item.label.toString().toUpperCase(),
-            softWrap: false,
-            overflow: TextOverflow.fade,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-        ],
-      );
-    }
-
     return Tab(
       text: item.label,
       iconMargin: EdgeInsets.zero,
@@ -110,8 +91,7 @@ class IconCart extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Container(
-          padding:
-              totalCart > 0 ? const EdgeInsets.only(top: 5, right: 5) : null,
+          padding: const EdgeInsets.only(top: 5, right: 5),
           child: icon,
         ),
         if (totalCart > 0)

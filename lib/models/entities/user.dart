@@ -62,63 +62,72 @@ class User {
   ///FluxListing
   String? role;
 
-  bool get isGuest => loggedIn == null;
-
   User.fromGoogleAuth({this.phoneNumber, this.ggTokenId});
 
-  User.fromWooJson(Map json, String? cookieVal, {bool? isSocial}) {
+  // from WooCommerce Json
+  User.fromWooJson(Map json) {
     try {
-      cookie = cookieVal;
-      this.isSocial = isSocial;
-      id = json['id'].toString();
-      name = json['displayname'];
-      username = json['username'];
-      phoneNumber = json['phoneNumber'];
-      firstName = json['firstname'];
-      lastName = json['lastname'];
-      email = json['email'];
-      picture = json['avatar'];
-      nicename = json['nicename'];
-      userUrl = json['url'];
+      var user = json['user'];
+      isSocial = true;
       loggedIn = true;
+      id = json['wp_user_id'].toString();
+      name = user['displayname'];
+      cookie = json['cookie'];
+      username = user['username'];
+      nicename = user['nicename'];
+      firstName = user['firstname'];
+      lastName = user['lastname'];
+      phoneNumber = user['phoneNumber'];
+      email = user['email'] ?? id;
+      isSocial = true;
+      userUrl = user['avatar'];
       var roles = [];
-      if (json['role'] is Map) {
-        roles = json['role'].values.toList();
+      var roleJson = json['role'] ?? user['role'];
+      if (roleJson is Map) {
+        roles = roleJson.values.toList();
       } else {
-        roles = json['role'] as List;
+        roles = roleJson as List;
       }
 
-      isVender = false;
-      if (roles.isNotEmpty) {
-        role = roles.first;
-        if (roles.contains('seller') ||
-            roles.contains('wcfm_vendor') ||
-            roles.contains('administrator') ||
-            roles.contains('owner')) {
-          isVender = true;
-        }
-        if (roles.contains('wcfm_delivery_boy') || roles.contains('driver')) {
-          isDeliveryBoy = true;
-        }
-        isManager =
-            roles.contains('shop_manager') || roles.contains('administrator');
+      var role = roles.firstWhere(
+          (item) => ((item == 'seller') ||
+              (item == 'wcfm_vendor') ||
+              (item == 'administrator') ||
+              (item == 'owner')),
+          orElse: () => null);
+      if (role != null) {
+        isVender = true;
       } else {
-        isVender = (json['capabilities']['wcfm_vendor'] as bool?) ?? false;
+        isVender = false;
       }
-      if (json['dokan_enable_selling'] != null &&
-          json['dokan_enable_selling'].trim().isNotEmpty) {
-        isVender = json['dokan_enable_selling'] == 'yes';
+      if (user['dokan_enable_selling'] != null &&
+          user['dokan_enable_selling'].toString().isNotEmpty) {
+        isVender = user['dokan_enable_selling'] == 'yes';
       }
-
+      role = roles.firstWhere(
+          (item) => ((['wcfm_delivery_boy', 'driver'].contains(item))),
+          orElse: () => null);
+      if (role != null) {
+        isDeliveryBoy = true;
+      }
       if (json['shipping'] != null) {
         shipping = Shipping.fromJson(json['shipping']);
       }
       if (json['billing'] != null) {
         billing = Billing.fromJson(json['billing']);
       }
-      if (json['is_driver_available'] != null) {
-        isDriverAvailable = json['is_driver_available'] == 'on' ||
-            json['is_driver_available'] == true;
+      if (shipping == null && user['shipping'] != null) {
+        shipping = Shipping.fromJson(user['shipping']);
+      }
+      if (billing == null && user['billing'] != null) {
+        billing = Billing.fromJson(user['billing']);
+      }
+      if (user['avatar'] != null) {
+        picture = user['avatar'];
+      }
+      if (user['is_driver_available'] != null) {
+        isDriverAvailable = user['is_driver_available'] == 'on' ||
+            user['is_driver_available'] == true;
       }
     } catch (e) {
       printLog(e.toString());
@@ -142,7 +151,6 @@ class User {
 
       email = json['email'] ?? id;
       userUrl = json['avatar'];
-      picture = json['avatar'];
     } catch (e) {
       printLog(e.toString());
     }
@@ -309,6 +317,65 @@ class User {
     name = nicename;
     firstName = NotionDataTools.fromRichText(properties['Firstname'])?.first;
     lastName = NotionDataTools.fromRichText(properties['Lastname'])?.first;
+  }
+
+  // from Create User
+  User.fromAuthUser(Map json, String? cookieVal) {
+    try {
+      cookie = cookieVal;
+      id = json['id'].toString();
+      name = json['displayname'];
+      username = json['username'];
+      phoneNumber = json['phoneNumber'];
+      firstName = json['firstname'];
+      lastName = json['lastname'];
+      email = json['email'];
+      picture = json['avatar'];
+      nicename = json['nicename'];
+      userUrl = json['url'];
+      loggedIn = true;
+      var roles = [];
+      if (json['role'] is Map) {
+        roles = json['role'].values.toList();
+      } else {
+        roles = json['role'] as List;
+      }
+
+      isVender = false;
+      if (roles.isNotEmpty) {
+        role = roles.first;
+        if (roles.contains('seller') ||
+            roles.contains('wcfm_vendor') ||
+            roles.contains('administrator') ||
+            roles.contains('owner')) {
+          isVender = true;
+        }
+        if (roles.contains('wcfm_delivery_boy') || roles.contains('driver')) {
+          isDeliveryBoy = true;
+        }
+        isManager =
+            roles.contains('shop_manager') || roles.contains('administrator');
+      } else {
+        isVender = (json['capabilities']['wcfm_vendor'] as bool?) ?? false;
+      }
+      if (json['dokan_enable_selling'] != null &&
+          json['dokan_enable_selling'].trim().isNotEmpty) {
+        isVender = json['dokan_enable_selling'] == 'yes';
+      }
+
+      if (json['shipping'] != null) {
+        shipping = Shipping.fromJson(json['shipping']);
+      }
+      if (json['billing'] != null) {
+        billing = Billing.fromJson(json['billing']);
+      }
+      if (json['is_driver_available'] != null) {
+        isDriverAvailable = json['is_driver_available'] == 'on' ||
+            json['is_driver_available'] == true;
+      }
+    } catch (e) {
+      printLog(e.toString());
+    }
   }
 
   User.fromWordpressUser(Map json, String? cookieVal) {

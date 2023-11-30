@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../../common/config.dart';
 import '../../common/constants.dart';
-import '../../models/app_model.dart';
 import '../../models/index.dart' show Category, Product;
 import '../../modules/dynamic_layout/config/product_config.dart';
 import '../../services/index.dart';
@@ -12,11 +9,8 @@ import 'list_card.dart';
 class MenuCard extends StatefulWidget {
   final List<Category> categories;
   final Category category;
-  final Map<String, dynamic>? cachedProducts;
-  final Function(String, dynamic)? onCachedProductsUpdated;
 
-  const MenuCard(this.categories, this.category,
-      {this.cachedProducts, this.onCachedProductsUpdated});
+  const MenuCard(this.categories, this.category);
 
   @override
   State<MenuCard> createState() => _StateMenuCard();
@@ -29,27 +23,23 @@ class _StateMenuCard extends State<MenuCard> {
   double _width = 0.0;
   int durations = 0;
 
-  AppModel get appModel => Provider.of<AppModel>(context, listen: false);
-  String get lang => appModel.langCode;
-
-  Future<List<Product>?> getProductFromCategory({
-    categoryId,
-    minPrice,
-    maxPrice,
-    orderBy,
-    order,
-    required page,
-  }) async {
+  Future<List<Product>?> getProductFromCategory(
+      {categoryId,
+      minPrice,
+      maxPrice,
+      orderBy,
+      order,
+      lang,
+      required page}) async {
     var service = Services();
     final product = await service.api.fetchProductsByCategory(
-      categoryId: categoryId,
-      minPrice: minPrice,
-      maxPrice: maxPrice,
-      orderBy: orderBy,
-      order: order,
-      page: page,
-    );
-    widget.onCachedProductsUpdated?.call('$categoryId-$page', product);
+        categoryId: categoryId,
+        minPrice: minPrice,
+        maxPrice: maxPrice,
+        orderBy: orderBy,
+        order: order,
+        lang: lang,
+        page: page);
     return product;
   }
 
@@ -63,8 +53,6 @@ class _StateMenuCard extends State<MenuCard> {
       );
       products.add(product);
     }
-    widget.onCachedProductsUpdated?.call(
-        '${widget.categories.map((e) => e.id).join('-')}-$page', products);
     return products;
   }
 
@@ -161,8 +149,6 @@ class _StateMenuCard extends State<MenuCard> {
                       height: 20,
                     ),
               FutureBuilder<List<List<Product>?>>(
-                initialData: widget.cachedProducts?[
-                    '${widget.categories.map((e) => e.id).join('-')}-1'],
                 future: getAllListProducts(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
@@ -184,14 +170,8 @@ class _StateMenuCard extends State<MenuCard> {
                   }
                   if (snapshot.data!.isEmpty) {
                     return FutureBuilder<List<Product>?>(
-                      initialData:
-                          widget.cachedProducts?['${widget.category.id}-1'],
                       future: getProductFromCategory(
-                        categoryId: widget.category.id,
-                        page: 1,
-                        order: kProductCard.order,
-                        orderBy: kProductCard.orderby,
-                      ),
+                          categoryId: widget.category.id, page: 1),
                       builder: (context, product) {
                         if (!product.hasData) {
                           return SizedBox(

@@ -66,11 +66,11 @@ class _FooterWebState extends State<FooterWeb> with WebLayoutMixin {
                         ),
                       ),
                     ),
-                    const Expanded(
+                    Expanded(
                       child: Padding(
-                        padding: EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(20),
                         child: Row(
-                          children: [
+                          children: const [
                             Expanded(child: MyAccountWidget()),
                             Expanded(child: QuickLinksWidget()),
                           ],

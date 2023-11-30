@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -161,10 +159,7 @@ class _ShippingMethodsState extends State<ShippingMethods> {
                                     model.shippingMethods![i].classCost))
                               Text(
                                 PriceTools.getCurrencyFormatted(
-                                    model.shippingMethods![i].cost! +
-                                        (model.shippingMethods![i]
-                                                .shippingTax ??
-                                            0),
+                                    model.shippingMethods![i].cost,
                                     cartModel.currencyRates,
                                     currency: cartModel.currencyCode)!,
                                 style: const TextStyle(
@@ -225,7 +220,7 @@ class _ShippingMethodsState extends State<ShippingMethods> {
                 backgroundColor: Theme.of(context).primaryColor,
                 elevation: 0,
               ),
-              onPressed: () async {
+              onPressed: () {
                 // Prevent continue to preview when loading shipping method
                 if (shippingMethodModel.isLoading) {
                   return;
@@ -233,21 +228,18 @@ class _ShippingMethodsState extends State<ShippingMethods> {
 
                 // Set selected shipping method
                 if (shippingMethodModel.shippingMethods?.isNotEmpty ?? false) {
-                  final selectedShippingMethod =
-                      shippingMethodModel.shippingMethods![selectedIndex!];
-
-                  await cartModel.setShippingMethod(selectedShippingMethod);
+                  cartModel.setShippingMethod(
+                      shippingMethodModel.shippingMethods![selectedIndex!]);
 
                   var productList = cartModel.getProductsInCart();
 
-                  unawaited(
-                      Services().firebase.firebaseAnalytics?.logAddShippingInfo(
-                            coupon: cartModel.couponObj?.code,
-                            currency: cartModel.currencyCode,
-                            data: productList,
-                            price: cartModel.getSubTotal(),
-                            shippingTier: cartModel.shippingMethod?.methodTitle,
-                          ));
+                  Services().firebase.firebaseAnalytics?.logAddShippingInfo(
+                        coupon: cartModel.couponObj?.code,
+                        currency: cartModel.currencyCode,
+                        data: productList,
+                        price: cartModel.getSubTotal(),
+                        shippingTier: cartModel.shippingMethod?.methodTitle,
+                      );
 
                   widget.onNext!();
                   return;

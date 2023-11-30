@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../../services/firebase_service.dart';
+import '../../modules/firebase/firebase_service.dart';
 
 class LoginSmsViewModel extends ChangeNotifier {
   final FirebaseServices _firebaseServices;

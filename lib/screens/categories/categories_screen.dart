@@ -9,7 +9,6 @@ import '../../services/index.dart';
 import '../common/app_bar_mixin.dart';
 import 'layouts/card.dart';
 import 'layouts/column.dart';
-import 'layouts/fancy_scroll.dart';
 import 'layouts/grid.dart';
 import 'layouts/multi_level.dart';
 import 'layouts/parallax.dart';
@@ -58,48 +57,35 @@ class CategoriesScreenState extends State<CategoriesScreen>
 
     final appModel = Provider.of<AppModel>(context);
     final categoryLayout = appModel.categoryLayout;
+    // final categoryLayout = 'sideMenuWithGroup';
     return renderScaffold(
       routeName: RouteList.category,
+      backgroundColor: Theme.of(context).colorScheme.background,
       child: [
         GridCategory.type,
         ColumnCategories.type,
         SideMenuCategories.type,
-
-        // Not support enableLargeCategory
-        // TODO(Son): pls check again, I think it works
-        SubCategories.type,
-
-        // Not support enableLargeCategory
-        SideMenuSubCategories.type,
+        SubCategories
+            .type, // Not support enableLargeCategory (pls check again, I think it works)
+        SideMenuSubCategories.type, // Not support enableLargeCategory
         SideMenuGroupCategories.type,
-
-        // Not support enableLargeCategory
-        // TODO(Son): pls check again, I think it works
-        ParallaxCategories.type,
+        ParallaxCategories
+            .type, // Not support enableLargeCategory (pls check again, I think it works)
         CardCategories.type,
-
-        // Only work for enableLargeCategory
-        MultiLevelCategories.type,
-        FancyScrollCategories.type,
+        MultiLevelCategories.type, // Only work for enableLargeCategory
       ].contains(categoryLayout)
-          ? Container(
-              color: Theme.of(context).colorScheme.background,
-              child: SafeArea(
-                bottom: false,
-                child: Column(
-                  children: <Widget>[
-                    HeaderCategory(showSearch: widget.showSearch),
-                    Expanded(
-                      child: renderCategories(
-                        categoryLayout,
-                        widget.enableParallax,
-                        widget.parallaxImageRatio,
-                        _scrollController,
-                      ),
-                    )
-                  ],
-                ),
-              ),
+          ? Column(
+              children: <Widget>[
+                HeaderCategory(showSearch: widget.showSearch),
+                Expanded(
+                  child: renderCategories(
+                    categoryLayout,
+                    widget.enableParallax,
+                    widget.parallaxImageRatio,
+                    _scrollController,
+                  ),
+                )
+              ],
             )
           : renderCategories(
               categoryLayout,
@@ -129,8 +115,7 @@ class HeaderCategory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    return Container(
-      color: Theme.of(context).colorScheme.background,
+    return SizedBox(
       width: screenSize.width,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -35,9 +35,6 @@ part 'boxes/settings/locale_extension.dart';
 /// Store media-related settings (image, audio, video,...).
 part 'boxes/settings/media_extension.dart';
 
-/// Store biometrics-related settings (enableCheckout, enableWallet, enableLogin...).
-part 'boxes/biometrics/biometrics_extension.dart';
-
 /// [UserBox] stores all user-related settings (logged-in user, wishlist,...),
 /// which should be cleared upon logout using `UserBox().cleanUpForLogout()`.
 /// This box is encrypted ([isEncrypted] is `true`).
@@ -64,8 +61,6 @@ part 'boxes/cache/commerce_extension.dart';
 /// Store cache for blog posts.
 part 'boxes/cache/blog_extension.dart';
 
-part 'boxes/biometrics.dart';
-
 /// End of Hive boxes.
 
 /// Set [kDisableWebCookies] to true to use [WebBox].
@@ -81,5 +76,4 @@ Future<void> initBoxes() async {
   await SettingsBox().init();
   await UserBox().init();
   await CacheBox().init();
-  await BiometricsBox().init();
 }

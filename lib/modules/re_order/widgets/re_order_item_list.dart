@@ -404,9 +404,6 @@ class _ReOrderItemListState extends State<ReOrderItemList> {
       }
       final productItem = _addSelectedAddOnOptions(_products[id]!);
       final product = productItem.product!;
-      if (product.isTopUpProduct()) {
-        product.price = productItem.total;
-      }
       ProductVariation? variation;
       var options = <String, dynamic>{};
       if (product.isVariableProduct) {

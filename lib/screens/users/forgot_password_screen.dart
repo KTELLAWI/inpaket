@@ -111,26 +111,24 @@ class _ForgotPasswordState extends State<ForgotPasswordScreen> {
                   InkWell(
                     onTap: () =>
                         isSubmitting ? null : onSubmitPassword(context),
-                    child: FittedBox(
-                      child: Container(
-                        height: 50.0,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(25.0)),
-                        ),
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Center(
-                          child: Text(
-                            isSubmitting
-                                ? S.of(context).loading
-                                : S.of(context).getPasswordLink,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w300,
-                              letterSpacing: 0.3,
-                            ),
+                    child: Container(
+                      height: 50.0,
+                      width: 200.0,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(25.0)),
+                      ),
+                      child: Center(
+                        child: Text(
+                          isSubmitting
+                              ? S.of(context).loading
+                              : S.of(context).getPasswordLink,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w300,
+                            letterSpacing: 0.3,
                           ),
                         ),
                       ),

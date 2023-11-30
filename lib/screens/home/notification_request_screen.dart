@@ -1,16 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/config.dart';
-import '../../common/config/models/notification_request_screen_config.dart';
 import '../../common/constants.dart';
 import '../../common/tools/navigate_tools.dart';
 import '../../data/boxes.dart';
 import '../../generated/l10n.dart';
 import '../../models/notification_model.dart';
 import '../../services/services.dart';
-import '../../widgets/common/flux_image.dart';
 import '../common/permission_request_mixin.dart';
 
 class NotificationRequestScreen extends StatefulWidget {
@@ -24,19 +23,6 @@ class NotificationRequestScreen extends StatefulWidget {
 class _NotificationRequestScreenState extends State<NotificationRequestScreen>
     with PermissionRequestMixin {
   NotificationModel get _notificationModel => context.read<NotificationModel>();
-
-  NotificationRequestScreenConfig get config =>
-      kNotificationRequestScreenConfig;
-
-  String get defaultImage => 'assets/images/get_notified.json';
-
-  String get imageUrl {
-    var value = config.image;
-    if (value != null && value.isNotEmpty) {
-      return value;
-    }
-    return defaultImage;
-  }
 
   @override
   IconData get permissionIcon => CupertinoIcons.bell_fill;
@@ -78,22 +64,6 @@ class _NotificationRequestScreenState extends State<NotificationRequestScreen>
     }
   }
 
-  Widget renderIcon({double size = 48}) {
-    var icon = config.icon;
-    if (icon != null && icon.isNotEmpty) {
-      return FluxImage(
-        imageUrl: icon,
-        height: size,
-        fit: BoxFit.scaleDown,
-      );
-    }
-    return Icon(
-      permissionIcon,
-      size: size,
-      color: Colors.amber,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,16 +77,20 @@ class _NotificationRequestScreenState extends State<NotificationRequestScreen>
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  renderIcon(),
+                  Icon(
+                    permissionIcon,
+                    size: 48,
+                    color: Colors.amber,
+                  ),
                   const SizedBox(height: 8),
                   Text(
-                    config.title ?? S.of(context).getNotified,
+                    S.of(context).getNotified,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    config.desc ?? permissionRequestSubtitle,
+                    permissionRequestSubtitle,
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -124,8 +98,8 @@ class _NotificationRequestScreenState extends State<NotificationRequestScreen>
               const SizedBox(height: 16),
               Expanded(
                 flex: 3,
-                child: FluxImage(
-                  imageUrl: imageUrl,
+                child: Lottie.asset(
+                  'assets/images/get_notified.json',
                   alignment: Alignment.center,
                 ),
               ),

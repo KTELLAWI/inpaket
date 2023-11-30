@@ -88,7 +88,6 @@ class StoryItem extends StatelessWidget {
                     leading: const SizedBox(),
                     backgroundColor: Theme.of(context).colorScheme.background,
                   ),
-                  hideNewAppBar: true,
                 )
               : HtmlWidget(
                   '<iframe src="https://www.instagram.com/p/${item.code}/embed/"></iframe>',

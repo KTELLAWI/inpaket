@@ -14,7 +14,7 @@ import '../../../models/index.dart' show AppModel, CartModel, Product;
 import 'services.dart';
 
 class PaypalPayment extends StatefulWidget {
-  final Function(String?, String?)? onFinish;
+  final Function? onFinish;
 
   const PaypalPayment({this.onFinish});
 
@@ -31,7 +31,6 @@ class PaypalPaymentState extends State<PaypalPayment> {
   String? executeUrl;
   String? accessToken;
   PaypalServices services = PaypalServices();
-  late final WebViewController controller;
 
   @override
   void initState() {
@@ -48,40 +47,6 @@ class PaypalPaymentState extends State<PaypalPayment> {
           setState(() {
             checkoutUrl = res['approvalUrl'];
             executeUrl = res['executeUrl'];
-
-            controller = WebViewController()
-              ..setJavaScriptMode(JavaScriptMode.unrestricted)
-              ..setBackgroundColor(const Color(0x00000000))
-              ..setNavigationDelegate(
-                NavigationDelegate(
-                  onProgress: (int progress) {
-                    // Update loading bar.
-                  },
-                  onPageStarted: (String url) {},
-                  onPageFinished: (String url) {},
-                  onWebResourceError: (WebResourceError error) {},
-                  onNavigationRequest: (NavigationRequest request) {
-                    if (request.url.startsWith('http://return.example.com')) {
-                      final uri = Uri.parse(request.url);
-                      final payerID = uri.queryParameters['PayerID'];
-                      final token = uri.queryParameters['token'];
-                      if (payerID != null) {
-                        services
-                            .executePayment(executeUrl, payerID, accessToken)
-                            .then((id) {
-                          widget.onFinish!(payerID, token);
-                        });
-                      }
-                      Navigator.of(context).pop();
-                    }
-                    if (request.url.startsWith('http://cancel.example.com')) {
-                      Navigator.of(context).pop();
-                    }
-                    return NavigationDecision.navigate;
-                  },
-                ),
-              )
-              ..loadRequest(Uri.parse(checkoutUrl.toString()));
           });
         }
       } catch (e) {
@@ -202,13 +167,34 @@ class PaypalPaymentState extends State<PaypalPayment> {
             backgroundColor: Theme.of(context).colorScheme.background,
             leading: GestureDetector(
               onTap: () {
-                widget.onFinish!(null, null);
+                widget.onFinish!(null);
                 Navigator.pop(context);
               },
               child: const Icon(Icons.arrow_back_ios),
             ),
           ),
-          body: WebViewWidget(controller: controller),
+          body: WebView(
+            initialUrl: checkoutUrl,
+            javascriptMode: JavascriptMode.unrestricted,
+            navigationDelegate: (NavigationRequest request) {
+              if (request.url.startsWith('http://return.example.com')) {
+                final uri = Uri.parse(request.url);
+                final payerID = uri.queryParameters['PayerID'];
+                if (payerID != null) {
+                  services
+                      .executePayment(executeUrl, payerID, accessToken)
+                      .then((id) {
+                    widget.onFinish!(id);
+                  });
+                }
+                Navigator.of(context).pop();
+              }
+              if (request.url.startsWith('http://cancel.example.com')) {
+                Navigator.of(context).pop();
+              }
+              return NavigationDecision.navigate;
+            },
+          ),
         ),
       );
     }
@@ -221,7 +207,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
             leading: IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: () {
-                  widget.onFinish!(null, null);
+                  widget.onFinish!(null);
                   Navigator.of(context).pop();
                 }),
             backgroundColor: kGrey200,
@@ -234,7 +220,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
   }
 
   Future<bool> _handleAndroidBack() async {
-    widget.onFinish!(null, null);
+    widget.onFinish!(null);
     return true;
   }
 }

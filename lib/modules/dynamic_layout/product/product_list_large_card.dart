@@ -4,75 +4,29 @@ import '../../../common/constants.dart';
 import '../../../common/tools.dart';
 import '../../../models/index.dart' show BackDropArguments, Product;
 import '../../../routes/flux_navigate.dart';
-import '../../../widgets/common/auto_silde_show.dart';
 import '../../../widgets/product/action_button_mixin.dart';
 import '../../../widgets/product/index.dart';
 import '../helper/helper.dart';
 import '../index.dart';
 import 'future_builder.dart';
 
-class ProductListLargeCard extends StatefulWidget {
+class ProductListLargeCard extends StatelessWidget {
   final ProductConfig config;
-  final ScrollController scrollController;
 
-  const ProductListLargeCard({
-    required this.config,
-    required this.scrollController,
-    Key? key,
-  }) : super(key: key);
+  const ProductListLargeCard({required this.config, Key? key})
+      : super(key: key);
 
-  @override
-  State<ProductListLargeCard> createState() => _ProductListLargeCardState();
-}
-
-class _ProductListLargeCardState extends State<ProductListLargeCard> {
-  late ProductConfig config;
-  ScrollController get scrollController => widget.scrollController;
-
-  @override
-  void initState() {
-    super.initState();
-    config = widget.config;
-  }
-
-  Widget getProductListWidgets(List<Product> products, double maxWidth) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-      child: Column(
-        children: [
-          HeaderView(
-            headerText: config.name ?? ' ',
-            showSeeAll: true,
-            callback: () => FluxNavigate.pushNamed(
-              RouteList.backdrop,
-              arguments: BackDropArguments(
-                config: config.toJson(),
-                data: null,
-              ),
-            ),
+  Widget getProductListWidgets(List<Product> products) {
+    return Row(
+      children: [
+        const SizedBox(width: 10.0),
+        for (var item in products)
+          LargeProductCard(
+            config: config,
+            item: item,
+            width: Helper.formatDouble(config.imageWidth),
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            controller: scrollController,
-            padding: EdgeInsets.symmetric(
-              horizontal: config.hPadding,
-              vertical: config.vPadding,
-            ),
-            child: Row(
-              children: List.generate(
-                products.length,
-                (index) => LargeProductCard(
-                  config: config,
-                  key: Key('imageWidth-${config.imageWidth}-$index'),
-                  item: products[index],
-                  width: Helper.formatDouble(config.imageWidth),
-                  maxWidth: maxWidth,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+      ],
     );
   }
 
@@ -84,7 +38,6 @@ class _ProductListLargeCardState extends State<ProductListLargeCard> {
         padding: const EdgeInsets.only(left: 10.0, top: 10.0),
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          controller: scrollController,
           child: Row(
             children: [
               for (var i = 0; i < 3; i++)
@@ -98,12 +51,42 @@ class _ProductListLargeCardState extends State<ProductListLargeCard> {
         ),
       ),
       child: ({maxWidth, maxHeight, products}) {
-        return HandleAutoSlide.list(
-          enable: config.enableAutoSliding,
-          durationAutoSliding: config.durationAutoSliding,
-          numberOfItems: products.length,
-          controller: scrollController,
-          child: getProductListWidgets(products, maxWidth),
+        return Padding(
+          padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+          child: Column(
+            children: [
+              HeaderView(
+                headerText: config.name ?? ' ',
+                showSeeAll: true,
+                callback: () => FluxNavigate.pushNamed(
+                  RouteList.backdrop,
+                  arguments: BackDropArguments(
+                    config: config.toJson(),
+                    data: null,
+                  ),
+                ),
+              ),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.symmetric(
+                  horizontal: config.hPadding,
+                  vertical: config.vPadding,
+                ),
+                child: Row(
+                  children: List.generate(
+                    products.length,
+                    (index) => LargeProductCard(
+                      config: config,
+                      key: Key('imageWidth-${config.imageWidth}-$index'),
+                      item: products[index],
+                      width: Helper.formatDouble(config.imageWidth),
+                      maxWidth: maxWidth,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );

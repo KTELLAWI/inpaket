@@ -26,9 +26,7 @@ class _VendorChatState extends State<VendorChat>
 
   User? get user => widget.user;
 
-  bool get showAdminChat =>
-      store == null ||
-      ((store?.phone?.isEmpty ?? true) && (store?.email?.isEmpty ?? true));
+  bool get showAdminChat => store == null || store?.phone == null;
 
   @override
   void initState() {
@@ -62,23 +60,17 @@ class _VendorChatState extends State<VendorChat>
     if (isNotBlank(store!.phone)) {
       options.add({
         'app': 'https://wa.me/${store!.phone}',
-        'description': kVendorConfig.hideChatInfoContact
-            ? S.of(context).chatViaWhatApp
-            : store?.phone ?? '',
+        'description': store!.phone,
         'iconData': Icons.chat,
       });
       options.add({
         'app': 'tel:${store!.phone}',
-        'description': kVendorConfig.hideChatInfoContact
-            ? S.of(context).callToVendor
-            : store?.phone ?? '',
+        'description': store!.phone,
         'iconData': Icons.phone,
       });
       options.add({
         'app': 'sms://${store!.phone}',
-        'description': kVendorConfig.hideChatInfoContact
-            ? S.of(context).sendSMStoVendor
-            : store?.phone ?? '',
+        'description': store!.phone,
         'iconData': Icons.sms,
       });
     }

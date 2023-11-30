@@ -32,7 +32,9 @@ class FilterAttributeModel with ChangeNotifier, LanguageMixin {
     try {
       _isLoading = true;
       notifyListeners();
-      lstProductAttribute = await _service.api.getFilterAttributes();
+      lstProductAttribute = await _service.api.getFilterAttributes(
+        lang: langCode,
+      );
       if (lstProductAttribute != null &&
           lstProductAttribute!.isNotEmpty &&
           lstProductAttribute?.first.id != null) {
@@ -44,7 +46,7 @@ class FilterAttributeModel with ChangeNotifier, LanguageMixin {
     } catch (_) {}
   }
 
-  Future<void> getAttr({int? id, String? attributeTerm}) async {
+  Future<void> getAttr({int? id}) async {
     try {
       /// If the same id, load the next page
       /// else load the first page
@@ -54,11 +56,11 @@ class FilterAttributeModel with ChangeNotifier, LanguageMixin {
         notifyListeners();
       }
       final page = theSameId ? ++_currentPage : _currentPage = 1;
-      final data = (await _service.api.getSubAttributes(
-            id: id,
-            page: page,
-          )) ??
-          <SubAttribute>[];
+      final data = await _service.api.getSubAttributes(
+        id: id,
+        lang: langCode,
+        page: page,
+      )!;
       selectedAttr = id;
       if (theSameId) {
         lstCurrentAttr.addAll(data);
@@ -86,16 +88,7 @@ class FilterAttributeModel with ChangeNotifier, LanguageMixin {
 
       List.generate(
         lstCurrentAttr.length,
-        (index) {
-          if (attributeTerm != null) {
-            if (attributeTerm
-                .split(',')
-                .contains(lstCurrentAttr[index].id.toString())) {
-              return lstCurrentSelectedTerms.add(true);
-            }
-          }
-          return lstCurrentSelectedTerms.add(false);
-        },
+        (index) => lstCurrentSelectedTerms.add(false),
       );
 
       _isLoading = false;

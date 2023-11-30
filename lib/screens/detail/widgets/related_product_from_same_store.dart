@@ -1,9 +1,10 @@
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../common/config.dart';
 import '../../../generated/l10n.dart';
-import '../../../models/index.dart' show Product;
+import '../../../models/index.dart' show AppModel, Product;
 import '../../../modules/dynamic_layout/config/product_config.dart';
 import '../../../services/index.dart';
 import '../../../widgets/product/product_card_view.dart';
@@ -31,10 +32,10 @@ class _RelatedProductFromSameStoreState
   Future<List<Product>?> getProductsFromSameStore(context) =>
       _memoizer.runOnce(() {
         return services.api.getProductsByStore(
-          page: 1,
-          storeId: widget.product?.store?.id,
-          catId: int.tryParse(widget.product!.categoryId.toString()),
-        );
+            page: 1,
+            storeId: widget.product?.store?.id,
+            catId: int.tryParse(widget.product!.categoryId.toString()),
+            lang: Provider.of<AppModel>(context).langCode);
       });
 
   @override
@@ -61,9 +62,16 @@ class _RelatedProductFromSameStoreState
                   );
                 case ConnectionState.done:
                   if (snapshot.hasError) {
-                    return const SizedBox();
-                  } else if (snapshot.data == null || snapshot.data!.isEmpty) {
-                    return const SizedBox();
+                    return SizedBox(
+                      height: 100,
+                      child: Center(
+                        child: Text(
+                          S.of(context).error(snapshot.error!),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary),
+                        ),
+                      ),
+                    );
                   } else {
                     snapshot.data!.removeWhere(
                         (element) => element.id == widget.product!.id);
@@ -93,8 +101,7 @@ class _RelatedProductFromSameStoreState
                           height: constraint.maxWidth * 0.75,
                           child: ListView(
                             shrinkWrap: true,
-                            padding: widget.padding ??
-                                const EdgeInsets.symmetric(horizontal: 16),
+                            padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 16),
                             cacheExtent: MediaQuery.of(context).size.width,
                             scrollDirection: Axis.horizontal,
                             children: [

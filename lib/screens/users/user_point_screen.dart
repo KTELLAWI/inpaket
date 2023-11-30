@@ -68,12 +68,11 @@ class _StateUserPoint extends State<UserPointScreen> {
                     ListTile(
                       trailing: Text(
                         snapshot.data!.points.toString(),
-                        style:
-                            Theme.of(context).textTheme.titleMedium!.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: 35,
-                                ),
+                        style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 35,
+                            ),
                       ),
                       title: Text(
                         S.of(context).myPoints,

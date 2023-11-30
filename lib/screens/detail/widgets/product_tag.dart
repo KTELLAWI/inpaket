@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../common/config.dart';
 import '../../../generated/l10n.dart';
 import '../../../models/entities/index.dart' show Product;
 import '../../../models/index.dart' show ProductModel;
@@ -18,7 +17,7 @@ class ProductTag extends StatelessWidget {
     }
 
     return ExpansionInfo(
-      expand: kProductDetail.expandTags,
+      expand: true,
       title: S.of(context).tags,
       children: <Widget>[
         Container(

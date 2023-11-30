@@ -193,9 +193,7 @@ class InstagramStoryItem extends StatelessWidget {
                                 .textTheme
                                 .bodySmall
                                 ?.copyWith(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .background),
+                                    color: Theme.of(context).colorScheme.background),
                           ),
                         ),
                       )

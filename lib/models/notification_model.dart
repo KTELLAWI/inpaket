@@ -6,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 import '../data/boxes.dart';
 import '../services/dependency_injection.dart';
 import '../services/notification/notification_service.dart';
-import '../services/services.dart';
 import 'entities/fstore_notification.dart';
 import 'entities/fstore_notification_item.dart';
 
@@ -114,10 +113,5 @@ class NotificationModel extends ChangeNotifier {
 
   Future<void> _saveDataToLocal() async {
     UserBox().notification = _fStoreNotification;
-  }
-
-  void updateNotificationStatus(String? cookie) {
-    unawaited(Services().api.enableNotification(
-        cookie: cookie, enabled: _fStoreNotification.enable));
   }
 }

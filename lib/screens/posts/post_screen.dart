@@ -49,8 +49,6 @@ class _PostScreenState extends State<PostScreen> with AppBarMixin {
 
   @override
   Widget build(BuildContext context) {
-    var canPop = ModalRoute.of(context)!.canPop;
-
     return renderScaffold(
       routeName: RouteList.postScreen,
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -63,7 +61,7 @@ class _PostScreenState extends State<PostScreen> with AppBarMixin {
               ?.copyWith(fontWeight: FontWeight.w700),
         ),
         backgroundColor: Theme.of(context).colorScheme.background,
-        leading: widget.isLocatedInTabbar || !canPop
+        leading: widget.isLocatedInTabbar
             ? const SizedBox()
             : Center(
                 child: GestureDetector(

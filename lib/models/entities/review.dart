@@ -8,7 +8,6 @@ class Review {
   String? name;
   String? email;
   String? review;
-  String? title;
   double? rating;
   late DateTime createdAt;
   String? avatar;
@@ -16,21 +15,6 @@ class Review {
   int? isApproved;
   List<String> images = [];
   bool verified = false;
-
-  Review({
-    this.id,
-    this.productId,
-    this.name,
-    this.email,
-    this.review,
-    this.title,
-    this.rating,
-    required this.createdAt,
-    this.avatar,
-    this.status,
-    this.isApproved,
-    required this.images,
-  });
 
   Review.fromJson(Map parsedJson) {
     id = parsedJson['id'];

@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:inspireui/utils/logs.dart';
 import 'package:provider/provider.dart';
@@ -14,23 +16,16 @@ import '../../../models/index.dart'
         ProductAttribute,
         ProductModel,
         ProductVariation;
-import '../../../models/product_variant_model.dart';
 import '../../../services/index.dart';
 import '../../../widgets/common/webview.dart';
-import 'buy_button_widget.dart';
 
 class ProductVariant extends StatefulWidget {
   final Product? product;
   final Function? onSelectVariantImage;
   final int defaultQuantity;
-  final bool isModal;
 
-  const ProductVariant(
-    this.product, {
-    this.onSelectVariantImage,
-    this.defaultQuantity = 1,
-    this.isModal = false,
-  });
+  const ProductVariant(this.product,
+      {this.onSelectVariantImage, this.defaultQuantity = 1});
 
   @override
   // ignore: no_logic_in_create_state
@@ -40,25 +35,26 @@ class ProductVariant extends StatefulWidget {
 class _StateProductVariant extends State<ProductVariant> {
   Product product;
 
-  ProductVariantModel get model =>
-      Provider.of<ProductVariantModel>(context, listen: false);
+  ProductVariation? productVariation;
 
-  ProductVariation? get productVariation => model.productVariation;
-  Map<String, Map<String, AddonsOption>> get selectedOptions =>
-      model.selectedOptions;
-  Map<String?, String?>? get mapAttribute => model.mapAttribute;
-  int get quantity => model.quantity;
+  Map<String, Map<String, AddonsOption>> selectedOptions = {};
+  List<AddonsOption> addonsOptions = [];
 
   _StateProductVariant(this.product);
 
   final services = Services();
+  Map<String?, String?>? mapAttribute;
 
   List<ProductVariation>? get variations =>
       context.select((ProductModel _) => _.variations);
 
+  int quantity = 1;
+
+  bool isInAppPurchaseChecking = false;
+
   void updateSelectedOptions(
       Map<String, Map<String, AddonsOption>> selectedOptions) {
-    model.updateValues(selectedOptions: selectedOptions);
+    this.selectedOptions = selectedOptions;
     final options = <AddonsOption>[];
     for (var addOns in selectedOptions.values) {
       options.addAll(addOns.values);
@@ -79,15 +75,14 @@ class _StateProductVariant extends State<ProductVariant> {
         }) {
           if (productInfo != null) {
             product = productInfo;
-            model.initWithProduct(productInfo);
           }
-          model.updateValues(mapAttribute: mapAttribute ?? {});
+          this.mapAttribute = mapAttribute ?? {};
           if (variations != null) {
             context.read<ProductModel>().changeProductVariations(
                   variations,
                   notify: false,
                 );
-            model.updateValues(productVariation: variation);
+            productVariation = variation;
             context
                 .read<ProductModel>()
                 .changeSelectedVariation(productVariation);
@@ -125,7 +120,9 @@ class _StateProductVariant extends State<ProductVariant> {
     WidgetsBinding.instance.endOfFrame.then(
       (_) {
         if (mounted) {
-          model.updateValues(quantity: widget.defaultQuantity);
+          setState(() {
+            quantity = widget.defaultQuantity;
+          });
           getProductVariations();
           getProductAddons();
         }
@@ -181,6 +178,48 @@ class _StateProductVariant extends State<ProductVariant> {
     }));
   }
 
+  /// Add to Cart & Buy Now function
+  void addToCart([bool buyNow = false, bool inStock = false]) {
+    if (buyNow &&
+        Services().widget.enableInAppPurchase &&
+        !ServerConfig().isBuilder) {
+      Services().doIAPPayment(
+          context, product, productVariation, quantity, mapAttribute ?? {},
+          (bool isLoading) {
+        setState(() {
+          isInAppPurchaseChecking = isLoading;
+        });
+      }, () {
+        services.widget.addToCart(context, product, quantity, productVariation,
+            mapAttribute ?? {}, buyNow, inStock);
+      });
+    } else {
+      services.widget.addToCart(context, product, quantity, productVariation,
+          mapAttribute ?? {}, buyNow, inStock);
+    }
+  }
+
+  /// check limit select quality by maximum available stock
+  int getMaxQuantity() {
+    var limitSelectQuantity = kCartDetail['maxAllowQuantity'] ?? 100;
+
+    /// Skip check stock quantity for backorder products.
+    if (product.backordersAllowed) {
+      return limitSelectQuantity;
+    }
+
+    if (productVariation != null) {
+      if (productVariation!.stockQuantity != null) {
+        limitSelectQuantity = math.min<int>(
+            productVariation!.stockQuantity!, kCartDetail['maxAllowQuantity']);
+      }
+    } else if (product.stockQuantity != null) {
+      limitSelectQuantity = math.min<int>(
+          product.stockQuantity!, kCartDetail['maxAllowQuantity']);
+    }
+    return limitSelectQuantity;
+  }
+
   void onSelectProductVariant({
     ProductAttribute? attr,
     String? val,
@@ -195,10 +234,10 @@ class _StateProductVariant extends State<ProductVariant> {
       mapAttribute: mapAttribute!,
       onFinish:
           (Map<String?, String?> mapAttribute, ProductVariation? variation) {
-        model.updateValues(
-            mapAttribute: mapAttribute,
-            productVariation: variation,
-            quantity: 1);
+        setState(() {
+          this.mapAttribute = mapAttribute;
+        });
+        productVariation = variation;
         context.read<ProductModel>().changeSelectedVariation(variation);
 
         /// Show selected product variation image in gallery.
@@ -247,6 +286,13 @@ class _StateProductVariant extends State<ProductVariant> {
     );
   }
 
+  List<Widget> getBuyButtonWidget() {
+    return services.widget.getBuyButtonWidget(context, productVariation,
+        product, mapAttribute, getMaxQuantity(), quantity, addToCart, (val) {
+      quantity = val;
+    }, variations, isInAppPurchaseChecking);
+  }
+
   List<Widget> getProductTitleWidget() {
     return services.widget
         .getProductTitleWidget(context, productVariation, product);
@@ -259,17 +305,13 @@ class _StateProductVariant extends State<ProductVariant> {
         (variations?.isEmpty ?? true) &&
         ServerConfig().type != ConfigType.opencart &&
         ServerConfig().type != ConfigType.notion;
-    var layoutType = Provider.of<AppModel>(context).productDetailLayout;
 
     return Column(
       children: <Widget>[
         ...getProductTitleWidget(),
         if (!isVariationLoading) ...getProductAttributeWidget(),
         ...getProductAddonsWidget(),
-        if (!kProductDetail.fixedBuyButtonToBottom ||
-            ['halfSizeImageType', 'fullSizeImageType'].contains(layoutType) ||
-            widget.isModal)
-          const BuyButtonWidget(),
+        ...getBuyButtonWidget(),
       ],
     );
   }

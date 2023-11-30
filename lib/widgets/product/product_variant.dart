@@ -511,8 +511,7 @@ class ImageSelection extends StatelessWidget {
                             Positioned.fill(
                               child: Container(
                                 color: Theme.of(context)
-                                    .colorScheme
-                                    .background
+                                    .colorScheme.background
                                     .withOpacity(0.6),
                                 child: const Icon(
                                   Icons.check_circle_rounded,

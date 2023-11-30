@@ -16,22 +16,22 @@ class CategoryColumnItem extends StatelessWidget {
         LayoutBuilder(builder: (context, constraints) {
           return FluxImage(
             imageUrl: category.image!,
-            fit: BoxFit.contain,
+            fit: BoxFit.cover,
             width: constraints.maxWidth,
           );
         }),
         Container(
-         // color: const Color.fromRGBO(0, 0, 0, 0.4),
-          // child: Center(
-          //   child: Text(
-          //     category.name!,
-          //     style: const TextStyle(
-          //         color: Colors.white,
-          //         fontSize: 20,
-          //         fontWeight: FontWeight.bold),
-          //     textAlign: TextAlign.center,
-          //    ),
-          // ),
+          color: const Color.fromRGBO(0, 0, 0, 0.4),
+          child: Center(
+            child: Text(
+              category.name!,
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+          ),
         )
       ],
     );

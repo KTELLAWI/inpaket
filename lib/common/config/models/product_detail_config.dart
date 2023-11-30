@@ -35,21 +35,8 @@ class ProductDetailConfig {
   late final bool showRelatedProduct;
   late final bool showRecentProduct;
 
-  late final bool expandDescription;
-  late final bool expandInfors;
-  late final bool expandCategories;
-  late final bool expandTags;
-  late final bool expandReviews;
-
-  /// Listing
-  late final bool expandTaxonomies;
-  late final bool expandListingMenu;
-  late final bool expandMap;
-
   /// list, page
   late final ProductImageType productImageLayout;
-
-  late final bool fixedBuyButtonToBottom;
 
   ProductDetailConfig({
     required this.height,
@@ -85,15 +72,6 @@ class ProductDetailConfig {
     required this.showRecentProduct,
     this.limitDayBooking,
     required this.productImageLayout,
-    required this.expandDescription,
-    required this.expandInfors,
-    required this.expandCategories,
-    required this.expandTags,
-    required this.expandReviews,
-    required this.expandTaxonomies,
-    required this.expandListingMenu,
-    required this.expandMap,
-    required this.fixedBuyButtonToBottom,
   });
 
   ProductDetailConfig.fromJson(Map config) {
@@ -136,15 +114,6 @@ class ProductDetailConfig {
     showRecentProduct = config['showRecentProduct'] ?? true;
     productImageLayout =
         ProductImageType.fromString(config['productImageLayout']);
-    expandDescription = config['expandDescription'] ?? true;
-    expandInfors = config['expandInfors'] ?? true;
-    expandCategories = config['expandCategories'] ?? true;
-    expandTags = config['expandTags'] ?? true;
-    expandReviews = config['expandReviews'] ?? true;
-    expandTaxonomies = config['expandTaxonomies'] ?? true;
-    expandListingMenu = config['expandListingMenu'] ?? true;
-    expandMap = config['expandMap'] ?? true;
-    fixedBuyButtonToBottom = config['fixedBuyButtonToBottom'] ?? false;
   }
 
   ProductDetailConfig copyWith({
@@ -181,15 +150,6 @@ class ProductDetailConfig {
     bool? showRelatedProduct,
     bool? showRecentProduct,
     String? productImageLayout,
-    bool? expandDescription,
-    bool? expandInfors,
-    bool? expandCategories,
-    bool? expandTags,
-    bool? expandReviews,
-    bool? expandTaxonomies,
-    bool? expandListingMenu,
-    bool? expandMap,
-    bool? fixedBuyButtonToBottom,
   }) {
     return ProductDetailConfig(
       height: height ?? this.height,
@@ -234,16 +194,6 @@ class ProductDetailConfig {
       showRecentProduct: showRecentProduct ?? this.showRecentProduct,
       productImageLayout: ProductImageType.fromString(
           productImageLayout ?? this.productImageLayout.name),
-      expandDescription: expandDescription ?? this.expandDescription,
-      expandInfors: expandInfors ?? this.expandInfors,
-      expandCategories: expandCategories ?? this.expandCategories,
-      expandTags: expandTags ?? this.expandTags,
-      expandReviews: expandReviews ?? this.expandReviews,
-      expandTaxonomies: expandTaxonomies ?? this.expandTaxonomies,
-      expandListingMenu: expandListingMenu ?? this.expandListingMenu,
-      expandMap: expandMap ?? this.expandMap,
-      fixedBuyButtonToBottom:
-          fixedBuyButtonToBottom ?? this.fixedBuyButtonToBottom,
     );
   }
 
@@ -282,15 +232,6 @@ class ProductDetailConfig {
       'showRelatedProduct': showRelatedProduct,
       'showRecentProduct': showRecentProduct,
       'productImageLayout': productImageLayout.name,
-      'expandDescription': expandDescription,
-      'expandInfors': expandInfors,
-      'expandCategories': expandCategories,
-      'expandTags': expandTags,
-      'expandReviews': expandReviews,
-      'expandTaxonomies': expandTaxonomies,
-      'expandListingMenu': expandListingMenu,
-      'expandMap': expandMap,
-      'fixedBuyButtonToBottom': fixedBuyButtonToBottom,
     };
   }
 }

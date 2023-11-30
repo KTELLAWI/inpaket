@@ -1,6 +1,5 @@
 import '../../../models/entities/paging_response.dart';
 import '../../../services/paging/paging_repository.dart';
-import '../common/config.dart';
 import '../models/entities/product.dart';
 
 class ListProductRepository extends PagingRepository<Product> {
@@ -19,7 +18,5 @@ class ListProductRepository extends PagingRepository<Product> {
             _categoryId,
             page: page,
             limit: _limit,
-            order: kProductCard.order,
-            orderBy: kProductCard.orderby,
           );
 }

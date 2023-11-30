@@ -11,7 +11,6 @@ class BlogSearchModel extends ChangeNotifier {
 
   List<String> keywords = [];
   List<Blog> blogs = [];
-  List<Blog> recentBlogs = [];
   bool loading = false;
   String errMsg = '';
 
@@ -20,11 +19,7 @@ class BlogSearchModel extends ChangeNotifier {
       loading = true;
       notifyListeners();
       blogs = await Services().api.searchBlog(name: name);
-
-      if (blogs.isNotEmpty) {
-        recentBlogs = blogs;
-      }
-      if (name.isNotEmpty) {
+      if (blogs.isNotEmpty && name.isNotEmpty) {
         var index = keywords.indexOf(name);
         if (index > -1) {
           keywords.removeAt(index);

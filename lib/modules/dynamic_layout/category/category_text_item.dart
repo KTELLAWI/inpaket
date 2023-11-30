@@ -15,8 +15,6 @@ class CategoryTextItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final border = commonConfig.enableBorder ? (commonConfig.border ?? 1) : 0;
-    final noBackground = commonConfig.noBackground ?? false;
     return GestureDetector(
       onTap: () => onTap?.call(),
       child: Container(
@@ -25,16 +23,7 @@ class CategoryTextItem extends StatelessWidget {
           vertical: commonConfig.paddingX,
         ),
         decoration: BoxDecoration(
-          color: noBackground
-              ? null
-              : Theme.of(context).primaryColorLight.withOpacity(0.9),
-          border: border > 0
-              ? Border.all(
-                  color:
-                      Theme.of(context).colorScheme.secondary.withOpacity(0.5),
-                  width: border.toDouble(),
-                )
-              : null,
+          color: Theme.of(context).primaryColorLight.withOpacity(0.9),
           boxShadow: [
             if (commonConfig.boxShadow != null)
               BoxShadow(

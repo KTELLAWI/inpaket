@@ -29,7 +29,6 @@ class MercadoPagoPaymentState extends State<MercadoPagoPayment> {
   String? url;
   String? id = '';
   final kReturnSuccessUrl = '${ServerConfig().url}/success';
-  late final WebViewController controller;
 
   Map<String, dynamic> getOrderParams() {
     var cartModel = Provider.of<CartModel>(context, listen: false);
@@ -87,27 +86,7 @@ class MercadoPagoPaymentState extends State<MercadoPagoPayment> {
         if (url == null) {
           return;
         }
-
-        setState(() {
-          controller = WebViewController()
-            ..setJavaScriptMode(JavaScriptMode.unrestricted)
-            ..setBackgroundColor(const Color(0x00000000))
-            ..setNavigationDelegate(
-              NavigationDelegate(
-                onProgress: (int progress) {
-                  // Update loading bar.
-                },
-                onPageStarted: (String url) {},
-                onPageFinished: (String url) {},
-                onWebResourceError: (WebResourceError error) {},
-                onNavigationRequest: (NavigationRequest request) {
-                  _handleUrlCallback(context, request.url);
-                  return NavigationDecision.navigate;
-                },
-              ),
-            )
-            ..loadRequest(Uri.parse(url.toString()));
-        });
+        setState(() {});
       }
     });
   }
@@ -127,7 +106,15 @@ class MercadoPagoPaymentState extends State<MercadoPagoPayment> {
             child: const Icon(Icons.arrow_back_ios),
           ),
         ),
-        body: WebViewWidget(controller: controller),
+        body: WebView(
+          initialUrl: url,
+          onWebViewCreated: customWebViewListener,
+          javascriptMode: JavascriptMode.unrestricted,
+          navigationDelegate: (NavigationRequest request) {
+            _handleUrlCallback(context, request.url);
+            return NavigationDecision.navigate;
+          },
+        ),
       );
     }
     return ScaffoldMessenger(

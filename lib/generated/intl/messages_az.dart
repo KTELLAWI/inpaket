@@ -30,95 +30,79 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m4(currency) => "Valyuta ${currency}olaraq dəyişdirildi";
 
-  static String m5(priceRate, pointRate) => "${priceRate} = ${pointRate} Xal";
+  static String m5(currency) => "${currency} dəstəklənmir";
 
-  static String m6(country) => "${country} ölkə dəstəklənmir";
+  static String m6(day) => "${day} gün öncə";
 
-  static String m7(currency) => "${currency} dəstəklənmir";
+  static String m7(total) => "~${total} km";
 
-  static String m8(day) => "${day} gün öncə";
+  static String m8(timeLeft) => " ${timeLeft}tarixində bitir";
 
-  static String m9(total) => "~${total} km";
+  static String m9(captcha) => "Təsdiq etmək üçün ${captcha} daxil edin:";
 
-  static String m10(timeLeft) => " ${timeLeft}tarixində bitir";
+  static String m10(message) => "Xəta: ${message}";
 
-  static String m11(captcha) => "Təsdiq etmək üçün ${captcha} daxil edin:";
+  static String m11(time) => " ${time}tarixində başa çatır";
 
-  static String m12(message) => "Xəta: ${message}";
+  static String m12(total) => ">${total} km";
 
-  static String m13(time) => " ${time}tarixində başa çatır";
+  static String m13(hour) => "${hour} saat öncə";
 
-  static String m14(total) => ">${total} km";
-
-  static String m15(hour) => "${hour} saat öncə";
-
-  static String m16(message) =>
+  static String m14(message) =>
       "Data sorğusu zamanı tətbiqdə problem var, problemləri həll etmək üçün admin ilə əlaqə saxlayın: ${message}";
 
-  static String m17(currency, amount) =>
-      "Bu ödənişdən istifadə üçün maksimum məbləğ: ${currency} ${amount}";
+  static String m15(size) => "Maksimum fayl ölçüsü: ${size} MB";
 
-  static String m18(size) => "Maksimum fayl ölçüsü: ${size} MB";
+  static String m16(minute) => "${minute} dəqiqə öncə";
 
-  static String m19(currency, amount) =>
-      "Bu ödənişdən istifadə üçün minimum məbləğ: ${currency} ${amount}";
+  static String m17(month) => "${month} ay əvvəl";
 
-  static String m20(minute) => "${minute} dəqiqə öncə";
+  static String m18(store) => " ${store}saytından daha çox";
 
-  static String m21(month) => "${month} ay əvvəl";
+  static String m19(itemCount) => "${itemCount} məhsul";
 
-  static String m22(store) => " ${store}saytından daha çox";
+  static String m20(price) => "Cəmi seçimlər: ${price}";
 
-  static String m23(itemCount) => "${itemCount} məhsul";
+  static String m21(total) => "Miqdar: ${total}";
 
-  static String m24(price) => "Cəmi seçimlər: ${price}";
+  static String m22(percent) => "Endirim ${percent}%";
 
-  static String m25(amount) => " ${amount}ödəyin";
+  static String m23(second) => "${second} saniyə öncə";
 
-  static String m26(total) => "Miqdar: ${total}";
-
-  static String m27(percent) => "Endirim ${percent}%";
-
-  static String m28(second) => "${second} saniyə öncə";
-
-  static String m29(totalCartQuantity) =>
+  static String m24(totalCartQuantity) =>
       "Səbətdə ${totalCartQuantity} məhsul var";
 
-  static String m30(numberOfUnitsSold) => "Satıldı: ${numberOfUnitsSold}";
+  static String m25(numberOfUnitsSold) => "Satıldı: ${numberOfUnitsSold}";
 
-  static String m31(fieldName) => " ${fieldName} sahəsi tələb olunur";
+  static String m26(fieldName) => " ${fieldName} sahəsi tələb olunur";
 
-  static String m32(total) => "${total} məhsul";
+  static String m27(total) => "${total} məhsul";
 
-  static String m33(maxPointDiscount, maxPriceDiscount) =>
-      "Bu sifarişdə ${maxPriceDiscount} endirim üçün maksimum ${maxPointDiscount} Bal istifadə edin!";
+  static String m28(date) => " ${date}tarixinə qədər etibarlıdır";
 
-  static String m34(date) => " ${date}tarixinə qədər etibarlıdır";
+  static String m29(message) => "Xəbərdarlıq: ${message}";
 
-  static String m35(message) => "Xəbərdarlıq: ${message}";
+  static String m30(default_currency) =>
+      "Hazırda seçilmiş valyuta Pulqabı funksiyası üçün əlçatan deyil, lütfən, onu ${default_currency}ilə dəyişin";
 
-  static String m36(defaultCurrency) =>
-      "Hazırda seçilmiş valyuta Pulqabı funksiyası üçün əlçatan deyil, lütfən, onu ${defaultCurrency}ilə dəyişin";
+  static String m31(length) => "${length} məhsul tapıldı";
 
-  static String m37(length) => "${length} məhsul tapıldı";
+  static String m32(week) => "Həftə ${week}";
 
-  static String m38(week) => "Həftə ${week}";
+  static String m33(year) => "${year} il əvvəl";
 
-  static String m39(name) => "Xoş gəldiniz ${name}";
-
-  static String m40(year) => "${year} il əvvəl";
-
-  static String m41(total) => "Siz №${total}sifarişi təyin etdiniz";
+  static String m34(total) => "Siz №${total}sifarişi təyin etdiniz";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "UserNameInCorrect": MessageLookupByLibrary.simpleMessage(
+            "İstifadəçi adı və ya parol səhvdir"),
         "aboutUs": MessageLookupByLibrary.simpleMessage("Haqqımızda"),
         "account": MessageLookupByLibrary.simpleMessage("Hesab"),
         "accountDeleteDescription": MessageLookupByLibrary.simpleMessage(
             "Hesabınızın silinməsi şəxsi məlumatları verilənlər bazamızdan silir."),
         "accountIsPendingApproval": MessageLookupByLibrary.simpleMessage(
             "Hesab təsdiqlənməyi gözləyir."),
-        "accountNumber": MessageLookupByLibrary.simpleMessage("Hesab nömrəsi"),
         "accountSetup":
             MessageLookupByLibrary.simpleMessage("Hesabın qurulması"),
         "active": MessageLookupByLibrary.simpleMessage("Aktivdir"),
@@ -200,7 +184,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "bagsCollections":
             MessageLookupByLibrary.simpleMessage("Dişli Alətlər"),
         "balance": MessageLookupByLibrary.simpleMessage("Balans"),
-        "bank": MessageLookupByLibrary.simpleMessage("Bank"),
         "bannerListType":
             MessageLookupByLibrary.simpleMessage("Banner Siyahı Növü"),
         "bannerType": MessageLookupByLibrary.simpleMessage("Banner növü"),
@@ -208,7 +191,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Banner Youtube URL"),
         "basicInformation":
             MessageLookupByLibrary.simpleMessage("Əsas məlumat"),
-        "becomeAVendor": MessageLookupByLibrary.simpleMessage("Satıcı ol"),
         "bengali": MessageLookupByLibrary.simpleMessage("benqal dili"),
         "billingAddress": MessageLookupByLibrary.simpleMessage("Ünvan"),
         "bleHasNotBeenEnabled": MessageLookupByLibrary.simpleMessage(
@@ -237,7 +219,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "brazil": MessageLookupByLibrary.simpleMessage("Portuqal"),
         "burmese": MessageLookupByLibrary.simpleMessage("Birma"),
         "buyNow": MessageLookupByLibrary.simpleMessage("AL"),
-        "by": MessageLookupByLibrary.simpleMessage("By"),
         "byCategory": MessageLookupByLibrary.simpleMessage("Kateqoriyaya Görə"),
         "byPrice": MessageLookupByLibrary.simpleMessage("Qiymətə Görə"),
         "bySignup": MessageLookupByLibrary.simpleMessage(
@@ -245,8 +226,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "byTag": MessageLookupByLibrary.simpleMessage("Tag tərəfindən"),
         "call": MessageLookupByLibrary.simpleMessage("Zəng edin"),
         "callTo": MessageLookupByLibrary.simpleMessage("Zəng et"),
-        "callToVendor":
-            MessageLookupByLibrary.simpleMessage("Mağaza sahibinə zəng edin"),
         "canNotCreateOrder": MessageLookupByLibrary.simpleMessage(
             "Sifariş yaratmaq mümkün deyil"),
         "canNotCreateUser": MessageLookupByLibrary.simpleMessage(
@@ -261,8 +240,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "Bu proqramı işə salmaq mümkün deyil, config.dart-da parametrlərinizin düzgün olduğundan əmin olun"),
         "canNotLoadThisLink": MessageLookupByLibrary.simpleMessage(
             "Bu linki yükləmək mümkün deyil"),
-        "canNotPlayVideo": MessageLookupByLibrary.simpleMessage(
-            "Üzr istəyirik, bu videonu oxutmaq mümkün deyil."),
         "canNotSaveOrder": MessageLookupByLibrary.simpleMessage(
             "Sifarişi vebsaytda saxlamaq mümkün deyil"),
         "canNotUpdateInfo": MessageLookupByLibrary.simpleMessage(
@@ -280,20 +257,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "categories": MessageLookupByLibrary.simpleMessage("Kateqoriyalar"),
         "category": MessageLookupByLibrary.simpleMessage("Kateqoriya"),
         "change": MessageLookupByLibrary.simpleMessage("Dəyiş"),
-        "changeLanguage":
-            MessageLookupByLibrary.simpleMessage("Dili dəyişdirin"),
         "changePrinter":
             MessageLookupByLibrary.simpleMessage("Printeri dəyişdirin"),
         "changedCurrencyTo": m4,
         "chat": MessageLookupByLibrary.simpleMessage("Çat"),
-        "chatGPT": MessageLookupByLibrary.simpleMessage("GPT söhbəti"),
         "chatListScreen": MessageLookupByLibrary.simpleMessage("Mesajlar"),
         "chatViaFacebook": MessageLookupByLibrary.simpleMessage(
             "Facebook Messenger vasitəsilə söhbət edin"),
         "chatViaWhatApp": MessageLookupByLibrary.simpleMessage(
             "WhatsApp vasitəsilə söhbət edin"),
-        "chatWithBot":
-            MessageLookupByLibrary.simpleMessage("Bot ilə söhbət edin"),
         "chatWithStoreOwner": MessageLookupByLibrary.simpleMessage(
             "Mağaza sahibi ilə söhbət edin"),
         "checkConfirmLink": MessageLookupByLibrary.simpleMessage(
@@ -321,8 +293,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Şəhər sətrini boş qoymayın"),
         "clear": MessageLookupByLibrary.simpleMessage("Təmizlə"),
         "clearCart": MessageLookupByLibrary.simpleMessage("Səbəti Təmizlə"),
-        "clearConversation":
-            MessageLookupByLibrary.simpleMessage("Söhbəti təmizləyin"),
         "close": MessageLookupByLibrary.simpleMessage("Bağla"),
         "closeNow": MessageLookupByLibrary.simpleMessage("İndi bağlıdır"),
         "codExtraFee": MessageLookupByLibrary.simpleMessage("COD Əlavə haqqı"),
@@ -340,8 +310,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "Səbət doldurulduqda təmizlənəcək."),
         "confirmClearTheCart": MessageLookupByLibrary.simpleMessage(
             "Səbəti təmizləmək istədiyinizə əminsiniz?"),
-        "confirmDelete": MessageLookupByLibrary.simpleMessage(
-            "Bunu silmək istədiyinizə əminsiniz? Bu əməliyyat geri qaytarıla bilməz."),
         "confirmDeleteItem": MessageLookupByLibrary.simpleMessage(
             "Bu elementi silmək istədiyinizə əminsiniz?"),
         "connect": MessageLookupByLibrary.simpleMessage("Qoşul"),
@@ -353,11 +321,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Çatdırılma"),
         "continues": MessageLookupByLibrary.simpleMessage("Davam edin"),
         "conversations": MessageLookupByLibrary.simpleMessage("Söhbət"),
-        "convertPoint": m5,
-        "copied": MessageLookupByLibrary.simpleMessage("Kopyalandı"),
-        "copy": MessageLookupByLibrary.simpleMessage("Surəti"),
         "country": MessageLookupByLibrary.simpleMessage("Ölkə"),
-        "countryIsNotSupported": m6,
         "countryIsRequired":
             MessageLookupByLibrary.simpleMessage("Ölkə sətrini boş qoymayın"),
         "couponCode": MessageLookupByLibrary.simpleMessage("Kupon kodu"),
@@ -376,12 +340,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Bütün variantları yaradın"),
         "createdOn": MessageLookupByLibrary.simpleMessage("Yaradılma tarixi:"),
         "currencies": MessageLookupByLibrary.simpleMessage("Valyutalar"),
-        "currencyIsNotSupported": m7,
+        "currencyIsNotSupported": m5,
         "currentPassword":
             MessageLookupByLibrary.simpleMessage("Hazırki Şifrə"),
         "currentlyWeOnlyHave":
             MessageLookupByLibrary.simpleMessage("Hazırda yalnız bizdə"),
-        "customer": MessageLookupByLibrary.simpleMessage("Müştəri"),
         "customerDetail":
             MessageLookupByLibrary.simpleMessage("Müştəri təfərrüatı"),
         "customerNote": MessageLookupByLibrary.simpleMessage("Müştəri qeydi"),
@@ -402,7 +365,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dateTime": MessageLookupByLibrary.simpleMessage("Tarix vaxt"),
         "dateWiseClose":
             MessageLookupByLibrary.simpleMessage("Müdrik yaxın tarix"),
-        "daysAgo": m8,
+        "daysAgo": m6,
         "debit": MessageLookupByLibrary.simpleMessage("Debet"),
         "decline": MessageLookupByLibrary.simpleMessage("Rədd olun"),
         "delete": MessageLookupByLibrary.simpleMessage("Sil"),
@@ -432,7 +395,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Alışı deaktiv edin"),
         "discount": MessageLookupByLibrary.simpleMessage("Endirim"),
         "displayName": MessageLookupByLibrary.simpleMessage("Ad - Soyad"),
-        "distance": m9,
+        "distance": m7,
         "doNotAnyTransactions": MessageLookupByLibrary.simpleMessage(
             "Hələ heç bir əməliyyatınız yoxdur"),
         "doYouWantToExitApp": MessageLookupByLibrary.simpleMessage(
@@ -480,19 +443,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("İstifadəçi adı/Email boşdur"),
         "emptyWishlistSubtitle": MessageLookupByLibrary.simpleMessage(
             "Sevimlilər üçün məhsulun yanında istənilən ürəyin üzərinə toxunun. Onları sizin üçün burada saxlayacağıq!"),
-        "enableForCheckout":
-            MessageLookupByLibrary.simpleMessage("Checkout üçün aktivləşdirin"),
-        "enableForLogin":
-            MessageLookupByLibrary.simpleMessage("Giriş üçün aktivləşdirin"),
-        "enableForWallet":
-            MessageLookupByLibrary.simpleMessage("Pulqabı üçün aktivləşdirin"),
         "enableVacationMode": MessageLookupByLibrary.simpleMessage(
             "Tətil rejimini aktivləşdirin"),
         "endDateCantBeAfterFirstDate": MessageLookupByLibrary.simpleMessage(
             "Zəhmət olmasa ilk tarixdən sonra bir tarix seçin"),
-        "endsIn": m10,
+        "endsIn": m8,
         "english": MessageLookupByLibrary.simpleMessage("English"),
-        "enterCaptcha": m11,
+        "enterCaptcha": m9,
         "enterSendedCode":
             MessageLookupByLibrary.simpleMessage("Göndərilən kodu daxil edin"),
         "enterYourEmail":
@@ -511,7 +468,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Başlamaq üçün telefon nömrənizi daxil edin."),
         "enterYourPhoneNumber": MessageLookupByLibrary.simpleMessage(
             "Telefon nömrənizi daxil edin"),
-        "error": m12,
+        "error": m10,
         "errorAmountTransfer": MessageLookupByLibrary.simpleMessage(
             "Daxil edilmiş məbləğ cari pul kisəsi məbləğindən çoxdur. Zəhmət olmasa bir daha cəhd edin!"),
         "errorEmailFormat": MessageLookupByLibrary.simpleMessage(
@@ -526,7 +483,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "expiredDate": MessageLookupByLibrary.simpleMessage(
             "İstifadə müddəti bitmiş tarix"),
         "expiredDateHint": MessageLookupByLibrary.simpleMessage("MM/YY"),
-        "expiringInTime": m13,
+        "expiringInTime": m11,
         "external": MessageLookupByLibrary.simpleMessage("Xarici"),
         "extraServices":
             MessageLookupByLibrary.simpleMessage("Əlavə xidmətlər"),
@@ -539,8 +496,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "failedToLoadImage":
             MessageLookupByLibrary.simpleMessage("Şəkli yükləmək alınmadı"),
         "favorite": MessageLookupByLibrary.simpleMessage("Sevimli"),
-        "featureNotAvailable":
-            MessageLookupByLibrary.simpleMessage("Xüsusiyyət mövcud deyil"),
         "featureProducts": MessageLookupByLibrary.simpleMessage("Seçilmişlər"),
         "featured": MessageLookupByLibrary.simpleMessage("Seçilmiş"),
         "features": MessageLookupByLibrary.simpleMessage("Xüsusiyyətləri"),
@@ -550,8 +505,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Fayl yükləmə uğursuz oldu!"),
         "files": MessageLookupByLibrary.simpleMessage("Fayllar"),
         "filter": MessageLookupByLibrary.simpleMessage("Süzgəc"),
-        "fingerprintsTouchID":
-            MessageLookupByLibrary.simpleMessage("Barmaq izləri, Touch ID"),
         "finishSetup":
             MessageLookupByLibrary.simpleMessage("Quraşdırmanı tamamlayın"),
         "finnish": MessageLookupByLibrary.simpleMessage("Fin"),
@@ -589,7 +542,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "goBackToReview": MessageLookupByLibrary.simpleMessage("Göstərə dön"),
         "goBackToShipping":
             MessageLookupByLibrary.simpleMessage("Çatdırılmaya dön"),
-        "greaterDistance": m14,
+        "greaterDistance": m12,
         "greek": MessageLookupByLibrary.simpleMessage("Yunan"),
         "grossSales": MessageLookupByLibrary.simpleMessage("Ümumi satış"),
         "grouped": MessageLookupByLibrary.simpleMessage("Qruplaşdırılmış"),
@@ -607,7 +560,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "historyTransaction": MessageLookupByLibrary.simpleMessage("Tarix"),
         "home": MessageLookupByLibrary.simpleMessage("Ev"),
         "hour": MessageLookupByLibrary.simpleMessage("saat"),
-        "hoursAgo": m15,
+        "hoursAgo": m13,
         "hungarian": MessageLookupByLibrary.simpleMessage("Macar"),
         "hungary": MessageLookupByLibrary.simpleMessage("Macar"),
         "iAgree": MessageLookupByLibrary.simpleMessage("Oxudum, təsdiq edirəm"),
@@ -615,7 +568,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "imageFeature":
             MessageLookupByLibrary.simpleMessage("Şəkil Xüsusiyyəti"),
         "imageGallery": MessageLookupByLibrary.simpleMessage("Qalereya"),
-        "imageGenerate": MessageLookupByLibrary.simpleMessage("Şəkil yaratmaq"),
         "imageNetwork": MessageLookupByLibrary.simpleMessage("Şəkil Şəbəkəsi"),
         "inStock": MessageLookupByLibrary.simpleMessage("Satışda"),
         "incorrectPassword":
@@ -666,18 +618,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Banner Video Siyahı"),
         "listMessages":
             MessageLookupByLibrary.simpleMessage("Gələn Bildirişlər"),
-        "listening": MessageLookupByLibrary.simpleMessage("Dinlənir..."),
         "loadFail":
             MessageLookupByLibrary.simpleMessage("Yükləmə uğursuz oldu!"),
         "loading": MessageLookupByLibrary.simpleMessage("Yüklənir..."),
         "loadingLink": MessageLookupByLibrary.simpleMessage("Link yüklənir..."),
         "location": MessageLookupByLibrary.simpleMessage("Yer"),
-        "lockScreenAndSecurity": MessageLookupByLibrary.simpleMessage(
-            "Kilid ekranı və təhlükəsizlik"),
         "login": MessageLookupByLibrary.simpleMessage("Daxil ol"),
         "loginCanceled":
             MessageLookupByLibrary.simpleMessage("Giriş ləğv edilir"),
-        "loginErrorServiceProvider": m16,
+        "loginErrorServiceProvider": m14,
         "loginFailed":
             MessageLookupByLibrary.simpleMessage("Giriş uğursuz oldu!"),
         "loginInvalid": MessageLookupByLibrary.simpleMessage(
@@ -693,8 +642,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "logout": MessageLookupByLibrary.simpleMessage("Çıx"),
         "malay": MessageLookupByLibrary.simpleMessage("Malay"),
         "manCollections": MessageLookupByLibrary.simpleMessage("Kişilər"),
-        "manageApiKey":
-            MessageLookupByLibrary.simpleMessage("API Açarını idarə edin"),
         "manageStock":
             MessageLookupByLibrary.simpleMessage("Səhmləri idarə edin"),
         "map": MessageLookupByLibrary.simpleMessage("Xəritə"),
@@ -705,22 +652,20 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Göndərilən kimi qeyd edin"),
         "markAsUnread":
             MessageLookupByLibrary.simpleMessage("Oxunmamış kimi qeyd edin"),
-        "maxAmountForPayment": m17,
-        "maximumFileSizeMb": m18,
+        "maximumFileSizeMb": m15,
         "maybeLater": MessageLookupByLibrary.simpleMessage("Bəlkə sonra"),
         "menuOrder": MessageLookupByLibrary.simpleMessage("Menyu sifarişi"),
         "message": MessageLookupByLibrary.simpleMessage("Mesaj"),
         "messageTo": MessageLookupByLibrary.simpleMessage("Mesaj göndər"),
-        "minAmountForPayment": m19,
         "minimumQuantityIs":
             MessageLookupByLibrary.simpleMessage("Minimum miqdardır"),
-        "minutesAgo": m20,
+        "minutesAgo": m16,
         "mobileVerification":
             MessageLookupByLibrary.simpleMessage("Mobil Doğrulama"),
         "momentAgo": MessageLookupByLibrary.simpleMessage("bir an əvvəl"),
-        "monthsAgo": m21,
+        "monthsAgo": m17,
         "more": MessageLookupByLibrary.simpleMessage("...daha çox"),
-        "moreFromStore": m22,
+        "moreFromStore": m18,
         "moreInformation":
             MessageLookupByLibrary.simpleMessage("Ətraflı Məlumat"),
         "morning": MessageLookupByLibrary.simpleMessage("Şəhər"),
@@ -733,10 +678,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Hələ heç bir məhsul yaratmamısınız. Birini yarada bilərsiniz."),
         "myWallet": MessageLookupByLibrary.simpleMessage("Mənim portmanatım"),
         "myWishList": MessageLookupByLibrary.simpleMessage("Sevdiklərim"),
-        "nItems": m23,
+        "nItems": m19,
         "name": MessageLookupByLibrary.simpleMessage("Adı"),
-        "nameOnCard":
-            MessageLookupByLibrary.simpleMessage("Kart üzərindəki ad"),
         "nearbyPlaces":
             MessageLookupByLibrary.simpleMessage("Yaxınlıqdakı Yerlər"),
         "needToLoginAgain": MessageLookupByLibrary.simpleMessage(
@@ -771,8 +714,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "noListingNearby":
             MessageLookupByLibrary.simpleMessage("Yaxınlıqda siyahı yoxdur!"),
         "noOrders": MessageLookupByLibrary.simpleMessage("Sifariş Yoxdur"),
-        "noPermissionToViewProduct": MessageLookupByLibrary.simpleMessage(
-            "Bu məhsul xüsusi rolları olan istifadəçilər üçün əlçatandır. Zəhmət olmasa, bu məhsula daxil olmaq üçün müvafiq etimadnamə ilə daxil olun və ya əlavə məlumat üçün bizimlə əlaqə saxlayın."),
         "noPost": MessageLookupByLibrary.simpleMessage(
             "Təəssüf ki, bu səhifə artıq mövcud deyil!"),
         "noPrinters": MessageLookupByLibrary.simpleMessage("Printer yoxdur"),
@@ -783,8 +724,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "noSlotAvailable": MessageLookupByLibrary.simpleMessage("Slot yoxdur"),
         "noThanks": MessageLookupByLibrary.simpleMessage("Xeyr, təşəkkürlər"),
         "none": MessageLookupByLibrary.simpleMessage("Heç biri"),
-        "notFindResult": MessageLookupByLibrary.simpleMessage(
-            "Üzr istəyirik, heç bir nəticə tapa bilmədik."),
         "notFound": MessageLookupByLibrary.simpleMessage("Tapılmadı"),
         "note": MessageLookupByLibrary.simpleMessage("Sifariş Qeydi"),
         "noteMessage": MessageLookupByLibrary.simpleMessage("Qeyd"),
@@ -803,7 +742,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "openMap": MessageLookupByLibrary.simpleMessage("Xəritə"),
         "openNow": MessageLookupByLibrary.simpleMessage("İndi açın"),
         "options": MessageLookupByLibrary.simpleMessage("Seçimlər"),
-        "optionsTotal": m24,
+        "optionsTotal": m20,
         "or": MessageLookupByLibrary.simpleMessage("YAXUD"),
         "orLoginWith":
             MessageLookupByLibrary.simpleMessage("və ya ilə daxil olun"),
@@ -859,12 +798,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "orderSuccessTitle2": MessageLookupByLibrary.simpleMessage("Hesabım"),
         "orderSummary": MessageLookupByLibrary.simpleMessage("Sifariş Xülasə"),
         "orderTotal": MessageLookupByLibrary.simpleMessage("Sifariş Cəmi"),
-        "orderTracking": MessageLookupByLibrary.simpleMessage("Sifariş izləmə"),
         "orders": MessageLookupByLibrary.simpleMessage("Sifarişlər"),
         "otpVerification":
             MessageLookupByLibrary.simpleMessage("OTP Doğrulaması"),
-        "ourBankDetails":
-            MessageLookupByLibrary.simpleMessage("Bank rekvizitlərimiz"),
         "outOfStock": MessageLookupByLibrary.simpleMessage("Bitmişdir"),
         "pageView": MessageLookupByLibrary.simpleMessage("Səhifə Görünüşü"),
         "paid": MessageLookupByLibrary.simpleMessage("Ödənilmişdir"),
@@ -875,11 +811,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "payByWallet":
             MessageLookupByLibrary.simpleMessage("Pul kisəsi ilə ödəyin"),
         "payNow": MessageLookupByLibrary.simpleMessage("İndi ödə"),
-        "payWithAmount": m25,
         "payment": MessageLookupByLibrary.simpleMessage("Ödəmə"),
         "paymentMethod": MessageLookupByLibrary.simpleMessage("Ödəmə Üsulu"),
-        "paymentMethodIsNotSupported": MessageLookupByLibrary.simpleMessage(
-            "Bu ödəniş üsulu dəstəklənmir"),
         "paymentMethods": MessageLookupByLibrary.simpleMessage("Ödəmə Üsulu"),
         "paymentSuccessful":
             MessageLookupByLibrary.simpleMessage("Ödəniş uğurlu oldu"),
@@ -1000,8 +933,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "Məhsul növü dəyişəninə ən azı bir variant lazımdır"),
         "productNeedNameAndPrice": MessageLookupByLibrary.simpleMessage(
             "Sadə məhsul növü ad və normal qiymət tələb edir"),
-        "productOutOfStock":
-            MessageLookupByLibrary.simpleMessage("Stokda bitmiş məhsul var"),
         "productRating": MessageLookupByLibrary.simpleMessage("Rəyiniz"),
         "productReview": MessageLookupByLibrary.simpleMessage("Məhsula baxış"),
         "productType": MessageLookupByLibrary.simpleMessage("Məhsulun Növü"),
@@ -1010,9 +941,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pullToLoadMore": MessageLookupByLibrary.simpleMessage(
             "Daha çox yükləmək üçün dartın"),
         "qty": MessageLookupByLibrary.simpleMessage("Qty"),
-        "qtyTotal": m26,
-        "quantityProductExceedInStock": MessageLookupByLibrary.simpleMessage(
-            "Cari miqdar anbardakı miqdardan çoxdur"),
+        "qtyTotal": m21,
         "rate": MessageLookupByLibrary.simpleMessage("Dərəcəsi"),
         "rateTheApp": MessageLookupByLibrary.simpleMessage("Tətbiqə Rəy Ver"),
         "rateThisApp": MessageLookupByLibrary.simpleMessage("Tətbiqə Rəy Ver"),
@@ -1043,10 +972,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "refundRequested": MessageLookupByLibrary.simpleMessage(
             "Pulun qaytarılması tələb olunur"),
         "refunds": MessageLookupByLibrary.simpleMessage("Geri qaytarmalar"),
-        "regenerateResponse":
-            MessageLookupByLibrary.simpleMessage("Cavabın bərpası"),
-        "registerAs":
-            MessageLookupByLibrary.simpleMessage("kimi qeydiyyatdan keçin"),
         "registerAsVendor": MessageLookupByLibrary.simpleMessage(
             "Satıcı istifadəçisi kimi qeydiyyatdan keçin"),
         "registerFailed":
@@ -1083,7 +1008,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "reviews": MessageLookupByLibrary.simpleMessage("Rəylər"),
         "romanian": MessageLookupByLibrary.simpleMessage("Romanian"),
         "russian": MessageLookupByLibrary.simpleMessage("Rus"),
-        "sale": m27,
+        "sale": m22,
         "salePrice": MessageLookupByLibrary.simpleMessage("Endirimli qiymət"),
         "save": MessageLookupByLibrary.simpleMessage("Yadda saxla"),
         "saveAddress": MessageLookupByLibrary.simpleMessage("Yadda Saxla"),
@@ -1108,7 +1033,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Sifariş ID ilə axtar..."),
         "searchPlace": MessageLookupByLibrary.simpleMessage("Yer axtar"),
         "searchingAddress": MessageLookupByLibrary.simpleMessage("Ünvanı Tap"),
-        "secondsAgo": m28,
+        "secondsAgo": m23,
         "seeAll": MessageLookupByLibrary.simpleMessage("Hamısını göstər"),
         "seeNewAppConfig": MessageLookupByLibrary.simpleMessage(
             "Tətbiqinizdə yeni məzmunu görməyə davam edin."),
@@ -1123,10 +1048,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "selectImage": MessageLookupByLibrary.simpleMessage("Şəkli seçin"),
         "selectNone": MessageLookupByLibrary.simpleMessage("Heç birini seçin"),
         "selectPrinter": MessageLookupByLibrary.simpleMessage("Printer seçin"),
-        "selectRole": MessageLookupByLibrary.simpleMessage("Rol seçin"),
-        "selectStore": MessageLookupByLibrary.simpleMessage("Mağaza seçin"),
         "selectTheColor": MessageLookupByLibrary.simpleMessage("Rəngi seçin"),
-        "selectTheFile": MessageLookupByLibrary.simpleMessage("Faylı seçin"),
         "selectThePoint": MessageLookupByLibrary.simpleMessage("Nöqtə seçin"),
         "selectTheQuantity":
             MessageLookupByLibrary.simpleMessage("Miqdarı seçin"),
@@ -1134,15 +1056,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "send": MessageLookupByLibrary.simpleMessage("Göndər"),
         "sendBack": MessageLookupByLibrary.simpleMessage("Geri göndərmək"),
         "sendSMSCode": MessageLookupByLibrary.simpleMessage("Kodu əldə et"),
-        "sendSMStoVendor": MessageLookupByLibrary.simpleMessage(
-            "Mağaza sahibinə SMS göndərin"),
         "serbian": MessageLookupByLibrary.simpleMessage("Serb"),
         "sessionExpired":
             MessageLookupByLibrary.simpleMessage("Sessiya başa çatıb"),
         "setAnAddressInSettingPage": MessageLookupByLibrary.simpleMessage(
             "Zəhmət olmasa parametrlər səhifəsində ünvan təyin edin"),
         "settings": MessageLookupByLibrary.simpleMessage("Parametrlər"),
-        "setup": MessageLookupByLibrary.simpleMessage("Qurmaq"),
         "share": MessageLookupByLibrary.simpleMessage("Paylaş"),
         "shipped": MessageLookupByLibrary.simpleMessage("Göndərilib"),
         "shipping": MessageLookupByLibrary.simpleMessage("Çatdırılma"),
@@ -1157,7 +1076,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Mağaza Sifarişləri"),
         "shopPhone": MessageLookupByLibrary.simpleMessage("Mağaza telefonu"),
         "shopSlug": MessageLookupByLibrary.simpleMessage("Mağaza şlak"),
-        "shoppingCartItems": m29,
+        "shoppingCartItems": m24,
         "shortDescription": MessageLookupByLibrary.simpleMessage("Qısa Təsvir"),
         "showAllMyOrdered":
             MessageLookupByLibrary.simpleMessage("Sifarişlərimi Göstər"),
@@ -1165,8 +1084,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Detalları göstərin"),
         "showGallery":
             MessageLookupByLibrary.simpleMessage("Qalereyanı Göstər"),
-        "showLess": MessageLookupByLibrary.simpleMessage("Daha az göstər"),
-        "showMore": MessageLookupByLibrary.simpleMessage("Daha çox göstər"),
         "signIn": MessageLookupByLibrary.simpleMessage("Daxil ol"),
         "signInWithEmail":
             MessageLookupByLibrary.simpleMessage("Email ilə daxil ol "),
@@ -1179,15 +1096,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "slovak": MessageLookupByLibrary.simpleMessage("Slovak"),
         "smsCodeExpired": MessageLookupByLibrary.simpleMessage(
             "SMS kodunun müddəti bitib. Yenidən cəhd etmək üçün doğrulama kodunu yenidən göndərin."),
-        "sold": m30,
+        "sold": m25,
         "soldBy": MessageLookupByLibrary.simpleMessage("tərəfindən satılır"),
         "somethingWrong": MessageLookupByLibrary.simpleMessage(
             "Nəsə xəta baş verdi. Zəhmət olmasa bir az sonra yenə cəhd edin."),
         "sortBy": MessageLookupByLibrary.simpleMessage("Sırala"),
-        "sortCode": MessageLookupByLibrary.simpleMessage("Sort Kodu"),
         "spanish": MessageLookupByLibrary.simpleMessage("Spanish"),
-        "speechNotAvailable":
-            MessageLookupByLibrary.simpleMessage("Nitq mövcud deyil"),
         "startExploring":
             MessageLookupByLibrary.simpleMessage("Kəşf etməyə başlayın"),
         "startShopping":
@@ -1245,20 +1159,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "tamil": MessageLookupByLibrary.simpleMessage("Tamil"),
         "tapSelectLocation":
             MessageLookupByLibrary.simpleMessage("Bu yeri seçmək üçün toxunun"),
-        "tapTheMicToTalk": MessageLookupByLibrary.simpleMessage(
-            "Danışmaq üçün mikrofona toxunun"),
         "tax": MessageLookupByLibrary.simpleMessage("Vergi"),
         "thailand": MessageLookupByLibrary.simpleMessage("Tayland"),
-        "theFieldIsRequired": m31,
+        "theFieldIsRequired": m26,
         "thisDateIsNotAvailable":
             MessageLookupByLibrary.simpleMessage("Bu tarix mövcud deyil"),
         "thisFeatureDoesNotSupportTheCurrentLanguage":
             MessageLookupByLibrary.simpleMessage(
                 "Bu funksiya cari dili dəstəkləmir"),
-        "thisIsCustomerRole":
-            MessageLookupByLibrary.simpleMessage("Bu müştəri roludur"),
-        "thisIsVendorRole":
-            MessageLookupByLibrary.simpleMessage("Bu satıcı roludur"),
         "thisPlatformNotSupportWebview": MessageLookupByLibrary.simpleMessage(
             "Bu platforma web brauzeri dəstəkləmir."),
         "thisProductNotSupport":
@@ -1276,7 +1184,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "total": MessageLookupByLibrary.simpleMessage("Yekun"),
         "totalCartValue": MessageLookupByLibrary.simpleMessage(
             "Sifarişin ümumi dəyəri ən azı olmalıdır"),
-        "totalProducts": m32,
+        "totalProducts": m27,
         "totalTax": MessageLookupByLibrary.simpleMessage("Vergi"),
         "trackingNumberIs": MessageLookupByLibrary.simpleMessage("İzləmə "),
         "trackingPage": MessageLookupByLibrary.simpleMessage("İzləmə Səhifəsi"),
@@ -1302,7 +1210,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "turkish": MessageLookupByLibrary.simpleMessage("Türkçe"),
         "turnOnBle":
             MessageLookupByLibrary.simpleMessage("Bluetooth-u yandırın"),
-        "typeAMessage": MessageLookupByLibrary.simpleMessage("Mesaj yazın..."),
         "typeYourMessage":
             MessageLookupByLibrary.simpleMessage("Mesajınızı bura yazın..."),
         "typing": MessageLookupByLibrary.simpleMessage("Yazılır..."),
@@ -1327,7 +1234,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Məhsulu yükləyin"),
         "uploading": MessageLookupByLibrary.simpleMessage("Yüklənir"),
         "url": MessageLookupByLibrary.simpleMessage("URL"),
-        "useMaximumPointDiscount": m33,
         "useNow": MessageLookupByLibrary.simpleMessage("İndi istifadə edin"),
         "useThisImage":
             MessageLookupByLibrary.simpleMessage("Bu Şəkildən istifadə edin"),
@@ -1340,10 +1246,9 @@ class MessageLookup extends MessageLookupByLibrary {
             "İstifadəçi adı və parol tələb olunur"),
         "vacationMessage": MessageLookupByLibrary.simpleMessage("Tətil Mesajı"),
         "vacationType": MessageLookupByLibrary.simpleMessage("Tətil növü"),
-        "validUntilDate": m34,
+        "validUntilDate": m28,
         "variable": MessageLookupByLibrary.simpleMessage("Dəyişən"),
         "variation": MessageLookupByLibrary.simpleMessage("Variasiya"),
-        "vendor": MessageLookupByLibrary.simpleMessage("Satıcı"),
         "vendorAdmin": MessageLookupByLibrary.simpleMessage("Satıcı Admin"),
         "vendorInfo": MessageLookupByLibrary.simpleMessage("Satıcı məlumatı"),
         "verificationCode":
@@ -1367,11 +1272,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "walletBalance":
             MessageLookupByLibrary.simpleMessage("Pul kisəsi balansı"),
         "walletName": MessageLookupByLibrary.simpleMessage("Pulqabı adı"),
-        "warning": m35,
-        "warningCurrencyMessageForWallet": m36,
+        "warning": m29,
+        "warningCurrencyMessageForWallet": m30,
         "weFoundBlogs":
             MessageLookupByLibrary.simpleMessage("Bloq(lar)ı Tapdıq"),
-        "weFoundProducts": m37,
+        "weFoundProducts": m31,
         "weNeedCameraAccessTo": MessageLookupByLibrary.simpleMessage(
             "QR kodunu və ya ştrix kodunu skan etmək üçün bizə kamera girişi lazımdır."),
         "weSentAnOTPTo":
@@ -1379,24 +1284,19 @@ class MessageLookup extends MessageLookupByLibrary {
         "weWillSendYouNotification": MessageLookupByLibrary.simpleMessage(
             "Yeni məhsullar və ya təkliflər mövcud olduqda sizə bildirişlər göndərəcəyik. Siz həmişə parametrlərdə onu söndürə bilərsiniz."),
         "webView": MessageLookupByLibrary.simpleMessage("Veb Görünüşü"),
-        "week": m38,
+        "week": m32,
         "welcome": MessageLookupByLibrary.simpleMessage("Xoş Gəldiniz"),
-        "welcomeUser": m39,
-        "whichLanguageDoYouPrefer": MessageLookupByLibrary.simpleMessage(
-            "Hansı dilə üstünlük verirsiniz?"),
-        "wholesaleRegisterMsg": MessageLookupByLibrary.simpleMessage(
-            "Qeydiyyatınızı təsdiqləmək üçün administratorla əlaqə saxlayın."),
         "womanCollections": MessageLookupByLibrary.simpleMessage("Qadınlar"),
         "writeComment": MessageLookupByLibrary.simpleMessage("Şərhiniz"),
         "writeYourNote":
             MessageLookupByLibrary.simpleMessage("Qeyd əlavə edin"),
-        "yearsAgo": m40,
+        "yearsAgo": m33,
         "yes": MessageLookupByLibrary.simpleMessage("Bəli"),
         "youCanOnlyOrderSingleStore": MessageLookupByLibrary.simpleMessage(
             "Yalnız bir mağazadan ala bilərsiniz."),
         "youCanOnlyPurchase":
             MessageLookupByLibrary.simpleMessage("Yalnız satın ala bilərsiniz"),
-        "youHaveAssignedToOrder": m41,
+        "youHaveAssignedToOrder": m34,
         "youHaveBeenSaveAddressYourLocal": MessageLookupByLibrary.simpleMessage(
             "Yerli faylınızda ünvanı uğurlu saxladınız!"),
         "youHavePoints":

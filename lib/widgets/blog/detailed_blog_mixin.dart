@@ -7,7 +7,6 @@ import 'package:webview_flutter/webview_flutter.dart' as webview;
 
 import '../../common/config.dart';
 import '../../common/constants.dart';
-import '../../generated/l10n.dart';
 import '../../models/index.dart';
 import '../../services/service_config.dart';
 import '../../services/services.dart';
@@ -28,12 +27,10 @@ mixin DetailedBlogMixin {
       );
 
   Widget renderRelatedBlog(dynamic blogId) =>
-      kBlogDetail['showRelatedBlog'] ?? false
-          ? Services().widget.renderRelatedBlog(
-                categoryId: blogId,
-                type: kAdvanceConfig.detailedBlogLayout,
-              )
-          : const SizedBox();
+      Services().widget.renderRelatedBlog(
+            categoryId: blogId,
+            type: kAdvanceConfig.detailedBlogLayout,
+          );
 
   Widget renderCommentLayout(dynamic blogId) =>
       kBlogDetail['showComment'] ?? false
@@ -42,35 +39,22 @@ mixin DetailedBlogMixin {
               .renderCommentLayout(blogId, kAdvanceConfig.detailedBlogLayout)
           : const SizedBox();
 
-  Widget renderCommentInput(dynamic blogId) =>
-      kBlogDetail['showComment'] ?? false
-          ? Services().widget.renderCommentField(blogId)
-          : const SizedBox();
+  Widget renderCommentInput(dynamic blogId) => kBlogDetail['showComment']
+      ? Services().widget.renderCommentField(blogId)
+      : const SizedBox();
 
   Widget renderInstagram(instagramLink, BuildContext context) {
-    final controller = webview.WebViewController()
-      ..setJavaScriptMode(webview.JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0x00000000))
-      ..setNavigationDelegate(
-        webview.NavigationDelegate(
-          onProgress: (int progress) {
-            // Update loading bar.
-          },
-          onPageStarted: (String url) {},
-          onPageFinished: (String url) {},
-          onWebResourceError: (webview.WebResourceError error) {},
-        ),
-      )
-      ..loadRequest(Uri.parse(instagramLink.toString()));
-
     if (isAndroid) {
       return Container(
         height: MediaQuery.of(context).size.height * 0.7,
         constraints: BoxConstraints(
           minHeight: MediaQuery.of(context).size.height * 0.5,
         ),
-        child: webview.WebViewWidget(
-          controller: controller,
+        child: webview.WebView(
+          initialUrl: instagramLink,
+          javascriptMode: webview.JavascriptMode.unrestricted,
+          debuggingEnabled: true,
+          allowsInlineMediaPlayback: true,
           // '<iframe src="$instagramLink" width="100%" height="100%"></iframe>',
           // factoryBuilder: () => InstagramWidgetFactory(),
         ),
@@ -121,13 +105,12 @@ mixin DetailedBlogMixin {
       });
 
   Widget _renderHeartButton(Blog blog, BuildContext context) =>
-      ((kBlogDetail['showHeart'] ?? false) && ServerConfig().isWordPress)
+      (kBlogDetail['showHeart'] && ServerConfig().isWordPress)
           ? Container(
               margin: const EdgeInsets.all(8.0),
               padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
-                color:
-                    Theme.of(context).colorScheme.background.withOpacity(0.5),
+                color: Theme.of(context).colorScheme.background.withOpacity(0.5),
                 borderRadius: BorderRadius.circular(30.0),
               ),
               child: BlogHeartButton(
@@ -161,59 +144,6 @@ mixin DetailedBlogMixin {
     return const SizedBox();
   }
 }
-Widget renderAuthorInfo(Blog blogData, BuildContext context) =>
-    kBlogDetail['showAuthorInfo'] ?? true
-        ? Row(
-            children: <Widget>[
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColorLight,
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
-                child: Container(
-                  margin: const EdgeInsets.all(5.0),
-                  child: const Icon(
-                    Icons.person,
-                    size: 30.0,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                width: 10.0,
-              ),
-              Flexible(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      blogData.author.isNotEmpty
-                          ? '${S.of(context).by} ${blogData.author}'
-                          : S.of(context).loading,
-                      softWrap: false,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      blogData.date,
-                      softWrap: true,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Theme.of(context).colorScheme.secondary,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          )
-        : const SizedBox();
 
 class InstagramWidgetFactory extends core.WidgetFactory with WebViewFactory {
   @override

@@ -1,6 +1,5 @@
 import 'package:intl_phone_number_input/intl_phone_number_input.dart'
     show PhoneInputSelectorType;
-
 export 'package:intl_phone_number_input/intl_phone_number_input.dart'
     show PhoneInputSelectorType;
 
@@ -29,8 +28,7 @@ class PhoneNumberConfig {
 
   factory PhoneNumberConfig.fromJson(Map json) {
     return PhoneNumberConfig(
-      enablePhoneNumberValidation:
-          json['enable'] ?? json['enablePhoneNumberValidation'] ?? false,
+      enablePhoneNumberValidation: json['enable'] ?? false,
       countryCodeDefault: json['countryCodeDefault'] ?? 'VN',
       dialCodeDefault: json['dialCodeDefault'] ?? '+84',
       useInternationalFormat: json['useInternationalFormat'] ?? true,

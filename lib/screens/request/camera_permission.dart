@@ -64,8 +64,6 @@ class _CameraPermissionRequestScreenState
       case AppLifecycleState.paused:
       case AppLifecycleState.detached:
         break;
-      case AppLifecycleState.hidden:
-      // TODO: Handle this case.
     }
   }
 

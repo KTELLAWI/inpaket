@@ -26,65 +26,67 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m3(state) => "ብሉቱዝ ኣዳፐር ${state}";
 
-  static String m8(day) => "${day} ቅድሚ ሒደት መዓልትታት";
+  static String m6(day) => "${day} ቅድሚ ሒደት መዓልትታት";
 
-  static String m9(total) => "~${total} ኪሎሜተር";
+  static String m7(total) => "~${total} ኪሎሜተር";
 
-  static String m10(timeLeft) => " እብ ${timeLeft} ውሽጢ ከብቅዕ\'ዩ";
+  static String m8(timeLeft) => " እብ ${timeLeft} ውሽጢ ከብቅዕ\'ዩ";
 
-  static String m11(captcha) => "ነዚ ንምርግጋጽ ናብ ${captcha} ኣተዉ፦";
+  static String m9(captcha) => "ነዚ ንምርግጋጽ ናብ ${captcha} ኣተዉ፦";
 
-  static String m12(message) => "ጌጋ ፦ ${message}";
+  static String m10(message) => "ጌጋ ፦ ${message}";
 
-  static String m13(time) => "ኣብ ${time} ግዜ ክወድቅ\'ዩ";
+  static String m11(time) => "ኣብ ${time} ግዜ ክወድቅ\'ዩ";
 
-  static String m14(total) => ">${total} ኪሎሜተር";
+  static String m12(total) => ">${total} ኪሎሜተር";
 
-  static String m15(hour) => "${hour} ቅድሚ ሰዓታት";
+  static String m13(hour) => "${hour} ቅድሚ ሰዓታት";
 
-  static String m16(message) =>
+  static String m14(message) =>
       "ነቲ ሓበሬታ ኽትሓትት ከላ ምስታ ኣፕሊኬሽን እተተሓሓዘ ጕዳይ ኣሎ በጃኻ ነቲ ጕዳያት ንምፍታሕ ምስ ኣመሓዳሪ ተራኸብ - ${message}";
 
-  static String m18(size) => "ዝለዓለ መጠን ፋይል: ${size} MB";
+  static String m15(size) => "ዝለዓለ መጠን ፋይል: ${size} MB";
 
-  static String m20(minute) => "${minute} ቅድሚ ሒደት ደቓይቕ";
+  static String m16(minute) => "${minute} ቅድሚ ሒደት ደቓይቕ";
 
-  static String m21(month) => "${month} ቅድሚ ኣዋርሕ";
+  static String m17(month) => "${month} ቅድሚ ኣዋርሕ";
 
-  static String m23(itemCount) => "${itemCount} ኣቕሑት";
+  static String m19(itemCount) => "${itemCount} ኣቕሑት";
 
-  static String m24(price) => "ድምር ኣማራጺታት: ${price}";
+  static String m20(price) => "ድምር ኣማራጺታት: ${price}";
 
-  static String m26(total) => "ብዝሒ ፦ ${total}";
+  static String m21(total) => "ብዝሒ ፦ ${total}";
 
-  static String m27(percent) => "መሸጣ ${percent}%";
+  static String m22(percent) => "መሸጣ ${percent}%";
 
-  static String m28(second) => "${second} ቅድሚ ኻልኢታት";
+  static String m23(second) => "${second} ቅድሚ ኻልኢታት";
 
-  static String m29(totalCartQuantity) =>
+  static String m24(totalCartQuantity) =>
       "ዓረብያ ዕድጊ ${totalCartQuantity} ንብረት/ታት";
 
-  static String m30(numberOfUnitsSold) => "እተሸጠ፦ ${numberOfUnitsSold}";
+  static String m25(numberOfUnitsSold) => "እተሸጠ፦ ${numberOfUnitsSold}";
 
-  static String m32(total) => "${total}  ፍርያት";
+  static String m27(total) => "${total}  ፍርያት";
 
-  static String m34(date) => "ቅቡል ክሳብ ${date}";
+  static String m28(date) => "ቅቡል ክሳብ ${date}";
 
-  static String m35(message) => "መጠንቀቕታ ፦ ${message}";
+  static String m29(message) => "መጠንቀቕታ ፦ ${message}";
 
-  static String m36(defaultCurrency) =>
-      "እቲ ኣብዚ እዋን እዚ እተመርጸ ባጤራ ነቲ ኣብ ቦርሳ ዘሎ ኣቕሓ ኣይርከብን እዩ:: በጃኻ ናብ ${defaultCurrency} ለወጥዎ";
+  static String m30(default_currency) =>
+      "እቲ ኣብዚ እዋን እዚ እተመርጸ ባጤራ ነቲ ኣብ ቦርሳ ዘሎ ኣቕሓ ኣይርከብን እዩ:: በጃኻ ናብ ${default_currency} ለወጥዎ";
 
-  static String m37(length) => "ፍርያት ${length} ረኸብና";
+  static String m31(length) => "ፍርያት ${length} ረኸብና";
 
-  static String m38(week) => "ሰሙን ${week}";
+  static String m32(week) => "ሰሙን ${week}";
 
-  static String m40(year) => "${year} ቅድሚ ዓመታት";
+  static String m33(year) => "${year} ቅድሚ ዓመታት";
 
-  static String m41(total) => "ትእዛዝ ክትእዝዝ መዲብካ ኣለኻ #${total}";
+  static String m34(total) => "ትእዛዝ ክትእዝዝ መዲብካ ኣለኻ #${total}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "UserNameInCorrect":
+            MessageLookupByLibrary.simpleMessage(" ስም ተጠቃሚ ወይ ፓስዎርድ ጌጋ እዩ"),
         "aboutUs": MessageLookupByLibrary.simpleMessage("ብዛዕባና"),
         "account": MessageLookupByLibrary.simpleMessage("ኣካውንት"),
         "accountDeleteDescription": MessageLookupByLibrary.simpleMessage(
@@ -299,7 +301,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dateStart": MessageLookupByLibrary.simpleMessage("መጀመርያ ዕለት"),
         "dateTime": MessageLookupByLibrary.simpleMessage("ግዜ ዕለት"),
         "dateWiseClose": MessageLookupByLibrary.simpleMessage("ብ ዕለት ዕጾ "),
-        "daysAgo": m8,
+        "daysAgo": m6,
         "debit": MessageLookupByLibrary.simpleMessage("Debit"),
         "decline": MessageLookupByLibrary.simpleMessage("ምንጻግ"),
         "delete": MessageLookupByLibrary.simpleMessage("ሰርዝ"),
@@ -325,7 +327,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "disablePurchase": MessageLookupByLibrary.simpleMessage("ሽመታ ስንብታ"),
         "discount": MessageLookupByLibrary.simpleMessage("ቅናስ"),
         "displayName": MessageLookupByLibrary.simpleMessage("ዝርአ ስም"),
-        "distance": m9,
+        "distance": m7,
         "doNotAnyTransactions":
             MessageLookupByLibrary.simpleMessage("ገና ዋላ ሓንቲ ልውውጥ የብልኩምን"),
         "doYouWantToExitApp":
@@ -368,9 +370,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("ናይ ዕረፍቲ ግዜ ስርዓት ኣተግብር"),
         "endDateCantBeAfterFirstDate": MessageLookupByLibrary.simpleMessage(
             "ብኽብረትኩም ሓደ ዕለት ድሕሪ እታ ቐዳመይቲ ዕለት ምረጹ"),
-        "endsIn": m10,
+        "endsIn": m8,
         "english": MessageLookupByLibrary.simpleMessage("እንግሊዝኛ"),
-        "enterCaptcha": m11,
+        "enterCaptcha": m9,
         "enterSendedCode":
             MessageLookupByLibrary.simpleMessage("እቲ እተላእከ ኮድ ኣእቱ"),
         "enterYourEmail": MessageLookupByLibrary.simpleMessage("ኢ-መይልካ ኣእቱ"),
@@ -385,7 +387,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "enterYourPassword": MessageLookupByLibrary.simpleMessage("ፓስዎርድኻ ኣእቱ"),
         "enterYourPhoneNumber":
             MessageLookupByLibrary.simpleMessage("ቍጽሪ ተሌፎንኩም ኣእቱዉ"),
-        "error": m12,
+        "error": m10,
         "errorAmountTransfer": MessageLookupByLibrary.simpleMessage(
             "እቲ ዝኣተወ መጠን ገንዘብ ካብቲ ሕጂ ዘሎ መጠን ቦርሳ ይበዝሕ ። በጃኻ እንደገና ፈትን!"),
         "errorEmailFormat":
@@ -399,7 +401,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "expired": MessageLookupByLibrary.simpleMessage("ወደቐ "),
         "expiredDate": MessageLookupByLibrary.simpleMessage("ግዜኡ ዝሓለፎ ዕለት"),
         "expiredDateHint": MessageLookupByLibrary.simpleMessage("ወርሒ/ዕለት"),
-        "expiringInTime": m13,
+        "expiringInTime": m11,
         "external": MessageLookupByLibrary.simpleMessage("ደጋዊ"),
         "extraServices": MessageLookupByLibrary.simpleMessage("ተወሳኺ ኣገልግሎት"),
         "failToAssign":
@@ -447,7 +449,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "goBackToReview": MessageLookupByLibrary.simpleMessage("ናብ ምግምጋም ተመለስ"),
         "goBackToShipping":
             MessageLookupByLibrary.simpleMessage("ናብ ምልኣኽ ተመለስ"),
-        "greaterDistance": m14,
+        "greaterDistance": m12,
         "greek": MessageLookupByLibrary.simpleMessage("ግሪኽ"),
         "grossSales": MessageLookupByLibrary.simpleMessage(" ሓፈሻዊ መሸጣ"),
         "grouped": MessageLookupByLibrary.simpleMessage("እተመደቡ"),
@@ -465,7 +467,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "historyTransaction": MessageLookupByLibrary.simpleMessage("ታሪኽ"),
         "home": MessageLookupByLibrary.simpleMessage("ዋና ገጽ"),
         "hour": MessageLookupByLibrary.simpleMessage("ሰዓት"),
-        "hoursAgo": m15,
+        "hoursAgo": m13,
         "hungarian": MessageLookupByLibrary.simpleMessage("ሃንጋሪያን"),
         "hungary": MessageLookupByLibrary.simpleMessage("ሃንጋሪን"),
         "iAgree": MessageLookupByLibrary.simpleMessage("እሰማማዕ ኣለኩ ምስ"),
@@ -520,7 +522,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "location": MessageLookupByLibrary.simpleMessage("ቦታ"),
         "login": MessageLookupByLibrary.simpleMessage("እቶ"),
         "loginCanceled": MessageLookupByLibrary.simpleMessage("እቲ መእተዊ ተሰረዘ"),
-        "loginErrorServiceProvider": m16,
+        "loginErrorServiceProvider": m14,
         "loginFailed": MessageLookupByLibrary.simpleMessage("መእተዊ ከይተዓወተ ተረፈ!"),
         "loginInvalid": MessageLookupByLibrary.simpleMessage(
             "ነዛ ኣፕሊኬሽን እዚኣ ኽትጥቀመላ ኣይፍቀደልካን እዩ."),
@@ -542,16 +544,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("ተላኢኹ ኢልኩም ምልክት ግበሩ"),
         "markAsUnread":
             MessageLookupByLibrary.simpleMessage("ከምዘይተነበበ ምልክት ግበር"),
-        "maximumFileSizeMb": m18,
+        "maximumFileSizeMb": m15,
         "maybeLater": MessageLookupByLibrary.simpleMessage("ምናልባት ደሓር"),
         "message": MessageLookupByLibrary.simpleMessage("መልእኽቲ"),
         "messageTo": MessageLookupByLibrary.simpleMessage("መልእኽጢ ስደድ ናብ"),
         "minimumQuantityIs": MessageLookupByLibrary.simpleMessage("ዝወሓደ መጠን"),
-        "minutesAgo": m20,
+        "minutesAgo": m16,
         "mobileVerification":
             MessageLookupByLibrary.simpleMessage("ተንቀሳቓሲ ተሌፎን ን ምርግጋጽ"),
         "momentAgo": MessageLookupByLibrary.simpleMessage("ቅድሚ እተወሰነ ህሞት"),
-        "monthsAgo": m21,
+        "monthsAgo": m17,
         "more": MessageLookupByLibrary.simpleMessage("...ተወሳኺ"),
         "moreInformation": MessageLookupByLibrary.simpleMessage("ዝያዳ ሓበሬታ"),
         "morning": MessageLookupByLibrary.simpleMessage("ንግሆ"),
@@ -564,7 +566,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "ዝዀነ ይኹን ፍርያት የብልኩምን ። ክትፈጥር ፈትን!"),
         "myWallet": MessageLookupByLibrary.simpleMessage("ቦርሳይ"),
         "myWishList": MessageLookupByLibrary.simpleMessage("ዝርዝር ድለታተይ"),
-        "nItems": m23,
+        "nItems": m19,
         "name": MessageLookupByLibrary.simpleMessage("ስም"),
         "nearbyPlaces":
             MessageLookupByLibrary.simpleMessage("ኣብ ጥቓና ዚርከብ ቦታታት"),
@@ -620,7 +622,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "openMap": MessageLookupByLibrary.simpleMessage("ካርታ"),
         "openNow": MessageLookupByLibrary.simpleMessage("ሕጂ ክፈት"),
         "options": MessageLookupByLibrary.simpleMessage("ኣማራጺታት"),
-        "optionsTotal": m24,
+        "optionsTotal": m20,
         "or": MessageLookupByLibrary.simpleMessage("ወይ"),
         "orLoginWith": MessageLookupByLibrary.simpleMessage("ወይ ምስ መእተዊ"),
         "orderConfirmation": MessageLookupByLibrary.simpleMessage("መረጋገጺ ትእዛዝ"),
@@ -790,7 +792,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "publish": MessageLookupByLibrary.simpleMessage("ሕትመት"),
         "pullToLoadMore": MessageLookupByLibrary.simpleMessage("ዝያዳ ንምጽዓን ወስኽ"),
         "qty": MessageLookupByLibrary.simpleMessage("ብዝሒ"),
-        "qtyTotal": m26,
+        "qtyTotal": m21,
         "rate": MessageLookupByLibrary.simpleMessage("ገምጋም"),
         "rateTheApp":
             MessageLookupByLibrary.simpleMessage("ነዚ ኣፕሊኬሽን ደረጃ ግምጋመ ሃብ"),
@@ -851,7 +853,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "reviews": MessageLookupByLibrary.simpleMessage("ግምገማታት"),
         "romanian": MessageLookupByLibrary.simpleMessage("ሮማንያ"),
         "russian": MessageLookupByLibrary.simpleMessage("ሩሲያዊ"),
-        "sale": m27,
+        "sale": m22,
         "salePrice": MessageLookupByLibrary.simpleMessage("መሸጣ ዋጋ"),
         "save": MessageLookupByLibrary.simpleMessage("ምዕቃብ"),
         "saveAddress": MessageLookupByLibrary.simpleMessage("ኣድራሻ ዓቅብ"),
@@ -874,7 +876,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("መንነት ኣሰራርሓ ድለ..."),
         "searchPlace": MessageLookupByLibrary.simpleMessage("መድለዪ ቦታ"),
         "searchingAddress": MessageLookupByLibrary.simpleMessage("ኣድራሻ  ድለ"),
-        "secondsAgo": m28,
+        "secondsAgo": m23,
         "seeAll": MessageLookupByLibrary.simpleMessage("ንዅሉ ርአ"),
         "seeOrder": MessageLookupByLibrary.simpleMessage("ትእዛዝ ርአ"),
         "seeReviews": MessageLookupByLibrary.simpleMessage("ኽለሳ ርአ"),
@@ -909,7 +911,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "shopOrders": MessageLookupByLibrary.simpleMessage("ትእዛዝ ዕዳጋ"),
         "shopPhone": MessageLookupByLibrary.simpleMessage("ዱካን ቴሌፎን"),
         "shopSlug": MessageLookupByLibrary.simpleMessage("ዱካን ስሉግ"),
-        "shoppingCartItems": m29,
+        "shoppingCartItems": m24,
         "shortDescription": MessageLookupByLibrary.simpleMessage(" ሓጺር መግለጺ"),
         "showAllMyOrdered":
             MessageLookupByLibrary.simpleMessage("ኩሉ ትእዛዘይ ኣርኢ"),
@@ -924,7 +926,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "skip": MessageLookupByLibrary.simpleMessage("ንጠሮ"),
         "sku": MessageLookupByLibrary.simpleMessage("SKU"),
         "slovak": MessageLookupByLibrary.simpleMessage("ስሎቫክኛ"),
-        "sold": m30,
+        "sold": m25,
         "soldBy": MessageLookupByLibrary.simpleMessage("ዝሽየጥ ብ"),
         "somethingWrong": MessageLookupByLibrary.simpleMessage(
             "ገለ ሽግር ኣጋጢሙ ኣሎ። በጃኻ ጸኒሕካ እንደገና ፈትን።"),
@@ -999,7 +1001,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "total": MessageLookupByLibrary.simpleMessage("ድምር"),
         "totalCartValue": MessageLookupByLibrary.simpleMessage(
             "ጠቕላላ ድምር ዋጋ ጠለብ እንተ ወሓደ ኪኸውን ኣለዎ"),
-        "totalProducts": m32,
+        "totalProducts": m27,
         "totalTax": MessageLookupByLibrary.simpleMessage("ድምር ግብሪ"),
         "trackingNumberIs": MessageLookupByLibrary.simpleMessage("መከታተሊ ቁጽሪ"),
         "trackingPage": MessageLookupByLibrary.simpleMessage("መከታተሊ ገጽ"),
@@ -1048,7 +1050,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "vacationMessage":
             MessageLookupByLibrary.simpleMessage("መልእኽቲ ካብ ዕረፍቲ ጊዜ"),
         "vacationType": MessageLookupByLibrary.simpleMessage("ዓይነት ናይ ዕረፍቲ ጊዜ"),
-        "validUntilDate": m34,
+        "validUntilDate": m28,
         "variable": MessageLookupByLibrary.simpleMessage("ተለዋዋጢ"),
         "variation": MessageLookupByLibrary.simpleMessage("በበይኑ ዝዓይነቱ ፍልልይ"),
         "vendorAdmin": MessageLookupByLibrary.simpleMessage("ምምሕዳር ሸያጢ"),
@@ -1069,27 +1071,27 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("መረጋገጺ ምጽባይ"),
         "walletBalance": MessageLookupByLibrary.simpleMessage("ቦርሳ ድምር "),
         "walletName": MessageLookupByLibrary.simpleMessage("ስም ቦርሳ"),
-        "warning": m35,
-        "warningCurrencyMessageForWallet": m36,
+        "warning": m29,
+        "warningCurrencyMessageForWallet": m30,
         "weFoundBlogs": MessageLookupByLibrary.simpleMessage("ብሎግ/ብሎጋት ረኺብና"),
-        "weFoundProducts": m37,
+        "weFoundProducts": m31,
         "weWillSendYouNotification": MessageLookupByLibrary.simpleMessage(
             "ሓድሽ ፍርያት ኣብ ዚርከብሉ ወይ ኣጋጣሚታት ኣብ ዚቐርበሉ እዋን ምልክታ ኽንልእከልካ ኢና ። ነዚ ዅነታት እዚ ወትሩ ኽትቅይሮ ትኽእል ኢኻ።"),
         "webView": MessageLookupByLibrary.simpleMessage("ወብ ሳይት ምርኣይ"),
-        "week": m38,
+        "week": m32,
         "welcome": MessageLookupByLibrary.simpleMessage("እንቋዕ ብደሓን መጻእኩም"),
         "womanCollections":
             MessageLookupByLibrary.simpleMessage("ናይ ሰበይቲ ፍርያት"),
         "writeComment": MessageLookupByLibrary.simpleMessage("ሓሳብካ ጽሓፍ"),
         "writeYourNote": MessageLookupByLibrary.simpleMessage(
             "ብዛዕባ ትእዛዝካ መዘኻኸሪታት። ንምሳሌ፥ ንኣለኣአኻ ትእዛዝካ ዚኸውን ፍሉይ መዘኻኸሪታት ምጽሓፍ።"),
-        "yearsAgo": m40,
+        "yearsAgo": m33,
         "yes": MessageLookupByLibrary.simpleMessage("እወ"),
         "youCanOnlyOrderSingleStore":
             MessageLookupByLibrary.simpleMessage("ካብ ሓንቲ ድኳን ጥራይ ክትዕድግ ትኽእል."),
         "youCanOnlyPurchase":
             MessageLookupByLibrary.simpleMessage("ክትዕድግ ጥራይ ኢኻ እትኽእል"),
-        "youHaveAssignedToOrder": m41,
+        "youHaveAssignedToOrder": m34,
         "youHaveBeenSaveAddressYourLocal":
             MessageLookupByLibrary.simpleMessage("ኣድራሻኻ ኣብ ሰፈርካ ተዓቒብልካ ኣሎ"),
         "youHavePoints": MessageLookupByLibrary.simpleMessage("ነጥብታት ኣሎካ"),

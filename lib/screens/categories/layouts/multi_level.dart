@@ -15,7 +15,6 @@ const _numberOfTabPreload = 3;
 class MultiLevelCategories extends StatefulWidget {
   const MultiLevelCategories({Key? key}) : super(key: key);
 
-  /// Only work for enableLargeCategory
   static const type = 'multi-level';
 
   @override

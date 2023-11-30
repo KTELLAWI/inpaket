@@ -1,30 +1,36 @@
 import 'package:flutter/material.dart';
 
 import '../../common/config/models/general_setting_item.dart';
+import '../../common/tools.dart';
 import 'general_widget.dart';
 
-class GeneralBlogCategoryWidget extends GeneralWidget {
+class GeneralBlogCategoryWidget extends StatelessWidget {
+  final bool useTile;
+  final Color? iconColor;
+  final TextStyle? textStyle;
+  final GeneralSettingItem? item;
+
   const GeneralBlogCategoryWidget({
-    bool useTile = false,
-    Color? iconColor,
-    TextStyle? textStyle,
-    super.cardStyle,
-    GeneralSettingItem? item,
-    Function()? onNavigator,
-  }) : super(
-          onNavigator: onNavigator,
-          useTile: useTile,
-          iconColor: iconColor,
-          textStyle: textStyle,
-          item: item,
-        );
+    required this.item,
+    this.iconColor,
+    this.textStyle,
+    this.useTile = false,
+  });
 
   @override
-  void onTap(BuildContext context) {
-    if (item?.blogCategory != null) {
-      onTapNavigateOptions(context: context, config: {
-        'blog_category': item?.blogCategory,
-      });
-    }
+  Widget build(BuildContext context) {
+    return GeneralWidget(
+      item: item,
+      useTile: useTile,
+      iconColor: iconColor,
+      textStyle: textStyle,
+      onTap: () {
+        if (item?.blogCategory != null) {
+          NavigateTools.onTapNavigateOptions(context: context, config: {
+            'blog_category': item?.blogCategory,
+          });
+        }
+      },
+    );
   }
 }

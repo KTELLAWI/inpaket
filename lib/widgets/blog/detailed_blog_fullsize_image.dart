@@ -115,22 +115,57 @@ class _FullImageTypeState extends State<FullImageType> with DetailedBlogMixin {
                             ),
                           ),
                         ),
-                        renderAuthorInfo(blogData, context),
+                        Row(
+                          children: <Widget>[
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColorLight,
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                              child: Container(
+                                margin: const EdgeInsets.all(5.0),
+                                child: const Icon(
+                                  Icons.person,
+                                  size: 30.0,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10.0),
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    'by ${blogData.author} ',
+                                    softWrap: false,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    blogData.date,
+                                    softWrap: true,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                         renderAudioWidget(blogData, context),
                         renderBlogContentWithTextEnhancement(blogData),
                         renderRelatedBlog(blogData.categoryId),
                         renderCommentLayout(blogData.id),
-                        Theme(
-                          data: Theme.of(context).copyWith(
-                            textTheme: Theme.of(context).textTheme.copyWith(
-                                  titleMedium: const TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                            hintColor: Colors.grey.shade500,
-                          ),
-                          child: renderCommentInput(blogData.id),
-                        ),
+                        renderCommentInput(blogData.id),
                       ],
                     ),
                   ),

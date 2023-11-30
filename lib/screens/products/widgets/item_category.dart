@@ -39,7 +39,7 @@ class ItemCategory extends StatelessWidget {
         child: categoryImage != null
             ? Container(
                 width: 70,
-                margin: const EdgeInsets.symmetric(horizontal: 0 , vertical: 8),
+                margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
                 child: Column(
                   children: <Widget>[
                     ClipRRect(
@@ -53,7 +53,7 @@ class ItemCategory extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 2.0),
+                    const SizedBox(height: 8.0),
                     Text(
                       categoryName.toUpperCase(),
                       maxLines: 2,

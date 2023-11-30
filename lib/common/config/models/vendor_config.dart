@@ -1,5 +1,3 @@
-const int _defaultCountVendor = 3;
-
 class VendorConfig {
   final bool vendorRegister;
   final bool disableVendorShipping;
@@ -15,9 +13,6 @@ class VendorConfig {
   final String? bannerFit;
   final bool expandStoreLocationByDefault;
   final bool disableDeliveryManagement;
-  final bool hideChatInfoContact;
-  final int gridCountVendor;
-  final int columnCountVendor;
 
   VendorConfig({
     this.vendorRegister = false,
@@ -34,9 +29,6 @@ class VendorConfig {
     this.bannerFit,
     this.expandStoreLocationByDefault = true,
     this.disableDeliveryManagement = true,
-    this.hideChatInfoContact = true,
-    this.gridCountVendor = _defaultCountVendor,
-    this.columnCountVendor = _defaultCountVendor,
   });
 
   factory VendorConfig.fromJson(Map json) {
@@ -58,9 +50,6 @@ class VendorConfig {
       expandStoreLocationByDefault:
           json['ExpandStoreLocationByDefault'] != false,
       disableDeliveryManagement: json['DisableDeliveryManagement'] != false,
-      hideChatInfoContact: json['hideChatInfoContact'] != false,
-      gridCountVendor: json['GridCountVendor'] ?? _defaultCountVendor,
-      columnCountVendor: json['ColumnCountVendor'] ?? _defaultCountVendor,
     );
   }
 
@@ -80,9 +69,6 @@ class VendorConfig {
     data['BannerFit'] = bannerFit;
     data['ExpandStoreLocationByDefault'] = expandStoreLocationByDefault;
     data['DisableDeliveryManagement'] = disableDeliveryManagement;
-    data['hideChatInfoContact'] = hideChatInfoContact;
-    data['GridCountVendor'] = gridCountVendor;
-    data['ColumnCountVendor'] = columnCountVendor;
     return data;
   }
 
@@ -101,9 +87,6 @@ class VendorConfig {
     String? bannerFit,
     bool? expandStoreLocationByDefault,
     bool? disableDeliveryManagement,
-    bool? hideChatInfoContact,
-    int? gridCountVendor,
-    int? columnCountVendor,
   }) {
     return VendorConfig(
       vendorRegister: vendorRegister ?? this.vendorRegister,
@@ -127,9 +110,6 @@ class VendorConfig {
           expandStoreLocationByDefault ?? this.expandStoreLocationByDefault,
       disableDeliveryManagement:
           disableDeliveryManagement ?? this.disableDeliveryManagement,
-      hideChatInfoContact: hideChatInfoContact ?? this.hideChatInfoContact,
-      gridCountVendor: gridCountVendor ?? this.gridCountVendor,
-      columnCountVendor: columnCountVendor ?? this.columnCountVendor,
     );
   }
 }

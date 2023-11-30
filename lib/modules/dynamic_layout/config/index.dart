@@ -14,5 +14,4 @@ export 'product_config.dart';
 export 'slider_testimonial_config.dart';
 export 'spacer_config.dart';
 export 'testimonial_config.dart';
-export 'text_config.dart';
 export 'tiktok_videos_config.dart';

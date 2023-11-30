@@ -9,20 +9,19 @@ class Configurations {
       DefaultConfig.enableRemoteConfigFirebase;
   static bool _enableFirebaseAnalytics = DefaultConfig.enableFirebaseAnalytics;
   static String _defaultLanguage = DefaultConfig.defaultLanguage;
-  static Map serverConfig = DefaultConfig.serverConfig;
+  static Map _serverConfig = DefaultConfig.serverConfig;
   static String _appConfig = DefaultConfig.appConfig;
   static bool _defaultDarkTheme = DefaultConfig.defaultDarkTheme;
   static String _countryCodeDefault = DefaultConfig.countryCodeDefault;
   static String _dialCodeDefault = DefaultConfig.dialCodeDefault;
   static String _nameDefault = DefaultConfig.nameDefault;
   static Map _advanceConfig = DefaultConfig.advanceConfig;
-  static AppRatingConfig _appRatingConfig =
-      AppRatingConfig.fromMap(DefaultConfig.appRatingConfig);
+  static Map _storeIdentifier = DefaultConfig.storeIdentifier;
   static List _defaultSettings = DefaultConfig.defaultSettings;
   static Map _loginSetting = DefaultConfig.loginSetting;
   static Map _defaultDrawer = DefaultConfig.defaultDrawer;
   static Map _oneSignalKey = DefaultConfig.oneSignalKey;
-  static Map _onBoardingConfig = DefaultConfig.onBoardingConfig;
+  static List _onBoardingData = DefaultConfig.onBoardingData;
   static List _vendorOnBoardingData = DefaultConfig.vendorOnBoardingData;
   static Map _productDetail = DefaultConfig.productDetail;
   static Map _blogDetail = DefaultConfig.blogDetail;
@@ -42,16 +41,13 @@ class Configurations {
   static Map _flutterwaveConfig = DefaultConfig.flutterwaveConfig;
   static Map _myFatoorahConfig = DefaultConfig.myFatoorahConfig;
   static Map _mercadoPagoConfig = DefaultConfig.mercadoPagoConfig;
-  static Map _midtransConfig = DefaultConfig.midtransConfig;
   static Map _inAppPurchaseConfig = DefaultConfig.inAppPurchaseConfig;
-  static Map _xenditConfig = DefaultConfig.xenditConfig;
-  static Map _expressPayConfig = DefaultConfig.expressPayConfig;
   static Map _afterShip = DefaultConfig.afterShip;
   static Map _productAddons = DefaultConfig.productAddons;
   static Map _cartDetail = DefaultConfig.cartDetail;
   static Map _productVariantLanguage = DefaultConfig.productVariantLanguage;
   static Map _saleOffProduct = DefaultConfig.saleOffProduct;
-  static String? _excludedCategory = DefaultConfig.excludedCategory;
+  static int _excludedCategory = DefaultConfig.excludedCategory;
   static bool _notStrictVisibleVariant = DefaultConfig.notStrictVisibleVariant;
   static Map _configChat = DefaultConfig.configChat;
   static List<Map> _smartChat = DefaultConfig.smartChat;
@@ -73,14 +69,10 @@ class Configurations {
   static Map _splashScreen = DefaultConfig.splashScreen;
   static Map _colorOverrideConfig = DefaultConfig.colorOverrideConfig;
   static GoogleApiKeyConfig _googleApiKey = DefaultConfig.googleApiKey;
+  static bool _enableOnBoarding = DefaultConfig.enableOnBoarding;
   static Map? _managerConfig;
   static Map? _deliveryConfig;
   static Map? _salesiqConfig;
-  static Map? _shopifyPaymentConfig;
-  static Map? _openAIConfig;
-  static Map? _notificationRequestScreen;
-  static Map? _reviewConfig;
-  static List<MultiSiteConfig>? _multiSiteConfigs;
 
   /// only support firebase remote config
   static Map<String, dynamic>? _layoutDesign;
@@ -101,6 +93,8 @@ class Configurations {
 
   static String get defaultLanguage => _defaultLanguage;
 
+  static Map get serverConfig => _serverConfig;
+
   static String get appConfig => _appConfig;
 
   static bool get defaultDarkTheme => _defaultDarkTheme;
@@ -113,7 +107,7 @@ class Configurations {
 
   static Map get advanceConfig => _advanceConfig;
 
-  static AppRatingConfig get appRatingConfig => _appRatingConfig;
+  static Map get storeIdentifier => _storeIdentifier;
 
   static List get defaultSettings => _defaultSettings;
 
@@ -123,7 +117,7 @@ class Configurations {
 
   static Map get oneSignalKey => _oneSignalKey;
 
-  static Map get onBoardingConfig => _onBoardingConfig;
+  static List get onBoardingData => _onBoardingData;
 
   static List get vendorOnBoardingData => _vendorOnBoardingData;
 
@@ -161,13 +155,7 @@ class Configurations {
 
   static Map get mercadoPagoConfig => _mercadoPagoConfig;
 
-  static Map get midtransConfig => _midtransConfig;
-
   static Map get inAppPurchaseConfig => _inAppPurchaseConfig;
-
-  static Map get xenditConfig => _xenditConfig;
-
-  static Map get expressPayConfig => _expressPayConfig;
 
   static Map get afterShip => _afterShip;
 
@@ -179,7 +167,7 @@ class Configurations {
 
   static Map get saleOffProduct => _saleOffProduct;
 
-  static String? get excludedCategory => _excludedCategory;
+  static int get excludedCategory => _excludedCategory;
 
   static bool get notStrictVisibleVariant => _notStrictVisibleVariant;
 
@@ -219,24 +207,13 @@ class Configurations {
 
   static Map<String, dynamic>? get layoutDesign => _layoutDesign;
 
+  static bool get enableOnBoarding => _enableOnBoarding;
+
   static Map? get managerConfig => _managerConfig;
 
   static Map? get deliveryConfig => _deliveryConfig;
 
   static Map? get salesiqConfig => _salesiqConfig;
-
-  static Map? get shopifyPaymentConfig => _shopifyPaymentConfig;
-
-  static Map? get openAIConfig => _openAIConfig;
-
-  static Map? get notificationRequestScreen => _notificationRequestScreen;
-
-  static Map? get reviewConfig => _reviewConfig;
-
-  static List<MultiSiteConfig>? get multiSiteConfigs => _multiSiteConfigs;
-  static String get mainSiteUrl => (_multiSiteConfigs?.isNotEmpty ?? false)
-      ? _multiSiteConfigs!.first.serverConfig!['url']
-      : serverConfig['url'];
 
   void setConfigurationValues(Map<String, dynamic> value) {
     _environment = value['environment'] ?? DefaultConfig.environment;
@@ -251,12 +228,11 @@ class Configurations {
     _defaultLanguage =
         value['defaultLanguage'] ?? DefaultConfig.defaultLanguage;
     _appConfig = value['appConfig'] ?? DefaultConfig.appConfig;
-    serverConfig = value['serverConfig'] ?? DefaultConfig.serverConfig;
+    _serverConfig = value['serverConfig'] ?? DefaultConfig.serverConfig;
     _defaultDarkTheme =
         value['defaultDarkTheme'] ?? DefaultConfig.defaultDarkTheme;
-    _appRatingConfig = AppRatingConfig.fromMap(value['appRatingConfig'] ??
-        value['storeIdentifier'] ??
-        DefaultConfig.appRatingConfig);
+    _storeIdentifier =
+        value['storeIdentifier'] ?? DefaultConfig.storeIdentifier;
     _advanceConfig = value['advanceConfig'] != null
         ? Map.from(value['advanceConfig'])
         : DefaultConfig.advanceConfig;
@@ -268,32 +244,7 @@ class Configurations {
     _loginSetting = value['loginSetting'] ?? DefaultConfig.loginSetting;
     _defaultDrawer = value['defaultDrawer'] ?? DefaultConfig.defaultDrawer;
     _oneSignalKey = value['oneSignalKey'] ?? DefaultConfig.oneSignalKey;
-
-    if (value['onBoardingConfig'] != null) {
-      _onBoardingConfig = value['onBoardingConfig'];
-    } else {
-      // Support the old config
-      if (value['onBoardingData'] == null) {
-        _onBoardingConfig = DefaultConfig.onBoardingConfig;
-      } else {
-        _onBoardingConfig = {
-          'enableOnBoarding': true,
-          'version': 1,
-          'data': value['onBoardingData'],
-        };
-      }
-
-      if (value['enableOnBoarding'] != null) {
-        _onBoardingConfig['enableOnBoarding'] =
-            value['enableOnBoarding'] == true;
-      }
-
-      if (value['advanceConfig']?['OnBoardOnlyShowFirstTime'] != null) {
-        _onBoardingConfig['isOnlyShowOnFirstTime'] =
-            value['advanceConfig']?['OnBoardOnlyShowFirstTime'] == true;
-      }
-    }
-
+    _onBoardingData = value['onBoardingData'] ?? DefaultConfig.onBoardingData;
     _vendorOnBoardingData =
         value['vendorOnBoardingData'] ?? DefaultConfig.vendorOnBoardingData;
     _productDetail = value['productDetail'] ?? DefaultConfig.productDetail;
@@ -308,13 +259,7 @@ class Configurations {
     _paymentConfig = value['paymentConfig'] ?? DefaultConfig.paymentConfig;
     _payments = value['payments'] ?? DefaultConfig.payments;
     if (value['stripeConfig'] != null) {
-      // TODO(LOC): Workaround for release khadrah version 3.13.0
       _stripeConfig = value['stripeConfig'];
-      if (_stripeConfig['useV1'] == true) {
-        _stripeConfig['stripeApiVersion'] = 1;
-      } else if (_stripeConfig['stripeApiVersion'] == 1) {
-        _stripeConfig['useV1'] = true;
-      }
 
       _stripeConfig['paymentMethodIds'] ??= [];
 
@@ -340,21 +285,16 @@ class Configurations {
         value['myFatoorahConfig'] ?? DefaultConfig.myFatoorahConfig;
     _mercadoPagoConfig =
         value['mercadoPagoConfig'] ?? DefaultConfig.mercadoPagoConfig;
-    _midtransConfig = value['midtransConfig'] ?? DefaultConfig.midtransConfig;
     _inAppPurchaseConfig =
         value['inAppPurchaseConfig'] ?? DefaultConfig.inAppPurchaseConfig;
-    _xenditConfig = value['xenditConfig'] ?? DefaultConfig.xenditConfig;
-    _expressPayConfig =
-        value['expressPayConfig'] ?? DefaultConfig.expressPayConfig;
     _afterShip = value['afterShip'] ?? DefaultConfig.afterShip;
     _productAddons = value['productAddons'] ?? DefaultConfig.productAddons;
     _cartDetail = value['cartDetail'] ?? DefaultConfig.cartDetail;
     _productVariantLanguage =
         value['productVariantLanguage'] ?? DefaultConfig.productVariantLanguage;
     _saleOffProduct = value['saleOffProduct'] ?? DefaultConfig.saleOffProduct;
-    _excludedCategory = value['excludedCategory'] is int
-        ? value['excludedCategory'].toString()
-        : value['excludedCategory'];
+    _excludedCategory =
+        value['excludedCategory'] ?? DefaultConfig.excludedCategory;
     _notStrictVisibleVariant = value['notStrictVisibleVariant'] ??
         DefaultConfig.notStrictVisibleVariant;
     _configChat = value['configChat'] ?? DefaultConfig.configChat;
@@ -402,26 +342,18 @@ class Configurations {
         ? DefaultConfig.googleApiKey
         : GoogleApiKeyConfig.fromMap(value['googleApiKey']);
 
+    _enableOnBoarding =
+        value['enableOnBoarding'] ?? DefaultConfig.enableOnBoarding;
     _managerConfig = value['managerConfig'];
     _deliveryConfig = value['deliveryConfig'];
     _salesiqConfig = value['salesiqConfig'];
-    _shopifyPaymentConfig = value['shopifyPaymentConfig'];
-    _openAIConfig = value['openAIConfig'];
-    _notificationRequestScreen = value['notificationRequestScreen'];
-    _reviewConfig = value['reviewConfig'];
-    _multiSiteConfigs =
-        value['multiSiteConfigs'] != null && value['multiSiteConfigs'] is List
-            ? List.from(value['multiSiteConfigs'])
-                .map((e) => MultiSiteConfig.fromJson(e))
-                .toList()
-            : null;
   }
 
   void setAlwaysShowTabBar(bool value) {
     _advanceConfig['AlwaysShowTabBar'] = value;
   }
 
-  void _mergeWithMap(Map<String, dynamic> value) {
+  void mergeWithMap(Map<String, dynamic> value) {
     try {
       _environment = value['environment'] ?? _environment;
       _baseUrl = value['baseUrl'] ?? _baseUrl;
@@ -434,13 +366,9 @@ class Configurations {
           value['enableFirebaseAnalytics'] ?? _enableFirebaseAnalytics;
       _defaultLanguage = value['defaultLanguage'] ?? _defaultLanguage;
       _appConfig = value['appConfig'] ?? _appConfig;
-      serverConfig = value['serverConfig'] ?? serverConfig;
+      _serverConfig = value['serverConfig'] ?? _serverConfig;
       _defaultDarkTheme = value['defaultDarkTheme'] ?? _defaultDarkTheme;
-      _appRatingConfig = value['appRatingConfig'] is Map
-          ? AppRatingConfig.fromMap(value['appRatingConfig'])
-          : value['storeIdentifier'] is Map
-              ? AppRatingConfig.fromMap(value['storeIdentifier'])
-              : _appRatingConfig;
+      _storeIdentifier = value['storeIdentifier'] ?? _storeIdentifier;
       _advanceConfig = value['advanceConfig'] != null
           ? Map.from(value['advanceConfig'])
           : _advanceConfig;
@@ -448,7 +376,7 @@ class Configurations {
       _loginSetting = value['loginSetting'] ?? _loginSetting;
       _defaultDrawer = value['defaultDrawer'] ?? _defaultDrawer;
       _oneSignalKey = value['oneSignalKey'] ?? _oneSignalKey;
-      _onBoardingConfig = value['onBoardingConfig'] ?? _onBoardingConfig;
+      _onBoardingData = value['onBoardingData'] ?? _onBoardingData;
       _vendorOnBoardingData =
           value['vendorOnBoardingData'] ?? _vendorOnBoardingData;
       _productDetail = value['productDetail'] ?? _productDetail;
@@ -479,9 +407,6 @@ class Configurations {
       _payStackConfig = value['payStackConfig'] ?? _payStackConfig;
       _flutterwaveConfig = value['flutterwaveConfig'] ?? _flutterwaveConfig;
       _myFatoorahConfig = value['myFatoorahConfig'] ?? _myFatoorahConfig;
-      _midtransConfig = value['midtransConfig'] ?? _midtransConfig;
-      _xenditConfig = value['xenditConfig'] ?? _xenditConfig;
-      _expressPayConfig = value['expressPayConfig'] ?? expressPayConfig;
       _mercadoPagoConfig = value['mercadoPagoConfig'] ?? _mercadoPagoConfig;
       _afterShip = value['afterShip'] ?? _afterShip;
       _productAddons = value['productAddons'] ?? _productAddons;
@@ -489,7 +414,7 @@ class Configurations {
       _productVariantLanguage =
           value['productVariantLanguage'] ?? _productVariantLanguage;
       _saleOffProduct = value['saleOffProduct'] ?? _saleOffProduct;
-      _excludedCategory = value['excludedCategory'].toString();
+      _excludedCategory = value['excludedCategory'] ?? _excludedCategory;
       _notStrictVisibleVariant =
           value['notStrictVisibleVariant'] ?? _notStrictVisibleVariant;
       _configChat = value['configChat'] ?? _configChat;
@@ -535,24 +460,10 @@ class Configurations {
       _googleApiKey = value['googleApiKey'] is Map
           ? GoogleApiKeyConfig.fromMap(value['googleApiKey'])
           : _googleApiKey;
+      _enableOnBoarding = value['enableOnBoarding'] ?? _enableOnBoarding;
       _managerConfig = value['managerConfig'] ?? _managerConfig;
       _deliveryConfig = value['deliveryConfig'] ?? _deliveryConfig;
       _salesiqConfig = value['salesiqConfig'] ?? _salesiqConfig;
-      _openAIConfig = value['_openAIConfig'] ?? _openAIConfig;
-      _shopifyPaymentConfig =
-          value['shopifyPaymentConfig'] ?? _shopifyPaymentConfig;
-      _notificationRequestScreen =
-          value['notificationRequestScreen'] ?? _notificationRequestScreen;
-      _reviewConfig = value['reviewConfig'] ?? _reviewConfig;
-      _multiSiteConfigs =
-          value['multiSiteConfigs'] != null && value['multiSiteConfigs'] is List
-              ? List.from(value['multiSiteConfigs'])
-                  .map((e) => MultiSiteConfig.fromJson(e))
-                  .toList()
-              : _multiSiteConfigs;
-      if (_multiSiteConfigs?.isNotEmpty ?? false) {
-        serverConfig = _multiSiteConfigs!.first.serverConfig!;
-      }
     } catch (e) {
       rethrow;
     }
@@ -586,7 +497,7 @@ extension ConfigurationsFireBaseRemoteConfig on Configurations {
             configurations[item] = dataJson;
           }
         }
-        _mergeWithMap(configurations);
+        mergeWithMap(configurations);
       }
     }
   }

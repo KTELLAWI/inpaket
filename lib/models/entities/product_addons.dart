@@ -105,8 +105,7 @@ class AddonsOption {
 
   bool get isCustomPriceType => type == 'custom_price';
 
-  bool get isEnteredByUser =>
-      isTextType || isCustomPriceType || isFileUploadType;
+  bool get isEnteredByUser => isTextType || isCustomPriceType || isFileUploadType;
 
   bool get isQuantityBased => priceType == 'quantity_based';
 

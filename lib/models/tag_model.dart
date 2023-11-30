@@ -60,9 +60,10 @@ class TagModel extends PagingDataModel<Tag> with LanguageMixin {
   }
 
   @override
-  Future<PagingResponse<Tag>> Function(dynamic p1) get requestApi =>
+  Future<PagingResponse<Tag>>? Function(dynamic p1) get requestApi =>
       (page) => api.getTagsByPage(
             limit: _limit,
+            lang: langCode,
             page: page,
           );
 }

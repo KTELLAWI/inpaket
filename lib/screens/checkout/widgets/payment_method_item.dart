@@ -4,7 +4,6 @@ import '../../../common/config.dart';
 import '../../../models/index.dart' show PaymentMethod;
 import '../../../services/index.dart';
 import '../../../widgets/common/flux_image.dart';
-import '../../../widgets/html/index.dart';
 
 class PaymentMethodItem extends StatelessWidget {
   const PaymentMethodItem(
@@ -39,38 +38,25 @@ class PaymentMethodItem extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Radio<String?>(
-                        value: paymentMethod.id,
-                        groupValue: selectedId,
-                        onChanged: onSelected,
-                      ),
+                          value: paymentMethod.id,
+                          groupValue: selectedId,
+                          onChanged: onSelected),
                       const SizedBox(width: 10),
-                      Builder(builder: (context) {
-                        return Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Services().widget.renderShippingPaymentTitle(
-                                      context, paymentMethod.title!),
-                                  const SizedBox(width: 15),
-                                  if (kPayments[paymentMethod.id] != null)
-                                    FluxImage(
-                                      imageUrl: kPayments[paymentMethod.id],
-                                      height: 30,
-                                    ),
-                                ],
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            if (kPayments[paymentMethod.id] != null)
+                              FluxImage(
+                                imageUrl: kPayments[paymentMethod.id],
+                                height: 30,
                               ),
-                              if (paymentMethod.description != null)
-                                if (paymentMethod.id == selectedId) ...[
-                                  const SizedBox(height: 15),
-                                  HtmlWidget(paymentMethod.description!),
-                                ],
-                            ],
-                          ),
-                        );
-                      })
+                            if (kPayments[paymentMethod.id] == null)
+                              Services().widget.renderShippingPaymentTitle(
+                                  context, paymentMethod.title!),
+                          ],
+                        ),
+                      )
                     ],
                   ),
                   if (descWidget != null) descWidget!

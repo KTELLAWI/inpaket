@@ -89,12 +89,8 @@ ThemeData buildLightTheme(String? language,
       labelStyle: TextStyle(fontSize: 13),
       unselectedLabelStyle: TextStyle(fontSize: 13),
     ),
-    dialogBackgroundColor: kLightBG,
-    colorScheme: kColorScheme
-        .copyWith(
-          secondary: kLightAccent,
-        )
-        .copyWith(background: Colors.white)
-        .copyWith(error: kErrorRed),
+    dialogBackgroundColor: kLightBG, colorScheme: kColorScheme.copyWith(
+      secondary: kLightAccent,
+    ).copyWith(background: Colors.white).copyWith(error: kErrorRed),
   );
 }

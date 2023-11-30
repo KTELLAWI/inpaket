@@ -5,25 +5,17 @@ class BoxKeys {
   static const String hiveSettingsBox = 'fstore_settings';
   static const String hiveUserBox = 'fstore_user';
   static const String hiveCacheBox = 'fstore_cache';
-  static const String hiveBiometricsBox = 'fstore_biometrics';
 
-  static const String hiveBoxDefaultEncryptionKey =
-      'hiveBoxDefaultEncryptionKey';
+  static const String hiveBoxDefaultEncryptionKey = 'hiveBoxDefaultEncryptionKey';
   static const String hiveUserBoxEncryptionKey = 'hiveUserBoxEncryptionKey';
   static const String hiveBoxCleanIntervalPrefix = 'hive_box_clean_interval_';
-  static const String hiveUserBiometricsEncryptionKey =
-      'hiveBiometricsBoxEncryptionKey';
 
   /// [SettingsBox] - General Settings.
-  static const String username = 'username';
-  static const String password = 'password';
   static const String isLoggedIn = 'isLoggedIn';
   static const String isDarkTheme = 'isDarkTheme';
   static const String hasFinishedOnboarding = 'hasFinishedOnboarding';
   static const String posAddress = 'posAddress';
   static const String popupBannerLastUpdatedTime = 'popupBannerLastUpdatedTime';
-  static const String hasSelectedSite = 'hasSelectedSite';
-  static const String selectedSiteConfig = 'selectedSiteConfig';
 
   /// [SettingsBox] - Locale Settings.
   static const String currencyCode = 'currencyCode';
@@ -35,11 +27,6 @@ class BoxKeys {
   /// [SettingsBox] - Media Settings.
   static const String autoPlayAudio = 'autoPlayAudio';
   static const String listAudioQueueKey = 'listAudioQueueKey';
-
-  /// [SettingsBox] - Biometrics Settings.
-  static const String biometricsEnableCheckout = 'biometricsEnableCheckout';
-  static const String biometricsEnableWallet = 'biometricsEnableWallet';
-  static const String biometricsEnableLogin = 'biometricsEnableLogin';
 
   /// [UserBox] - General Settings.
   static const String userCookie = 'userCookie';

@@ -32,7 +32,7 @@ class ProductDescription extends StatelessWidget {
         if (product!.description != null && product!.description!.isNotEmpty)
           ExpansionInfo(
             title: S.of(context).description,
-            expand: kProductDetail.expandDescription,
+            expand: true,
             children: <Widget>[
               const SizedBox(height: 10),
               Padding(
@@ -49,7 +49,7 @@ class ProductDescription extends StatelessWidget {
         ],
         if (product!.infors.isNotEmpty)
           ExpansionInfo(
-            expand: kProductDetail.expandInfors,
+            expand: true,
             title: S.of(context).additionalInformation,
             children: <Widget>[
               AdditionalInformation(

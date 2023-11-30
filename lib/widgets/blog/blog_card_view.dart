@@ -98,10 +98,9 @@ class BlogCard extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       item!.title,
-                      style:
-                          Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                color: Colors.white,
-                              ),
+                      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                            color: Colors.white,
+                          ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),

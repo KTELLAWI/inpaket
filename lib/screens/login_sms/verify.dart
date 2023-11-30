@@ -138,7 +138,7 @@ class _VerifyCodeState extends State<VerifyCode>
     /// Ability so close message
     // var _message = message;
     // if (kReleaseMode) {
-    //   _message = S.of(context).userNameInCorrect;
+    //   _message = S.of(context).UserNameInCorrect;
     // }
 
     final snackBar = SnackBar(
@@ -281,7 +281,6 @@ class _VerifyCodeState extends State<VerifyCode>
                   onChanged: (value) {
                     if (value.length == 6) _loginSMS(value, context);
                   },
-                  cursorColor: Theme.of(context).colorScheme.onBackground,
                 ),
               ),
             ),

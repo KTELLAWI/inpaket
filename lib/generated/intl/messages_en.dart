@@ -30,96 +30,79 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m4(currency) => "Changed currency to ${currency}";
 
-  static String m5(priceRate, pointRate) =>
-      "${priceRate} = ${pointRate} Points";
+  static String m5(currency) => "${currency} is not supported";
 
-  static String m6(country) => "${country} country is not supported";
+  static String m6(day) => "${day} days ago";
 
-  static String m7(currency) => "${currency} is not supported";
+  static String m7(total) => "~${total} km";
 
-  static String m8(day) => "${day} days ago";
+  static String m8(timeLeft) => "Ends in ${timeLeft}";
 
-  static String m9(total) => "~${total} km";
+  static String m9(captcha) => "Enter ${captcha} to confirm:";
 
-  static String m10(timeLeft) => "Ends in ${timeLeft}";
+  static String m10(message) => "Error: ${message}";
 
-  static String m11(captcha) => "Enter ${captcha} to confirm:";
+  static String m11(time) => "Expiring in ${time}";
 
-  static String m12(message) => "Error: ${message}";
+  static String m12(total) => ">${total} km";
 
-  static String m13(time) => "Expiring in ${time}";
+  static String m13(hour) => "${hour} hours ago";
 
-  static String m14(total) => ">${total} km";
-
-  static String m15(hour) => "${hour} hours ago";
-
-  static String m16(message) =>
+  static String m14(message) =>
       "There is an issue with the app during request the data, please contact admin for fixing the issues: ${message}";
 
-  static String m17(currency, amount) =>
-      "The maximum amount for using this payment is ${currency} ${amount}";
+  static String m15(size) => "Maximum file size: ${size} MB";
 
-  static String m18(size) => "Maximum file size: ${size} MB";
+  static String m16(minute) => "${minute} minutes ago";
 
-  static String m19(currency, amount) =>
-      "The minimum amount for using this payment is ${currency} ${amount}";
+  static String m17(month) => "${month} months ago";
 
-  static String m20(minute) => "${minute} minutes ago";
+  static String m18(store) => "More from ${store}";
 
-  static String m21(month) => "${month} months ago";
+  static String m19(itemCount) => "${itemCount} items";
 
-  static String m22(store) => "More from ${store}";
+  static String m20(price) => "Options total: ${price}";
 
-  static String m23(itemCount) => "${itemCount} items";
+  static String m21(total) => "Qty: ${total}";
 
-  static String m24(price) => "Options total: ${price}";
+  static String m22(percent) => "Sale ${percent}%";
 
-  static String m25(amount) => "Pay ${amount}";
+  static String m23(second) => "${second} seconds ago";
 
-  static String m26(total) => "Qty: ${total}";
-
-  static String m27(percent) => "Sale ${percent}%";
-
-  static String m28(second) => "${second} seconds ago";
-
-  static String m29(totalCartQuantity) =>
+  static String m24(totalCartQuantity) =>
       "Shopping cart, ${totalCartQuantity} items";
 
-  static String m30(numberOfUnitsSold) => "Sold: ${numberOfUnitsSold}";
+  static String m25(numberOfUnitsSold) => "Sold: ${numberOfUnitsSold}";
 
-  static String m31(fieldName) => "The ${fieldName} field is required";
+  static String m26(fieldName) => "The ${fieldName} field is required";
 
-  static String m32(total) => "${total} products";
+  static String m27(total) => "${total} products";
 
-  static String m33(maxPointDiscount, maxPriceDiscount) =>
-      "Use maximum ${maxPointDiscount} Points for a ${maxPriceDiscount} discount on this order!";
+  static String m28(date) => "Valid til ${date}";
 
-  static String m34(date) => "Valid til ${date}";
+  static String m29(message) => "Warning: ${message}";
 
-  static String m35(message) => "Warning: ${message}";
+  static String m30(default_currency) =>
+      "The currently selected currency is not available for the Wallet feature, please change it to ${default_currency}";
 
-  static String m36(defaultCurrency) =>
-      "The currently selected currency is not available for the Wallet feature, please change it to ${defaultCurrency}";
+  static String m31(length) => "We found ${length} products";
 
-  static String m37(length) => "We found ${length} products";
+  static String m32(week) => "Week ${week}";
 
-  static String m38(week) => "Week ${week}";
+  static String m33(year) => "${year} years ago";
 
-  static String m39(name) => "Welcome ${name}";
-
-  static String m40(year) => "${year} years ago";
-
-  static String m41(total) => "You have assigned to order #${total}";
+  static String m34(total) => "You have assigned to order #${total}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "UserNameInCorrect": MessageLookupByLibrary.simpleMessage(
+            "The username or password is incorrect"),
         "aboutUs": MessageLookupByLibrary.simpleMessage("About Us"),
         "account": MessageLookupByLibrary.simpleMessage("Account"),
         "accountDeleteDescription": MessageLookupByLibrary.simpleMessage(
             "Deleting your account removes personal information from our database."),
         "accountIsPendingApproval": MessageLookupByLibrary.simpleMessage(
             "The account is pending approval."),
-        "accountNumber": MessageLookupByLibrary.simpleMessage("Account Number"),
         "accountSetup": MessageLookupByLibrary.simpleMessage("Account setup"),
         "active": MessageLookupByLibrary.simpleMessage("Active"),
         "activeFor": m0,
@@ -195,7 +178,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "bagsCollections":
             MessageLookupByLibrary.simpleMessage("Gears Collections"),
         "balance": MessageLookupByLibrary.simpleMessage("Balance"),
-        "bank": MessageLookupByLibrary.simpleMessage("Bank"),
         "bannerListType":
             MessageLookupByLibrary.simpleMessage("Banner List Type"),
         "bannerType": MessageLookupByLibrary.simpleMessage("Banner Type"),
@@ -203,8 +185,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Banner Youtube URL"),
         "basicInformation":
             MessageLookupByLibrary.simpleMessage("Basic Information"),
-        "becomeAVendor":
-            MessageLookupByLibrary.simpleMessage("Become a Vendor"),
         "bengali": MessageLookupByLibrary.simpleMessage("Bengali"),
         "billingAddress":
             MessageLookupByLibrary.simpleMessage("Billing Address"),
@@ -233,7 +213,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "brazil": MessageLookupByLibrary.simpleMessage("Portuguese"),
         "burmese": MessageLookupByLibrary.simpleMessage("Burmese"),
         "buyNow": MessageLookupByLibrary.simpleMessage("Buy Now"),
-        "by": MessageLookupByLibrary.simpleMessage("by"),
         "byCategory": MessageLookupByLibrary.simpleMessage("By Category"),
         "byPrice": MessageLookupByLibrary.simpleMessage("By Price"),
         "bySignup": MessageLookupByLibrary.simpleMessage(
@@ -241,8 +220,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "byTag": MessageLookupByLibrary.simpleMessage("By Tag"),
         "call": MessageLookupByLibrary.simpleMessage("Call"),
         "callTo": MessageLookupByLibrary.simpleMessage("Make a Call To"),
-        "callToVendor":
-            MessageLookupByLibrary.simpleMessage("Call to Store Owner"),
         "canNotCreateOrder":
             MessageLookupByLibrary.simpleMessage("Can not create order"),
         "canNotCreateUser":
@@ -257,8 +234,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "Cannot launch this app, make sure your settings on config.dart is correct"),
         "canNotLoadThisLink":
             MessageLookupByLibrary.simpleMessage("Can not load this link"),
-        "canNotPlayVideo": MessageLookupByLibrary.simpleMessage(
-            "Sorry, this video cannot be played."),
         "canNotSaveOrder": MessageLookupByLibrary.simpleMessage(
             "Can\'t save the order to website"),
         "canNotUpdateInfo":
@@ -276,18 +251,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "categories": MessageLookupByLibrary.simpleMessage("Categories"),
         "category": MessageLookupByLibrary.simpleMessage("Category"),
         "change": MessageLookupByLibrary.simpleMessage("change"),
-        "changeLanguage":
-            MessageLookupByLibrary.simpleMessage("Change language"),
         "changePrinter": MessageLookupByLibrary.simpleMessage("Change Printer"),
         "changedCurrencyTo": m4,
         "chat": MessageLookupByLibrary.simpleMessage("Chat"),
-        "chatGPT": MessageLookupByLibrary.simpleMessage("Chat GPT"),
         "chatListScreen": MessageLookupByLibrary.simpleMessage("Messages"),
         "chatViaFacebook":
             MessageLookupByLibrary.simpleMessage("Chat via Facebook Messenger"),
         "chatViaWhatApp":
             MessageLookupByLibrary.simpleMessage("Chat via WhatsApp"),
-        "chatWithBot": MessageLookupByLibrary.simpleMessage("Chat with Bot"),
         "chatWithStoreOwner":
             MessageLookupByLibrary.simpleMessage("Chat with Store Owner"),
         "checkConfirmLink": MessageLookupByLibrary.simpleMessage(
@@ -315,8 +286,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("The city field is required"),
         "clear": MessageLookupByLibrary.simpleMessage("Clear"),
         "clearCart": MessageLookupByLibrary.simpleMessage("Clear Cart"),
-        "clearConversation":
-            MessageLookupByLibrary.simpleMessage("Clear conversation"),
         "close": MessageLookupByLibrary.simpleMessage("Close"),
         "closeNow": MessageLookupByLibrary.simpleMessage("Closed now"),
         "codExtraFee": MessageLookupByLibrary.simpleMessage("COD Extra Fee"),
@@ -334,8 +303,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "The cart will be cleared when top up."),
         "confirmClearTheCart": MessageLookupByLibrary.simpleMessage(
             "Are you sure you want to clear the cart?"),
-        "confirmDelete": MessageLookupByLibrary.simpleMessage(
-            "Are you sure you want to delete this? This action cannot be undone."),
         "confirmDeleteItem": MessageLookupByLibrary.simpleMessage(
             "Are you sure you wish to delete this item?"),
         "connect": MessageLookupByLibrary.simpleMessage("Connect"),
@@ -349,11 +316,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Continue to Shipping"),
         "continues": MessageLookupByLibrary.simpleMessage("Continue"),
         "conversations": MessageLookupByLibrary.simpleMessage("Conversations"),
-        "convertPoint": m5,
-        "copied": MessageLookupByLibrary.simpleMessage("Copied"),
-        "copy": MessageLookupByLibrary.simpleMessage("Copy"),
         "country": MessageLookupByLibrary.simpleMessage("Country"),
-        "countryIsNotSupported": m6,
         "countryIsRequired": MessageLookupByLibrary.simpleMessage(
             "The country field is required"),
         "couponCode": MessageLookupByLibrary.simpleMessage("Coupon code"),
@@ -373,12 +336,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Create all variants"),
         "createdOn": MessageLookupByLibrary.simpleMessage("Created on: "),
         "currencies": MessageLookupByLibrary.simpleMessage("Currencies"),
-        "currencyIsNotSupported": m7,
+        "currencyIsNotSupported": m5,
         "currentPassword":
             MessageLookupByLibrary.simpleMessage("Current Password"),
         "currentlyWeOnlyHave":
             MessageLookupByLibrary.simpleMessage("Currently we only have"),
-        "customer": MessageLookupByLibrary.simpleMessage("Customer"),
         "customerDetail":
             MessageLookupByLibrary.simpleMessage("Customer detail"),
         "customerNote": MessageLookupByLibrary.simpleMessage("Customer note"),
@@ -399,7 +361,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "dateTime": MessageLookupByLibrary.simpleMessage("Date Time"),
         "dateWiseClose":
             MessageLookupByLibrary.simpleMessage("Date wise close"),
-        "daysAgo": m8,
+        "daysAgo": m6,
         "debit": MessageLookupByLibrary.simpleMessage("Debit"),
         "decline": MessageLookupByLibrary.simpleMessage("Decline"),
         "delete": MessageLookupByLibrary.simpleMessage("Delete"),
@@ -426,15 +388,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Disable purchase"),
         "discount": MessageLookupByLibrary.simpleMessage("Discount"),
         "displayName": MessageLookupByLibrary.simpleMessage("Display name"),
-        "distance": m9,
+        "distance": m7,
         "doNotAnyTransactions": MessageLookupByLibrary.simpleMessage(
             "You don\'t have any transactions yet"),
         "doYouWantToExitApp":
-            MessageLookupByLibrary.simpleMessage("Do you want to exit the App"),
+            MessageLookupByLibrary.simpleMessage("Do you want to exit an App"),
         "doYouWantToLogout":
             MessageLookupByLibrary.simpleMessage("Do you want to logout?"),
         "doesNotSupportApplePay": MessageLookupByLibrary.simpleMessage(
-            "Apple Pay is not available on this device!"),
+            "ApplePay is not supported. Please check your wallet and card"),
         "done": MessageLookupByLibrary.simpleMessage("Done"),
         "dontHaveAccount":
             MessageLookupByLibrary.simpleMessage("Don\'t have an account?"),
@@ -472,19 +434,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Username/Email is empty"),
         "emptyWishlistSubtitle": MessageLookupByLibrary.simpleMessage(
             "Tap any heart next to a product to favorite. We’ll save them for you here!"),
-        "enableForCheckout":
-            MessageLookupByLibrary.simpleMessage("Enable for Checkout"),
-        "enableForLogin":
-            MessageLookupByLibrary.simpleMessage("Enable for Login"),
-        "enableForWallet":
-            MessageLookupByLibrary.simpleMessage("Enable for Wallet"),
         "enableVacationMode":
             MessageLookupByLibrary.simpleMessage("Enable vacation mode"),
         "endDateCantBeAfterFirstDate": MessageLookupByLibrary.simpleMessage(
             "Please select a date after first date"),
-        "endsIn": m10,
+        "endsIn": m8,
         "english": MessageLookupByLibrary.simpleMessage("English"),
-        "enterCaptcha": m11,
+        "enterCaptcha": m9,
         "enterSendedCode":
             MessageLookupByLibrary.simpleMessage("Enter the code sent to"),
         "enterYourEmail":
@@ -503,7 +459,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Enter your phone number to get started."),
         "enterYourPhoneNumber":
             MessageLookupByLibrary.simpleMessage("Enter your phone number"),
-        "error": m12,
+        "error": m10,
         "errorAmountTransfer": MessageLookupByLibrary.simpleMessage(
             "Entered amount is greater than current wallet amount. Please try again!"),
         "errorEmailFormat": MessageLookupByLibrary.simpleMessage(
@@ -517,7 +473,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "expired": MessageLookupByLibrary.simpleMessage("Expired"),
         "expiredDate": MessageLookupByLibrary.simpleMessage("Expired Date"),
         "expiredDateHint": MessageLookupByLibrary.simpleMessage("MM/YY"),
-        "expiringInTime": m13,
+        "expiringInTime": m11,
         "external": MessageLookupByLibrary.simpleMessage("External"),
         "extraServices": MessageLookupByLibrary.simpleMessage("Extra Services"),
         "failToAssign":
@@ -529,8 +485,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "failedToLoadImage":
             MessageLookupByLibrary.simpleMessage("Failed to load image"),
         "favorite": MessageLookupByLibrary.simpleMessage("Favorite"),
-        "featureNotAvailable":
-            MessageLookupByLibrary.simpleMessage("Feature not available"),
         "featureProducts":
             MessageLookupByLibrary.simpleMessage("Feature Products"),
         "featured": MessageLookupByLibrary.simpleMessage("Featured"),
@@ -541,8 +495,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("File upload failed!"),
         "files": MessageLookupByLibrary.simpleMessage("Files"),
         "filter": MessageLookupByLibrary.simpleMessage("Filter"),
-        "fingerprintsTouchID":
-            MessageLookupByLibrary.simpleMessage("Fingerprints, Touch ID"),
         "finishSetup": MessageLookupByLibrary.simpleMessage("Finish setup"),
         "finnish": MessageLookupByLibrary.simpleMessage("Finnish"),
         "firstComment": MessageLookupByLibrary.simpleMessage(
@@ -568,7 +520,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Generating link..."),
         "german": MessageLookupByLibrary.simpleMessage("German"),
         "getNotification":
-            MessageLookupByLibrary.simpleMessage("Get Notifications"),
+            MessageLookupByLibrary.simpleMessage("Get Notification"),
         "getNotified": MessageLookupByLibrary.simpleMessage("Get notified!"),
         "getPasswordLink":
             MessageLookupByLibrary.simpleMessage("Get password link"),
@@ -582,7 +534,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Go back to review"),
         "goBackToShipping":
             MessageLookupByLibrary.simpleMessage("Go back to shipping"),
-        "greaterDistance": m14,
+        "greaterDistance": m12,
         "greek": MessageLookupByLibrary.simpleMessage("Greek"),
         "grossSales": MessageLookupByLibrary.simpleMessage("Gross Sales"),
         "grouped": MessageLookupByLibrary.simpleMessage("Grouped"),
@@ -601,14 +553,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "historyTransaction": MessageLookupByLibrary.simpleMessage("History"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
         "hour": MessageLookupByLibrary.simpleMessage("Hour"),
-        "hoursAgo": m15,
+        "hoursAgo": m13,
         "hungarian": MessageLookupByLibrary.simpleMessage("Hungarian"),
         "hungary": MessageLookupByLibrary.simpleMessage("Hungarian"),
         "iAgree": MessageLookupByLibrary.simpleMessage("I agree with"),
         "imIn": MessageLookupByLibrary.simpleMessage("I\'m in"),
         "imageFeature": MessageLookupByLibrary.simpleMessage("Image Feature"),
         "imageGallery": MessageLookupByLibrary.simpleMessage("Image Gallery"),
-        "imageGenerate": MessageLookupByLibrary.simpleMessage("Image generate"),
         "imageNetwork": MessageLookupByLibrary.simpleMessage("Image Network"),
         "inStock": MessageLookupByLibrary.simpleMessage("In stock"),
         "incorrectPassword":
@@ -658,19 +609,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("List Banner Type"),
         "listBannerVideo":
             MessageLookupByLibrary.simpleMessage("List Banner Video"),
-        "listMessages":
-            MessageLookupByLibrary.simpleMessage("Notification Messages"),
-        "listening": MessageLookupByLibrary.simpleMessage("Listening..."),
+        "listMessages": MessageLookupByLibrary.simpleMessage("Notify Messages"),
         "loadFail": MessageLookupByLibrary.simpleMessage("Load Failed!"),
         "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
         "loadingLink": MessageLookupByLibrary.simpleMessage("Loading link..."),
         "location": MessageLookupByLibrary.simpleMessage("Location"),
-        "lockScreenAndSecurity":
-            MessageLookupByLibrary.simpleMessage("Lock screen and security"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "loginCanceled":
-            MessageLookupByLibrary.simpleMessage("The login is cancelled"),
-        "loginErrorServiceProvider": m16,
+            MessageLookupByLibrary.simpleMessage("The login is cancel"),
+        "loginErrorServiceProvider": m14,
         "loginFailed": MessageLookupByLibrary.simpleMessage("Login failed!"),
         "loginInvalid": MessageLookupByLibrary.simpleMessage(
             "Can not login! Please contact the administrator to check your account/role."),
@@ -686,7 +633,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "malay": MessageLookupByLibrary.simpleMessage("Malay"),
         "manCollections":
             MessageLookupByLibrary.simpleMessage("Man Collections"),
-        "manageApiKey": MessageLookupByLibrary.simpleMessage("Manage API Key"),
         "manageStock": MessageLookupByLibrary.simpleMessage("Manage stock"),
         "map": MessageLookupByLibrary.simpleMessage("Map"),
         "marathi": MessageLookupByLibrary.simpleMessage("Marathi"),
@@ -694,22 +640,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "markAsShipped":
             MessageLookupByLibrary.simpleMessage("Mark as shipped"),
         "markAsUnread": MessageLookupByLibrary.simpleMessage("Mark as unread"),
-        "maxAmountForPayment": m17,
-        "maximumFileSizeMb": m18,
+        "maximumFileSizeMb": m15,
         "maybeLater": MessageLookupByLibrary.simpleMessage("Maybe Later"),
         "menuOrder": MessageLookupByLibrary.simpleMessage("Menu order"),
         "message": MessageLookupByLibrary.simpleMessage("Message"),
         "messageTo": MessageLookupByLibrary.simpleMessage("Send Message To"),
-        "minAmountForPayment": m19,
         "minimumQuantityIs":
             MessageLookupByLibrary.simpleMessage("Minimum quantity is"),
-        "minutesAgo": m20,
+        "minutesAgo": m16,
         "mobileVerification":
             MessageLookupByLibrary.simpleMessage("Mobile Verification"),
         "momentAgo": MessageLookupByLibrary.simpleMessage("a moment ago"),
-        "monthsAgo": m21,
+        "monthsAgo": m17,
         "more": MessageLookupByLibrary.simpleMessage("...more"),
-        "moreFromStore": m22,
+        "moreFromStore": m18,
         "moreInformation":
             MessageLookupByLibrary.simpleMessage("More information"),
         "morning": MessageLookupByLibrary.simpleMessage("Morning"),
@@ -722,9 +666,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "You don\'t have any products. Try to create one!"),
         "myWallet": MessageLookupByLibrary.simpleMessage("My Wallet"),
         "myWishList": MessageLookupByLibrary.simpleMessage("My Wishlist"),
-        "nItems": m23,
+        "nItems": m19,
         "name": MessageLookupByLibrary.simpleMessage("Name"),
-        "nameOnCard": MessageLookupByLibrary.simpleMessage("Name On Card"),
         "nearbyPlaces": MessageLookupByLibrary.simpleMessage("Nearby Places"),
         "needToLoginAgain": MessageLookupByLibrary.simpleMessage(
             "You need to login again to effect update"),
@@ -748,7 +691,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "It will appear once your customers start chatting with you"),
         "noData": MessageLookupByLibrary.simpleMessage("No more Data"),
         "noFavoritesYet":
-            MessageLookupByLibrary.simpleMessage("No favorites yet."),
+            MessageLookupByLibrary.simpleMessage("No favourites yet."),
         "noFileToDownload":
             MessageLookupByLibrary.simpleMessage("No file to download."),
         "noForwardHistoryItem":
@@ -758,8 +701,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "noListingNearby":
             MessageLookupByLibrary.simpleMessage("No listing nearby!"),
         "noOrders": MessageLookupByLibrary.simpleMessage("No Orders"),
-        "noPermissionToViewProduct": MessageLookupByLibrary.simpleMessage(
-            "This product is available for users with specific roles. Please log in with the appropriate credentials to access this product or contact us for more information."),
         "noPost": MessageLookupByLibrary.simpleMessage(
             "Opps, this page seems no longer exist!"),
         "noPrinters": MessageLookupByLibrary.simpleMessage("No Printers"),
@@ -771,8 +712,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("No slot available"),
         "noThanks": MessageLookupByLibrary.simpleMessage("No thanks"),
         "none": MessageLookupByLibrary.simpleMessage("None"),
-        "notFindResult": MessageLookupByLibrary.simpleMessage(
-            "Sorry, we couldn\'t find any results."),
         "notFound": MessageLookupByLibrary.simpleMessage("Not Found"),
         "note": MessageLookupByLibrary.simpleMessage("Order Note"),
         "noteMessage": MessageLookupByLibrary.simpleMessage("note"),
@@ -791,7 +730,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "openMap": MessageLookupByLibrary.simpleMessage("Map"),
         "openNow": MessageLookupByLibrary.simpleMessage("Open now"),
         "options": MessageLookupByLibrary.simpleMessage("Options"),
-        "optionsTotal": m24,
+        "optionsTotal": m20,
         "or": MessageLookupByLibrary.simpleMessage("OR"),
         "orLoginWith": MessageLookupByLibrary.simpleMessage("or login with"),
         "orderConfirmation":
@@ -839,12 +778,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Your account"),
         "orderSummary": MessageLookupByLibrary.simpleMessage("Order Summary"),
         "orderTotal": MessageLookupByLibrary.simpleMessage("Order Total"),
-        "orderTracking": MessageLookupByLibrary.simpleMessage("Order tracking"),
         "orders": MessageLookupByLibrary.simpleMessage("Orders"),
         "otpVerification":
             MessageLookupByLibrary.simpleMessage("OTP Verification"),
-        "ourBankDetails":
-            MessageLookupByLibrary.simpleMessage("Our bank details"),
         "outOfStock": MessageLookupByLibrary.simpleMessage("Out of stock"),
         "pageView": MessageLookupByLibrary.simpleMessage("Page View"),
         "paid": MessageLookupByLibrary.simpleMessage("Paid"),
@@ -854,11 +790,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Paste your image url"),
         "payByWallet": MessageLookupByLibrary.simpleMessage("Pay by wallet"),
         "payNow": MessageLookupByLibrary.simpleMessage("Pay Now"),
-        "payWithAmount": m25,
         "payment": MessageLookupByLibrary.simpleMessage("Payment"),
         "paymentMethod": MessageLookupByLibrary.simpleMessage("Payment Method"),
-        "paymentMethodIsNotSupported": MessageLookupByLibrary.simpleMessage(
-            "This payment method is not supported"),
         "paymentMethods":
             MessageLookupByLibrary.simpleMessage("Payment Methods"),
         "paymentSuccessful":
@@ -892,7 +825,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseFillCode":
             MessageLookupByLibrary.simpleMessage("Please fill your code"),
         "pleaseInput": MessageLookupByLibrary.simpleMessage(
-            "Please fill in the required fields"),
+            "Please input fill in all fields"),
         "pleaseInputFillAllFields":
             MessageLookupByLibrary.simpleMessage("Please fill in all fields"),
         "pleaseSelectADate": MessageLookupByLibrary.simpleMessage(
@@ -902,7 +835,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseSelectAllAttributes": MessageLookupByLibrary.simpleMessage(
             "Please choose an option for each attribute of the product"),
         "pleaseSelectAttr": MessageLookupByLibrary.simpleMessage(
-            "Please select at least 1 variation attribute for each active attribute"),
+            "Please select at least 1 option for each active attribute"),
         "pleaseSelectImages":
             MessageLookupByLibrary.simpleMessage("Please select images"),
         "pleaseSelectRequiredOptions": MessageLookupByLibrary.simpleMessage(
@@ -976,8 +909,6 @@ class MessageLookup extends MessageLookupByLibrary {
             "Product type variable needs at least one variant"),
         "productNeedNameAndPrice": MessageLookupByLibrary.simpleMessage(
             "Product type simple needs the name and regular price"),
-        "productOutOfStock": MessageLookupByLibrary.simpleMessage(
-            "There is a product out of stock"),
         "productRating": MessageLookupByLibrary.simpleMessage("Your rating"),
         "productReview": MessageLookupByLibrary.simpleMessage("Product Review"),
         "productType": MessageLookupByLibrary.simpleMessage("Product type"),
@@ -986,9 +917,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pullToLoadMore":
             MessageLookupByLibrary.simpleMessage("Pull to Load more"),
         "qty": MessageLookupByLibrary.simpleMessage("qty"),
-        "qtyTotal": m26,
-        "quantityProductExceedInStock": MessageLookupByLibrary.simpleMessage(
-            "The current quantity is more than the quantity in stock"),
+        "qtyTotal": m21,
         "rate": MessageLookupByLibrary.simpleMessage("Rate"),
         "rateTheApp": MessageLookupByLibrary.simpleMessage("Rate the app"),
         "rateThisApp": MessageLookupByLibrary.simpleMessage("Rate this app"),
@@ -1001,8 +930,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "readReviews": MessageLookupByLibrary.simpleMessage("Reviews"),
         "receivedMoney": MessageLookupByLibrary.simpleMessage("Received money"),
         "receiver": MessageLookupByLibrary.simpleMessage("Receiver"),
-        "recentSearches":
-            MessageLookupByLibrary.simpleMessage("Recent search results"),
+        "recentSearches": MessageLookupByLibrary.simpleMessage("History"),
         "recentView": MessageLookupByLibrary.simpleMessage("Your Recent View"),
         "recentlyViewed":
             MessageLookupByLibrary.simpleMessage("Recently Viewed"),
@@ -1019,18 +947,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "refundRequested":
             MessageLookupByLibrary.simpleMessage("Refund Requested"),
         "refunds": MessageLookupByLibrary.simpleMessage("Refunds"),
-        "regenerateResponse":
-            MessageLookupByLibrary.simpleMessage("Regenerate response"),
-        "registerAs": MessageLookupByLibrary.simpleMessage("Register as"),
         "registerAsVendor":
-            MessageLookupByLibrary.simpleMessage("Register As Vendor"),
+            MessageLookupByLibrary.simpleMessage("Register as Vendor user"),
         "registerFailed":
             MessageLookupByLibrary.simpleMessage("Register failed"),
         "registerSuccess":
             MessageLookupByLibrary.simpleMessage("Register successfully"),
         "regularPrice": MessageLookupByLibrary.simpleMessage("Regular price"),
         "relatedLayoutTitle":
-            MessageLookupByLibrary.simpleMessage("Related blogs"),
+            MessageLookupByLibrary.simpleMessage("Things You Might Love"),
         "releaseToLoadMore":
             MessageLookupByLibrary.simpleMessage("Release to load more"),
         "remove": MessageLookupByLibrary.simpleMessage("Remove"),
@@ -1041,6 +966,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "requestTooMany": MessageLookupByLibrary.simpleMessage(
             "You have requested too many codes in a short time. Please try again later."),
         "resend": MessageLookupByLibrary.simpleMessage(" RESEND"),
+        "resendtheOTP": MessageLookupByLibrary.simpleMessage("Resend the OTP"),
         "reset": MessageLookupByLibrary.simpleMessage("Reset"),
         "resetPassword": MessageLookupByLibrary.simpleMessage("Reset Password"),
         "resetYourPassword":
@@ -1057,12 +983,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "reviews": MessageLookupByLibrary.simpleMessage("Reviews"),
         "romanian": MessageLookupByLibrary.simpleMessage("Romanian"),
         "russian": MessageLookupByLibrary.simpleMessage("Russian"),
-        "sale": m27,
+        "sale": m22,
         "salePrice": MessageLookupByLibrary.simpleMessage("Sale price"),
         "save": MessageLookupByLibrary.simpleMessage("Save"),
         "saveAddress": MessageLookupByLibrary.simpleMessage("Save Address"),
-        "saveAddressSuccess":
-            MessageLookupByLibrary.simpleMessage("Save address successfully"),
+        "saveAddressSuccess": MessageLookupByLibrary.simpleMessage(
+            "Your address is exist in your local"),
         "saveForLater": MessageLookupByLibrary.simpleMessage("Save For Later"),
         "saveToWishList":
             MessageLookupByLibrary.simpleMessage("Save to Wishlist"),
@@ -1083,8 +1009,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Search with Order ID..."),
         "searchPlace": MessageLookupByLibrary.simpleMessage("Search Place"),
         "searchingAddress":
-            MessageLookupByLibrary.simpleMessage("Search Address"),
-        "secondsAgo": m28,
+            MessageLookupByLibrary.simpleMessage("Searching Address"),
+        "secondsAgo": m23,
         "seeAll": MessageLookupByLibrary.simpleMessage("See All"),
         "seeNewAppConfig": MessageLookupByLibrary.simpleMessage(
             "Continue to see new content on your app."),
@@ -1099,12 +1025,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "selectImage": MessageLookupByLibrary.simpleMessage("Select Image"),
         "selectNone": MessageLookupByLibrary.simpleMessage("Select none"),
         "selectPrinter": MessageLookupByLibrary.simpleMessage("Select Printer"),
-        "selectRole": MessageLookupByLibrary.simpleMessage("Select Role"),
-        "selectStore": MessageLookupByLibrary.simpleMessage("Select Store"),
         "selectTheColor":
             MessageLookupByLibrary.simpleMessage("Select the color"),
-        "selectTheFile":
-            MessageLookupByLibrary.simpleMessage("Select the file"),
         "selectThePoint":
             MessageLookupByLibrary.simpleMessage("Select the point"),
         "selectTheQuantity":
@@ -1113,16 +1035,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Select the item"),
         "send": MessageLookupByLibrary.simpleMessage("Send"),
         "sendBack": MessageLookupByLibrary.simpleMessage("Send back"),
+        "sendCodeToYourPhoneNumber": MessageLookupByLibrary.simpleMessage(
+            "A message will be sent to a number to verify that the number is valid"),
         "sendSMSCode": MessageLookupByLibrary.simpleMessage("Get code"),
-        "sendSMStoVendor":
-            MessageLookupByLibrary.simpleMessage("Send SMS to Store Owner"),
         "serbian": MessageLookupByLibrary.simpleMessage("Serbian"),
         "sessionExpired":
             MessageLookupByLibrary.simpleMessage("Session Expired"),
         "setAnAddressInSettingPage": MessageLookupByLibrary.simpleMessage(
             "Please set an address in settings page"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
-        "setup": MessageLookupByLibrary.simpleMessage("Set up"),
         "share": MessageLookupByLibrary.simpleMessage("Share"),
         "shipped": MessageLookupByLibrary.simpleMessage("Shipped"),
         "shipping": MessageLookupByLibrary.simpleMessage("Shipping"),
@@ -1136,15 +1057,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "shopOrders": MessageLookupByLibrary.simpleMessage("Shop Orders"),
         "shopPhone": MessageLookupByLibrary.simpleMessage("Shop phone"),
         "shopSlug": MessageLookupByLibrary.simpleMessage("Shop slug"),
-        "shoppingCartItems": m29,
+        "shoppingCartItems": m24,
         "shortDescription":
             MessageLookupByLibrary.simpleMessage("Short Description"),
         "showAllMyOrdered":
             MessageLookupByLibrary.simpleMessage("Show All My Ordered"),
-        "showDetails": MessageLookupByLibrary.simpleMessage("Detail"),
+        "showDetails": MessageLookupByLibrary.simpleMessage("Show Details"),
         "showGallery": MessageLookupByLibrary.simpleMessage("Show Gallery"),
-        "showLess": MessageLookupByLibrary.simpleMessage("Show Less"),
-        "showMore": MessageLookupByLibrary.simpleMessage("Show More"),
         "signIn": MessageLookupByLibrary.simpleMessage("Sign In"),
         "signInWithEmail":
             MessageLookupByLibrary.simpleMessage("Sign in with email "),
@@ -1157,15 +1076,12 @@ class MessageLookup extends MessageLookupByLibrary {
         "slovak": MessageLookupByLibrary.simpleMessage("Slovak"),
         "smsCodeExpired": MessageLookupByLibrary.simpleMessage(
             "The SMS code has expired. Please re-send the verification code to try again."),
-        "sold": m30,
+        "sold": m25,
         "soldBy": MessageLookupByLibrary.simpleMessage("Sold by"),
         "somethingWrong": MessageLookupByLibrary.simpleMessage(
             "Something went wrong. Please try again later."),
         "sortBy": MessageLookupByLibrary.simpleMessage("Sort by"),
-        "sortCode": MessageLookupByLibrary.simpleMessage("Sort Code"),
         "spanish": MessageLookupByLibrary.simpleMessage("Spanish"),
-        "speechNotAvailable":
-            MessageLookupByLibrary.simpleMessage("Speech not available"),
         "startExploring":
             MessageLookupByLibrary.simpleMessage("Start Exploring"),
         "startShopping": MessageLookupByLibrary.simpleMessage("Start Shopping"),
@@ -1222,20 +1138,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "tamil": MessageLookupByLibrary.simpleMessage("Tamil"),
         "tapSelectLocation":
             MessageLookupByLibrary.simpleMessage("Tap to select this location"),
-        "tapTheMicToTalk":
-            MessageLookupByLibrary.simpleMessage("Tap the mic to talk"),
         "tax": MessageLookupByLibrary.simpleMessage("Tax"),
         "thailand": MessageLookupByLibrary.simpleMessage("Thai"),
-        "theFieldIsRequired": m31,
+        "theFieldIsRequired": m26,
         "thisDateIsNotAvailable":
             MessageLookupByLibrary.simpleMessage("This date is not available"),
         "thisFeatureDoesNotSupportTheCurrentLanguage":
             MessageLookupByLibrary.simpleMessage(
                 "This feature does not support the current language"),
-        "thisIsCustomerRole":
-            MessageLookupByLibrary.simpleMessage("This is customer role"),
-        "thisIsVendorRole":
-            MessageLookupByLibrary.simpleMessage("This is vendor role"),
         "thisPlatformNotSupportWebview": MessageLookupByLibrary.simpleMessage(
             "This platform is not support for webview"),
         "thisProductNotSupport":
@@ -1253,7 +1163,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "total": MessageLookupByLibrary.simpleMessage("Total"),
         "totalCartValue": MessageLookupByLibrary.simpleMessage(
             "Total order\'s value must be at least"),
-        "totalProducts": m32,
+        "totalProducts": m27,
         "totalTax": MessageLookupByLibrary.simpleMessage("Total tax"),
         "trackingNumberIs":
             MessageLookupByLibrary.simpleMessage("Tracking number is"),
@@ -1279,8 +1189,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Transfer success"),
         "turkish": MessageLookupByLibrary.simpleMessage("Turkish"),
         "turnOnBle": MessageLookupByLibrary.simpleMessage("Turn On Bluetooth"),
-        "typeAMessage":
-            MessageLookupByLibrary.simpleMessage("Type a message..."),
         "typeYourMessage":
             MessageLookupByLibrary.simpleMessage("Type your message here..."),
         "typing": MessageLookupByLibrary.simpleMessage("Typing..."),
@@ -1302,7 +1210,6 @@ class MessageLookup extends MessageLookupByLibrary {
         "uploadProduct": MessageLookupByLibrary.simpleMessage("Upload Product"),
         "uploading": MessageLookupByLibrary.simpleMessage("Uploading"),
         "url": MessageLookupByLibrary.simpleMessage("URL"),
-        "useMaximumPointDiscount": m33,
         "useNow": MessageLookupByLibrary.simpleMessage("Use Now"),
         "useThisImage": MessageLookupByLibrary.simpleMessage("Use this Image"),
         "userExists": MessageLookupByLibrary.simpleMessage(
@@ -1315,10 +1222,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "vacationMessage":
             MessageLookupByLibrary.simpleMessage("Vacation Message"),
         "vacationType": MessageLookupByLibrary.simpleMessage("Vacation type"),
-        "validUntilDate": m34,
+        "validUntilDate": m28,
         "variable": MessageLookupByLibrary.simpleMessage("Variable"),
         "variation": MessageLookupByLibrary.simpleMessage("Variation"),
-        "vendor": MessageLookupByLibrary.simpleMessage("Vendor"),
         "vendorAdmin": MessageLookupByLibrary.simpleMessage("Vendor Admin"),
         "vendorInfo": MessageLookupByLibrary.simpleMessage("Vendor Info"),
         "verificationCode": MessageLookupByLibrary.simpleMessage(
@@ -1341,11 +1247,11 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Waiting for confirmation"),
         "walletBalance": MessageLookupByLibrary.simpleMessage("Wallet balance"),
         "walletName": MessageLookupByLibrary.simpleMessage("Wallet name"),
-        "warning": m35,
-        "warningCurrencyMessageForWallet": m36,
+        "warning": m29,
+        "warningCurrencyMessageForWallet": m30,
         "weFoundBlogs":
             MessageLookupByLibrary.simpleMessage("We Found Blog(s)"),
-        "weFoundProducts": m37,
+        "weFoundProducts": m31,
         "weNeedCameraAccessTo": MessageLookupByLibrary.simpleMessage(
             "We need camera access to scan for QR code or Bar code."),
         "weSentAnOTPTo": MessageLookupByLibrary.simpleMessage(
@@ -1353,26 +1259,21 @@ class MessageLookup extends MessageLookupByLibrary {
         "weWillSendYouNotification": MessageLookupByLibrary.simpleMessage(
             "We will send you notifications when new products are available or offers are available. You can always turn it off in the settings."),
         "webView": MessageLookupByLibrary.simpleMessage("Web View"),
-        "week": m38,
+        "week": m32,
         "welcome": MessageLookupByLibrary.simpleMessage("Welcome"),
-        "welcomeUser": m39,
-        "whichLanguageDoYouPrefer": MessageLookupByLibrary.simpleMessage(
-            "Which language do you prefer?"),
-        "wholesaleRegisterMsg": MessageLookupByLibrary.simpleMessage(
-            "Please reach out to the administrator to approve your registration."),
         "womanCollections":
             MessageLookupByLibrary.simpleMessage("Woman Collections"),
         "writeComment":
             MessageLookupByLibrary.simpleMessage("Write your comment"),
         "writeYourNote":
             MessageLookupByLibrary.simpleMessage("Write your note"),
-        "yearsAgo": m40,
+        "yearsAgo": m33,
         "yes": MessageLookupByLibrary.simpleMessage("Yes"),
         "youCanOnlyOrderSingleStore": MessageLookupByLibrary.simpleMessage(
             "You can only purchase from a single store."),
         "youCanOnlyPurchase":
             MessageLookupByLibrary.simpleMessage("You can only purchase"),
-        "youHaveAssignedToOrder": m41,
+        "youHaveAssignedToOrder": m34,
         "youHaveBeenSaveAddressYourLocal": MessageLookupByLibrary.simpleMessage(
             "You have saved address to your local file successful !"),
         "youHavePoints":

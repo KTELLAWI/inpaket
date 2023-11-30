@@ -120,11 +120,10 @@ class _TopUpScreenState extends State<TopUpScreen> {
                         },
                         child: Text(
                           S.of(context).topUp.toUpperCase(),
-                          style:
-                              Theme.of(context).textTheme.labelLarge!.copyWith(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                          style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
                         ),
                       ),
                     ),

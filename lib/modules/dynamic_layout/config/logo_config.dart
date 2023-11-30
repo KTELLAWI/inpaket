@@ -1,8 +1,6 @@
-import 'dart:math';
 import 'package:inspireui/utils/colors.dart';
 
 import '../helper/helper.dart';
-import 'text_config.dart';
 
 /// layout : 'logo'
 /// showMenu : true
@@ -12,27 +10,19 @@ import 'text_config.dart';
 /// color : ''
 /// menuIcon : {'name':'','fontFamily':''}
 
-const double _kLogoSize = 50.0;
-const double _kIconSize = 24.0;
-const double _kIconOpacity = 0.0;
-const double _kOpacity = 1.0;
-const double _kIconRadius = 6.0;
-const double _kMinLogoSize = 10.0;
-
 class LogoConfig {
   String? layout;
+  String? name;
   String? image;
   bool? showMenu;
   bool showLogo = false;
   bool showSearch = false;
   bool showCart = false;
   bool showNotification = false;
-  bool showBadgeCart = false;
-  double opacity = _kOpacity;
-  double iconOpacity = _kIconOpacity;
-  double iconRadius = _kIconRadius;
-  double iconSize = _kIconSize;
-  double logoSize = _kLogoSize;
+  double opacity = 1.0;
+  double iconOpacity = 0.0;
+  double iconRadius = 6.0;
+  double iconSize = 24.0;
   HexColor? color;
   HexColor? iconColor;
   HexColor? iconBackground;
@@ -40,7 +30,6 @@ class LogoConfig {
   MenuIcon? cartIcon;
   MenuIcon? searchIcon;
   MenuIcon? notificationIcon;
-  TextConfig? textConfig;
 
   LogoConfig({
     this.layout,
@@ -50,11 +39,11 @@ class LogoConfig {
     this.showSearch = false,
     this.showCart = false,
     this.showNotification = false,
-    this.opacity = _kOpacity,
-    this.iconOpacity = _kIconOpacity,
-    this.iconRadius = _kIconRadius,
-    this.iconSize = _kIconSize,
-    this.logoSize = _kLogoSize,
+    this.opacity = 1,
+    this.iconOpacity = 0.0,
+    this.iconRadius = 6.0,
+    this.iconSize = 24.0,
+    this.name,
     this.color,
     this.iconColor,
     this.iconBackground,
@@ -62,50 +51,23 @@ class LogoConfig {
     this.searchIcon,
     this.menuIcon,
     this.notificationIcon,
-    this.textConfig,
-    this.showBadgeCart = false,
   });
-
-  @Deprecated('Use LogoConfig.textConfig.name instead')
-  String get name {
-    if (textConfig != null) {
-      return textConfig!.text;
-    }
-    return '';
-  }
-
-  @Deprecated('Use LogoConfig.textConfig.name instead')
-  set name(String? value) {
-    if (textConfig != null) {
-      textConfig!.text = value ?? '';
-    } else {
-      textConfig = TextConfig(text: value ?? '');
-    }
-  }
 
   LogoConfig.fromJson(dynamic json) {
     layout = json['layout'];
-    textConfig = json['textConfig'] != null
-        ? TextConfig.fromJson(json['textConfig'])
-        : null;
-    if (json['name'] != null && textConfig == null) {
-      textConfig = TextConfig(text: json['name']);
-    }
+    name = json['name'];
     image = json['image'];
     showMenu = json['showMenu'];
     showLogo = json['showLogo'] ?? false;
-    showBadgeCart = json['showBadgeCart'] ?? false;
 
     showSearch = json['showSearch'] ?? false;
     showCart = json['showCart'] ?? false;
     showNotification = json['showNotification'] ?? false;
 
-    opacity = Helper.formatDouble(json['opacity']) ?? _kOpacity;
-    iconOpacity = Helper.formatDouble(json['iconOpacity']) ?? _kIconOpacity;
-    iconRadius = Helper.formatDouble(json['iconRadius']) ?? _kIconRadius;
-    iconSize = Helper.formatDouble(json['iconSize']) ?? _kIconSize;
-    logoSize =
-        max(Helper.formatDouble(json['logoSize']) ?? _kLogoSize, _kMinLogoSize);
+    opacity = Helper.formatDouble(json['opacity']) ?? 1.0;
+    iconOpacity = Helper.formatDouble(json['iconOpacity']) ?? 0.0;
+    iconRadius = Helper.formatDouble(json['iconRadius']) ?? 6.0;
+    iconSize = Helper.formatDouble(json['iconSize']) ?? 24.0;
 
     if (json['color'] != null) {
       color = HexColor(json['color']);
@@ -137,8 +99,7 @@ class LogoConfig {
     map['showSearch'] = showSearch;
     map['showCart'] = showCart;
     map['showNotification'] = showNotification;
-    map['textConfig'] = textConfig?.toJson();
-    map['logoSize'] = logoSize;
+    map['name'] = name;
     map['color'] = color;
     if (menuIcon != null) {
       map['menuIcon'] = menuIcon?.toJson();

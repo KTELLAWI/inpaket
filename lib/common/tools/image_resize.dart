@@ -25,7 +25,6 @@ class ImageResize extends StatelessWidget {
   final bool hidePlaceHolder;
   final bool forceWhiteBackground;
   final String kImageProxy;
-  final Alignment? alignmentImage;
 
   const ImageResize({
     Key? key,
@@ -40,7 +39,6 @@ class ImageResize extends StatelessWidget {
     this.offset = 0.0,
     this.forceWhiteBackground = false,
     this.kImageProxy = '',
-    this.alignmentImage,
   }) : super(key: key);
 
   @override
@@ -90,7 +88,6 @@ class ImageResize extends StatelessWidget {
           width: width,
           height: height,
           placeholder: kTransparentImage,
-          alignment: alignmentImage ?? Alignment.center,
         ),
       );
     }
@@ -107,17 +104,16 @@ class ImageResize extends StatelessWidget {
       cache: true,
       timeRetry: const Duration(milliseconds: 500),
       clearMemoryCacheWhenDispose: true,
-      cacheWidth: kIsWeb ? null : cacheWidth,
+      cacheWidth: cacheWidth,
       enableLoadState: false,
-      alignment: alignmentImage ??
-          Alignment(
-            (offset >= -1 && offset <= 1)
-                ? offset
-                : (offset > 0)
-                    ? 1.0
-                    : -1.0,
-            0.0,
-          ),
+      alignment: Alignment(
+        (offset >= -1 && offset <= 1)
+            ? offset
+            : (offset > 0)
+                ? 1.0
+                : -1.0,
+        0.0,
+      ),
       loadStateChanged: (ExtendedImageState state) {
         Widget? widget;
         switch (state.extendedImageLoadState) {

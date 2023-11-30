@@ -10,31 +10,6 @@ class TextConfig {
 
   Alignment alignment = Alignment.topCenter;
 
-  // TextAlign get textAlign {
-  //   switch (alignment) {
-  //     case Alignment.topLeft:
-  //       return TextAlign.left;
-  //     case Alignment.topCenter:
-  //       return TextAlign.center;
-  //     case Alignment.topRight:
-  //       return TextAlign.right;
-  //     case Alignment.centerLeft:
-  //       return TextAlign.left;
-  //     case Alignment.center:
-  //       return TextAlign.center;
-  //     case Alignment.centerRight:
-  //       return TextAlign.right;
-  //     case Alignment.bottomLeft:
-  //       return TextAlign.left;
-  //     case Alignment.bottomCenter:
-  //       return TextAlign.center;
-  //     case Alignment.bottomRight:
-  //       return TextAlign.right;
-  //     default:
-  //       return TextAlign.center;
-  //   }
-  // }
-
   TextConfig({
     this.text = '',
     this.fontFamily = 'Roboto',
