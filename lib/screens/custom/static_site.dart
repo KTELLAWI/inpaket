@@ -17,18 +17,19 @@ class StaticSite extends StatefulWidget {
 class _StaticSiteState extends State<StaticSite> with AppBarMixin {
   @override
   Widget build(BuildContext context) {
-    return renderScaffold(
-      routeName: RouteList.html,
-      child: !isMobile
-          ? const PlatformError()
-          : SafeArea(
-              child: WebView(
-                onWebViewCreated: (controller) async {
-                  await controller
-                      .loadUrl('data:text/html;base64,${widget.data}');
-                },
-              ),
-            ),
-    );
+    return Text("");
+    //  renderScaffold(
+    //   routeName: RouteList.html,
+    //   child: !isMobile
+    //       ? const PlatformError()
+    //       : SafeArea(
+    //           child: WebView(
+    //             onWebViewCreated: (controller) async {
+    //               await controller
+    //                   .loadUrl('data:text/html;base64,${widget.data}');
+    //             },
+    //           ),
+    //         ),
+    // );
   }
 }
