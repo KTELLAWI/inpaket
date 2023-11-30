@@ -200,12 +200,13 @@ class _ProductDetailPageState extends BaseScreen<ProductDetailScreen>
     //     _checkingErrorMessage = S.current.noPermissionToViewProduct;
     //   });
     //   return false;
-    // } else {
-    //   setState(() {
-    //     _isChecking = false;
-    //   });
-    //   return true;
-    // }
+    // } 
+    else {
+      setState(() {
+        _isChecking = false;
+      });
+      return true;
+    }
   }
 
   @override
