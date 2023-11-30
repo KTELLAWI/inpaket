@@ -4,7 +4,7 @@ import 'wordpress_service.dart';
 
 mixin WordPressMixin on ConfigMixin {
   @override
-  void configWordPress(appConfig) {
+  void configWordPress(appConfig, {bool? isRoot}) {
     final wordpressService = WordPressService(
       domain: appConfig['url'],
     );
