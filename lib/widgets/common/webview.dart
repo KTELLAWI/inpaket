@@ -59,6 +59,7 @@ mixin WebviewMixin {
     return NavigationDecision.navigate;
   }
 }
+typedef PageFinishedCallback = void Function(String url);
 
 class WebView extends StatefulWidget {
   final String? url;
