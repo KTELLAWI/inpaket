@@ -68,10 +68,12 @@ dependencies:
 
   # WEB TOOLS
   html_unescape: 2.0.0
-  webview_flutter: ^4.0.2
+  webview_flutter: 3.0.4
+  # 4.0.0
   # 3.0.4
-  webview_flutter_web: 0.2.2+1
-  # 0.1.0+4
+  webview_flutter_web: 0.1.0+4
+  #  0.2.2+1
+  # 
   responsive_builder: 0.5.0+1
   flutter_inappwebview: 5.7.2+3
 
@@ -81,16 +83,15 @@ dependencies:
   fwfh_cached_network_image: 0.7.0+3
   fwfh_url_launcher: 0.9.0
   fwfh_chewie: 0.7.1
-  fwfh_webview: 0.7.0
-  # 0.6.2+5
+  fwfh_webview: 0.6.2+5
   fwfh_text_style: 2.22.8+1
 
   # VIDEO
-  youtube_player_iframe:
-    git:
-      url: https://github.com/inspireui/youtube_player_flutter.git
-      path: packages/youtube_player_iframe
-      ref: c2268281ca7f1f051f7ccab373e982d22c540910
+  youtube_player_iframe: 3.1.0
+    # git:
+    #   url: https://github.com/inspireui/youtube_player_flutter.git
+    #   path: packages/youtube_player_iframe
+    #   ref: c2268281ca7f1f051f7ccab373e982d22c540910
     # git:
     #   url: https://github.com/inspireui/youtube_player_flutter.git
     #   path: packages/youtube_player_iframe
