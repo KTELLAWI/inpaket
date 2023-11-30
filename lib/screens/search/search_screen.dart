@@ -33,9 +33,9 @@ class _StateSearchScreen extends State<SearchScreen>
     super.build(context);
 
     /// Use the old Search UX config which is limit Filter
-    if (Services().widget.enableProductBackdrop) {
-      return SearchWidget(isModal: widget.isModal);
-    }
+    // if (Services().widget.enableProductBackdrop) {
+    //   return SearchWidget(isModal: widget.isModal);
+    // }
 
     return ProductsScreen(
       enableSearchHistory: true,
